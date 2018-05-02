@@ -50,6 +50,7 @@ module.exports = function (ctx) {
                 'QBtnDropdown',
                 'QBtn',
                 'QIcon',
+                'QChip',
                 'QList',
                 'QListHeader',
                 'QPopover',
@@ -65,7 +66,9 @@ module.exports = function (ctx) {
                 'QCardMain',
                 'QCardMedia',
                 'QCardSeparator',
-                'QCardActions'
+                'QCardActions',
+                'QModal',
+                'QModalLayout'
             ],
             directives: [
                 'Ripple'

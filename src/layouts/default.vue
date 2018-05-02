@@ -2,16 +2,13 @@
     <q-layout>
         <q-layout-header>
             <q-toolbar color="primary">
-                <q-toolbar-title>
-                    EAST BAY MECH
-                </q-toolbar-title>
-                <q-toolbar-title>
+                <img src="~assets/company.png" class="auth-user-image round-borders vertical-middle"/>
+                <q-toolbar-title class="gt-xs">EAST BAY MECH</q-toolbar-title>
+                <q-toolbar-title class="app-logo">
                     Wonderus
                 </q-toolbar-title>
-                <q-btn color="white" class="text-black">
-                    <q-icon name="add"/>
-                    Add Card
-                </q-btn>
+                <q-btn color="white" class="text-black gt-xs" icon="add" label="Add Card"/>
+                <q-btn color="white" class="short-add-button text-black lt-sm" icon="add"/>
                 <div class="auth-user q-ml-md">
                     <img src="~assets/profile.jpg" class="auth-user-image round-borders vertical-middle"/>
                     <q-popover>
@@ -43,9 +40,7 @@
 </template>
 
 <script>
-    export default {
-
-    }
+    export default {}
 </script>
 
 <style lang="scss">
@@ -59,4 +54,15 @@
         cursor: pointer;
         width: 35px;
     }
+
+    .short-add-button {
+        padding: 4px 10px;
+    }
+
+    @media all and (max-width: 576px) {
+        .app-logo {
+            text-align: center;
+        }
+    }
+
 </style>
