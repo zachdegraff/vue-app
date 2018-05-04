@@ -7,8 +7,8 @@
                 <q-toolbar-title class="app-logo">
                     Wonderus
                 </q-toolbar-title>
-                <q-btn color="white" class="text-black gt-xs" icon="add" label="Add Card"/>
-                <q-btn color="white" class="short-add-button text-black lt-sm" icon="add"/>
+                <q-btn color="white" class="text-black gt-xs" icon="add" label="Add Card" @click="createCardModal=true"/>
+                <q-btn color="white" class="short-add-button text-black lt-sm" icon="add" @click="createCardModal=true"/>
                 <div class="auth-user q-ml-md">
                     <img src="~assets/profile.jpg" class="auth-user-image round-borders vertical-middle"/>
                     <q-popover>
@@ -36,11 +36,31 @@
         <q-layout-footer>
 
         </q-layout-footer>
+        <q-modal v-model="createCardModal" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
+            <q-modal-layout>
+                <q-toolbar slot="header">
+                    <q-toolbar-title>
+                        Create a new card
+                    </q-toolbar-title>
+                    <q-btn flat icon="close" @click="createCardModal=false" class="float-right"/>
+                </q-toolbar>
+                <create-card @saved="createCardModal=false"></create-card>
+            </q-modal-layout>
+        </q-modal>
     </q-layout>
 </template>
 
 <script>
-    export default {}
+    import CreateCard from '../components/card/CreateCard.vue'
+
+    export default {
+        data: () => {
+            return {
+                createCardModal: false,
+            }
+        },
+        components: {CreateCard}
+    }
 </script>
 
 <style lang="scss">

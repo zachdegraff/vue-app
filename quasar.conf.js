@@ -51,6 +51,8 @@ module.exports = function (ctx) {
                 'QBtn',
                 'QIcon',
                 'QChip',
+                'QInput',
+                'QChipsInput',
                 'QList',
                 'QListHeader',
                 'QPopover',
