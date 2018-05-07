@@ -1,0 +1,20 @@
+import axios from 'axios';
+import {API_HOST} from "../config";
+
+export default class Resource {
+    static get(url, config) {
+        return axios.get(API_HOST + url, config || {});
+    }
+
+    static put(url, data, config) {
+        return axios.put(API_HOST + url, data || {}, config || {});
+    }
+
+    static post(url, data, config) {
+        return axios.post(API_HOST + url, data || {}, config || {});
+    }
+
+    static delete(url, config) {
+        return axios.delete(API_HOST + url, config || {});
+    }
+}

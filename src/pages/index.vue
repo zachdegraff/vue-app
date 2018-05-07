@@ -236,6 +236,9 @@
                 </q-card-actions>
             </q-card>
         </div>
+        <modal-page title="Cafe Basilico">
+            <view-card></view-card>
+        </modal-page>
         <q-modal v-model="layoutModal" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
             <q-modal-layout>
                 <q-toolbar slot="header">
@@ -255,6 +258,8 @@
     import countries from 'assets/autocomplete.json'
     import ViewCard from '../components/card/ViewCard.vue'
     import EditCard from '../components/card/EditCard.vue'
+
+    import ModalPage from '../components/ModalPage.vue'
 
     const icons = ['alarm', 'email', 'search', 'build', 'card_giftcard', 'perm_identity', 'receipt', 'schedule', 'speaker_phone', 'archive', 'weekend', 'battery_charging_full'];
 
@@ -296,7 +301,7 @@
             }
         },
         components: {
-            ViewCard, EditCard
+            ViewCard, EditCard, ModalPage
         },
         methods: {
             edit() {

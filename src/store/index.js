@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import example from './module-example'
+import cards from './cards'
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 const store = new Vuex.Store({
-  modules: {
-    example
-  }
-})
+    modules: {
+        cards
+    }
+});
 
 export default store
