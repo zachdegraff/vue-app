@@ -6,8 +6,8 @@
             <q-toolbar-title class="app-logo">
                 Wonderus
             </q-toolbar-title>
-            <q-btn color="white" class="text-black gt-xs" icon="add" label="Add Card"/>
-            <q-btn color="white" class="short-add-button text-black lt-sm" icon="add"/>
+            <q-btn color="white" class="text-black gt-xs" icon="add" label="Add Card" @click="create"/>
+            <q-btn color="white" class="short-add-button text-black lt-sm" icon="add" @click="create"/>
             <div class="auth-user q-ml-md">
                 <img src="~assets/profile.jpg" class="header-icon round-borders vertical-middle"/>
                 <q-popover>
@@ -30,7 +30,11 @@
 </template>
 <script>
     export default {
-
+        methods: {
+            create() {
+                this.$router.push({name: 'create_card'})
+            }
+        }
     }
 </script>
 

@@ -10,11 +10,11 @@ export default [
         path: '/cards/',
         component: () => import('layouts/CardLayout.vue'),
         children: [
-            {path: 'list', name: 'cards_list', component: () => import('pages/card/CardsList.vue')},
             {path: 'search', name: 'search_cards', component: () => import('pages/card/CardView.vue')},
             {path: 'create', name: 'create_card', component: () => import('pages/card/CardCreate.vue')},
             {path: ':id', name: 'view_card', component: () => import('pages/card/CardView.vue'), props: true},
-            {path: ':id/edit', name: 'edit_card', component: () => import('pages/card/CardEdit.vue'), props: true}
+            {path: ':id/edit', name: 'edit_card', component: () => import('pages/card/CardEdit.vue'), props: true},
+            {path: '', name: 'cards_list', component: () => import('pages/card/CardsList.vue')}
         ]
     },
 

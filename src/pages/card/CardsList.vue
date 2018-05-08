@@ -1,42 +1,26 @@
 <template>
-    <div class="page-search-result row justify-center">
-        <q-card class="col-sx-12 col-md-8 bg-white q-mb-md">
-            <q-card-title>
-                Cafe Basilico
-                <div slot="right" class="row items-center">
-                    <q-icon name="place"/>
-                    250 ft
-                </div>
-            </q-card-title>
-            <q-card-main>
-                <p>$・Italian, Cafe</p>
-                <p class="text-faded">Small plates, salads & sandwiches in an intimate setting.</p>
-            </q-card-main>
-            <q-card-separator/>
-            <q-card-actions align="end">
-                <q-btn flat color="primary" label="Show" class="float-right" @click="layoutModal=true"/>
-            </q-card-actions>
-        </q-card>
-        <q-card class="col-sx-12 col-md-8 bg-white">
-            <q-card-title>
-                Cafe Basilico
-                <div slot="right" class="row items-center">
-                    <q-icon name="place"/>
-                    250 ft
-                </div>
-            </q-card-title>
-            <q-card-main>
-                <p>$・Italian, Cafe</p>
-                <p class="text-faded">Small plates, salads & sandwiches in an intimate setting.</p>
-            </q-card-main>
-            <q-card-separator/>
-            <q-card-actions align="end">
-                <q-btn flat color="primary" label="Show" class="float-right" @click="layoutModal=true"/>
-            </q-card-actions>
-        </q-card>
+    <div class="row flex-center q-mt-lg">
+        <q-spinner :size="36" style="color: #027be3ff" v-show="isLoading"></q-spinner>
     </div>
 </template>
+<script>
+    import CardResource from '../../resources/card/CardResource'
 
+    export default {
+        data: () => {
+            return {
+                isLoading: false
+            }
+        },
+        created() {
+            this.isLoading = true;
+            CardResource.all().then(({data}) => {
+                this.isLoading = false;
+                this.$store.commit('cards/set', data.data)
+            }).catch(() => this.isLoading = false)
+        }
+    }
+</script>
 <style lang="scss">
     .page-search-result {
         position: relative;

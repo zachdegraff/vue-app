@@ -1,5 +1,6 @@
 import axios from 'axios';
-import {API_HOST} from "../config";
+
+const API_HOST = process.env.API_HOST;
 
 export default class Resource {
     static get(url, config) {

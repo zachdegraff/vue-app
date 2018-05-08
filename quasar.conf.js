@@ -24,6 +24,12 @@ module.exports = function (ctx) {
         build: {
             scopeHoisting: true,
             vueRouterMode: 'history',
+            env: ctx.dev
+                ? {
+                    API_HOST: JSON.stringify('http://wonderus')
+                } : {
+                    API_HOST: JSON.stringify('http://api.wonderus.com')
+                },
             // gzip: true,
             // analyze: true,
             // extractCSS: false,
@@ -70,7 +76,8 @@ module.exports = function (ctx) {
                 'QCardSeparator',
                 'QCardActions',
                 'QModal',
-                'QModalLayout'
+                'QModalLayout',
+                'QSpinner'
             ],
             directives: [
                 'Ripple'
