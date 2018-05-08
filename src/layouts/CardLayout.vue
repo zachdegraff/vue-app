@@ -4,7 +4,7 @@
         <q-page-container>
             <search-form></search-form>
             <div class="cards-list row justify-center">
-                <q-card class="col-sx-12 col-md-8 bg-white q-mb-md" v-for="item in items" :key="item.id">
+                <q-card class="col-sx-12 col-md-8 bg-white q-mb-md" v-for="(item, idx) in items" :key="idx">
                     <q-card-title>{{item.name}}</q-card-title>
                     <q-card-main>
                         <q-chip class="q-mr-sm" color="primary" v-for="(tag, index) in item.shorthands" :key="index">{{tag}}</q-chip>
