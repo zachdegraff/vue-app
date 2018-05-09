@@ -60,7 +60,7 @@
         methods: {
             load() {
                 const item = this.$store.getters['cards/getItemById'](this.id);
-                if (null !== item) {
+                if (undefined !== item) {
                     return this.model = item
                 }
                 CardResource.get(this.id).then(({data}) => this.model = data.data)

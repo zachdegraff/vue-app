@@ -59,9 +59,8 @@
             save() {
                 this.isProcessing = true;
                 CardResource.create(this.model).then(({data}) => {
-                    notify(data.message);
                     this.isProcessing = false;
-                    this.$store.commit('cards/replace', data.card);
+                    notify(data.message);
                     this.redirect()
                 }).catch(() => this.isProcessing = false)
             },
