@@ -1,7 +1,3 @@
-/*
-export const someGetter = (state) => {}
- */
-
 export const getItemById = (state) => {
     return id => {
         if (state.items.length === 0) {

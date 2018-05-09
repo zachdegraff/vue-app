@@ -1,9 +1,9 @@
 <template>
-    <q-modal :value="isOpen" class="app-modal" :content-classes="['app-modal-content']" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
+    <q-modal v-model="isOpen" @hide="close" class="app-modal" :content-classes="['app-modal-content']" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
         <app-modal-layout v-if="model">
             <q-toolbar slot="header">
                 <q-toolbar-title>{{model.name}}</q-toolbar-title>
-                <q-btn flat icon="close" @click="close" class="float-right"/>
+                <q-btn flat icon="close" @click="isOpen=false" class="float-right"/>
             </q-toolbar>
 
             <div class="row layout-padding gutter-md">
@@ -66,7 +66,7 @@
                     <div class="q-mb-md gt-xs">
                         <div class="q-mb-md text-bold">Actions</div>
                         <q-btn label="ask the team" color="primary" class="full-width q-mb-sm"/>
-                        <q-btn label="save" color="primary" class="full-width q-mb-sm" @click="save"/>
+                        <q-btn label="save" color="primary" class="full-width q-mb-sm"/>
                         <q-btn label="edit card" color="primary" class="full-width q-mb-sm" @click="$router.push({name: 'edit_card', params: {id}})"/>
                     </div>
                     <em>Last updated on April 22 2017 by Dr Ayelet Ruscio</em>
@@ -87,24 +87,17 @@
         },
         data: () => {
             return {
-                model: null
+                model: null,
+                isOpen: true
             }
         },
         created() {
             this.load()
         },
-        computed: {
-            isOpen() {
-                return this.model !== null
-            }
-        },
         components: {
             AppModalLayout
         },
         methods: {
-            save() {
-
-            },
             load() {
                 const item = this.$store.getters['cards/getItemById'](this.id);
                 if (null !== item) {
@@ -116,7 +109,11 @@
                 return `Lecture slides #${idx + 1}`
             },
             close() {
-                this.$router.push({name: 'cards_list'})
+                const path = this.$store.getters['route/previous'];
+                if (path === null) {
+                    return this.$router.push({name: 'cards_list'})
+                }
+                this.$router.push(path)
             },
             redirect(link) {
                 window.location.href = link;

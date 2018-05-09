@@ -8,7 +8,7 @@
                     <q-card-title>{{item.name}}</q-card-title>
                     <q-card-main>
                         <q-chip class="q-mr-sm" color="primary" v-for="(tag, index) in item.shorthands" :key="index">{{tag}}</q-chip>
-                        <p class="text-faded q-mt-md">{{item.description}}</p>
+                        <p class="text-faded q-mt-md" v-html="item.description"></p>
                     </q-card-main>
                     <q-card-separator/>
                     <q-card-actions align="end">

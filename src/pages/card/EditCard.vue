@@ -1,9 +1,9 @@
 <template>
-    <q-modal :value="isOpen" class="app-modal" :content-classes="['app-modal-content']" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
+    <q-modal v-model="isOpen" @hide="redirect" class="app-modal" :content-classes="['app-modal-content']" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
         <app-modal-layout v-if="model">
             <q-toolbar slot="header">
-                <q-toolbar-title>Adding a new card</q-toolbar-title>
-                <q-btn flat icon="close" @click="$router.go(-1)" class="float-right"/>
+                <q-toolbar-title>Editing {{model.name}}</q-toolbar-title>
+                <q-btn flat icon="close" @click="isOpen=false" class="float-right"/>
             </q-toolbar>
             <div class="row q-py-xl gutter-md flex-center">
                 <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
@@ -26,7 +26,7 @@
                     <q-btn @click="addConcept" class="q-mt-sm">Add a new field</q-btn>
                 </div>
                 <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <q-btn @click="save" color="primary" class="q-mt-lg" :disable="isProcessing">create</q-btn>
+                    <q-btn @click="save" color="primary" class="q-mt-lg" :disable="isProcessing">SAVE</q-btn>
                 </div>
             </div>
         </app-modal-layout>
@@ -39,35 +39,43 @@
     import {notify} from "../../helpers";
 
     export default {
+        props: {
+            id: {
+                required: true
+            }
+        },
         data: () => {
             return {
-                model: {
-                    name: '',
-                    description: '',
-                    shorthands: [],
-                    resources: [],
-                    concepts: []
-                },
+                model: null,
+                isOpen: true,
                 isProcessing: false
             }
         },
-        computed: {
-            isOpen() {
-                return this.model !== null
-            }
+        created() {
+            this.load()
         },
         components: {
             AppModalLayout
         },
         methods: {
+            load() {
+                const item = this.$store.getters['cards/getItemById'](this.id);
+                if (null !== item) {
+                    return this.model = item
+                }
+                CardResource.get(this.id).then(({data}) => this.model = data.data)
+            },
             save() {
                 this.isProcessing = true;
-                CardResource.create(this.model).then(({data}) => {
+                CardResource.update(this.id, this.model).then(({data}) => {
                     notify(data.message);
                     this.isProcessing = false;
                     this.$store.commit('cards/replace', data.card);
-                    this.$router.go(-1);
+                    this.redirect()
                 }).catch(() => this.isProcessing = false)
+            },
+            redirect() {
+                this.$router.push({name: 'view_card', params: {id: this.id}})
             },
             addResource() {
                 this.model.resources.push({

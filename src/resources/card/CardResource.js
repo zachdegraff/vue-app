@@ -19,6 +19,10 @@ export default class CardResource {
     }
 
     static hints(term) {
-        return Resource.get(`/cards/hints/${term}`)
+        return Resource.get('/cards/hints', {params: {term}})
+    }
+
+    static search(query) {
+        return Resource.get('/cards/search', {params: {query}})
     }
 }

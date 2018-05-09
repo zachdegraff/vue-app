@@ -1,222 +1,44 @@
 <template>
     <div class="search-form-container row justify-center bg-blue-3">
-        <q-search v-model="query" class="col-sx-12 col-md-8 bg-white q-pa-md">
-            <q-popover v-show="query===''">
-                <div class="row">
-                    <q-list class="col">
-                        <q-list-header inset>Folders</q-list-header>
-                        <q-item>
-                            <q-item-side icon="folder" inverted color="primary"/>
-                            <q-item-main>
-                                <q-item-tile label>Photos</q-item-tile>
-                                <q-item-tile sublabel>February 22, 2016</q-item-tile>
-                            </q-item-main>
-                            <q-item-side right icon="info" color="green"/>
-                        </q-item>
-                        <q-item>
-                            <q-item-side icon="folder" inverted color="secondary"/>
-                            <q-item-main>
-                                <q-item-tile label>Movies</q-item-tile>
-                                <q-item-tile sublabel>March 1st, 2017</q-item-tile>
-                            </q-item-main>
-                            <q-item-side right icon="info"/>
-                        </q-item>
-                        <q-item>
-                            <q-item-side icon="folder" inverted color="amber"/>
-                            <q-item-main>
-                                <q-item-tile label>Games</q-item-tile>
-                                <q-item-tile sublabel>Latest</q-item-tile>
-                            </q-item-main>
-                            <q-item-side right icon="info"/>
-                        </q-item>
-                        <q-item-separator inset/>
-                        <q-list-header inset>Files</q-list-header>
-                        <q-item>
-                            <q-item-side icon="assignment" inverted color="grey-6"/>
-                            <q-item-main>
-                                <q-item-tile label>Expenses spreadsheet</q-item-tile>
-                                <q-item-tile sublabel>March 2nd, 2016</q-item-tile>
-                            </q-item-main>
-                            <q-item-side right icon="info"/>
-                        </q-item>
-                        <q-item>
-                            <q-item-side icon="place" inverted color="grey-6"/>
-                            <q-item-main>
-                                <q-item-tile label>Places to visit</q-item-tile>
-                                <q-item-tile sublabel>February 22, 2016</q-item-tile>
-                            </q-item-main>
-                            <q-item-side right icon="info" color="amber"/>
-                        </q-item>
-                        <q-item>
-                            <q-item-side icon="library_music" inverted color="grey-6"/>
-                            <q-item-main>
-                                <q-item-tile label>My favorite song</q-item-tile>
-                                <q-item-tile sublabel>Singing it all day</q-item-tile>
-                            </q-item-main>
-                            <q-item-side right icon="info"/>
-                        </q-item>
-                        <q-item>
-                            <q-item-side icon="videogame_asset" inverted color="grey-6"/>
-                            <q-item-main>
-                                <q-item-tile label>Quasar Game</q-item-tile>
-                                <q-item-tile sublabel>Have fun while building apps</q-item-tile>
-                            </q-item-main>
-                            <q-item-side right icon="info"/>
-                        </q-item>
-                    </q-list>
-                    <q-list class="col">
-                        <q-list-header inset>Folders</q-list-header>
-                        <q-item>
-                            <q-item-side icon="folder" inverted color="primary"/>
-                            <q-item-main>
-                                <q-item-tile label>Photos</q-item-tile>
-                                <q-item-tile sublabel>February 22, 2016</q-item-tile>
-                            </q-item-main>
-                            <q-item-side right icon="info" color="green"/>
-                        </q-item>
-                        <q-item>
-                            <q-item-side icon="folder" inverted color="secondary"/>
-                            <q-item-main>
-                                <q-item-tile label>Movies</q-item-tile>
-                                <q-item-tile sublabel>March 1st, 2017</q-item-tile>
-                            </q-item-main>
-                            <q-item-side right icon="info"/>
-                        </q-item>
-                        <q-item>
-                            <q-item-side icon="folder" inverted color="amber"/>
-                            <q-item-main>
-                                <q-item-tile label>Games</q-item-tile>
-                                <q-item-tile sublabel>Latest</q-item-tile>
-                            </q-item-main>
-                            <q-item-side right icon="info"/>
-                        </q-item>
-                        <q-item-separator inset/>
-                        <q-list-header inset>Files</q-list-header>
-                        <q-item>
-                            <q-item-side icon="assignment" inverted color="grey-6"/>
-                            <q-item-main>
-                                <q-item-tile label>Expenses spreadsheet</q-item-tile>
-                                <q-item-tile sublabel>March 2nd, 2016</q-item-tile>
-                            </q-item-main>
-                            <q-item-side right icon="info"/>
-                        </q-item>
-                        <q-item>
-                            <q-item-side icon="place" inverted color="grey-6"/>
-                            <q-item-main>
-                                <q-item-tile label>Places to visit</q-item-tile>
-                                <q-item-tile sublabel>February 22, 2016</q-item-tile>
-                            </q-item-main>
-                            <q-item-side right icon="info" color="amber"/>
-                        </q-item>
-                        <q-item>
-                            <q-item-side icon="library_music" inverted color="grey-6"/>
-                            <q-item-main>
-                                <q-item-tile label>My favorite song</q-item-tile>
-                                <q-item-tile sublabel>Singing it all day</q-item-tile>
-                            </q-item-main>
-                            <q-item-side right icon="info"/>
-                        </q-item>
-                        <q-item>
-                            <q-item-side icon="library_music" inverted color="grey-6"/>
-                            <q-item-main>
-                                <q-item-tile label>My favorite song</q-item-tile>
-                                <q-item-tile sublabel>Singing it all day</q-item-tile>
-                            </q-item-main>
-                            <q-item-side right icon="info"/>
-                        </q-item>
-                        <q-item>
-                            <q-item-side icon="videogame_asset" inverted color="grey-6"/>
-                            <q-item-main>
-                                <q-item-tile label>Quasar Game</q-item-tile>
-                                <q-item-tile sublabel>Have fun while building apps</q-item-tile>
-                            </q-item-main>
-                            <q-item-side right icon="info"/>
-                        </q-item>
-                    </q-list>
-                    <q-list class="col">
-                        <q-list-header inset>Folders</q-list-header>
-                        <q-item>
-                            <q-item-side icon="folder" inverted color="primary"/>
-                            <q-item-main>
-                                <q-item-tile label>Photos</q-item-tile>
-                                <q-item-tile sublabel>February 22, 2016</q-item-tile>
-                            </q-item-main>
-                            <q-item-side right icon="info" color="green"/>
-                        </q-item>
-                        <q-item>
-                            <q-item-side icon="folder" inverted color="secondary"/>
-                            <q-item-main>
-                                <q-item-tile label>Movies</q-item-tile>
-                                <q-item-tile sublabel>March 1st, 2017</q-item-tile>
-                            </q-item-main>
-                            <q-item-side right icon="info"/>
-                        </q-item>
-                        <q-item>
-                            <q-item-side icon="folder" inverted color="amber"/>
-                            <q-item-main>
-                                <q-item-tile label>Games</q-item-tile>
-                                <q-item-tile sublabel>Latest</q-item-tile>
-                            </q-item-main>
-                            <q-item-side right icon="info"/>
-                        </q-item>
-                        <q-item-separator inset/>
-                        <q-list-header inset>Files</q-list-header>
-                        <q-item>
-                            <q-item-side icon="assignment" inverted color="grey-6"/>
-                            <q-item-main>
-                                <q-item-tile label>Expenses spreadsheet</q-item-tile>
-                                <q-item-tile sublabel>March 2nd, 2016</q-item-tile>
-                            </q-item-main>
-                            <q-item-side right icon="info"/>
-                        </q-item>
-                        <q-item>
-                            <q-item-side icon="place" inverted color="grey-6"/>
-                            <q-item-main>
-                                <q-item-tile label>Places to visit</q-item-tile>
-                                <q-item-tile sublabel>February 22, 2016</q-item-tile>
-                            </q-item-main>
-                            <q-item-side right icon="info" color="amber"/>
-                        </q-item>
-                        <q-item>
-                            <q-item-side icon="library_music" inverted color="grey-6"/>
-                            <q-item-main>
-                                <q-item-tile label>My favorite song</q-item-tile>
-                                <q-item-tile sublabel>Singing it all day</q-item-tile>
-                            </q-item-main>
-                            <q-item-side right icon="info"/>
-                        </q-item>
-                        <q-item>
-                            <q-item-side icon="videogame_asset" inverted color="grey-6"/>
-                            <q-item-main>
-                                <q-item-tile label>Quasar Game</q-item-tile>
-                                <q-item-tile sublabel>Have fun while building apps</q-item-tile>
-                            </q-item-main>
-                            <q-item-side right icon="info"/>
-                        </q-item>
-                    </q-list>
-                </div>
-            </q-popover>
-            <q-autocomplete separator @search="search" class="text-black"/>
+        <q-search v-model="query" @keyup.enter="submit" class="col-sx-12 col-md-8 bg-white q-pa-md">
+            <q-autocomplete separator @search="search" @selected="selected" :min-characters="3"/>
         </q-search>
     </div>
 </template>
 <script>
+    import CardResource from '../resources/card/CardResource'
+
     export default {
         data: () => {
             return {
                 query: ''
             }
         },
+        created() {
+            this.query = this.$route.query.q;
+        },
         methods: {
-            search(terms, done) {
-                setTimeout(() => {
-                    done(filter(terms, {field: 'value', list: parseCountries()}))
-                }, 1000)
+            submit() {
+                this.$router.push({name: 'search_cards', query: {q: this.query}})
             },
+            search(terms, done) {
+                CardResource.hints(terms).then(({data}) => {
+                    const result = data.map(item => {
+                        return {
+                            ...item,
+                            label: item.name,
+                            value: item.name
+                        };
+                    });
+                    done(result);
+                }).catch(() => done([]));
+            },
+            selected(item) {
+                this.$router.push({name: 'view_card', params: {id: item.id}})
+            }
         }
     }
 </script>
-
 <style lang="scss">
     .search-form-container {
         padding: 100px 0;
