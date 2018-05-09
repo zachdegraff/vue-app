@@ -14,7 +14,9 @@
 
     export default {
         data: () => {
-            return {}
+            return {
+                opened: true
+            }
         },
         components: {
             SearchForm

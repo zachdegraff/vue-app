@@ -21,22 +21,3 @@
         }
     }
 </script>
-<style lang="scss">
-    .page-search-result {
-        position: relative;
-        margin-top: -50px;
-    }
-
-    .card-content {
-        position: relative;
-    }
-
-    .card-mobile-actions {
-        position: absolute;
-        font-size: 1.5em;
-        right: 10px;
-        top: 20px;
-        width: 150px;
-        text-align: right;
-    }
-</style>

@@ -1,45 +1,40 @@
 <template>
-    <transition name="modal-page">
-        <div class="modal-page row flex-center">
-            <div class="modal-page-overlay"></div>
-            <div class="modal-page-content" v-if="model">
-                <div class="q-layout-header">
-                    <q-toolbar>
-                        <q-toolbar-title>Editing {{model.name}}</q-toolbar-title>
-                        <q-btn flat icon="close" @click="redirect" class="float-right"/>
-                    </q-toolbar>
+    <q-modal :value="isOpen" class="app-modal" :content-classes="['app-modal-content']" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
+        <app-modal-layout v-if="model">
+            <q-toolbar slot="header">
+                <q-toolbar-title>Editing {{model.name}}</q-toolbar-title>
+                <q-btn flat icon="close" @click="redirect" class="float-right"/>
+            </q-toolbar>
+            <div class="row q-py-xl gutter-md flex-center">
+                <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
+                    <q-input v-model="model.name" float-label="Name"/>
                 </div>
-                <div class="row q-py-xl gutter-md flex-center">
-                    <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                        <q-input v-model="model.name" float-label="Name"/>
-                    </div>
-                    <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                        <q-input v-model="model.description" type="textarea" float-label="Short Description"/>
-                    </div>
-                    <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                        <q-chips-input v-model="model.shorthands" float-label="Shorthands"/>
-                    </div>
-                    <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                        <strong>Resources</strong><br/>
-                        <q-input v-for="(resource, idx) in model.resources" :key="idx" v-model="resource.content" float-label="Resource"/>
-                        <q-btn @click="addResource" class="q-mt-sm">Add a new field</q-btn>
-                    </div>
-                    <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                        <strong>Related Concepts</strong><br/>
-                        <q-input v-for="(concept, idx) in model.concepts" :key="idx" v-model="concept.content" float-label="Related Concept"/>
-                        <q-btn @click="addConcept" class="q-mt-sm">Add a new field</q-btn>
-                    </div>
-                    <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                        <q-btn @click="save" color="primary" class="q-mt-lg" :disable="isProcessing">SAVE</q-btn>
-                    </div>
-
+                <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
+                    <q-input v-model="model.description" type="textarea" float-label="Short Description"/>
+                </div>
+                <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
+                    <q-chips-input v-model="model.shorthands" float-label="Shorthands"/>
+                </div>
+                <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
+                    <strong>Resources</strong><br/>
+                    <q-input v-for="(resource, idx) in model.resources" :key="idx" v-model="resource.content" float-label="Resource"/>
+                    <q-btn @click="addResource" class="q-mt-sm">Add a new field</q-btn>
+                </div>
+                <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
+                    <strong>Related Concepts</strong><br/>
+                    <q-input v-for="(concept, idx) in model.concepts" :key="idx" v-model="concept.content" float-label="Related Concept"/>
+                    <q-btn @click="addConcept" class="q-mt-sm">Add a new field</q-btn>
+                </div>
+                <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
+                    <q-btn @click="save" color="primary" class="q-mt-lg" :disable="isProcessing">SAVE</q-btn>
                 </div>
             </div>
-        </div>
-    </transition>
+        </app-modal-layout>
+    </q-modal>
 </template>
 <script>
     import CardResource from '../../resources/card/CardResource';
+    import AppModalLayout from '../../components/context/modal/AppModalLayout'
     import {CARD_SECTIONS} from "../../consts";
     import {notify} from "../../helpers";
 
@@ -57,6 +52,14 @@
         },
         created() {
             this.load()
+        },
+        computed: {
+            isOpen() {
+                return this.model !== null
+            }
+        },
+        components: {
+            AppModalLayout
         },
         methods: {
             load() {
