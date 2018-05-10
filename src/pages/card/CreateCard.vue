@@ -33,10 +33,10 @@
     </q-modal>
 </template>
 <script>
-    import CardResource from '../../resources/card/CardResource';
     import AppModalLayout from '../../components/context/modal/AppModalLayout'
-    import {CARD_SECTIONS} from "../../consts";
-    import {notify} from "../../helpers";
+    import {mapActions, mapGetters} from 'vuex'
+    import {CARD_SECTIONS} from "../../consts"
+    import {notify} from "../../helpers"
 
     export default {
         data: () => {
@@ -48,21 +48,26 @@
                     resources: [],
                     concepts: []
                 },
-                isOpen: true,
-                isProcessing: false
+                isOpen: true
             }
+        },
+        computed: {
+            ...mapGetters({
+                isProcessing: 'cards/isCreating'
+            })
         },
         components: {
             AppModalLayout
         },
         methods: {
+            ...mapActions({
+                create: 'cards/create'
+            }),
             save() {
-                this.isProcessing = true;
-                CardResource.create(this.model).then(({data}) => {
-                    this.isProcessing = false;
-                    notify(data.message);
+                this.create(this.model).then(({message}) => {
+                    notify(message);
                     this.redirect()
-                }).catch(() => this.isProcessing = false)
+                })
             },
             redirect() {
                 this.$router.push({name: 'cards_list'})

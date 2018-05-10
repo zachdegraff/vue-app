@@ -1,3 +1,7 @@
 export default {
-    items: []
+    items: [],
+    actionAllStatus: '',
+    actionGetStatus: '',
+    actionUpdateStatus: '',
+    actionCreateStatus: ''
 }

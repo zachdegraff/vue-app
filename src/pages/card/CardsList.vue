@@ -4,20 +4,21 @@
     </div>
 </template>
 <script>
-    import CardResource from '../../resources/card/CardResource'
+    import {mapActions} from 'vuex'
 
     export default {
-        data: () => {
-            return {
-                isLoading: false
+        computed: {
+            isLoading() {
+                return this.$store.getters['cards/isCardsLoading']
             }
         },
         created() {
-            this.isLoading = true;
-            CardResource.all().then(({data}) => {
-                this.isLoading = false;
-                this.$store.commit('cards/set', data.data)
-            }).catch(() => this.isLoading = false)
+            this.load()
+        },
+        methods: {
+            ...mapActions({
+                load: 'cards/all'
+            })
         }
     }
 </script>

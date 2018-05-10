@@ -33,10 +33,10 @@
     </q-modal>
 </template>
 <script>
-    import CardResource from '../../resources/card/CardResource';
     import AppModalLayout from '../../components/context/modal/AppModalLayout'
-    import {CARD_SECTIONS} from "../../consts";
-    import {notify} from "../../helpers";
+    import {mapActions, mapGetters} from 'vuex'
+    import {CARD_SECTIONS} from "../../consts"
+    import {notify} from "../../helpers"
 
     export default {
         props: {
@@ -47,32 +47,30 @@
         data: () => {
             return {
                 model: null,
-                isOpen: true,
-                isProcessing: false
+                isOpen: true
             }
         },
         created() {
-            this.load()
+            this.load(this.id).then(data => this.model = data);
+        },
+        computed: {
+            ...mapGetters({
+                isProcessing: 'cards/isEditing'
+            })
         },
         components: {
             AppModalLayout
         },
         methods: {
-            load() {
-                const item = this.$store.getters['cards/getItemById'](this.id);
-                if (undefined !== item) {
-                    return this.model = item
-                }
-                CardResource.get(this.id).then(({data}) => this.model = data.data)
-            },
+            ...mapActions({
+                load: 'cards/get',
+                update: 'cards/update'
+            }),
             save() {
-                this.isProcessing = true;
-                CardResource.update(this.id, this.model).then(({data}) => {
-                    notify(data.message);
-                    this.isProcessing = false;
-                    this.$store.commit('cards/replace', data.card);
+                this.update(this.id, this.model).then(({message}) => {
+                    notify(message);
                     this.redirect()
-                }).catch(() => this.isProcessing = false)
+                });
             },
             redirect() {
                 this.$router.push({name: 'view_card', params: {id: this.id}})

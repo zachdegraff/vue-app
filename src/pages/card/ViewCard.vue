@@ -76,8 +76,9 @@
     </q-modal>
 </template>
 <script>
-    import CardResource from '../../resources/card/CardResource';
     import AppModalLayout from '../../components/context/modal/AppModalLayout'
+    import {mapActions} from 'vuex'
+
 
     export default {
         props: {
@@ -92,19 +93,15 @@
             }
         },
         created() {
-            this.load()
+            this.load(this.id).then(data => this.model = data);
         },
         components: {
             AppModalLayout
         },
         methods: {
-            load() {
-                const item = this.$store.getters['cards/getItemById'](this.id);
-                if (undefined !== item) {
-                    return this.model = item
-                }
-                CardResource.get(this.id).then(({data}) => this.model = data.data)
-            },
+            ...mapActions({
+                load: 'cards/get'
+            }),
             slide(idx) {
                 return `Lecture slides #${idx + 1}`
             },
