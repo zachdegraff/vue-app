@@ -7,7 +7,7 @@
                 <q-card class="col-sx-12 col-md-8 bg-white q-mb-md" v-for="(item, idx) in items" :key="idx">
                     <q-card-title>{{item.name}}</q-card-title>
                     <q-card-main>
-                        <q-chip class="q-mr-sm" color="primary" v-for="(tag, index) in item.shorthands" :key="index">{{tag}}</q-chip>
+                        <q-chip class="q-mr-sm" color="primary" v-for="(tag, index) in item.shorthand" :key="index">{{tag}}</q-chip>
                         <p class="text-faded q-mt-md" v-html="item.description"></p>
                     </q-card-main>
                     <q-card-separator/>

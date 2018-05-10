@@ -13,7 +13,7 @@
                     <q-input v-model="model.description" type="textarea" float-label="Short Description"/>
                 </div>
                 <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <q-chips-input v-model="model.shorthands" float-label="Shorthands"/>
+                    <q-chips-input v-model="model.shorthand" float-label="Shorthand"/>
                 </div>
                 <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
                     <strong>Resources</strong><br/>
@@ -44,7 +44,7 @@
                 model: {
                     name: '',
                     description: '',
-                    shorthands: [],
+                    shorthand: [],
                     resources: [],
                     concepts: []
                 },

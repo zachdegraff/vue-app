@@ -32,7 +32,7 @@ set('ssh_multiplexing', true);
 
 // Tasks
 
-task('build', function () {
+task('quasar:build', function () {
     run('cd {{release_path}} && quasar build');
 });
 
@@ -47,7 +47,7 @@ task('deploy', [
     'deploy:release',
     'deploy:update_code',
     'npm:install',
-    'build',
+    'quasar:build',
     'deploy:symlink',
     'deploy:unlock',
     'cleanup',

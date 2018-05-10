@@ -11,9 +11,9 @@
                     <h4>{{model.name}}</h4>
                     <div>{{model.description}}</div>
 
-                    <div class="q-pt-md" v-if="model.shorthands.length > 0">
+                    <div class="q-pt-md" v-if="model.shorthand.length > 0">
                         <div class="text-bold q-pb-sm">Shorthand</div>
-                        <q-chip color="primary" class="q-mr-sm" v-for="(tag, idx) in model.shorthands" :key="idx">
+                        <q-chip color="primary" class="q-mr-sm" v-for="(tag, idx) in model.shorthand" :key="idx">
                             {{tag}}
                         </q-chip>
                     </div>
