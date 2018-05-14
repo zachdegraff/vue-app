@@ -4,7 +4,7 @@ module.exports = function (ctx) {
     return {
         // app plugins (/src/plugins)
         plugins: [
-            'axios'
+            'axios', 'vuelidate'
         ],
         css: [
             'app.styl'
@@ -57,6 +57,7 @@ module.exports = function (ctx) {
                 'QBtn',
                 'QIcon',
                 'QChip',
+                'QField',
                 'QInput',
                 'QChipsInput',
                 'QList',
@@ -77,7 +78,8 @@ module.exports = function (ctx) {
                 'QCardActions',
                 'QModal',
                 'QModalLayout',
-                'QSpinner'
+                'QSpinner',
+                'QUploader'
             ],
             directives: [
                 'Ripple'

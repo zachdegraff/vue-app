@@ -17,7 +17,7 @@
                                 <q-item-tile>My Profile</q-item-tile>
                             </q-item-main>
                         </q-item>
-                        <q-item>
+                        <q-item @click.native="exit">
                             <q-item-main>
                                 <q-item-tile>Logout</q-item-tile>
                             </q-item-main>
@@ -29,8 +29,17 @@
     </q-layout-header>
 </template>
 <script>
+    import {mapActions} from 'vuex'
+
     export default {
+
         methods: {
+            ...mapActions({
+                logout: 'auth/logout'
+            }),
+            exit() {
+                this.logout().then(() => this.$router.push({name: 'login_user'}))
+            },
             create() {
                 this.$router.push({name: 'create_card'})
             }

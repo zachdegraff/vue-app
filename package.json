@@ -10,7 +10,8 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
-    "axios": "^0.18.0"
+    "axios": "^0.18.0",
+    "vuelidate": "^0.6.2"
   },
   "devDependencies": {
     "node-sass": "^4.9.0",
