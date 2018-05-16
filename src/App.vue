@@ -1,13 +1,27 @@
 <template>
-  <div id="q-app">
-    <router-view />
-  </div>
+    <div id="q-app">
+        <q-ajax-bar :delay="100" size="2px" color="primary"/>
+        <router-view/>
+    </div>
 </template>
 
 <script>
-export default {
-  name: 'App'
-}
+    import {mapActions} from 'vuex'
+
+    export default {
+        name: 'App',
+        created() {
+            if (localStorage.getItem('access-token') !== null) {
+                this.loadAuthUser().then(this.loadUserTeams)
+            }
+        },
+        methods: {
+            ...mapActions({
+                loadAuthUser: 'auth/user',
+                loadUserTeams: 'teams/all',
+            })
+        },
+    }
 </script>
 
 <style>

@@ -64,10 +64,7 @@
                 create: 'cards/create'
             }),
             save() {
-                this.create(this.model).then(({message}) => {
-                    notify(message);
-                    this.redirect()
-                })
+                this.create(this.model).then(this.redirect)
             },
             redirect() {
                 this.$router.push({name: 'cards_list'})

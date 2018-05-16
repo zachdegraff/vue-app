@@ -26,15 +26,16 @@
     import AppHeader from '../components/context/AppHeader.vue'
     import AppFooter from '../components/context/AppFooter.vue'
     import SearchForm from '../components/SearchForm.vue'
+    import {mapGetters} from 'vuex'
 
     export default {
         data: () => {
             return {}
         },
         computed: {
-            items() {
-                return this.$store.state.cards.items
-            }
+            ...mapGetters({
+                'items': 'cards/items'
+            })
         },
         components: {SearchForm, AppHeader, AppFooter},
         methods: {

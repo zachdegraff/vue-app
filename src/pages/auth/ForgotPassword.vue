@@ -8,12 +8,12 @@
 
             <div class="row q-pa-xl flex-center">
                 <div class="card-content col-xs-12">
-                    <form>
-                        <div class="q-py-sm">
-                            <q-input type="text" float-label="Email" v-model="form.email" required email/>
-                        </div>
+                    <form @submit.prevent="submit">
+                        <q-field class="q-py-sm" :error="$v.email.$error" :error-label="firstErrorFor($v.email)">
+                            <q-input type="text" float-label="Email" v-model="email" @blur="$v.email.$touch"/>
+                        </q-field>
                         <div class="q-pt-lg text-center">
-                            <q-btn color="primary" label="restore"/>
+                            <q-btn color="primary" label="restore" :disabled="isProcessing"/>
                         </div>
                     </form>
                 </div>
@@ -23,27 +23,47 @@
 </template>
 <script>
     import AppModalLayout from '../../components/context/modal/AppModalLayout'
-    import {mapActions} from 'vuex'
+    import ValidatorMessages from '../../mixins/ValidatorMessages'
+    import {required, email} from 'vuelidate/lib/validators'
+    import {mapActions, mapGetters} from 'vuex'
 
 
     export default {
         data: () => {
             return {
-                form: {
-                    email: ''
-                },
+                email: '',
                 isOpen: true
             }
         },
-        created() {
-
+        mixins: [ValidatorMessages],
+        validations: {
+            email: {
+                required,
+                email
+            }
+        },
+        computed: {
+            ...mapGetters({
+                isProcessing: 'auth/isRestoring'
+            })
         },
         components: {
             AppModalLayout
         },
         methods: {
+            ...mapActions({
+                forgot: 'auth/forgot'
+            }),
             close() {
                 this.$router.push({name: 'login_user'})
+            },
+            submit() {
+                this.$v.email.$touch();
+                if (this.$v.email.$error) {
+                    return
+                }
+
+                this.forgot(this.email).then(() => this.$router.push({name: 'login_user'}))
             }
         }
     }

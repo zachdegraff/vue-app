@@ -9,23 +9,26 @@
             <div class="row q-pa-xl flex-center">
                 <div class="card-content col-xs-12">
                     <form @submit.prevent="submit">
-                        <div class="q-py-sm">
-                            <q-input type="text" float-label="Email" v-model="form.email" required/>
-                        </div>
-                        <div class="q-py-sm">
-                            <q-input type="text" float-label="First Name" v-model="form.firstName" required/>
-                        </div>
-                        <div class="q-py-sm">
+                        <q-field class="q-py-sm" :error="$v.form.email.$error" :error-label="firstErrorFor($v.form.email)">
+                            <q-input type="text" float-label="Email" v-model="form.email" @blur="$v.form.email.$touch"/>
+                        </q-field>
+                        <q-field class="q-py-sm" :error="$v.form.firstName.$error" :error-label="firstErrorFor($v.form.firstName)">
+                            <q-input type="text" float-label="First Name" v-model="form.firstName" @blur="$v.form.firstName.$touch"/>
+                        </q-field>
+                        <q-field class="q-py-sm">
                             <q-input type="text" float-label="Last Name" v-model="form.lastName"/>
-                        </div>
-                        <div class="q-py-sm">
-                            <q-input type="password" float-label="Password" v-model="form.password" required/>
-                        </div>
-                        <div class="q-py-sm">
-                            <q-uploader url="upload" float-label="Photo"/>
-                        </div>
+                        </q-field>
+                        <q-field class="q-py-sm" :error="$v.form.password.$error" :error-label="firstErrorFor($v.form.password)">
+                            <q-input type="password" float-label="Password" v-model="form.password" @blur="$v.form.password.$touch"/>
+                        </q-field>
+                        <q-field class="q-py-sm" :error="$v.form.password_confirmation.$error" :error-label="firstErrorFor($v.form.password_confirmation)">
+                            <q-input type="password" float-label="Repeat Password" v-model="form.password_confirmation" @blur="$v.form.password_confirmation.$touch"/>
+                        </q-field>
+                        <q-field class="q-py-sm">
+                            <q-uploader url="" float-label="Photo" hide-upload-button @add="chooseFile" @remove:cancel="cancelFile" :disable="isProcessing" extensions=".jpg,.jpeg,.png"/>
+                        </q-field>
                         <div class="q-pt-lg text-center">
-                            <q-btn color="primary" label="register"/>
+                            <q-btn color="primary" label="register" :disabled="isProcessing"/>
                         </div>
                     </form>
                 </div>
@@ -35,6 +38,8 @@
 </template>
 <script>
     import AppModalLayout from '../../components/context/modal/AppModalLayout'
+    import {required, email, sameAs, minLength} from 'vuelidate/lib/validators'
+    import ValidatorMessages from '../../mixins/ValidatorMessages'
     import {mapActions, mapGetters} from 'vuex'
 
 
@@ -46,12 +51,30 @@
                     firstName: '',
                     lastName: '',
                     password: '',
+                    password_confirmation: '',
+                    file: null,
                 },
                 isOpen: true
             }
         },
-        created() {
-
+        mixins: [ValidatorMessages],
+        validations: {
+            form: {
+                email: {
+                    required,
+                    email
+                },
+                firstName: {
+                    required
+                },
+                password: {
+                    required,
+                    minLength: minLength(3)
+                },
+                password_confirmation: {
+                    sameAsPassword: sameAs('password')
+                }
+            }
         },
         computed: {
             ...mapGetters({
@@ -66,10 +89,28 @@
                 register: 'auth/register'
             }),
             submit() {
-                this.register(this.form).then(() => this.$router.push({name: 'home'}))
+                this.$v.form.$touch();
+                if (this.$v.form.$error) {
+                    return
+                }
+
+                this.register(this.prepare()).then(() => this.$router.push({name: 'home'}))
             },
             close() {
                 this.$router.push({name: 'login_user'})
+            },
+            prepare() {
+                const data = new FormData();
+                for(let i in this.form) {
+                    data.append(i, this.form[i])
+                }
+                return data
+            },
+            chooseFile(files) {
+                this.form.file = files[0]
+            },
+            cancelFile() {
+                this.form.file = null
             }
         }
     }

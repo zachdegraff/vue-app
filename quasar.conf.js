@@ -45,6 +45,7 @@ module.exports = function (ctx) {
         // framework: 'all' --- includes everything; for dev only!
         framework: {
             components: [
+                'QAjaxBar',
                 'QLayout',
                 'QLayoutHeader',
                 'QLayoutFooter',
@@ -79,14 +80,19 @@ module.exports = function (ctx) {
                 'QModal',
                 'QModalLayout',
                 'QSpinner',
-                'QUploader'
+                'QUploader',
+                'QTable',
+                'QTh',
+                'QTr',
+                'QTd',
+                'QTableColumns'
             ],
             directives: [
                 'Ripple'
             ],
             // Quasar plugins
             plugins: [
-                'Notify'
+                'Notify', 'Dialog'
             ]
         },
         // animations: 'all' --- includes all animations

@@ -1,11 +1,24 @@
 import AuthResource from '../../resources/auth/AuthResource'
 import axios from 'axios'
 
+export const user = ({commit}) => {
+    return new Promise((resolve, reject) => {
+        commit('userStatusRequest');
+        AuthResource.user().then(({data}) => {
+            commit('userStatusSuccess', data.data);
+            resolve(data.data)
+        }).catch(err => {
+            commit('userStatusFailure');
+            reject(err)
+        })
+    })
+};
+
 export const login = ({commit}, user) => {
     return new Promise((resolve, reject) => {
         commit('loginStatusRequest');
         AuthResource.login(user).then(({data}) => {
-            commit('loginStatusSuccess', data.token);
+            commit('loginStatusSuccess', data);
             setAuthorizeToken(data.token);
             resolve(data)
         }).catch(err => {
@@ -19,7 +32,7 @@ export const register = ({commit}, user) => {
     return new Promise((resolve, reject) => {
         commit('registerStatusRequest');
         AuthResource.register(user).then(({data}) => {
-            commit('registerStatusSuccess', data.token);
+            commit('registerStatusSuccess', data);
             setAuthorizeToken(data.token);
             resolve(data)
         }).catch(err => {
@@ -39,6 +52,33 @@ export const logout = ({commit}) => {
             resolve(data)
         }).catch(err => {
             commit('logoutStatusFailure');
+            reject(err)
+        })
+    })
+};
+
+export const forgot = ({commit}, email) => {
+    return new Promise((resolve, reject) => {
+        commit('forgotStatusRequest');
+        AuthResource.forgot(email).then(({data}) => {
+            commit('forgotStatusSuccess');
+            resolve(data)
+        }).catch(err => {
+            commit('forgotStatusFailure');
+            reject(err)
+        })
+    })
+};
+
+export const reset = ({commit}, form) => {
+    return new Promise((resolve, reject) => {
+        commit('resetStatusRequest');
+        AuthResource.reset(form).then(({data}) => {
+            commit('resetStatusSuccess', data);
+            setAuthorizeToken(data.token);
+            resolve(data)
+        }).catch(err => {
+            commit('resetStatusFailure');
             reject(err)
         })
     })

@@ -1,7 +1,8 @@
 const messages = {
     'required': 'Field is required',
-    'minLength': 'Field must have at least :min letters.',
+    'minLength': 'Field must have at least :min letters',
     'email': 'Invalid email address',
+    'sameAsPassword': 'Repeat password does not match the password'
 };
 
 function replace(str, params) {

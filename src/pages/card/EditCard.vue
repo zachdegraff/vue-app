@@ -55,7 +55,7 @@
         },
         computed: {
             ...mapGetters({
-                isProcessing: 'cards/isEditing'
+                isProcessing: 'cards/isUpdating'
             })
         },
         components: {
