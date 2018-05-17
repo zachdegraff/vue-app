@@ -39,7 +39,7 @@
                 if (!path) {
                     return 'statics/team.png'
                 }
-                return process.env.API_HOST + path
+                return path
             },
             flush(id) {
                 this.confirm().then(() => {

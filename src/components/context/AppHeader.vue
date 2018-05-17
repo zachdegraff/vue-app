@@ -74,13 +74,13 @@
                 if (!path) {
                     return 'statics/team.png'
                 }
-                return process.env.API_HOST + path
+                return path
             },
             avatar(path) {
                 if (!path) {
                     return 'statics/profile.jpg'
                 }
-                return process.env.API_HOST + path
+                return path
             }
         }
     }
