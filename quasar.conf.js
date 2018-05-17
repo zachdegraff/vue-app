@@ -29,7 +29,7 @@ module.exports = function (ctx) {
                 ? {
                     API_HOST: JSON.stringify('http://wonderus')
                 } : {
-                    API_HOST: ''
+                    API_HOST: JSON.stringify('')
                 },
             // gzip: true,
             // analyze: true,
