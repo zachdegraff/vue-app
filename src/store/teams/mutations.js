@@ -5,8 +5,8 @@ export const remove = (state, id) => {
     if (idx !== undefined) {
         state.items.splice(idx, 1);
     }
-    if (state.recently !== null && state.recently.id === id) {
-        state.recently = null
+    if (state.current !== null && state.current.id === id) {
+        state.current = null
     }
 };
 
@@ -18,7 +18,9 @@ export const replace = (state, item) => {
     state.items[idx] = item
 };
 
-export const changeRecentlyTeam = (state, item) => state.recently = item;
+export const members = (state, {id, items}) => state.members[id] = items;
+
+export const changeCurrentTeam = (state, item) => state.current = item;
 
 export const getStatusRequest = state => state.actionGetStatus = 'Request';
 export const getStatusSuccess = state => state.actionGetStatus = 'Success';
@@ -35,7 +37,7 @@ export const createStatusRequest = state => state.actionCreateStatus = 'Request'
 export const createStatusSuccess = (state, req) => {
     state.actionCreateStatus = 'Success';
     state.items.push(req.data.team);
-    state.recently = req.data.team
+    state.current = req.data.team
 };
 export const createStatusFailure = state => state.actionCreateStatus = 'Failure';
 
@@ -43,7 +45,7 @@ export const updateStatusRequest = state => state.actionUpdateStatus = 'Request'
 export const updateStatusSuccess = (state, req) => {
     state.actionUpdateStatus = 'Success';
     replace(state, req.data.team);
-    state.recently = req.data.team
+    state.current = req.data.team
 };
 export const updateStatusFailure = state => state.actionUpdateStatus = 'Failure';
 
@@ -53,4 +55,11 @@ export const removeStatusSuccess = (state, req) => {
     remove(state, req.data.id);
 };
 export const removeStatusFailure = state => state.actionRemoveStatus = 'Failure';
+
+export const membersStatusRequest = state => state.actionMembersStatus = 'Request';
+export const membersStatusSuccess = (state, {id, req}) => {
+    state.actionMembersStatus = 'Success';
+    members(state, {id, items: req.data.data})
+};
+export const membersStatusFailure = state => state.actionMembersStatus = 'Failure';
 

@@ -24,11 +24,12 @@ module.exports = function (ctx) {
         build: {
             scopeHoisting: true,
             vueRouterMode: 'history',
+            publicPath: '/',
             env: ctx.dev
                 ? {
                     API_HOST: JSON.stringify('http://wonderus')
                 } : {
-                    API_HOST: JSON.stringify('http://api.wonderus.com')
+                    API_HOST: JSON.stringify('https://api.wonderus.app')
                 },
             // gzip: true,
             // analyze: true,
@@ -60,6 +61,7 @@ module.exports = function (ctx) {
                 'QChip',
                 'QField',
                 'QInput',
+                'QSelect',
                 'QChipsInput',
                 'QList',
                 'QListHeader',
@@ -88,7 +90,7 @@ module.exports = function (ctx) {
                 'QTableColumns'
             ],
             directives: [
-                'Ripple'
+                'Ripple', 'CloseOverlay'
             ],
             // Quasar plugins
             plugins: [

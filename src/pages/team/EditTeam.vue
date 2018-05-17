@@ -79,7 +79,9 @@
                     data.append(i, this.model[i])
                 }
                 data.append('_method', 'PUT');
-                data.append('file', this.file);
+                if (this.file !== null) {
+                    data.append('file', this.file);
+                }
                 return data
             },
             chooseFile(files) {

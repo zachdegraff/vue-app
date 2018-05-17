@@ -1,9 +1,9 @@
 import CardResource from '../../resources/card/CardResource'
 
-export const all = ({commit}) => {
+export const all = ({commit}, params) => {
     return new Promise((resolve, reject) => {
         commit('allStatusRequest');
-        CardResource.all().then(req => {
+        CardResource.all(params).then(req => {
             commit('allStatusSuccess', req);
             resolve(req.data.data)
         }).catch(err => {
@@ -43,14 +43,40 @@ export const create = ({commit}, data) => {
     })
 };
 
-export const update = ({commit}, id, data) => {
+export const update = ({commit}, {id, form}) => {
     return new Promise((resolve, reject) => {
         commit('updateStatusRequest');
-        CardResource.update(id, data).then(req => {
+        CardResource.update(id, form).then(req => {
             commit('updateStatusSuccess', req);
             resolve(req.data.data)
         }).catch(err => {
             commit('updateStatusFailure', err);
+            reject(err)
+        })
+    })
+};
+
+export const hints = ({commit}, params) => {
+    return new Promise((resolve, reject) => {
+        commit('hintsStatusRequest');
+        CardResource.hints(params).then(req => {
+            commit('hintsStatusSuccess', req);
+            resolve(req.data)
+        }).catch(err => {
+            commit('hintsStatusFailure', err);
+            reject(err)
+        })
+    })
+};
+
+export const search = ({commit}, params) => {
+    return new Promise((resolve, reject) => {
+        commit('searchStatusRequest');
+        CardResource.search(params).then(req => {
+            commit('searchStatusSuccess', req);
+            resolve(req.data.data)
+        }).catch(err => {
+            commit('searchStatusFailure', err);
             reject(err)
         })
     })

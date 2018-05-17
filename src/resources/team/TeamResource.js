@@ -21,4 +21,8 @@ export default class TeamResource {
     static delete(id) {
         return Resource.delete(`/teams/${id}`);
     }
+
+    static members(id) {
+        return Resource.get(`/teams/${id}/members`);
+    }
 }

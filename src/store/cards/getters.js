@@ -12,3 +12,4 @@ export const isCreating = state => state.actionCreateStatus === 'Request';
 export const isUpdating = state => state.actionUpdateStatus === 'Request';
 export const isCardLoading = state => state.actionGetStatus === 'Request';
 export const isCardsLoading = state => state.actionAllStatus === 'Request';
+export const isSearching = state => state.actionSearchStatus === 'Request';

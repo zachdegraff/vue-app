@@ -30,11 +30,15 @@ export const get = ({getters, commit}, id) => {
     });
 };
 
-export const members = ({commit}) => {
+export const members = ({commit, getters}, id) => {
     return new Promise((resolve, reject) => {
+        const members = getters.teamMembers(id);
+        if (members !== undefined) {
+            resolve(members)
+        }
         commit('membersStatusRequest');
         TeamResource.members(id).then(req => {
-            commit('membersStatusSuccess');
+            commit('membersStatusSuccess', {id, req});
             resolve(req.data.data)
         }).catch(err => {
             commit('membersStatusFailure', err);
@@ -82,9 +86,9 @@ export const remove = ({commit}, id) => {
     })
 };
 
-export const recently = ({getters, commit}, id) => {
+export const current = ({getters, commit}, id) => {
     const item = getters.getById(id);
     if (item !== undefined) {
-        commit('changeRecentlyTeam', item)
+        commit('changeCurrentTeam', item)
     }
 };

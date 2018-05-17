@@ -29,3 +29,14 @@ export const updateStatusFailure = state => state.actionUpdateStatus = 'Failure'
 export const createStatusRequest = state => state.actionCreateStatus = 'Request';
 export const createStatusSuccess = state => state.actionCreateStatus = 'Success';
 export const createStatusFailure = state => state.actionCreateStatus = 'Failure';
+
+export const searchStatusRequest = state => state.actionSearchStatus = 'Request';
+export const searchStatusSuccess = (state, req) => {
+    state.actionSearchStatus = 'Success';
+    set(state, req.data.data)
+};
+export const searchStatusFailure = state => state.actionSearchStatus = 'Failure';
+
+export const hintsStatusRequest = state => state.actionHintsStatus = 'Request';
+export const hintsStatusSuccess = state => state.actionHintsStatus = 'Success';
+export const hintsStatusFailure = state => state.actionHintsStatus = 'Failure';

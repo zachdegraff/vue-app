@@ -1,26 +1,29 @@
 <template>
     <q-modal v-model="isOpen" @hide="close" class="app-modal" :content-classes="['app-modal-content']" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
-        <app-modal-layout v-if="model">
+        <app-modal-layout v-if="card">
             <q-toolbar slot="header">
-                <q-toolbar-title>{{model.name}}</q-toolbar-title>
+                <q-toolbar-title>{{card.name}}</q-toolbar-title>
                 <q-btn flat icon="close" @click="isOpen=false" class="float-right"/>
             </q-toolbar>
 
             <div class="row layout-padding gutter-md">
                 <div class="card-content col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <h4>{{model.name}}</h4>
-                    <div>{{model.description}}</div>
+                    <h4>{{card.name}}</h4>
+                    <q-chip color="secondary" size="lg" class="q-mr-sm" v-if="card.team">
+                        {{card.team.name}}
+                    </q-chip>
+                    <div class="q-pt-md">{{card.description}}</div>
 
-                    <div class="q-pt-md" v-if="model.shorthand.length > 0">
+                    <div class="q-pt-md" v-if="card.shorthand.length > 0">
                         <div class="text-bold q-pb-sm">Shorthand</div>
-                        <q-chip color="primary" class="q-mr-sm" v-for="(tag, idx) in model.shorthand" :key="idx">
+                        <q-chip color="primary" class="q-mr-sm" v-for="(tag, idx) in card.shorthand" :key="idx">
                             {{tag}}
                         </q-chip>
                     </div>
-                    <div class="q-pt-md" v-if="model.resources.length > 0">
+                    <div class="q-pt-md" v-if="card.resources.length > 0">
                         <div class="text-bold q-pb-sm">Resources</div>
                         <q-btn
-                                v-for="(item, idx) in model.resources"
+                                v-for="(item, idx) in card.resources"
                                 :key="item.id"
                                 class="block q-mb-sm"
                                 :label="slide(idx)"
@@ -28,10 +31,10 @@
                                 @click="redirect(item.content)"
                         />
                     </div>
-                    <div class="q-pt-md" v-if="model.concepts.length > 0">
+                    <div class="q-pt-md" v-if="card.concepts.length > 0">
                         <div class="text-bold q-pb-sm">Related Concepts</div>
                         <q-btn
-                                v-for="(item, idx) in model.concepts"
+                                v-for="(item, idx) in card.concepts"
                                 :key="item.id"
                                 class="block q-mb-sm"
                                 :label="slide(idx)"
@@ -88,12 +91,12 @@
         },
         data: () => {
             return {
-                model: null,
+                card: null,
                 isOpen: true
             }
         },
         created() {
-            this.load(this.id).then(data => this.model = data);
+            this.load(this.id).then(data => this.card = data);
         },
         components: {
             AppModalLayout

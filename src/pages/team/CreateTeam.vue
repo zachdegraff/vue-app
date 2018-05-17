@@ -53,6 +53,7 @@
             }),
             save() {
                 this.create(this.prepare()).then((data) => {
+                    this.isOpen = false;
                     this.$router.push({name: 'view_team', params: {id: data.team.id}})
                 })
             },
@@ -64,7 +65,9 @@
                 for (let i in this.model) {
                     data.append(i, this.model[i])
                 }
-                data.append('file', this.file);
+                if (this.file !== null) {
+                    data.append('file', this.file);
+                }
                 return data
             },
             chooseFile(files) {

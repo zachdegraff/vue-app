@@ -28,6 +28,7 @@
     import AppHeader from '../components/context/AppHeader.vue'
     import AppFooter from '../components/context/AppFooter.vue'
     import TeamsNavigation from '../components/team/TeamsNavigation.vue'
+    import {mapActions} from 'vuex'
 
     export default {
         components: {AppHeader, AppFooter, TeamsNavigation},

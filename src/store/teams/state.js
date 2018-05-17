@@ -1,9 +1,11 @@
 export default {
     items: [],
-    recently: null,
+    members: {},
+    current: null,
     actionAllStatus: '',
     actionGetStatus: '',
     actionUpdateStatus: '',
     actionCreateStatus: '',
-    actionRemoveStatus: ''
+    actionRemoveStatus: '',
+    actionMembersStatus: ''
 }

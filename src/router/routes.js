@@ -33,7 +33,6 @@ export default [
             {path: 'login', name: 'login_user', component: () => import('pages/auth/LoginUser.vue')},
             {path: 'register', name: 'register_user', component: () => import('pages/auth/RegisterUser.vue')},
             {path: 'forgot', name: 'forgot_password', component: () => import('pages/auth/ForgotPassword.vue')},
-
         ]
     },
     {
@@ -58,13 +57,20 @@ export default [
     },
     {
         path: '/teams/',
-        name: 'teams',
         component: () => import('layouts/TeamLayout.vue'),
+        beforeEnter: ifAuthenticated,
+        children: [
+            {path: '', name: 'teams', component: () => import('pages/team/ManageTeams.vue')},
+            {path: ':id', name: 'view_team', component: () => import('pages/team/ViewTeam.vue'), props: true},
+        ]
+    },
+    {
+        path: '/teams/',
+        component: () => import('layouts/TeamModalLayout.vue'),
         beforeEnter: ifAuthenticated,
         children: [
             {path: 'create', name: 'create_team', component: () => import('pages/team/CreateTeam.vue')},
             {path: ':id/edit', name: 'edit_team', component: () => import('pages/team/EditTeam.vue'), props: true},
-            {path: ':id', name: 'view_team', component: () => import('pages/team/ViewTeam.vue'), props: true},
         ]
     },
 

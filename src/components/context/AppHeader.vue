@@ -1,16 +1,21 @@
 <template>
     <q-layout-header>
         <q-toolbar color="primary">
-            <q-toolbar-title v-if="teams.length > 0">
-                Teams
-                <q-popover>
+            <q-toolbar-title link v-if="teams.length > 0">
+                <img :src="photo(current.photo)" class="team-photo round-borders vertical-middle" v-if="current"/><span class="gt-xs">{{current.name}}</span>
+                <q-popover max-height="1000px">
                     <q-list link>
-                        <q-item v-for="team in teams" :key="team.id" :to="{name:'view_team', params: {id : team.id}}">
+                        <q-item v-close-overlay v-for="team in teams" :key="team.id" @click.native="changeTeam(team.id)">
+                            <q-item-side>
+                                <q-item-tile >
+                                    <img :src="photo(team.photo)" class="vertical-middle round-borders" style="width: 50px"/>
+                                </q-item-tile>
+                            </q-item-side>
                             <q-item-main :label="team.name"/>
                         </q-item>
                         <q-item-separator/>
-                        <q-item :to="{name:'create_team'}">
-                            <q-item-main label="Create Team"/>
+                        <q-item :to="{name:'teams'}">
+                            <q-item-main label="Manage Teams"/>
                         </q-item>
                     </q-list>
                 </q-popover>
@@ -24,7 +29,7 @@
             <q-btn color="white" class="text-black gt-xs" icon="add" label="Add Card" @click="create"/>
             <q-btn color="white" class="short-add-button text-black lt-sm" icon="add" @click="create"/>
             <div class="auth-user q-ml-md" v-if="user">
-                <img :src="photo(user.photo)" class="header-icon vertical-middle"/>
+                <img :src="avatar(user.photo)" class="header-icon vertical-middle"/>
                 <q-popover>
                     <q-list separator link>
                         <q-item>
@@ -50,12 +55,14 @@
         computed: {
             ...mapGetters({
                 user: 'auth/authUser',
+                current: 'teams/current',
                 teams: 'teams/items'
             })
         },
         methods: {
             ...mapActions({
-                logout: 'auth/logout'
+                logout: 'auth/logout',
+                changeTeam: 'teams/current'
             }),
             exit() {
                 this.logout().then(() => this.$router.push({name: 'login_user'}))
@@ -64,6 +71,12 @@
                 this.$router.push({name: 'create_card'})
             },
             photo(path) {
+                if (!path) {
+                    return 'statics/team.png'
+                }
+                return process.env.API_HOST + path
+            },
+            avatar(path) {
                 if (!path) {
                     return 'statics/profile.jpg'
                 }
@@ -82,6 +95,11 @@
         cursor: pointer;
         width: 35px;
         border-radius: 50%;
+    }
+    .team-photo {
+        cursor: pointer;
+        width: 35px;
+        margin: 0 10px 0 -10px
     }
 
     .short-add-button {

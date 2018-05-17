@@ -18,11 +18,11 @@ export default class CardResource {
         return Resource.put(`/cards/${id}`, attr);
     }
 
-    static hints(term) {
-        return Resource.get('/cards/hints', {params: {term}})
+    static hints(params) {
+        return Resource.get('/cards/hints', {params})
     }
 
-    static search(query) {
-        return Resource.get('/cards/search', {params: {query}})
+    static search(params) {
+        return Resource.get('/cards/search', {params})
     }
 }

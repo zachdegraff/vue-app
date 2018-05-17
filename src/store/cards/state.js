@@ -3,5 +3,7 @@ export default {
     actionAllStatus: '',
     actionGetStatus: '',
     actionUpdateStatus: '',
-    actionCreateStatus: ''
+    actionCreateStatus: '',
+    actionHintsStatus: '',
+    actionSearchStatus: ''
 }

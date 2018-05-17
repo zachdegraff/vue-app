@@ -4,21 +4,33 @@
     </div>
 </template>
 <script>
-    import {mapActions} from 'vuex'
+    import {mapActions, mapGetters} from 'vuex'
 
     export default {
         computed: {
-            isLoading() {
-                return this.$store.getters['cards/isCardsLoading']
+            ...mapGetters({
+                team: 'teams/current',
+                isLoading: 'cards/isCardsLoading'
+            })
+        },
+        watch: {
+            team: function (val) {
+                this.load(this.params())
             }
         },
         created() {
-            this.load()
+            this.load(this.params())
         },
         methods: {
             ...mapActions({
                 load: 'cards/all'
-            })
+            }),
+            params() {
+                if (this.team !== null) {
+                    return {team_id: this.team.id}
+                }
+                return {}
+            }
         }
     }
 </script>
