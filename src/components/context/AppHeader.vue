@@ -21,11 +21,14 @@
                 </q-popover>
             </q-toolbar-title>
             <q-toolbar-title v-if="teams.length === 0">
-                <q-btn color="white" class="text-black" icon="add" label="Create Team" @click="$router.push({name:'create_team'})"/>
+                <q-btn color="white" class="text-black gt-xs" icon="add" label="Create Team" @click="$router.push({name:'create_team'})"/>
+                <q-btn color="white" class="short-add-button text-black lt-sm" icon="add" @click="$router.push({name:'create_team'})"/>
             </q-toolbar-title>
-            <q-toolbar-title class="app-logo">
-                <router-link :to="{name: 'home'}" class="text-white" style="text-decoration: none">Wonderus</router-link>
-            </q-toolbar-title>
+            <div class="app-logo">
+                <router-link :to="{name: 'home'}">
+                    <img src="statics/header-logo.png"/>
+                </router-link>
+            </div>
             <q-btn color="white" class="text-black gt-xs" icon="add" label="Add Card" @click="create"/>
             <q-btn color="white" class="short-add-button text-black lt-sm" icon="add" @click="create"/>
             <div class="auth-user q-ml-md" v-if="user">
@@ -88,7 +91,13 @@
 
 <style lang="scss">
     .app-logo {
-        padding-left: 90px;
+        position: absolute;
+        top: 13px;
+        left: 50%;
+        margin-left: -68px;
+        img {
+            height: 25px;
+        }
     }
 
     .header-icon {
@@ -104,12 +113,6 @@
 
     .short-add-button {
         padding: 4px 10px;
-    }
-
-    @media all and (max-width: 576px) {
-        .app-logo {
-            text-align: center;
-        }
     }
 
 </style>

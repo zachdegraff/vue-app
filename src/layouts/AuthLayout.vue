@@ -3,30 +3,35 @@
         <q-page-container>
             <q-page>
                 <div class="row flex-center window-height">
-                    <q-card class="auth-login col-xs-11 col-sm-6 col-md-4">
-                        <form @submit.prevent="submit">
-                            <q-card-title class="bg-primary text-white">
-                                Log in
-                            </q-card-title>
-                            <q-card-separator/>
-                            <q-card-main>
-                                <q-field class="q-py-sm" :error="$v.form.email.$error" :error-label="firstErrorFor($v.form.email)">
-                                    <q-input type="text" float-label="Email" v-model="form.email" @blur="$v.form.email.$touch"/>
-                                </q-field>
-                                <q-field class="q-pb-md" :error="$v.form.password.$error" :error-label="firstErrorFor($v.form.password)">
-                                    <q-input type="password" float-label="Password" v-model="form.password" @blur="$v.form.email.$touch"/>
-                                </q-field>
-                                <div class="q-py-sm overflow-hidden">
-                                    <router-link :to="{name:'forgot_password'}" class="text-primary">Forgot Password?</router-link>
-                                </div>
-                            </q-card-main>
-                            <q-card-separator/>
-                            <q-card-actions align="between">
-                                <q-btn label="Submit" color="secondary" :disabled="isProcessing"/>
-                                <q-btn label="Register" color="primary" @click.prevent="$router.push({name:'register_user'})"/>
-                            </q-card-actions>
-                        </form>
-                    </q-card>
+                    <div class="auth-login col-xs-11 col-sm-6 col-md-4">
+                        <div class="auth-login-logo text-center q-pb-lg">
+                            <img src="statics/auth-logo.png"/>
+                        </div>
+                        <q-card class="">
+                            <form @submit.prevent="submit">
+                                <q-card-title class="bg-primary text-white">
+                                    Log in
+                                </q-card-title>
+                                <q-card-separator/>
+                                <q-card-main>
+                                    <q-field class="q-py-sm" :error="$v.form.email.$error" :error-label="firstErrorFor($v.form.email)">
+                                        <q-input type="text" float-label="Email" v-model="form.email" @blur="$v.form.email.$touch"/>
+                                    </q-field>
+                                    <q-field class="q-pb-md" :error="$v.form.password.$error" :error-label="firstErrorFor($v.form.password)">
+                                        <q-input type="password" float-label="Password" v-model="form.password" @blur="$v.form.email.$touch"/>
+                                    </q-field>
+                                    <div class="q-py-sm overflow-hidden">
+                                        <router-link :to="{name:'forgot_password'}" class="text-primary">Forgot Password?</router-link>
+                                    </div>
+                                </q-card-main>
+                                <q-card-separator/>
+                                <q-card-actions align="between">
+                                    <q-btn label="Submit" color="primary" :disabled="isProcessing"/>
+                                    <q-btn label="Register" color="white text-black" @click.prevent="$router.push({name:'register_user'})"/>
+                                </q-card-actions>
+                            </form>
+                        </q-card>
+                    </div>
                 </div>
             </q-page>
             <router-view></router-view>
@@ -80,3 +85,12 @@
         }
     }
 </script>
+<style lang="scss">
+    .auth-login {
+        .auth-login-logo {
+            img {
+                max-width: 300px;
+            }
+        }
+    }
+</style>

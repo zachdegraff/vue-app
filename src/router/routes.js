@@ -57,15 +57,6 @@ export default [
     },
     {
         path: '/teams/',
-        component: () => import('layouts/TeamLayout.vue'),
-        beforeEnter: ifAuthenticated,
-        children: [
-            {path: '', name: 'teams', component: () => import('pages/team/ManageTeams.vue')},
-            {path: ':id', name: 'view_team', component: () => import('pages/team/ViewTeam.vue'), props: true},
-        ]
-    },
-    {
-        path: '/teams/',
         component: () => import('layouts/TeamModalLayout.vue'),
         beforeEnter: ifAuthenticated,
         children: [
@@ -73,7 +64,15 @@ export default [
             {path: ':id/edit', name: 'edit_team', component: () => import('pages/team/EditTeam.vue'), props: true},
         ]
     },
-
+    {
+        path: '/teams/',
+        component: () => import('layouts/TeamLayout.vue'),
+        beforeEnter: ifAuthenticated,
+        children: [
+            {path: '', name: 'teams', component: () => import('pages/team/ManageTeams.vue')},
+            {path: ':id', name: 'view_team', component: () => import('pages/team/ViewTeam.vue'), props: true},
+        ]
+    },
     { // Always leave this as last one
         path: '*',
         component: () => import('pages/404')

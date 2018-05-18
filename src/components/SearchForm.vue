@@ -1,5 +1,5 @@
 <template>
-    <div class="search-form-container row justify-center bg-blue-3">
+    <div class="search-form-container row justify-center">
         <q-search v-model="query" @keyup.enter="submit" class="col-sx-12 col-md-8 bg-white q-pa-md">
             <q-autocomplete separator @search="search" @selected="selected" :min-characters="3"/>
         </q-search>
@@ -56,6 +56,7 @@
 </script>
 <style lang="scss">
     .search-form-container {
+        background: #36cb77;
         padding: 100px 0;
         position: relative;
     }

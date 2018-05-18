@@ -11,11 +11,7 @@
                         </div>
                     </div>
                     <div class="col-xs-8">
-                        <transition>
-                            <keep-alive>
-                                <router-view :key="$route.fullPath"></router-view>
-                            </keep-alive>
-                        </transition>
+                        <router-view/>
                     </div>
                 </div>
             </q-page>

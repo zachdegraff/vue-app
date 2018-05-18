@@ -25,8 +25,6 @@
 <script>
     import AppModalLayout from '../../components/context/modal/AppModalLayout'
     import {mapActions, mapGetters} from 'vuex'
-    import {CARD_SECTIONS} from "../../consts"
-    import {notify} from "../../helpers"
 
     export default {
         data: () => {
@@ -53,12 +51,11 @@
             }),
             save() {
                 this.create(this.prepare()).then((data) => {
-                    this.isOpen = false;
                     this.$router.push({name: 'view_team', params: {id: data.team.id}})
                 })
             },
             redirect() {
-                this.$router.go(-1)
+                this.$router.push({name: 'teams'})
             },
             prepare() {
                 const data = new FormData();
