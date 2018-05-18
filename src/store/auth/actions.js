@@ -14,12 +14,12 @@ export const user = ({commit}) => {
     })
 };
 
-export const login = ({commit}, user) => {
+export const login = ({commit, dispatch}, user) => {
     return new Promise((resolve, reject) => {
         commit('loginStatusRequest');
         AuthResource.login(user).then(({data}) => {
             commit('loginStatusSuccess', data);
-            setAuthorizeToken(data.token);
+            setAuthorizeToken(data.token, dispatch);
             resolve(data)
         }).catch(err => {
             commit('loginStatusFailure');
@@ -28,12 +28,12 @@ export const login = ({commit}, user) => {
     })
 };
 
-export const register = ({commit}, user) => {
+export const register = ({commit, dispatch}, user) => {
     return new Promise((resolve, reject) => {
         commit('registerStatusRequest');
         AuthResource.register(user).then(({data}) => {
             commit('registerStatusSuccess', data);
-            setAuthorizeToken(data.token);
+            setAuthorizeToken(data.token, dispatch);
             resolve(data)
         }).catch(err => {
             commit('registerStatusFailure');
@@ -84,8 +84,10 @@ export const reset = ({commit}, form) => {
     })
 };
 
-function setAuthorizeToken(token) {
+function setAuthorizeToken(token, dispatch) {
     localStorage.setItem('access-token', token);
 
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+    dispatch('teams/all', {}, {root: true});
 }

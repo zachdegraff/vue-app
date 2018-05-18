@@ -12,7 +12,8 @@
         name: 'App',
         created() {
             if (localStorage.getItem('access-token') !== null) {
-                this.loadAuthUser().then(this.loadUserTeams)
+                this.loadAuthUser();
+                this.loadUserTeams();
             }
         },
         methods: {
