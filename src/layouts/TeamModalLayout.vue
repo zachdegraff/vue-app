@@ -7,15 +7,11 @@
                     <div class="col-xs-4">
                         <teams-navigation></teams-navigation>
                         <div class="q-pt-lg text-center">
-                            <q-btn label="create team" color="secondary" @click="$router.push({name: 'create_team'})"/>
+                            <q-btn label="create team" color="primary" @click="$router.push({name: 'create_team'})"/>
                         </div>
                     </div>
                     <div class="col-xs-8">
-                        <transition>
-                            <keep-alive>
-                                <router-view :key="$route.fullPath"></router-view>
-                            </keep-alive>
-                        </transition>
+                        <router-view :key="$route.fullPath"></router-view>
                     </div>
                 </div>
             </q-page>

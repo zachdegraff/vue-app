@@ -6,7 +6,7 @@
             </q-item-side>
             <q-item-main :label="team.name"/>
             <q-item-side right>
-                <q-btn flat round dense icon="more_vert">
+                <q-btn flat round dense icon="more_vert" v-if="team.isEditable">
                     <q-popover>
                         <q-list link>
                             <q-item :to="{name: 'edit_team', params: {id: team.id}}" v-close-overlay>

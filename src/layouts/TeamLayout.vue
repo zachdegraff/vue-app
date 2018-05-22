@@ -7,7 +7,7 @@
                     <div class="col-xs-4">
                         <teams-navigation></teams-navigation>
                         <div class="q-pt-lg text-center">
-                            <q-btn label="create team" color="secondary" @click="$router.push({name: 'create_team'})"/>
+                            <q-btn label="create team" color="primary" @click="$router.push({name: 'create_team'})"/>
                         </div>
                     </div>
                     <div class="col-xs-8">

@@ -1,4 +1,5 @@
 import TeamResource from '../../resources/team/TeamResource'
+import TeamMemberResource from '../../resources/team/TeamMemberResource'
 
 export const all = ({commit}) => {
     return new Promise((resolve, reject) => {
@@ -81,6 +82,68 @@ export const remove = ({commit}, id) => {
             resolve(req.data)
         }).catch(err => {
             commit('removeStatusFailure', err);
+            reject(err)
+        })
+    })
+};
+
+export const invite = ({commit, dispatch}, {id, params}) => {
+    return new Promise((resolve, reject) => {
+        commit('inviteStatusRequest');
+        TeamMemberResource.invite(id, params).then(req => {
+            commit('inviteStatusSuccess', req);
+            resolve(req.data)
+        }).catch(err => {
+            commit('inviteStatusFailure', err);
+            reject(err)
+        })
+    })
+};
+
+export const join = ({commit}, {hash, params}) => {
+    return new Promise((resolve, reject) => {
+        commit('joinStatusRequest');
+        TeamMemberResource.join(hash, params).then(req => {
+            commit('joinStatusSuccess', req);
+            resolve(req.data)
+        }).catch(err => {
+            commit('joinStatusFailure', err);
+            reject(err)
+        })
+    })
+};
+
+export const changeRole = ({commit}, {id, memberId, role}) => {
+    return new Promise((resolve, reject) => {
+        commit('changeRoleStatusRequest');
+        TeamMemberResource.changeRole(id, memberId, role).then(req => {
+            commit('changeRoleStatusSuccess', req);
+            resolve(req.data)
+        }).catch(err => {
+            commit('changeRoleStatusFailure', err);
+            reject(err)
+        })
+    })
+};
+
+export const retryInvitation = ({commit}, {id, memberId}) => {
+    return new Promise((resolve, reject) => {
+        TeamMemberResource.retry(id, memberId).then(req => {
+            resolve(req.data)
+        }).catch(err => {
+            reject(err)
+        })
+    })
+};
+
+export const exclude = ({commit}, {id, memberId}) => {
+    return new Promise((resolve, reject) => {
+        commit('excludeStatusRequest');
+        TeamMemberResource.exclude(id, memberId).then(req => {
+            commit('excludeStatusSuccess', req);
+            resolve(req.data)
+        }).catch(err => {
+            commit('excludeStatusFailure', err);
             reject(err)
         })
     })

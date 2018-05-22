@@ -63,3 +63,28 @@ export const membersStatusSuccess = (state, {id, req}) => {
 };
 export const membersStatusFailure = state => state.actionMembersStatus = 'Failure';
 
+export const inviteStatusRequest = state => state.actionInviteStatus = 'Request';
+export const inviteStatusSuccess = (state, req) => {
+    delete state.members[req.data.member.team_id];
+    state.actionInviteStatus = 'Success'
+};
+export const inviteStatusFailure = state => state.actionInviteStatus = 'Failure';
+
+export const joinStatusRequest = state => state.actionJoinStatus = 'Request';
+export const joinStatusSuccess = state => state.actionJoinStatus = 'Success';
+export const joinStatusFailure = state => state.actionJoinStatus = 'Failure';
+
+export const excludeStatusRequest = state => state.actionExcludeStatus = 'Request';
+export const excludeStatusSuccess = (state, req) => {
+    delete state.members[req.data.member.team_id];
+    state.actionExcludeStatus = 'Success'
+};
+export const excludeStatusFailure = state => state.actionExcludeStatus = 'Failure';
+
+export const changeRoleStatusRequest = state => state.actionChangeRoleStatus = 'Request';
+export const changeRoleStatusSuccess = (state, req) => {
+    delete state.members[req.data.member.team_id];
+    state.actionChangeRoleStatus = 'Success'
+};
+export const changeRoleStatusFailure = state => state.actionChangeRoleStatus = 'Failure';
+

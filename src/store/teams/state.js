@@ -7,5 +7,9 @@ export default {
     actionUpdateStatus: '',
     actionCreateStatus: '',
     actionRemoveStatus: '',
-    actionMembersStatus: ''
+    actionMembersStatus: '',
+    actionInviteStatus: '',
+    actionJoinStatus: '',
+    actionExcludeStatus: '',
+    actionChangeRoleStatus: ''
 }

@@ -12,16 +12,16 @@
             </div>
             <q-table title="Team Members" class="q-mt-xl" :data="members" :columns="columns" row-key="name" :loading="isLoading">
                 <q-td slot="body-cell-actions" slot-scope="props" class="text-right">
-                    <q-btn flat round dense icon="more_vert">
+                    <q-btn flat round dense icon="more_vert" v-if="props.row.isEditable">
                         <q-popover>
                             <q-list link>
-                                <q-item>
+                                <q-item v-if="props.row.user === null" @click.native="reSendInvite(props.row.id)" v-close-overlay>
                                     <q-item-main label="Resent Invite"/>
                                 </q-item>
-                                <q-item>
+                                <q-item :to="{name: 'change_role', params: {id, memberId: props.row.id}}">
                                     <q-item-main label="Change Role"/>
                                 </q-item>
-                                <q-item>
+                                <q-item @click.native="excludeFromTeam(props.row.id)" v-close-overlay>
                                     <q-item-main label="Delete From Team"/>
                                 </q-item>
                             </q-list>
@@ -30,7 +30,7 @@
                 </q-td>
             </q-table>
             <div class="q-mt-xl">
-                <q-btn size="lg" label="Invite new member" color="secondary"/>
+                <q-btn size="lg" label="Invite new member" color="primary" @click="invite"/>
             </div>
         </div>
     </q-page>
@@ -48,7 +48,14 @@
             team: null,
             members: [],
             columns: [
-                {name: 'fullName', required: true, label: 'Name', align: 'left', field: 'fullName', sortable: true},
+                {
+                    name: 'fullName',
+                    required: true,
+                    label: 'Name',
+                    align: 'left',
+                    field: row => row.user ? row.user.fullName : null,
+                    sortable: true
+                },
                 {name: 'email', required: true, label: 'Email Address', field: 'email', sortable: true},
                 {name: 'role', required: true, label: 'Team Role', field: 'role', sortable: true},
                 {name: 'actions', align: 'right', label: ''},
@@ -71,7 +78,9 @@
         methods: {
             ...mapActions({
                 load: 'teams/get',
-                loadMembers: 'teams/members'
+                loadMembers: 'teams/members',
+                retryInvitation: 'teams/retryInvitation',
+                excludeMember: 'teams/exclude'
             }),
             photo(path) {
                 if (!path) {
@@ -79,6 +88,19 @@
                 }
                 return path
             },
+            invite() {
+                this.$router.push({name: 'invite_member', params: {id: this.id}});
+            },
+            reSendInvite(memberId) {
+                this.retryInvitation({id: this.id, memberId})
+            },
+            excludeFromTeam(memberId) {
+                this.$q.dialog({title: 'Confirm', message: 'Are you sure?', ok: 'Yes', cancel: 'No'}).then(() => {
+                    this.excludeMember({id: this.id, memberId}).then(() => {
+                        this.loadMembers(this.id).then(members => this.members = members)
+                    })
+                }).catch(() => {})
+            }
         }
     }
 </script>
