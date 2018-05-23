@@ -11,6 +11,7 @@
 
 <script>
     import SearchForm from '../components/SearchForm.vue'
+    import {mapActions} from 'vuex'
 
     export default {
         data: () => {
@@ -18,9 +19,21 @@
                 opened: true
             }
         },
+        created() {
+            const hash = localStorage.getItem('join-token');
+            if (hash !== null) {
+                this.join(hash).then(data => {
+                    this.$router.push({name: 'view_team', params: {id: data.member.team_id}})
+                })
+            }
+        },
         components: {
             SearchForm
         },
-        methods: {}
+        methods: {
+            ...mapActions({
+                join: 'teams/join'
+            })
+        }
     }
 </script>

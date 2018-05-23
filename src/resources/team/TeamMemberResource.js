@@ -10,8 +10,8 @@ export default class TeamMemberResource {
         return Resource.post(`/teams/${teamId}/invite/${memberId}/retry`)
     }
 
-    static join(hash, params = {}) {
-        return Resource.post(`/teams/join/${hash}`, params)
+    static join(hash) {
+        return Resource.post(`/teams/join/${hash}`)
     }
 
     static exclude(teamId, memberId) {

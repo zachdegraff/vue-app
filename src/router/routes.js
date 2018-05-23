@@ -26,6 +26,13 @@ export default [
         ]
     },
     {
+        path: '/join/',
+        component: () => import('layouts/ClearLayout.vue'),
+        children: [
+            {path: ':hash', name: 'join_team', component: () => import('pages/team/JoinTeam.vue'), props: true}
+        ]
+    },
+    {
         path: '/auth/',
         component: () => import('layouts/AuthLayout.vue'),
         beforeEnter: ifNotAuthenticated,
@@ -62,8 +69,18 @@ export default [
         children: [
             {path: 'create', name: 'create_team', component: () => import('pages/team/CreateTeam.vue')},
             {path: ':id/edit', name: 'edit_team', component: () => import('pages/team/EditTeam.vue'), props: true},
-            {path: ':id/invite', name: 'invite_member', component: () => import('pages/team/InviteMember.vue'), props: true},
-            {path: ':id/change-role/:memberId', name: 'change_role', component: () => import('pages/team/ChangeRole.vue'), props: true},
+            {
+                path: ':id/invite',
+                name: 'invite_member',
+                component: () => import('pages/team/InviteMember.vue'),
+                props: true
+            },
+            {
+                path: ':id/change-role/:memberId',
+                name: 'change_role',
+                component: () => import('pages/team/ChangeRole.vue'),
+                props: true
+            },
         ]
     },
     {

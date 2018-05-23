@@ -82,6 +82,7 @@ module.exports = function (ctx) {
                 'QModal',
                 'QModalLayout',
                 'QSpinner',
+                'QSpinnerCircles',
                 'QUploader',
                 'QTable',
                 'QTh',

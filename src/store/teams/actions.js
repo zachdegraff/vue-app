@@ -100,11 +100,13 @@ export const invite = ({commit, dispatch}, {id, params}) => {
     })
 };
 
-export const join = ({commit}, {hash, params}) => {
+export const join = ({commit, dispatch}, hash) => {
+    localStorage.removeItem('join-token');
     return new Promise((resolve, reject) => {
         commit('joinStatusRequest');
-        TeamMemberResource.join(hash, params).then(req => {
+        TeamMemberResource.join(hash).then(req => {
             commit('joinStatusSuccess', req);
+            dispatch('all');
             resolve(req.data)
         }).catch(err => {
             commit('joinStatusFailure', err);
