@@ -49,11 +49,11 @@
             members: [],
             columns: [
                 {
-                    name: 'fullName',
+                    name: 'full_name',
                     required: true,
                     label: 'Name',
                     align: 'left',
-                    field: row => row.user ? row.user.fullName : null,
+                    field: row => row.user ? row.user.full_name : null,
                     sortable: true
                 },
                 {name: 'email', required: true, label: 'Email Address', field: 'email', sortable: true},

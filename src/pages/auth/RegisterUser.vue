@@ -12,11 +12,11 @@
                         <q-field class="q-py-sm" :error="$v.form.email.$error" :error-label="firstErrorFor($v.form.email)">
                             <q-input type="text" float-label="Email" v-model="form.email" @blur="$v.form.email.$touch"/>
                         </q-field>
-                        <q-field class="q-py-sm" :error="$v.form.firstName.$error" :error-label="firstErrorFor($v.form.firstName)">
-                            <q-input type="text" float-label="First Name" v-model="form.firstName" @blur="$v.form.firstName.$touch"/>
+                        <q-field class="q-py-sm" :error="$v.form.first_name.$error" :error-label="firstErrorFor($v.form.first_name)">
+                            <q-input type="text" float-label="First Name" v-model="form.first_name" @blur="$v.form.first_name.$touch"/>
                         </q-field>
                         <q-field class="q-py-sm">
-                            <q-input type="text" float-label="Last Name" v-model="form.lastName"/>
+                            <q-input type="text" float-label="Last Name" v-model="form.last_name"/>
                         </q-field>
                         <q-field class="q-py-sm" :error="$v.form.password.$error" :error-label="firstErrorFor($v.form.password)">
                             <q-input type="password" float-label="Password" v-model="form.password" @blur="$v.form.password.$touch"/>
@@ -48,8 +48,8 @@
             return {
                 form: {
                     email: '',
-                    firstName: '',
-                    lastName: '',
+                    first_name: '',
+                    last_name: '',
                     password: '',
                     password_confirmation: '',
                     file: null,
@@ -64,7 +64,7 @@
                     required,
                     email
                 },
-                firstName: {
+                first_name: {
                     required
                 },
                 password: {

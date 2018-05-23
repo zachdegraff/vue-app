@@ -10,6 +10,10 @@ export default class CardResource {
         return Resource.get('/cards', {params})
     }
 
+    static teams() {
+        return Resource.get('/cards/teams')
+    }
+
     static create(attr) {
         return Resource.post('/cards', attr);
     }

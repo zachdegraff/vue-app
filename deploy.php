@@ -22,9 +22,9 @@ add('writable_dirs', []);
 // Hosts
 set('deploy_path', '/var/www/wonderus/{{application}}');
 
-host('ec2-18-222-87-169.us-east-2.compute.amazonaws.com')
+host('ec2-18-220-139-147.us-east-2.compute.amazonaws.com')
     ->user('ubuntu')
-    ->identityFile('~/.ssh/wonderus.pem');
+    ->identityFile('~/.ssh/WonderusAWS.pem');
 
 
 set('ssh_type', 'native');

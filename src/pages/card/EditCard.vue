@@ -38,6 +38,7 @@
 <script>
     import AppModalLayout from '../../components/context/modal/AppModalLayout'
     import ValidatorMessages from '../../mixins/ValidatorMessages'
+    import CardResource from '../../resources/card/CardResource'
     import {required} from 'vuelidate/lib/validators'
     import {mapActions, mapGetters} from 'vuex'
     import {CARD_SECTIONS} from "../../consts"
@@ -51,23 +52,23 @@
         data: () => {
             return {
                 form: null,
+                options: [],
                 isOpen: true
             }
         },
         created() {
             this.load(this.id).then(data => this.form = data);
+            CardResource.teams().then(({data}) => {
+                this.options = data.data.map(team => {
+                    return {value: team.id, label: team.name}
+                })
+            })
         },
         mixins: [ValidatorMessages],
         computed: {
             ...mapGetters({
-                teams: 'teams/items',
                 isProcessing: 'cards/isUpdating'
             }),
-            options() {
-                return this.teams.map(team => {
-                    return {value: team.id, label: team.name}
-                })
-            }
         },
         components: {
             AppModalLayout
