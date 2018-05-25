@@ -12,7 +12,7 @@
                     <q-chip color="secondary" size="lg" class="q-mr-sm" v-if="card.team">
                         {{card.team.name}}
                     </q-chip>
-                    <div class="q-pt-md">{{card.description}}</div>
+                    <div class="q-pt-md card-description">{{card.description}}</div>
 
                     <div class="q-pt-md" v-if="card.shorthand.length > 0">
                         <div class="text-bold q-pb-sm">Shorthand</div>
@@ -124,6 +124,10 @@
 <style lang="scss">
     .card-content {
         position: relative;
+    }
+
+    .card-description {
+        white-space: pre-line;
     }
 
     .card-mobile-actions {
