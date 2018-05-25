@@ -70,12 +70,12 @@ export const forgot = ({commit}, email) => {
     })
 };
 
-export const reset = ({commit}, form) => {
+export const reset = ({commit, dispatch}, form) => {
     return new Promise((resolve, reject) => {
         commit('resetStatusRequest');
         AuthResource.reset(form).then(({data}) => {
             commit('resetStatusSuccess', data);
-            setAuthorizeToken(data.token);
+            setAuthorizeToken(data.token, dispatch);
             resolve(data)
         }).catch(err => {
             commit('resetStatusFailure');
