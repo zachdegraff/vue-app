@@ -22,10 +22,9 @@
         created() {
             const hash = localStorage.getItem('join-token');
             if (hash !== null) {
-                console.log('home');
                 this.join(hash).then(data => {
                     this.$router.push({name: 'view_team', params: {id: data.member.team_id}})
-                }).catch(err => console.log('home err', err))
+                })
             }
         },
         components: {

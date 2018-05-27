@@ -11,7 +11,7 @@
                         </div>
                     </div>
                     <div class="col-xs-8">
-                        <router-view/>
+                        <router-view :key="$route.fullPath"/>
                     </div>
                 </div>
             </q-page>

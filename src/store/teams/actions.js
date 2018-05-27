@@ -31,12 +31,16 @@ export const get = ({getters, commit}, id) => {
     });
 };
 
-export const members = ({commit, getters}, id) => {
+export const member = ({commit}, id) => {
     return new Promise((resolve, reject) => {
-        const members = getters.teamMembers(id);
-        if (members !== undefined) {
-            resolve(members)
-        }
+        TeamMemberResource.get(id).then(req => {
+            resolve(req.data.data)
+        }).catch(err => reject(err))
+    });
+};
+
+export const members = ({commit}, id) => {
+    return new Promise((resolve, reject) => {
         commit('membersStatusRequest');
         TeamResource.members(id).then(req => {
             commit('membersStatusSuccess', {id, req});
@@ -115,10 +119,10 @@ export const join = ({commit, dispatch}, hash) => {
     })
 };
 
-export const changeRole = ({commit}, {id, memberId, role}) => {
+export const changeRole = ({commit}, {id, role}) => {
     return new Promise((resolve, reject) => {
         commit('changeRoleStatusRequest');
-        TeamMemberResource.changeRole(id, memberId, role).then(req => {
+        TeamMemberResource.changeRole(id, role).then(req => {
             commit('changeRoleStatusSuccess', req);
             resolve(req.data)
         }).catch(err => {
@@ -128,9 +132,9 @@ export const changeRole = ({commit}, {id, memberId, role}) => {
     })
 };
 
-export const retryInvitation = ({commit}, {id, memberId}) => {
+export const retryInvitation = ({commit}, id) => {
     return new Promise((resolve, reject) => {
-        TeamMemberResource.retry(id, memberId).then(req => {
+        TeamMemberResource.retry(id).then(req => {
             resolve(req.data)
         }).catch(err => {
             reject(err)
@@ -138,10 +142,10 @@ export const retryInvitation = ({commit}, {id, memberId}) => {
     })
 };
 
-export const exclude = ({commit}, {id, memberId}) => {
+export const exclude = ({commit}, id) => {
     return new Promise((resolve, reject) => {
         commit('excludeStatusRequest');
-        TeamMemberResource.exclude(id, memberId).then(req => {
+        TeamMemberResource.exclude(id).then(req => {
             commit('excludeStatusSuccess', req);
             resolve(req.data)
         }).catch(err => {

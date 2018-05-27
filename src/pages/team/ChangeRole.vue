@@ -49,7 +49,6 @@
         },
         computed: {
             ...mapGetters({
-                members: 'teams/teamMembers',
                 isProcessing: 'teams/isChangingRole'
             })
         },
@@ -57,29 +56,20 @@
             AppModalLayout
         },
         created() {
-            this.initializeMemberRole();
+            this.loadMember(this.memberId).then(member => this.role = member.role)
         },
         methods: {
             ...mapActions({
+                loadMember: 'teams/member',
                 changeRole: 'teams/changeRole'
             }),
             redirect() {
                 this.$router.push({name: 'view_team', params: {id: this.id}})
             },
             submit() {
-                this.changeRole({id: this.id, memberId: this.memberId, role: this.role}).then(data => {
+                this.changeRole({id: this.memberId, role: this.role}).then(data => {
                     this.$router.push({name: 'view_team', params: {id: this.id}})
                 })
-            },
-            initializeMemberRole() {
-                const members = this.members(this.id);
-                if (members === undefined) {
-                    return;
-                }
-                const member = members.find(item => item.id === this.memberId);
-                if (member !== undefined) {
-                    this.role = member.role
-                }
             }
         }
     }

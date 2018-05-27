@@ -7,12 +7,6 @@ export const getById = state => {
     }
 };
 
-export const teamMembers = state => {
-    return id => {
-        return state.members[id]
-    }
-};
-
 export const items = state => state.items;
 
 export const current = state => {

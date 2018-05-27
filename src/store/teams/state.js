@@ -1,6 +1,5 @@
 export default {
     items: [],
-    members: {},
     current: null,
     actionAllStatus: '',
     actionGetStatus: '',

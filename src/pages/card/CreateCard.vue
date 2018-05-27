@@ -61,6 +61,7 @@
         mixins: [ValidatorMessages],
         computed: {
             ...mapGetters({
+                team: 'teams/current',
                 isProcessing: 'cards/isCreating'
             })
         },
@@ -80,6 +81,9 @@
         created() {
             CardResource.teams().then(({data}) => {
                 this.options = data.data.map(team => {
+                    if (this.team && this.team.id === team.id) {
+                        this.form.team_id = team.id
+                    }
                     return {value: team.id, label: team.name}
                 })
             })

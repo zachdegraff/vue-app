@@ -20,11 +20,9 @@
         },
         mounted() {
             if (this.accessToken) {
-                console.log('access token', this.accessToken);
-                console.log('join-team');
                 return this.join(this.hash).then(member => {
                     this.$router.push({name: 'view_team', params: {id: member.team_id}})
-                }).catch(err => console.log('join-team err', err))
+                })
             }
             localStorage.setItem('join-token', this.hash);
             this.$router.push({name: 'login_user'})

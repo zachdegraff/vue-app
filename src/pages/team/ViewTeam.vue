@@ -92,11 +92,11 @@
                 this.$router.push({name: 'invite_member', params: {id: this.id}});
             },
             reSendInvite(memberId) {
-                this.retryInvitation({id: this.id, memberId})
+                this.retryInvitation(memberId)
             },
             excludeFromTeam(memberId) {
                 this.$q.dialog({title: 'Confirm', message: 'Are you sure?', ok: 'Yes', cancel: 'No'}).then(() => {
-                    this.excludeMember({id: this.id, memberId}).then(() => {
+                    this.excludeMember(memberId).then(() => {
                         this.loadMembers(this.id).then(members => this.members = members)
                     })
                 }).catch(() => {})
