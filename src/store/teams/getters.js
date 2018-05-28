@@ -13,10 +13,15 @@ export const current = state => {
     if (state.current !== null) {
         return state.current
     }
-    if (state.items.length > 0) {
-        return state.items[0]
+    if (state.items.length === 0) {
+        return null
     }
-    return null;
+    const id = parseInt(localStorage.getItem('current-team')),
+        team = state.items.find(item => item.id === id);
+    if (team !== undefined) {
+        return team
+    }
+    return state.items[0]
 };
 
 export const isCreating = state => state.actionCreateStatus === 'Request';

@@ -155,9 +155,8 @@ export const exclude = ({commit}, id) => {
     })
 };
 
-export const current = ({getters, commit}, id) => {
-    const item = getters.getById(id);
-    if (item !== undefined) {
-        commit('changeCurrentTeam', item)
-    }
+export const setCurrentTeam = ({dispatch, commit}, id) => {
+    localStorage.setItem('current-team', id);
+
+    dispatch('get', id).then(team => commit('changeCurrentTeam', team));
 };

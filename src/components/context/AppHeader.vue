@@ -2,12 +2,12 @@
     <q-layout-header>
         <q-toolbar color="primary">
             <q-toolbar-title link v-if="teams.length > 0">
-                <img :src="photo(current.photo)" class="team-photo round-borders vertical-middle" v-if="current"/><span class="gt-xs">{{current.name}}</span>
+                <img :src="photo(current.photo)" class="team-photo round-borders vertical-middle" v-if="current"/><span class="gt-xs" v-if="current">{{current.name}}</span>
                 <q-popover max-height="1000px">
                     <q-list link>
                         <q-item v-close-overlay v-for="team in teams" :key="team.id" @click.native="changeTeam(team.id)">
                             <q-item-side>
-                                <q-item-tile >
+                                <q-item-tile>
                                     <img :src="photo(team.photo)" class="vertical-middle round-borders" style="width: 50px"/>
                                 </q-item-tile>
                             </q-item-side>
@@ -65,7 +65,7 @@
         methods: {
             ...mapActions({
                 logout: 'auth/logout',
-                changeTeam: 'teams/current'
+                changeTeam: 'teams/setCurrentTeam'
             }),
             exit() {
                 this.logout().then(() => this.$router.push({name: 'login_user'}))
@@ -105,6 +105,7 @@
         width: 35px;
         border-radius: 50%;
     }
+
     .team-photo {
         cursor: pointer;
         width: 35px;
