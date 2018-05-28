@@ -16,17 +16,24 @@
                     <q-input v-model="form.description" type="textarea" float-label="Short Description"/>
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <q-chips-input v-model="form.shorthand" float-label="Shorthand"/>
+                    <strong>Links</strong><br/>
+                    <div class="row gutter-sm" v-for="(link, idx) in links" :key="idx">
+                        <q-field class="col-xs-6">
+                            <q-input v-model="link.url" float-label="Type link url"/>
+                        </q-field>
+                        <q-field class="col-xs-6">
+                            <q-input v-model="link.name" float-label="Type link name"/>
+                        </q-field>
+                    </div>
+                    <q-btn @click="addLink" class="q-mt-sm">Add a new field</q-btn>
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <strong>Resources</strong><br/>
-                    <q-input v-for="(resource, idx) in form.resources" :key="idx" v-model="resource.content" float-label="Input resource link"/>
-                    <q-btn @click="addResource" class="q-mt-sm">Add a new field</q-btn>
+                    <q-chips-input v-model="form.collections" float-label="Collections" placeholder="Type collection name">
+                        <q-autocomplete :static-data="collections"/>
+                    </q-chips-input>
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <strong>Related Concepts</strong><br/>
-                    <q-input v-for="(concept, idx) in form.concepts" :key="idx" v-model="concept.content" float-label="Input related concept link "/>
-                    <q-btn @click="addConcept" class="q-mt-sm">Add a new field</q-btn>
+                    <q-uploader url="" float-label="Image" hide-upload-button @add="chooseFile" @remove:cancel="cancelFile" :disable="isProcessing" extensions=".jpg,.jpeg,.png"/>
                 </q-field>
                 <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
                     <q-btn @click="save" color="primary" class="q-mt-lg" :disable="isProcessing">create</q-btn>
@@ -41,7 +48,8 @@
     import CardResource from '../../resources/card/CardResource'
     import {required} from 'vuelidate/lib/validators'
     import {mapActions, mapGetters} from 'vuex'
-    import {CARD_SECTIONS} from "../../consts"
+    import {filter} from 'quasar'
+
 
     export default {
         data: () => {
@@ -50,11 +58,12 @@
                     team_id: '',
                     name: '',
                     description: '',
-                    shorthand: [],
-                    resources: [],
-                    concepts: []
+                    collections: [],
                 },
+                file: null,
+                links: [],
                 options: [],
+                collections: {field: 'label', list: []},
                 isOpen: true
             }
         },
@@ -78,19 +87,32 @@
                 }
             }
         },
+        watch: {
+            'form.team_id': function (val) {
+                this.loadTeamCollections(val).then(items => {
+                    this.collections.list = items.map(item => {
+                        return {label: item.name}
+                    });
+                })
+            },
+            team: function (val) {
+                this.form.team_id = val.id
+            }
+        },
         created() {
+            if (this.team !== null) {
+                this.form.team_id = this.team.id
+            }
             CardResource.teams().then(({data}) => {
                 this.options = data.data.map(team => {
-                    if (this.team && this.team.id === team.id) {
-                        this.form.team_id = team.id
-                    }
                     return {value: team.id, label: team.name}
                 })
             })
         },
         methods: {
             ...mapActions({
-                create: 'cards/create'
+                create: 'cards/create',
+                loadTeamCollections: 'cards/collections'
             }),
             save() {
                 this.$v.form.$touch();
@@ -98,22 +120,30 @@
                     return
                 }
 
-                this.create(this.form).then(this.redirect)
+                this.create(this.prepare()).then(this.redirect)
             },
             redirect() {
                 this.$router.push({name: 'cards_list'})
             },
-            addResource() {
-                this.form.resources.push({
-                    section: CARD_SECTIONS.RESOURCE,
-                    content: ''
-                })
+            prepare() {
+                const data = new FormData();
+                for (let i in this.form) {
+                    data.append(i, this.form[i])
+                }
+                data.append('links', JSON.stringify(this.links));
+                if (this.file !== null) {
+                    data.append('file', this.file);
+                }
+                return data
             },
-            addConcept() {
-                this.form.concepts.push({
-                    section: CARD_SECTIONS.CONCEPT,
-                    content: ''
-                })
+            chooseFile(files) {
+                this.file = files[0]
+            },
+            cancelFile() {
+                this.file = null
+            },
+            addLink() {
+                this.links.push({name: '', url: ''})
             }
         }
     }

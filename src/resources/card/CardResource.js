@@ -19,7 +19,7 @@ export default class CardResource {
     }
 
     static update(id, attr) {
-        return Resource.put(`/cards/${id}`, attr);
+        return Resource.post(`/cards/${id}`, attr);
     }
 
     static hints(params) {

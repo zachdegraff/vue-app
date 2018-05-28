@@ -18,27 +18,20 @@
                     <div class="card-item-name">{{card.name}}</div>
                     <div class="card-item-description">{{card.description}}</div>
 
-                    <div class="card-item-section">
+                    <div class="card-item-section" v-if="links">
                         <div class="card-item-section-title">
                             <q-icon name="link"/>
                             Links
                         </div>
-                        <div class="card-item-section-content">
-                            <a href="#">PP&E</a>,
-                            <a href="#">Book</a>,
-                            <a href="#">Additional Mural Information</a>
-                        </div>
+                        <div class="card-item-section-content" v-html="links"></div>
                     </div>
 
-                    <div class="card-item-section">
+                    <div class="card-item-section" v-if="collections">
                         <div class="card-item-section-title">
                             <q-icon name="folder_open"/>
                             Collections
                         </div>
-                        <div class="card-item-section-content">
-                            <a href="#">#WestPhiladelphia</a>,
-                            <a href="#">#DavidMcShane</a>
-                        </div>
+                        <div class="card-item-section-content" v-html="collections"></div>
                     </div>
 
                     <div class="card-item-history">
@@ -79,7 +72,7 @@
                         <q-btn icon="delete" flat/>
                     </div>
                     <div class="card-item-image">
-                        <img src="statics/card-photo.png"/>
+                        <img :src="card.thumb" v-if="card.thumb"/>
                     </div>
                     <div class="card-item-note">
                         <div class="card-item-note-title">private note</div>
@@ -93,6 +86,7 @@
 <script>
     import AppModalLayout from '../../components/context/modal/AppModalLayout'
     import {mapActions} from 'vuex'
+    import {openURL} from 'quasar'
 
 
     export default {
@@ -110,6 +104,14 @@
         created() {
             this.load(this.id).then(data => this.card = data);
         },
+        computed: {
+            links() {
+                return this.card.links.map(link => `<a href="${link.url}">${link.name}</a>`).join(', ')
+            },
+            collections() {
+                return this.card.collections.map(collection => `<a href="#">#${collection.name}</a>`).join(', ')
+            }
+        },
         components: {
             AppModalLayout
         },
@@ -117,9 +119,6 @@
             ...mapActions({
                 load: 'cards/get'
             }),
-            slide(idx) {
-                return `Lecture slides #${idx + 1}`
-            },
             close() {
                 const path = this.$store.getters['route/previous'];
                 if (path === null) {
@@ -128,7 +127,7 @@
                 this.$router.push(path)
             },
             redirect(link) {
-                window.location.href = link;
+                openURL(link)
             }
         }
     }

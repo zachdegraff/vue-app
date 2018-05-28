@@ -1,4 +1,5 @@
 import CardResource from '../../resources/card/CardResource'
+import CardCollectionResource from '../../resources/card/CardCollectionResource'
 
 export const all = ({commit}, params) => {
     return new Promise((resolve, reject) => {
@@ -79,5 +80,13 @@ export const search = ({commit}, params) => {
             commit('searchStatusFailure', err);
             reject(err)
         })
+    })
+};
+
+export const collections = ({}, id) => {
+    return new Promise((resolve, reject) => {
+        CardCollectionResource.teamCollections(id)
+            .then(({data}) => resolve(data.data))
+            .catch(err => reject(err))
     })
 };

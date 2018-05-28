@@ -1,11 +1,18 @@
 <template>
     <q-modal v-model="isOpen" @hide="redirect" class="app-modal" :content-classes="['app-modal-content']" :content-css="{minWidth: '50vw', minHeight: '80vh'}">
-        <app-modal-layout v-if="form">
+        <app-modal-layout>
             <q-toolbar slot="header">
-                <q-toolbar-title>Editing {{form.name}}</q-toolbar-title>
+                <q-toolbar-title v-if="form">Editing {{form.name}}</q-toolbar-title>
                 <q-btn flat icon="close" @click="isOpen=false" class="float-right"/>
             </q-toolbar>
-            <div class="row q-py-xl gutter-md flex-center">
+
+            <div class="row text-center card-item" v-if="!form">
+                <div class="col">
+                    <q-spinner :size="50" color="red"></q-spinner>
+                </div>
+            </div>
+
+            <div class="row q-py-xl gutter-md flex-center" v-if="form">
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10" :error="$v.form.team_id.$error" :error-label="firstErrorFor($v.form.team_id)">
                     <q-select v-model="form.team_id" float-label="Team" :options="options" @change="$v.form.team_id.$touch"/>
                 </q-field>
@@ -16,17 +23,25 @@
                     <q-input v-model="form.description" type="textarea" float-label="Short Description"/>
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <q-chips-input v-model="form.shorthand" float-label="Shorthand"/>
+                    <strong>Links</strong><br/>
+                    <div class="row gutter-sm" v-for="(link, idx) in links" :key="idx">
+                        <q-field class="col-xs-6">
+                            <q-input v-model="link.url" float-label="Type link url"/>
+                        </q-field>
+                        <q-field class="col-xs-6">
+                            <q-input v-model="link.name" float-label="Type link name"/>
+                        </q-field>
+                    </div>
+                    <q-btn @click="addLink" class="q-mt-sm">Add a new field</q-btn>
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <strong>Resources</strong><br/>
-                    <q-input v-for="(resource, idx) in form.resources" :key="idx" v-model="resource.content" float-label="Resource"/>
-                    <q-btn @click="addResource" class="q-mt-sm">Add a new field</q-btn>
+                    <q-chips-input v-model="form.collections" float-label="Collections" placeholder="Type collection name">
+                        <q-autocomplete :static-data="collections"/>
+                    </q-chips-input>
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <strong>Related Concepts</strong><br/>
-                    <q-input v-for="(concept, idx) in form.concepts" :key="idx" v-model="concept.content" float-label="Related Concept"/>
-                    <q-btn @click="addConcept" class="q-mt-sm">Add a new field</q-btn>
+                    <img :src="form.thumb" class="round-borders" width="200px" v-if="form.thumb"/>
+                    <q-uploader url="" float-label="Image" hide-upload-button @add="chooseFile" @remove:cancel="cancelFile" :disable="isProcessing" extensions=".jpg,.jpeg,.png"/>
                 </q-field>
                 <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
                     <q-btn @click="save" color="primary" class="q-mt-lg" :disable="isProcessing">SAVE</q-btn>
@@ -41,7 +56,6 @@
     import CardResource from '../../resources/card/CardResource'
     import {required} from 'vuelidate/lib/validators'
     import {mapActions, mapGetters} from 'vuex'
-    import {CARD_SECTIONS} from "../../consts"
 
     export default {
         props: {
@@ -52,12 +66,19 @@
         data: () => {
             return {
                 form: null,
+                file: null,
+                links: [],
                 options: [],
+                collections: {field: 'label', list: []},
                 isOpen: true
             }
         },
         created() {
-            this.load(this.id).then(data => this.form = data);
+            this.load(this.id).then(data => {
+                this.links = data.links;
+                this.form = data;
+                this.form.collections = data.collections.map(item => item.name)
+            });
             CardResource.teams().then(({data}) => {
                 this.options = data.data.map(team => {
                     return {value: team.id, label: team.name}
@@ -83,29 +104,55 @@
                 }
             }
         },
+        watch: {
+            'form.team_id': function (val) {
+                this.loadTeamCollections(val).then(items => {
+                    this.collections.list = items.map(item => {
+                        return {label: item.name}
+                    });
+                })
+            },
+            team: function (val) {
+                this.form.team_id = val.id
+            }
+        },
         methods: {
             ...mapActions({
                 load: 'cards/get',
-                update: 'cards/update'
+                update: 'cards/update',
+                loadTeamCollections: 'cards/collections'
             }),
             save() {
-                const {id, form} = this;
-                this.update({id, form}).then(this.redirect);
+                this.$v.form.$touch();
+                if (this.$v.form.$error) {
+                    return
+                }
+
+                this.update({id: this.id, form: this.prepare()}).then(this.redirect);
             },
             redirect() {
                 this.$router.push({name: 'view_card', params: {id: this.id}})
             },
-            addResource() {
-                this.form.resources.push({
-                    section: CARD_SECTIONS.RESOURCE,
-                    content: ''
-                })
+            prepare() {
+                const data = new FormData();
+                for (let i in this.form) {
+                    data.append(i, this.form[i])
+                }
+                data.append('_method', 'PUT');
+                data.append('links', JSON.stringify(this.links));
+                if (this.file !== null) {
+                    data.append('file', this.file);
+                }
+                return data
             },
-            addConcept() {
-                this.form.concepts.push({
-                    section: CARD_SECTIONS.CONCEPT,
-                    content: ''
-                })
+            chooseFile(files) {
+                this.file = files[0]
+            },
+            cancelFile() {
+                this.file = null
+            },
+            addLink() {
+                this.links.push({name: '', url: ''})
             }
         }
     }
