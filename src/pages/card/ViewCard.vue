@@ -18,20 +18,34 @@
                     <div class="card-item-name">{{card.name}}</div>
                     <div class="card-item-description">{{card.description}}</div>
 
-                    <div class="card-item-section" v-if="links">
+                    <div class="card-item-section" v-if="card.shorthand.length > 0">
+                        <div class="card-item-section-title q-mb-sm">
+                            <q-icon name="style"/>
+                            Shorthand
+                        </div>
+                        <q-chip color="primary" class="q-mr-sm" v-for="(tag, idx) in card.shorthand" :key="idx">
+                            {{tag}}
+                        </q-chip>
+                    </div>
+
+                    <div class="card-item-section" v-if="this.card.links">
                         <div class="card-item-section-title">
                             <q-icon name="link"/>
                             Links
                         </div>
-                        <div class="card-item-section-content" v-html="links"></div>
+                        <div class="card-item-section-content">
+                            <component v-for="link in this.card.links" :key="link.id" :is="linkEl(link.url)" :to="localPath(link.url)" :href="link.url" target="_blank">{{link.name}}</component>
+                        </div>
                     </div>
 
-                    <div class="card-item-section" v-if="collections">
+                    <div class="card-item-section" v-if="this.card.collections">
                         <div class="card-item-section-title">
                             <q-icon name="folder_open"/>
                             Collections
                         </div>
-                        <div class="card-item-section-content" v-html="collections"></div>
+                        <div class="card-item-section-content">
+                            <router-link v-for="collection in this.card.collections" :key="collection.id" :to="{name:'collection_cards', params: {name: collection.name}}">#{{collection.name}}</router-link>
+                        </div>
                     </div>
 
                     <div class="card-item-history">
@@ -104,14 +118,6 @@
         created() {
             this.load(this.id).then(data => this.card = data);
         },
-        computed: {
-            links() {
-                return this.card.links.map(link => `<a href="${link.url}">${link.name}</a>`).join(', ')
-            },
-            collections() {
-                return this.card.collections.map(collection => `<a href="#">#${collection.name}</a>`).join(', ')
-            }
-        },
         components: {
             AppModalLayout
         },
@@ -125,6 +131,16 @@
                     return this.$router.push({name: 'cards_list'})
                 }
                 this.$router.push(path)
+            },
+            linkEl(path) {
+                const domain = 'https://i.wonderus.app';
+                if (path.indexOf(domain) !== -1) {
+                    return 'router-link'
+                }
+                return 'a'
+            },
+            localPath(path) {
+                return path.replace('https://i.wonderus.app', '')
             },
             redirect(link) {
                 openURL(link)
@@ -175,6 +191,9 @@
             color: #757575;
             font-style: italic;
             text-decoration: none;
+            + a:before {
+                content: ', '
+            }
         }
     }
 

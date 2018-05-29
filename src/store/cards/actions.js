@@ -3,6 +3,7 @@ import CardCollectionResource from '../../resources/card/CardCollectionResource'
 
 export const all = ({commit}, params) => {
     return new Promise((resolve, reject) => {
+        commit('set', []);
         commit('allStatusRequest');
         CardResource.all(params).then(req => {
             commit('allStatusSuccess', req);
@@ -72,6 +73,7 @@ export const hints = ({commit}, params) => {
 
 export const search = ({commit}, params) => {
     return new Promise((resolve, reject) => {
+        commit('set', []);
         commit('searchStatusRequest');
         CardResource.search(params).then(req => {
             commit('searchStatusSuccess', req);

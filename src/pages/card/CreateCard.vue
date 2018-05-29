@@ -16,6 +16,9 @@
                     <q-input v-model="form.description" type="textarea" float-label="Short Description"/>
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
+                    <q-chips-input v-model="form.shorthand" float-label="Shorthand"/>
+                </q-field>
+                <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
                     <strong>Links</strong><br/>
                     <div class="row gutter-sm" v-for="(link, idx) in links" :key="idx">
                         <q-field class="col-xs-6">
@@ -57,6 +60,7 @@
                 form: {
                     team_id: '',
                     name: '',
+                    shorthand: [],
                     description: '',
                     collections: [],
                 },
