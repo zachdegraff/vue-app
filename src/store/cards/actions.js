@@ -1,4 +1,5 @@
 import CardResource from '../../resources/card/CardResource'
+import CardNoteResource from '../../resources/card/CardNoteResource'
 import CardCollectionResource from '../../resources/card/CardCollectionResource'
 
 export const all = ({commit}, params) => {
@@ -15,12 +16,8 @@ export const all = ({commit}, params) => {
     });
 };
 
-export const get = ({getters, commit}, id) => {
+export const get = ({commit}, id) => {
     return new Promise((resolve, reject) => {
-        const card = getters.getById(id);
-        if (card !== undefined) {
-            return resolve(card)
-        }
         commit('getStatusRequest');
         CardResource.get(id).then(req => {
             commit('getStatusSuccess', req);
@@ -58,6 +55,14 @@ export const update = ({commit}, {id, form}) => {
     })
 };
 
+export const remove = ({}, id) => {
+    return new Promise((resolve, reject) => {
+        CardResource.delete(id).then(({data}) => {
+            resolve(data)
+        }).catch(err => reject(err))
+    })
+};
+
 export const hints = ({commit}, params) => {
     return new Promise((resolve, reject) => {
         commit('hintsStatusRequest');
@@ -89,6 +94,22 @@ export const collections = ({}, id) => {
     return new Promise((resolve, reject) => {
         CardCollectionResource.teamCollections(id)
             .then(({data}) => resolve(data.data))
+            .catch(err => reject(err))
+    })
+};
+
+export const getNote = ({}, id) => {
+    return new Promise((resolve, reject) => {
+        CardNoteResource.get(id)
+            .then(({data}) => resolve(data.data))
+            .catch(err => reject(err))
+    })
+};
+
+export const storeNote = ({}, {id, note}) => {
+    return new Promise((resolve, reject) => {
+        CardNoteResource.store(id, {note})
+            .then(({data}) => resolve(data))
             .catch(err => reject(err))
     })
 };

@@ -47,7 +47,7 @@
             params(terms) {
                 let params = {terms};
                 if (this.team !== null) {
-                    params['team_id'] = this.team.id
+                    params['teamId'] = this.team.id
                 }
                 return params
             }

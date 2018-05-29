@@ -10,7 +10,7 @@
                         <span slot="subtitle" v-if="item.team">{{item.team.name}}</span></q-card-title>
                     <q-card-main>
                         <q-chip class="q-mr-sm" color="primary" v-for="(tag, index) in item.shorthand" :key="index">{{tag}}</q-chip>
-                        <p class="text-faded q-mt-md" v-html="item.description"></p>
+                        <p class="text-faded q-mt-md cards-list-item-description" v-html="item.description"></p>
                     </q-card-main>
                     <q-card-separator/>
                     <q-card-actions align="end">
@@ -51,5 +51,10 @@
     .cards-list {
         position: relative;
         margin-top: -50px;
+    }
+    .cards-list-item-description {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 </style>

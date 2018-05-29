@@ -6,8 +6,8 @@
                 <q-btn flat icon="close" @click="isOpen=false" class="float-right"/>
             </q-toolbar>
             <div class="row q-py-xl gutter-md flex-center">
-                <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10" :error="$v.form.team_id.$error" :error-label="firstErrorFor($v.form.team_id)">
-                    <q-select v-model="form.team_id" float-label="Team" :options="options" @change="$v.form.team_id.$touch"/>
+                <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10" :error="$v.form.teamId.$error" :error-label="firstErrorFor($v.form.teamId)">
+                    <q-select v-model="form.teamId" float-label="Team" :options="options" @change="$v.form.teamId.$touch"/>
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10" :error="$v.form.name.$error" :error-label="firstErrorFor($v.form.name)">
                     <q-input v-model="form.name" float-label="Name" @blur="$v.form.name.$touch"/>
@@ -58,7 +58,7 @@
         data: () => {
             return {
                 form: {
-                    team_id: '',
+                    teamId: '',
                     name: '',
                     shorthand: [],
                     description: '',
@@ -83,7 +83,7 @@
         },
         validations: {
             form: {
-                team_id: {
+                teamId: {
                     required
                 },
                 name: {
@@ -92,7 +92,7 @@
             }
         },
         watch: {
-            'form.team_id': function (val) {
+            'form.teamId': function (val) {
                 this.loadTeamCollections(val).then(items => {
                     this.collections.list = items.map(item => {
                         return {label: item.name}
@@ -100,12 +100,12 @@
                 })
             },
             team: function (val) {
-                this.form.team_id = val.id
+                this.form.teamId = val.id
             }
         },
         created() {
             if (this.team !== null) {
-                this.form.team_id = this.team.id
+                this.form.teamId = this.team.id
             }
             CardResource.teams().then(({data}) => {
                 this.options = data.data.map(team => {

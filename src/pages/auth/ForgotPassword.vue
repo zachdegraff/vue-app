@@ -8,14 +8,12 @@
 
             <div class="row q-pa-xl flex-center">
                 <div class="card-content col-xs-12">
-                    <form @submit.prevent="submit">
-                        <q-field class="q-py-sm" :error="$v.email.$error" :error-label="firstErrorFor($v.email)">
-                            <q-input type="text" float-label="Email" v-model="email" @blur="$v.email.$touch"/>
-                        </q-field>
-                        <div class="q-pt-lg text-center">
-                            <q-btn color="primary" label="restore" :disabled="isProcessing"/>
-                        </div>
-                    </form>
+                    <q-field class="q-py-sm" :error="$v.email.$error" :error-label="firstErrorFor($v.email)">
+                        <q-input type="text" float-label="Email" v-model="email" @click="submit" @blur="$v.email.$touch"/>
+                    </q-field>
+                    <div class="q-pt-lg text-center">
+                        <q-btn color="primary" label="restore" :disabled="isProcessing"/>
+                    </div>
                 </div>
             </div>
         </app-modal-layout>

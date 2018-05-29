@@ -1,6 +1,6 @@
 <template>
     <div class="row flex-center q-mt-lg">
-        <q-spinner :size="36" color="red" v-show="isLoading"></q-spinner>
+        <q-spinner :size="50" color="red" v-show="isLoading"></q-spinner>
     </div>
 </template>
 <script>
@@ -22,7 +22,7 @@
             }
         },
         created() {
-
+            this.filter(this.params())
         },
         methods: {
             ...mapActions({
@@ -31,7 +31,7 @@
             params() {
                 let params = {collection: this.collection};
                 if (this.team !== null) {
-                    params['team_id'] = this.team.id
+                    params['teamId'] = this.team.id
                 }
                 return params
             }

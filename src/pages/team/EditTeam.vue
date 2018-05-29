@@ -6,8 +6,8 @@
                 <q-btn flat icon="close" @click="isOpen=false" class="float-right"/>
             </q-toolbar>
             <div class="row q-py-xl gutter-md flex-center">
-                <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <q-input v-model="model.name" float-label="Name"/>
+                <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10" :error="$v.model.name.$error" :error-label="firstErrorFor($v.model.name)">
+                    <q-input v-model="model.name" float-label="Name" @blur="$v.model.name.$touch"/>
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
                     <q-input v-model="model.organization" float-label="Name"/>
@@ -25,6 +25,8 @@
 </template>
 <script>
     import AppModalLayout from '../../components/context/modal/AppModalLayout'
+    import ValidatorMessages from '../../mixins/ValidatorMessages'
+    import {required} from 'vuelidate/lib/validators'
     import {mapActions, mapGetters} from 'vuex'
 
     export default {
@@ -46,6 +48,14 @@
         created() {
             this.load(this.id).then(data => this.model = data);
         },
+        mixins: [ValidatorMessages],
+        validations: {
+            model: {
+                name: {
+                    required
+                }
+            }
+        },
         computed: {
             ...mapGetters({
                 isProcessing: 'teams/isUpdating'
@@ -60,6 +70,11 @@
                 update: 'teams/update'
             }),
             save() {
+                this.$v.model.$touch();
+                if (this.$v.model.$error) {
+                    return
+                }
+
                 this.update({id: this.id, model: this.prepare()}).then(() => {
                     this.$router.push({name: 'view_team', params: {id: this.id}})
                 });

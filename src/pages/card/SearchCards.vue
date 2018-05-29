@@ -1,6 +1,6 @@
 <template>
     <div class="row flex-center q-mt-lg">
-        <q-spinner :size="36" style="color: #027be3ff" v-show="isLoading"></q-spinner>
+        <q-spinner :size="36" color="red" v-show="isLoading"></q-spinner>
     </div>
 </template>
 <script>
@@ -34,7 +34,7 @@
             params(query = null) {
                 let params = {query: query || this.query};
                 if (this.team !== null) {
-                    params['team_id'] = this.team.id
+                    params['teamId'] = this.team.id
                 }
                 return params
             }

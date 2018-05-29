@@ -22,6 +22,10 @@ export default class CardResource {
         return Resource.post(`/cards/${id}`, attr);
     }
 
+    static delete(id) {
+        return Resource.delete(`/cards/${id}`);
+    }
+
     static hints(params) {
         return Resource.get('/cards/hints', {params})
     }

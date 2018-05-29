@@ -23,7 +23,7 @@
             const hash = localStorage.getItem('join-token');
             if (hash !== null) {
                 this.join(hash).then(data => {
-                    this.$router.push({name: 'view_team', params: {id: data.member.team_id}})
+                    this.$router.push({name: 'view_team', params: {id: data.member.teamId}})
                 })
             }
         },

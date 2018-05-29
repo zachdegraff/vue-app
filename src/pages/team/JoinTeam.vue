@@ -21,7 +21,7 @@
         mounted() {
             if (this.accessToken) {
                 return this.join(this.hash).then(member => {
-                    this.$router.push({name: 'view_team', params: {id: member.team_id}})
+                    this.$router.push({name: 'view_team', params: {id: member.teamId}})
                 })
             }
             localStorage.setItem('join-token', this.hash);

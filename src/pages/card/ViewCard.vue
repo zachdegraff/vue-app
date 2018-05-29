@@ -28,29 +28,29 @@
                         </q-chip>
                     </div>
 
-                    <div class="card-item-section" v-if="this.card.links">
+                    <div class="card-item-section" v-if="card.links.length > 0">
                         <div class="card-item-section-title">
                             <q-icon name="link"/>
                             Links
                         </div>
                         <div class="card-item-section-content">
-                            <component v-for="link in this.card.links" :key="link.id" :is="linkEl(link.url)" :to="localPath(link.url)" :href="link.url" target="_blank">{{link.name}}</component>
+                            <component v-for="link in card.links" :key="link.id" :is="linkEl(link.url)" :to="localPath(link.url)" :href="link.url" target="_blank">{{link.name}}</component>
                         </div>
                     </div>
 
-                    <div class="card-item-section" v-if="this.card.collections">
+                    <div class="card-item-section" v-if="card.collections.length > 0">
                         <div class="card-item-section-title">
                             <q-icon name="folder_open"/>
                             Collections
                         </div>
                         <div class="card-item-section-content">
-                            <router-link v-for="collection in this.card.collections" :key="collection.id" :to="{name:'collection_cards', params: {name: collection.name}}">#{{collection.name}}</router-link>
+                            <router-link v-for="collection in card.collections" :key="collection.id" :to="{name:'collection_cards', params: {name: collection.name}}">#{{collection.name}}</router-link>
                         </div>
                     </div>
 
                     <div class="card-item-history">
-                        <span>Created by John Doe on 05/12/2018</span><br/>
-                        <span>Last updated by John Doe on 05/12/2018</span>
+                        <span>{{createdBy}}</span><br/>
+                        <span>{{updatedBy}}</span>
                     </div>
 
                     <div class="card-mobile-actions lt-sm">
@@ -82,15 +82,15 @@
                         <q-btn icon="bookmark_border" flat/>
                         <q-btn icon="help" flat/>
                         <q-btn icon="content_copy" flat/>
-                        <q-btn icon="edit" flat @click="$router.push({name:'edit_card', params: {id}})"/>
-                        <q-btn icon="delete" flat/>
+                        <q-btn icon="edit" flat @click="$router.push({name:'edit_card', params: {id}})" v-show="card.canUpdate"/>
+                        <q-btn icon="delete" flat @click="flush" v-show="card.canRemove"/>
                     </div>
                     <div class="card-item-image">
                         <img :src="card.thumb" v-if="card.thumb"/>
                     </div>
                     <div class="card-item-note">
                         <div class="card-item-note-title">private note</div>
-                        <div>This is a note written by the user for this card</div>
+                        <q-input v-model="note" type="textarea" placeholder="Click to add a private note" @blur="saveNote"/>
                     </div>
                 </div>
             </div>
@@ -99,8 +99,8 @@
 </template>
 <script>
     import AppModalLayout from '../../components/context/modal/AppModalLayout'
-    import {mapActions} from 'vuex'
-    import {openURL} from 'quasar'
+    import {mapActions, mapGetters} from 'vuex'
+    import {openURL, date} from 'quasar'
 
 
     export default {
@@ -112,25 +112,64 @@
         data: () => {
             return {
                 card: null,
+                note: '',
                 isOpen: true
             }
         },
         created() {
             this.load(this.id).then(data => this.card = data);
+            this.loadNote(this.id).then(data => this.note = data.note)
+        },
+        computed: {
+            ...mapGetters({
+                prevRoute: 'route/previous'
+            }),
+            createdBy() {
+                if (!this.card) {
+                    return '';
+                }
+                return `Created by ${this.card.user.fullName} on ${this.card.createdAt}`
+            },
+            updatedBy() {
+                if (!this.card || !this.card.lastChange) {
+                    return '';
+                }
+                return `Last updated by ${this.card.lastChange.user.fullName} on ${this.card.lastChange.createdAt}`;
+            }
         },
         components: {
             AppModalLayout
         },
         methods: {
             ...mapActions({
-                load: 'cards/get'
+                load: 'cards/get',
+                remove: 'cards/remove',
+                loadNote: 'cards/getNote',
+                storeNote: 'cards/storeNote',
             }),
             close() {
-                const path = this.$store.getters['route/previous'];
+                const path = this.prevRoute;
                 if (path === null) {
                     return this.$router.push({name: 'cards_list'})
                 }
                 this.$router.push(path)
+            },
+            confirm() {
+                return this.$q.dialog({
+                    title: 'Prompt',
+                    message: 'Are you sure?',
+                    cancel: true,
+                    color: 'secondary'
+                });
+            },
+            flush() {
+                this.confirm().then(() => {
+                    this.remove(this.id).then(this.close)
+                }).catch(() => {
+                })
+            },
+            saveNote() {
+                this.storeNote({id: this.id, note: this.note})
             },
             linkEl(path) {
                 const domain = 'https://i.wonderus.app';
@@ -169,6 +208,7 @@
         line-height: 1.5;
         font-size: .9rem;
         margin-bottom: 40px;
+        white-space: pre-line;
     }
 
     .card-item-section {
@@ -232,14 +272,6 @@
     .card-item-note-title {
         text-transform: uppercase;
         margin-bottom: 10px;
-    }
-
-    .card-content {
-        position: relative;
-    }
-
-    .card-description {
-        white-space: pre-line;
     }
 
     .card-mobile-actions {

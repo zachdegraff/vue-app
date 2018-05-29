@@ -6,14 +6,14 @@
                 <q-btn flat icon="close" @click="isOpen=false" class="float-right"/>
             </q-toolbar>
             <div class="row q-py-xl flex-center">
-                <form @submit.prevent="submit" class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
+                <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
                     <q-field class="q-py-sm" :error="$v.form.email.$error" :error-label="firstErrorFor($v.form.email)">
                         <q-input type="text" float-label="Email" v-model="form.email" @blur="$v.form.email.$touch"/>
                     </q-field>
                     <div class="q-pt-lg text-center">
-                        <q-btn color="primary" label="invite" :disabled="isProcessing"/>
+                        <q-btn color="primary" label="invite" @click="submit" :disabled="isProcessing"/>
                     </div>
-                </form>
+                </div>
             </div>
         </app-modal-layout>
     </q-modal>
@@ -63,6 +63,10 @@
                 this.$router.push({name: 'view_team', params: {id: this.id}})
             },
             submit() {
+                this.$v.form.$touch();
+                if (this.$v.form.$error) {
+                    return
+                }
                 this.invite({id: this.id, params: this.form}).then(data => {
                     this.$router.push({name: 'view_team', params: {id: this.id}})
                 })
