@@ -96,7 +96,7 @@
                 disableSlackIntegration: 'teams/disableSlack'
             }),
             slack() {
-                window.location = `https://slack.com/oauth/authorize?client_id=${SLACK_CLIENT_ID}&scope=commands&state=${this.id}`;
+                window.location = 'https://slack.com/oauth/authorize?client_id=' + SLACK_CLIENT_ID + '&scope=commands&state=' + this.id;
             },
             photo(path) {
                 if (!path) {
