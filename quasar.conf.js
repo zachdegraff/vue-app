@@ -28,10 +28,10 @@ module.exports = function (ctx) {
             env: ctx.dev
                 ? {
                     API_HOST: JSON.stringify('http://wonderus'),
-                    SLACK_CLIENT_ID: '371875442850.371336699377'
+                    SLACK_CLIENT_ID: JSON.stringify('371875442850.371336699377')
                 } : {
                     API_HOST: JSON.stringify('https://api.wonderus.app'),
-                    SLACK_CLIENT_ID: '371875442850.371336699377'
+                    SLACK_CLIENT_ID: JSON.stringify('371875442850.371336699377')
                 },
             // gzip: true,
             // analyze: true,
