@@ -31,7 +31,7 @@ module.exports = function (ctx) {
                     SLACK_CLIENT_ID: JSON.stringify('371875442850.371336699377')
                 } : {
                     API_HOST: JSON.stringify('https://api.wonderus.app'),
-                    SLACK_CLIENT_ID: JSON.stringify('371875442850.371336699377')
+                    SLACK_CLIENT_ID: JSON.stringify('372369379348.372595746706')
                 },
             // gzip: true,
             // analyze: true,
