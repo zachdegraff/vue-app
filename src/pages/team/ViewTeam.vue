@@ -31,12 +31,17 @@
             </q-table>
             <div class="q-mt-xl">
                 <q-btn size="lg" label="Invite new member" color="primary" @click="invite"/>
+
+                <q-btn size="lg" label="Connect with Slack" color="white" class="text-black q-ml-md" @click="slack" v-if="!hasSlackIntegration"/>
+                <q-btn size="lg" label="Disable Slack" color="red" class="q-ml-md" @click="disableSlack" v-if="hasSlackIntegration"/>
             </div>
         </div>
     </q-page>
 </template>
 <script>
     import {mapActions, mapGetters} from 'vuex'
+
+    const SLACK_CLIENT_ID = process.env.SLACK_CLIENT_ID;
 
     export default {
         props: {
@@ -73,15 +78,26 @@
         computed: {
             ...mapGetters({
                 isLoading: 'teams/isMembersLoading'
-            })
+            }),
+            hasSlackIntegration() {
+                if (!this.team) {
+                    return false;
+                }
+
+                return this.team.integrations.find(i => i.service === 'slack') !== undefined;
+            }
         },
         methods: {
             ...mapActions({
                 load: 'teams/get',
                 loadMembers: 'teams/members',
+                excludeMember: 'teams/exclude',
                 retryInvitation: 'teams/retryInvitation',
-                excludeMember: 'teams/exclude'
+                disableSlackIntegration: 'teams/disableSlack'
             }),
+            slack() {
+                window.location = `https://slack.com/oauth/authorize?client_id=${SLACK_CLIENT_ID}&scope=commands&state=${this.id}`;
+            },
             photo(path) {
                 if (!path) {
                     return 'statics/team.png'
@@ -91,6 +107,14 @@
             invite() {
                 this.$router.push({name: 'invite_member', params: {id: this.id}});
             },
+            disableSlack() {
+                this.$q.dialog({title: 'Confirm', message: 'Are you sure?', ok: 'Yes', cancel: 'No'}).then(() => {
+                    this.disableSlackIntegration(this.id).then(() => {
+                        this.load(this.id).then(team => this.team = team)
+                    })
+                }).catch(() => {
+                })
+            },
             reSendInvite(memberId) {
                 this.retryInvitation(memberId)
             },
@@ -99,7 +123,8 @@
                     this.excludeMember(memberId).then(() => {
                         this.loadMembers(this.id).then(members => this.members = members)
                     })
-                }).catch(() => {})
+                }).catch(() => {
+                })
             }
         }
     }

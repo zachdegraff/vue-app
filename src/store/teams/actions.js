@@ -160,3 +160,19 @@ export const setCurrentTeam = ({dispatch, commit}, id) => {
 
     dispatch('get', id).then(team => commit('changeCurrentTeam', team));
 };
+
+export const addSlackIntegration = ({}, {id, code}) => {
+    return new Promise((resolve, reject) => {
+        TeamResource.slack(id, code)
+            .then(req => resolve(req.data))
+            .catch(err => reject(err))
+    })
+};
+
+export const disableSlack = ({}, id) => {
+    return new Promise((resolve, reject) => {
+        TeamResource.disableSlack(id)
+            .then(req => resolve(req.data))
+            .catch(err => reject(err))
+    })
+};

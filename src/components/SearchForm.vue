@@ -42,7 +42,10 @@
                 }).catch(() => done([]));
             },
             selected(item) {
-                this.$router.push({name: 'view_card', params: {id: item.id}})
+                if (item.type === 'card') {
+                    return this.$router.push({name: 'view_card', params: {id: item.id}});
+                }
+                return this.$router.push({name: 'collection_cards', params: {name: item.name}});
             },
             params(terms) {
                 let params = {terms};

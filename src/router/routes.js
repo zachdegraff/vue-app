@@ -51,6 +51,14 @@ export default [
         ]
     },
     {
+        path: '/slack/',
+        component: () => import('layouts/ClearLayout.vue'),
+        beforeEnter: ifAuthenticated,
+        children: [
+            {path: 'redirect', name: 'slack_redirect', component: () => import('pages/slack/SlackRedirect.vue')}
+        ]
+    },
+    {
         path: '/cards/',
         component: () => import('layouts/CardLayout.vue'),
         beforeEnter: ifAuthenticated,

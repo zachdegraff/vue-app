@@ -25,4 +25,14 @@ export default class TeamResource {
     static members(id) {
         return Resource.get(`/teams/${id}/members`);
     }
+
+    static slack(id, code) {
+        return Resource.post(`/teams/${id}/slack`, {code});
+    }
+
+    static disableSlack(id) {
+        return Resource.delete(`/teams/${id}/slack`);
+    }
+
+
 }

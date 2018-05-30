@@ -27,9 +27,11 @@ module.exports = function (ctx) {
             publicPath: '/',
             env: ctx.dev
                 ? {
-                    API_HOST: JSON.stringify('http://wonderus')
+                    API_HOST: JSON.stringify('http://wonderus'),
+                    SLACK_CLIENT_ID: '371875442850.371336699377'
                 } : {
-                    API_HOST: JSON.stringify('https://api.wonderus.app')
+                    API_HOST: JSON.stringify('https://api.wonderus.app'),
+                    SLACK_CLIENT_ID: '371875442850.371336699377'
                 },
             // gzip: true,
             // analyze: true,
