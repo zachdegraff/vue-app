@@ -43,11 +43,14 @@
                     </q-chips-input>
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <img :src="form.thumb" class="round-borders" width="200px" v-if="form.thumb"/>
+                    <div class="edit-card-image-container" v-if="form.thumb" v-show="!flushImage">
+                        <img :src="form.thumb" class="round-borders" width="200px"/><br/>
+                        <q-btn round color="red" size="xs" icon="delete" class="edit-card-image-remove-btn" @click="flushImage = true"/>
+                    </div>
                     <q-uploader url="" float-label="Image" hide-upload-button @add="chooseFile" @remove:cancel="cancelFile" :disable="isProcessing" extensions=".jpg,.jpeg,.png"/>
                 </q-field>
                 <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <q-btn @click="save" color="primary" class="q-mt-lg" :disable="isProcessing">SAVE</q-btn>
+                    <q-btn @click="save" color="primary" label="save" class="q-mt-lg" :disable="isProcessing"/>
                 </div>
             </div>
         </app-modal-layout>
@@ -72,6 +75,7 @@
                 file: null,
                 links: [],
                 options: [],
+                flushImage: false,
                 collections: {field: 'label', list: []},
                 isOpen: true
             }
@@ -142,6 +146,7 @@
                     data.append(i, this.form[i])
                 }
                 data.append('_method', 'PUT');
+                data.append('flushImage', JSON.stringify(this.flushImage));
                 data.append('links', JSON.stringify(this.links));
                 if (this.file !== null) {
                     data.append('file', this.file);
@@ -156,7 +161,18 @@
             },
             addLink() {
                 this.links.push({name: '', url: ''})
-            }
+            },
         }
     }
 </script>
+<style lang="scss">
+    .edit-card-image-container {
+        position: relative;
+    }
+
+    .edit-card-image-remove-btn {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+    }
+</style>
