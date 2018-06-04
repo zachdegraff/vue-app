@@ -33,4 +33,8 @@ export default class CardResource {
     static search(params) {
         return Resource.get('/cards/search', {params})
     }
+
+    static cardsHints(params) {
+        return Resource.get('/cards/cards-hints', {params})
+    }
 }

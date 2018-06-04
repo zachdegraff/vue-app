@@ -16,7 +16,7 @@
                 <div class="col-xs-12 col-sm-5 col-md-6 col-lg-7">
                     <div class="card-item-team" v-if="card.team">{{card.team.name}}</div>
                     <div class="card-item-name">{{card.name}}</div>
-                    <div class="card-item-description">{{card.description}}</div>
+                    <div class="card-item-description" v-html="formatDescription()"></div>
 
                     <div class="card-item-section" v-if="card.shorthand.length > 0">
                         <div class="card-item-section-title q-mb-sm">
@@ -100,7 +100,9 @@
 <script>
     import AppModalLayout from '../../components/context/modal/AppModalLayout'
     import {mapActions, mapGetters} from 'vuex'
+    import {formatContent} from "../../helpers"
     import {openURL, date} from 'quasar'
+    import Vue from 'vue'
 
 
     export default {
@@ -183,6 +185,9 @@
             },
             redirect(link) {
                 openURL(link)
+            },
+            formatDescription() {
+                return formatContent(this.card.description)
             }
         }
     }

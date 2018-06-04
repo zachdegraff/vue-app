@@ -76,6 +76,19 @@ export const hints = ({commit}, params) => {
     })
 };
 
+export const cardsHints = ({commit}, params) => {
+    return new Promise((resolve, reject) => {
+        commit('hintsStatusRequest');
+        CardResource.cardsHints(params).then(req => {
+            commit('hintsStatusSuccess', req);
+            resolve(req.data)
+        }).catch(err => {
+            commit('hintsStatusFailure', err);
+            reject(err)
+        })
+    })
+};
+
 export const search = ({commit}, params) => {
     return new Promise((resolve, reject) => {
         commit('set', []);

@@ -62,6 +62,7 @@ module.exports = function (ctx) {
                 'QIcon',
                 'QChip',
                 'QField',
+                'QEditor',
                 'QInput',
                 'QSelect',
                 'QChipsInput',
@@ -90,7 +91,8 @@ module.exports = function (ctx) {
                 'QTh',
                 'QTr',
                 'QTd',
-                'QTableColumns'
+                'QTableColumns',
+                'QTooltip',
             ],
             directives: [
                 'Ripple', 'CloseOverlay'
