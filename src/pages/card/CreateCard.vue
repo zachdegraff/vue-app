@@ -12,8 +12,9 @@
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10" :error="$v.form.name.$error" :error-label="firstErrorFor($v.form.name)">
                     <q-input v-model="form.name" float-label="Name" @blur="$v.form.name.$touch"/>
                 </q-field>
-                <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <q-input v-model="form.description" type="textarea" float-label="Short Description"/>
+                <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10 relative-position">
+                    <q-input v-model="form.description" type="textarea" float-label="Short Description" @mouseup.native="toggleEditorTools"/>
+                    <editor-tools :target="selection" @format="changeFormatting"/>
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
                     <q-chips-input v-model="form.shorthand" float-label="Shorthand"/>
@@ -49,6 +50,7 @@
     import AppModalLayout from '../../components/context/modal/AppModalLayout'
     import ValidatorMessages from '../../mixins/ValidatorMessages'
     import CardResource from '../../resources/card/CardResource'
+    import EditorTools from '../../components/EditorTools'
     import {required} from 'vuelidate/lib/validators'
     import {mapActions, mapGetters} from 'vuex'
     import {filter} from 'quasar'
@@ -67,6 +69,7 @@
                 file: null,
                 links: [],
                 options: [],
+                selection: null,
                 collections: {field: 'label', list: []},
                 isOpen: true
             }
@@ -79,7 +82,7 @@
             })
         },
         components: {
-            AppModalLayout
+            AppModalLayout, EditorTools
         },
         validations: {
             form: {
@@ -140,14 +143,20 @@
                 }
                 return data
             },
+            addLink() {
+                this.links.push({name: '', url: ''})
+            },
             chooseFile(files) {
                 this.file = files[0]
             },
             cancelFile() {
                 this.file = null
             },
-            addLink() {
-                this.links.push({name: '', url: ''})
+            toggleEditorTools(e) {
+                this.selection = e
+            },
+            changeFormatting(e) {
+                this.form.description = e.content
             }
         }
     }

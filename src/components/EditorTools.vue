@@ -146,15 +146,16 @@
 </script>
 <style lang="scss">
     .editor-tools-tooltip {
-        position: absolute;
-        color: #fafafa;
-        -webkit-box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px rgba(0, 0, 0, 0.14), 0 1px 18px rgba(0, 0, 0, 0.12);
-        z-index: 9000;
         background: #747474;
-        padding: 10px;
         border-radius: 2px;
+        color: #fafafa;
+        min-width: 130px;
+        padding: 10px;
+        position: absolute;
         overflow-y: auto;
         overflow-x: hidden;
+        -webkit-box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px rgba(0, 0, 0, 0.14), 0 1px 18px rgba(0, 0, 0, 0.12);
+        z-index: 9000;
         .q-btn {
             padding: 4px 10px;
         }

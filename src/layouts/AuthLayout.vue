@@ -25,8 +25,8 @@
                             </q-card-main>
                             <q-card-separator/>
                             <q-card-actions align="between">
-                                <q-btn label="Submit" color="primary" @click="submit" :disabled="isProcessing"/>
                                 <q-btn label="Register" color="white text-black" @click.prevent="$router.push({name:'register_user'})"/>
+                                <q-btn label="Submit" color="primary" @click="submit" :disabled="isProcessing"/>
                             </q-card-actions>
                         </q-card>
                     </div>

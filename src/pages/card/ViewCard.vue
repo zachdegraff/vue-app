@@ -99,10 +99,9 @@
 </template>
 <script>
     import AppModalLayout from '../../components/context/modal/AppModalLayout'
+    import Markdown from '../../mixins/Markdown'
     import {mapActions, mapGetters} from 'vuex'
-    import {formatContent} from "../../helpers"
     import {openURL, date} from 'quasar'
-    import Vue from 'vue'
 
 
     export default {
@@ -122,6 +121,7 @@
             this.load(this.id).then(data => this.card = data);
             this.loadNote(this.id).then(data => this.note = data.note)
         },
+        mixins: [Markdown],
         computed: {
             ...mapGetters({
                 prevRoute: 'route/previous'
@@ -187,7 +187,7 @@
                 openURL(link)
             },
             formatDescription() {
-                return formatContent(this.card.description)
+                return this.markTags(this.card.description)
             }
         }
     }

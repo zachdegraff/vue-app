@@ -10,7 +10,7 @@
                         <span slot="subtitle" v-if="item.team">{{item.team.name}}</span></q-card-title>
                     <q-card-main>
                         <q-chip class="q-mr-sm" color="primary" v-for="(tag, index) in item.shorthand" :key="index">{{tag}}</q-chip>
-                        <p class="text-faded q-mt-md cards-list-item-description" v-html="item.description"></p>
+                        <p class="text-faded q-mt-md cards-list-item-description" v-html="clearMarks(item.description)"></p>
                     </q-card-main>
                     <q-card-separator/>
                     <q-card-actions align="end">
@@ -28,12 +28,14 @@
     import AppHeader from '../components/context/AppHeader.vue'
     import AppFooter from '../components/context/AppFooter.vue'
     import SearchForm from '../components/SearchForm.vue'
+    import Markdown from '../mixins/Markdown'
     import {mapGetters} from 'vuex'
 
     export default {
         data: () => {
             return {}
         },
+        mixins: [Markdown],
         computed: {
             ...mapGetters({
                 'items': 'cards/items'
