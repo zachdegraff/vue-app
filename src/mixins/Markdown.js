@@ -4,8 +4,8 @@ const Markdown = {
     methods: {
         markTags(content) {
             let result = content
-                .replace(/\*([^*]*)\*/g, '<strong>$1</strong>')
-                .replace(/_([^_]*)_/g, '<em>$1</em>');
+                .replace(/([\s\.,\'\"]+)\*([^*]*)\*([\s\.,\'\"]+)/g, '$1<strong>$2</strong>$3')
+                .replace(/([\s\.,\'\"]+)_([^_]*)_([\s\.,\'\"]+)/g, '$1<em>$2</em>$3');
 
 
             const matches = result.match(/<([^<]*)\|([^<]*)>/g);
@@ -25,8 +25,8 @@ const Markdown = {
         clearMarks(content) {
             if (content === null) return '';
             return content
-                .replace(/\*(.*)\*/g, '$1')
-                .replace(/_(.*)_/g, '$1')
+                .replace(/([\s\.,\'\"]+)\*([^*]*)\*([\s\.,\'\"]+)/g, '$1$2$3')
+                .replace(/([\s\.,\'\"]+)_([^_]*)_([\s\.,\'\"]+)/g, '$1$2$3')
                 .replace(/<([^<]*)\|([^<]*)>/g, '$2');
         }
     }
