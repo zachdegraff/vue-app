@@ -1,4 +1,4 @@
-const API_HOST = process.env.API_HOST;
+const APP_HOST = process.env.APP_HOST;
 
 const Markdown = {
     methods: {
@@ -14,13 +14,13 @@ const Markdown = {
             }
             matches.forEach(i => {
                 let tmpl = '<a href="$1" target="_blank">$2</a>';
-                if (i.indexOf(API_HOST) !== -1) {
+                if (i.indexOf(APP_HOST) !== -1) {
                     //tmpl = '<router-link to="$1">$2</router-link>'
                     tmpl = '<a href="$1">$2</a>'
                 }
                 result = result.replace(i, i.replace(/<(.*)\|(.*)>/, tmpl))
             });
-            return result.replace(API_HOST, '');
+            return result.replace(APP_HOST, '');
         },
         clearMarks(content) {
             if (content === null) return '';

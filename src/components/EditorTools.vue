@@ -21,7 +21,7 @@
 <script>
     import {mapActions, mapGetters} from 'vuex'
 
-    const API_HOST = process.env.API_HOST;
+    const APP_HOST = process.env.APP_HOST;
 
     export default {
         props: ['target'],
@@ -129,7 +129,7 @@
                         return {
                             ...item,
                             label: item.name,
-                            value: API_HOST + '/cards/' + item.id
+                            value: APP_HOST + '/cards/' + item.id
                         };
                     });
                     done(result);
