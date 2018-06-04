@@ -23,6 +23,7 @@ const Markdown = {
             return result.replace(API_HOST, '');
         },
         clearMarks(content) {
+            if (content === null) return '';
             return content
                 .replace(/\*(.*)\*/g, '$1')
                 .replace(/_(.*)_/g, '$1')
