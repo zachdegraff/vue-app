@@ -4,8 +4,8 @@ const Markdown = {
     methods: {
         markTags(content) {
             let result = content
-                .replace(/\*(.*)\*/g, '<strong>$1</strong>')
-                .replace(/_(.*)_/g, '<em>$1</em>');
+                .replace(/\*([^*]*)\*/g, '<strong>$1</strong>')
+                .replace(/_([^_]*)_/g, '<em>$1</em>');
 
 
             const matches = result.match(/<([^<]*)\|([^<]*)>/g);
