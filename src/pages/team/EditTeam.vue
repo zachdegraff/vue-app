@@ -46,7 +46,10 @@
             }
         },
         created() {
-            this.load(this.id).then(data => this.model = data);
+            this.load(this.id).then(data => {
+                this.model = data;
+                document.title = `Editing ${data.name} team - Wonderus`
+            });
         },
         mixins: [ValidatorMessages],
         validations: {

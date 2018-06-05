@@ -56,6 +56,7 @@
             AppModalLayout
         },
         created() {
+            document.title = 'Change member role - Wonderus';
             this.loadMember(this.memberId).then(member => this.role = member.role)
         },
         methods: {

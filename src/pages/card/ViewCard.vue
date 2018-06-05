@@ -118,14 +118,19 @@
             }
         },
         created() {
+            document.title = this.title;
             this.load(this.id).then(data => this.card = data);
             this.loadNote(this.id).then(data => this.note = data.note)
         },
         mixins: [Markdown],
         computed: {
             ...mapGetters({
+                team: 'teams/current',
                 prevRoute: 'route/previous'
             }),
+            title() {
+                return `${this.card ? this.card.name : ''} - ${this.team ? this.team.name : ''} - Wonderus`;
+            },
             createdBy() {
                 if (!this.card) {
                     return '';
@@ -137,6 +142,14 @@
                     return '';
                 }
                 return `Last updated by ${this.card.lastChange.user.fullName} on ${this.card.lastChange.createdAt}`;
+            }
+        },
+        watch: {
+            card: function (val) {
+                document.title = this.title;
+            },
+            team: function (val) {
+                document.title = this.title;
             }
         },
         components: {

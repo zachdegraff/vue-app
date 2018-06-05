@@ -12,17 +12,22 @@
                 team: 'teams/current',
                 isLoading: 'cards/isCardsLoading'
             }),
+            title() {
+                return `${this.collection} - ${this.team ? this.team.name : ''} - Wonderus`;
+            },
             collection() {
                 return this.$route.params.name
             }
         },
         watch: {
             team: function (val) {
-                this.filter(this.params())
+                this.filter(this.params());
+                document.title = this.title
             }
         },
         created() {
-            this.filter(this.params())
+            this.filter(this.params());
+            document.title = this.title
         },
         methods: {
             ...mapActions({

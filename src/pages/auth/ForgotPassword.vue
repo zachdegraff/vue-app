@@ -48,6 +48,9 @@
         components: {
             AppModalLayout
         },
+        created() {
+            document.title = 'Forgot password - Wonderus';
+        },
         methods: {
             ...mapActions({
                 forgot: 'auth/forgot'

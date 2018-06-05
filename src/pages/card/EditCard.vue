@@ -92,6 +92,8 @@
                         this.links = data.links;
                         this.form = data;
                         this.form.collections = data.collections.map(item => item.name);
+
+                        document.title = `Editing ${this.form.name} - Wonderus`
                     }), CardResource.teams().then(({data}) => {
                         this.options = data.data.map(team => {
                             return {value: team.id, label: team.name}

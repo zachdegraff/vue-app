@@ -73,16 +73,24 @@
             if (this.team !== null) {
                 this.load(this.team.id)
             }
+            document.title = this.title
         },
         watch: {
             team: function (val) {
-                this.load(val.id)
+                this.load(val.id);
+                document.title = this.title
             }
         },
         computed: {
             ...mapGetters({
                 team: 'teams/current'
-            })
+            }),
+            title() {
+                if (this.team === null) {
+                    return 'Wonderus'
+                }
+                return `${this.team.name} - Wonderus`
+            }
         },
         components: {
             SearchForm, CollectionsGridList

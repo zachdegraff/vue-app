@@ -39,6 +39,7 @@
             }
         },
         created() {
+            document.title = 'Reset password - Wonderus';
             this.form.token = this.$route.params.token
         },
         mixins: [ValidatorMessages],

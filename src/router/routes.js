@@ -21,6 +21,9 @@ export default [
         path: '/',
         component: () => import('layouts/DefaultLayout.vue'),
         beforeEnter: ifAuthenticated,
+        meta: {
+            title: 'Home',
+        },
         children: [
             {path: '', name: 'home', component: () => import('pages/Home.vue')}
         ]
@@ -72,7 +75,11 @@ export default [
         beforeEnter: ifAuthenticated,
         children: [
             {path: 'create', name: 'create_card', component: () => import('pages/card/CreateCard.vue')},
-            {path: 'collection/:name', name: 'collection_cards', component: () => import('pages/card/CollectionCards.vue')},
+            {
+                path: 'collection/:name',
+                name: 'collection_cards',
+                component: () => import('pages/card/CollectionCards.vue')
+            },
             {path: ':id', name: 'view_card', component: () => import('pages/card/ViewCard.vue'), props: true},
             {path: ':id/edit', name: 'edit_card', component: () => import('pages/card/EditCard.vue'), props: true},
             {path: '', name: 'cards_list', component: () => import('pages/card/CardsList.vue')}

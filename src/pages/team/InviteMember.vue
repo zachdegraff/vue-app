@@ -55,6 +55,9 @@
         components: {
             AppModalLayout
         },
+        created() {
+            document.title = 'Invite a new member'
+        },
         methods: {
             ...mapActions({
                 invite: 'teams/invite'

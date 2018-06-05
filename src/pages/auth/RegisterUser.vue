@@ -74,6 +74,9 @@
                 }
             }
         },
+        created() {
+            document.title = 'Register a new account - Wonderus';
+        },
         computed: {
             ...mapGetters({
                 isProcessing: 'auth/isRegistering'

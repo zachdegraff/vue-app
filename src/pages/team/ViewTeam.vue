@@ -72,7 +72,10 @@
             }
         },
         created() {
-            this.load(this.id).then(team => this.team = team);
+            this.load(this.id).then(team => {
+                this.team = team;
+                document.title = `Manage ${team.name} team - Wonderus`
+            });
             this.loadMembers(this.id).then(members => this.members = members)
         },
         computed: {

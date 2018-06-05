@@ -122,6 +122,7 @@
                 })
             });
             this.form.name = this.$route.query.name;
+            document.title = 'Creating a new card - Wonderus';
             window.cardState = JSON.parse(JSON.stringify(this.$data))
         },
         methods: {
