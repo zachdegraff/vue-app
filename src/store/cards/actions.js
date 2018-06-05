@@ -111,6 +111,22 @@ export const collections = ({}, id) => {
     })
 };
 
+export const recentlyAdded = ({}, id) => {
+    return new Promise((resolve, reject) => {
+        CardResource.recentlyAdded(id)
+            .then(({data}) => resolve(data.data))
+            .catch(err => reject(err))
+    })
+};
+
+export const recentlyUpdated = ({}, id) => {
+    return new Promise((resolve, reject) => {
+        CardResource.recentlyUpdated(id)
+            .then(({data}) => resolve(data.data))
+            .catch(err => reject(err))
+    })
+};
+
 export const getNote = ({}, id) => {
     return new Promise((resolve, reject) => {
         CardNoteResource.get(id)

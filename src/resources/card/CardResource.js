@@ -37,4 +37,12 @@ export default class CardResource {
     static cardsHints(params) {
         return Resource.get('/cards/cards-hints', {params})
     }
+
+    static recentlyAdded(id) {
+        return Resource.get(`/cards/${id}/recently-added`)
+    }
+
+    static recentlyUpdated(id) {
+        return Resource.get(`/cards/${id}/recently-updated`)
+    }
 }

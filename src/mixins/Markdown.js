@@ -3,6 +3,7 @@ const APP_HOST = process.env.APP_HOST;
 const Markdown = {
     methods: {
         markTags(content) {
+            if (content === null) return '';
             let result = content
                 .replace(/([\s\.,\'\"]+)\*([^*]*)\*([\s\.,\'\"]+)/g, '$1<strong>$2</strong>$3')
                 .replace(/([\s\.,\'\"]+)_([^_]*)_([\s\.,\'\"]+)/g, '$1<em>$2</em>$3');
@@ -10,7 +11,7 @@ const Markdown = {
 
             const matches = result.match(/<([^<]*)\|([^<]*)>/g);
             if (matches === null) {
-                return result;
+                return result
             }
             matches.forEach(i => {
                 let tmpl = '<a href="$1" target="_blank">$2</a>';

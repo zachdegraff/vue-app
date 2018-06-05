@@ -175,12 +175,13 @@
             },
             linkEl(path) {
                 const domain = 'https://i.wonderus.app';
-                if (path.indexOf(domain) !== -1) {
+                if (path && path.indexOf(domain) !== -1) {
                     return 'router-link'
                 }
                 return 'a'
             },
             localPath(path) {
+                if (path === null) return '';
                 return path.replace('https://i.wonderus.app', '')
             },
             redirect(link) {

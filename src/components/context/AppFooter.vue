@@ -1,7 +1,5 @@
 <template>
-    <q-layout-footer>
-
-    </q-layout-footer>
+    <div class="q-my-xl"></div>
 </template>
 <script>
     export default {

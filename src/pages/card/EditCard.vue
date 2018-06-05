@@ -146,13 +146,16 @@
             },
             close() {
                 if (window.cardState === undefined || !this.hasAnyChanges(window.cardState)) {
-                    return this.$router.push({name: 'view_card', params: {id: this.id}});
+                    return this.redirect();
                 }
 
                 this.confirm().then(() => {
-                    return this.$router.push({name: 'view_card', params: {id: this.id}});
+                    return this.redirect();
                 }).catch(() => {
                 })
+            },
+            redirect() {
+                this.$router.push({name: 'view_card', params: {id: this.id}})
             },
             prepare() {
                 const data = new FormData();
