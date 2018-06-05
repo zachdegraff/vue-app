@@ -59,11 +59,18 @@ export default [
         ]
     },
     {
+        path: '/search/',
+        component: () => import('layouts/SearchLayout.vue'),
+        beforeEnter: ifAuthenticated,
+        children: [
+            {path: '', name: 'search_cards', component: () => import('pages/card/SearchCards.vue')},
+        ]
+    },
+    {
         path: '/cards/',
         component: () => import('layouts/CardLayout.vue'),
         beforeEnter: ifAuthenticated,
         children: [
-            {path: 'search', name: 'search_cards', component: () => import('pages/card/SearchCards.vue')},
             {path: 'create', name: 'create_card', component: () => import('pages/card/CreateCard.vue')},
             {path: 'collection/:name', name: 'collection_cards', component: () => import('pages/card/CollectionCards.vue')},
             {path: ':id', name: 'view_card', component: () => import('pages/card/ViewCard.vue'), props: true},

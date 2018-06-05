@@ -121,6 +121,7 @@
                     return {value: team.id, label: team.name}
                 })
             });
+            this.form.name = this.$route.query.name;
             window.cardState = JSON.parse(JSON.stringify(this.$data))
         },
         methods: {
