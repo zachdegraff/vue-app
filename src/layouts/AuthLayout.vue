@@ -14,10 +14,10 @@
                             <q-card-separator/>
                             <q-card-main>
                                 <q-field class="q-py-sm" :error="$v.form.email.$error" :error-label="firstErrorFor($v.form.email)">
-                                    <q-input type="text" float-label="Email" v-model="form.email" @blur="$v.form.email.$touch"/>
+                                    <q-input type="text" float-label="Email" v-model="form.email" @blur="$v.form.email.$touch" @keyup.enter="submit"/>
                                 </q-field>
                                 <q-field class="q-pb-md" :error="$v.form.password.$error" :error-label="firstErrorFor($v.form.password)">
-                                    <q-input type="password" float-label="Password" v-model="form.password" @blur="$v.form.email.$touch"/>
+                                    <q-input type="password" float-label="Password" v-model="form.password" @blur="$v.form.email.$touch" @keyup.enter="submit"/>
                                 </q-field>
                                 <div class="q-py-sm overflow-hidden">
                                     <router-link :to="{name:'forgot_password'}" class="text-primary">Forgot Password?</router-link>
