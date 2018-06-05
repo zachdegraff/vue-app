@@ -1,9 +1,9 @@
 <template>
-    <q-modal v-model="isOpen" @hide="redirect" class="app-modal" :content-classes="['app-modal-content']" :content-css="{minWidth: '50vw', minHeight: '80vh'}">
+    <q-modal v-model="isOpen" class="app-modal" no-esc-dismiss no-backdrop-dismiss :content-classes="['app-modal-content']" :content-css="{minWidth: '50vw', minHeight: '80vh'}" @click.native="close">
         <app-modal-layout>
             <q-toolbar slot="header">
                 <q-toolbar-title v-if="form">Editing {{form.name}}</q-toolbar-title>
-                <q-btn flat icon="close" @click="isOpen=false" class="float-right"/>
+                <q-btn flat icon="close" @click="close" class="float-right"/>
             </q-toolbar>
 
             <div class="row text-center card-item" v-if="!form">
@@ -60,6 +60,7 @@
 <script>
     import AppModalLayout from '../../components/context/modal/AppModalLayout'
     import ValidatorMessages from '../../mixins/ValidatorMessages'
+    import HasCardChanges from '../../mixins/HasCardChanges'
     import EditorTools from '../../components/EditorTools'
     import CardResource from '../../resources/card/CardResource'
     import {required} from 'vuelidate/lib/validators'
@@ -84,22 +85,25 @@
             }
         },
         created() {
-            this.load(this.id).then(data => {
-                this.links = data.links;
-                this.form = data;
-                this.form.collections = data.collections.map(item => item.name)
-            });
-            CardResource.teams().then(({data}) => {
-                this.options = data.data.map(team => {
-                    return {value: team.id, label: team.name}
-                })
-            })
+            delete window.cardState;
+            Promise
+                .all([
+                    this.load(this.id).then(data => {
+                        this.links = data.links;
+                        this.form = data;
+                        this.form.collections = data.collections.map(item => item.name);
+                    }), CardResource.teams().then(({data}) => {
+                        this.options = data.data.map(team => {
+                            return {value: team.id, label: team.name}
+                        })
+                    })])
+                .then(() => window.cardState = JSON.parse(JSON.stringify(this.$data)))
         },
-        mixins: [ValidatorMessages],
+        mixins: [ValidatorMessages, HasCardChanges],
         computed: {
             ...mapGetters({
                 isProcessing: 'cards/isUpdating'
-            }),
+            })
         },
         components: {
             AppModalLayout, EditorTools
@@ -140,8 +144,15 @@
 
                 this.update({id: this.id, form: this.prepare()}).then(this.redirect);
             },
-            redirect() {
-                this.$router.push({name: 'view_card', params: {id: this.id}})
+            close() {
+                if (window.cardState === undefined || !this.hasAnyChanges(window.cardState)) {
+                    return this.$router.push({name: 'view_card', params: {id: this.id}});
+                }
+
+                this.confirm().then(() => {
+                    return this.$router.push({name: 'view_card', params: {id: this.id}});
+                }).catch(() => {
+                })
             },
             prepare() {
                 const data = new FormData();

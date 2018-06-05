@@ -1,5 +1,5 @@
 <template>
-    <q-modal v-model="isOpen" @hide="redirect" class="app-modal" :content-classes="['app-modal-content']" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
+    <q-modal v-model="isOpen" class="app-modal" no-esc-dismiss no-backdrop-dismiss :content-classes="['app-modal-content']" :content-css="{minWidth: '50vw', minHeight: '80vh'}" @click.native="close">
         <app-modal-layout>
             <q-toolbar slot="header">
                 <q-toolbar-title>Adding a new card</q-toolbar-title>
@@ -49,6 +49,7 @@
 <script>
     import AppModalLayout from '../../components/context/modal/AppModalLayout'
     import ValidatorMessages from '../../mixins/ValidatorMessages'
+    import HasCardChanges from '../../mixins/HasCardChanges'
     import CardResource from '../../resources/card/CardResource'
     import EditorTools from '../../components/EditorTools'
     import {required} from 'vuelidate/lib/validators'
@@ -69,12 +70,13 @@
                 file: null,
                 links: [],
                 options: [],
+                flushImage: false,
                 selection: null,
                 collections: {field: 'label', list: []},
                 isOpen: true
             }
         },
-        mixins: [ValidatorMessages],
+        mixins: [ValidatorMessages, HasCardChanges],
         computed: {
             ...mapGetters({
                 team: 'teams/current',
@@ -102,11 +104,15 @@
                     });
                 })
             },
-            team: function (val) {
-                this.form.teamId = val.id
+            team: function (val, old) {
+                this.form.teamId = val.id;
+                if (old === null) {
+                    window.cardState = JSON.parse(JSON.stringify(this.$data))
+                }
             }
         },
         created() {
+            delete window.cardState;
             if (this.team !== null) {
                 this.form.teamId = this.team.id
             }
@@ -114,7 +120,8 @@
                 this.options = data.data.map(team => {
                     return {value: team.id, label: team.name}
                 })
-            })
+            });
+            window.cardState = JSON.parse(JSON.stringify(this.$data))
         },
         methods: {
             ...mapActions({
@@ -128,6 +135,16 @@
                 }
 
                 this.create(this.prepare()).then(this.redirect)
+            },
+            close() {
+                if (window.cardState === undefined || !this.hasAnyChanges(window.cardState)) {
+                    return this.redirect();
+                }
+
+                this.confirm().then(() => {
+                    return this.redirect();
+                }).catch(() => {
+                })
             },
             redirect() {
                 this.$router.push({name: 'cards_list'})
