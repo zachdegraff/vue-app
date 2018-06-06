@@ -35,7 +35,7 @@
                 <img :src="avatar(user.photo)" class="header-icon vertical-middle"/>
                 <q-popover>
                     <q-list separator link>
-                        <q-item>
+                        <q-item :to="{name: 'profile'}">
                             <q-item-main>
                                 <q-item-tile>My Profile</q-item-tile>
                             </q-item-main>

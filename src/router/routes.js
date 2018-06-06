@@ -115,6 +115,14 @@ export default [
             {path: ':id', name: 'view_team', component: () => import('pages/team/ViewTeam.vue'), props: true},
         ]
     },
+    {
+        path: '/profile/',
+        component: () => import('layouts/ProfileLayout.vue'),
+        beforeEnter: ifAuthenticated,
+        children: [
+            {path: '', name: 'profile', component: () => import('pages/user/UserProfile.vue')},
+        ]
+    },
     { // Always leave this as last one
         path: '*',
         component: () => import('pages/404')

@@ -1,0 +1,1 @@
+export const isUpdating = state => state.actionUpdateStatus === 'Request';
