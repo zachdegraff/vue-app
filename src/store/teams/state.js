@@ -1,14 +1,13 @@
 export default {
     items: [],
+
+    viewing: null,
+    editing: null,
     current: null,
+
     actionAllStatus: '',
     actionGetStatus: '',
     actionUpdateStatus: '',
     actionCreateStatus: '',
     actionRemoveStatus: '',
-    actionMembersStatus: '',
-    actionInviteStatus: '',
-    actionJoinStatus: '',
-    actionExcludeStatus: '',
-    actionChangeRoleStatus: ''
 }

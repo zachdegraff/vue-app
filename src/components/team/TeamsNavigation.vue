@@ -22,10 +22,15 @@
                 </q-item-side>
             </q-item>
         </q-list>
+        <div class="q-pt-lg text-center">
+            <q-btn label="create team" color="primary" @click="create"/>
+        </div>
         <edit-team :id="team.id" v-if="team" @closed="closeEditing"></edit-team>
+        <create-team v-if="isCreation" @closed="closeCreation"></create-team>
     </div>
 </template>
 <script>
+    import CreateTeam from '../../components/team/CreateTeam.vue'
     import EditTeam from '../../components/team/EditTeam.vue'
     import ModalManager from '../../mixins/ModalManager'
     import {mapActions, mapGetters} from 'vuex'
@@ -33,7 +38,8 @@
     export default {
         data: () => {
             return {
-                team: null
+                team: null,
+                isCreation: false
             }
         },
         computed: {
@@ -42,7 +48,7 @@
             })
         },
         mixins: [ModalManager],
-        components: {EditTeam},
+        components: {CreateTeam, EditTeam},
         methods: {
             ...mapActions({
                 remove: 'teams/remove'
@@ -63,6 +69,14 @@
                     })
                 }).catch(() => {
                 })
+            },
+            create() {
+                this.openModalWindow('create_team');
+                this.isCreation = true
+            },
+            closeCreation() {
+                this.isCreation = false;
+                this.closeModalWindow();
             },
             edit(team) {
                 this.openModalWindow('edit_team', {id: team.id});

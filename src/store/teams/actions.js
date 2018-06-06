@@ -1,5 +1,4 @@
 import TeamResource from '../../resources/team/TeamResource'
-import TeamMemberResource from '../../resources/team/TeamMemberResource'
 
 export const all = ({commit}) => {
     return new Promise((resolve, reject) => {
@@ -16,10 +15,6 @@ export const all = ({commit}) => {
 
 export const get = ({getters, commit}, id) => {
     return new Promise((resolve, reject) => {
-        const card = getters.getById(id);
-        if (card !== undefined) {
-            return resolve(card)
-        }
         commit('getStatusRequest');
         TeamResource.get(id).then(req => {
             commit('getStatusSuccess', req);
@@ -31,25 +26,18 @@ export const get = ({getters, commit}, id) => {
     });
 };
 
-export const member = ({commit}, id) => {
-    return new Promise((resolve, reject) => {
-        TeamMemberResource.get(id).then(req => {
-            resolve(req.data.data)
-        }).catch(err => reject(err))
-    });
+export const edit = ({commit, dispatch}, id) => {
+
 };
 
-export const members = ({commit}, id) => {
+export const view = ({commit, dispatch}, id) => {
     return new Promise((resolve, reject) => {
-        commit('membersStatusRequest');
-        TeamResource.members(id).then(req => {
-            commit('membersStatusSuccess', {id, req});
-            resolve(req.data.data)
-        }).catch(err => {
-            commit('membersStatusFailure', err);
-            reject(err)
-        })
-    });
+        dispatch('get', id).then(team => {
+            commit('changeViewingTeam', team);
+            resolve(team)
+        }).catch(err => reject(err));
+        dispatch('members/loadTeamMembers', id, {root: true})
+    })
 };
 
 export const create = ({commit}, data) => {
@@ -91,69 +79,6 @@ export const remove = ({commit}, id) => {
     })
 };
 
-export const invite = ({commit, dispatch}, {id, params}) => {
-    return new Promise((resolve, reject) => {
-        commit('inviteStatusRequest');
-        TeamMemberResource.invite(id, params).then(req => {
-            commit('inviteStatusSuccess', req);
-            resolve(req.data)
-        }).catch(err => {
-            commit('inviteStatusFailure', err);
-            reject(err)
-        })
-    })
-};
-
-export const join = ({commit, dispatch}, hash) => {
-    localStorage.removeItem('join-token');
-    return new Promise((resolve, reject) => {
-        commit('joinStatusRequest');
-        TeamMemberResource.join(hash).then(req => {
-            commit('joinStatusSuccess', req);
-            dispatch('all');
-            resolve(req.data)
-        }).catch(err => {
-            commit('joinStatusFailure', err);
-            reject(err)
-        })
-    })
-};
-
-export const changeRole = ({commit}, {id, role}) => {
-    return new Promise((resolve, reject) => {
-        commit('changeRoleStatusRequest');
-        TeamMemberResource.changeRole(id, role).then(req => {
-            commit('changeRoleStatusSuccess', req);
-            resolve(req.data)
-        }).catch(err => {
-            commit('changeRoleStatusFailure', err);
-            reject(err)
-        })
-    })
-};
-
-export const retryInvitation = ({commit}, id) => {
-    return new Promise((resolve, reject) => {
-        TeamMemberResource.retry(id).then(req => {
-            resolve(req.data)
-        }).catch(err => {
-            reject(err)
-        })
-    })
-};
-
-export const exclude = ({commit}, id) => {
-    return new Promise((resolve, reject) => {
-        commit('excludeStatusRequest');
-        TeamMemberResource.exclude(id).then(req => {
-            commit('excludeStatusSuccess', req);
-            resolve(req.data)
-        }).catch(err => {
-            commit('excludeStatusFailure', err);
-            reject(err)
-        })
-    })
-};
 
 export const setCurrentTeam = ({dispatch, commit}, id) => {
     localStorage.setItem('current-team', id);

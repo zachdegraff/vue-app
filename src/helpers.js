@@ -17,6 +17,14 @@ export const prop = (obj, prop) => {
     return obj[prop]
 };
 
+export const replace = (arr, item) => {
+    const idx = arr.findIndex(el => el.id === item.id);
+    if (idx === -1) {
+        return arr.push(item)
+    }
+    arr[idx] = item
+};
+
 export const error = (message) => {
     Notify.create({
         message,

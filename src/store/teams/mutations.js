@@ -1,3 +1,5 @@
+import {replace} from '../../helpers'
+
 export const set = (state, items) => state.items = items;
 
 export const remove = (state, id) => {
@@ -10,18 +12,15 @@ export const remove = (state, id) => {
     }
 };
 
-export const replace = (state, item) => {
-    const idx = state.items.findIndex(el => el.id === item.id);
-    if (idx === -1) {
-        return state.items.unshift(item)
-    }
-    state.items[idx] = item
-};
-
 export const changeCurrentTeam = (state, item) => state.current = item;
 
+export const changeViewingTeam = (state, team) => state.viewing = team;
+
 export const getStatusRequest = state => state.actionGetStatus = 'Request';
-export const getStatusSuccess = state => state.actionGetStatus = 'Success';
+export const getStatusSuccess = (state, req) => {
+    state.actionGetStatus = 'Success';
+    replace(state.items, req.data);
+};
 export const getStatusFailure = state => state.actionGetStatus = 'Failure';
 
 export const allStatusRequest = state => state.actionAllStatus = 'Request';
@@ -42,7 +41,7 @@ export const createStatusFailure = state => state.actionCreateStatus = 'Failure'
 export const updateStatusRequest = state => state.actionUpdateStatus = 'Request';
 export const updateStatusSuccess = (state, req) => {
     state.actionUpdateStatus = 'Success';
-    replace(state, req.data.team);
+    replace(state.items, req.data.team);
     state.current = req.data.team
 };
 export const updateStatusFailure = state => state.actionUpdateStatus = 'Failure';
@@ -54,23 +53,5 @@ export const removeStatusSuccess = (state, req) => {
 };
 export const removeStatusFailure = state => state.actionRemoveStatus = 'Failure';
 
-export const membersStatusRequest = state => state.actionMembersStatus = 'Request';
-export const membersStatusSuccess = state => state.actionMembersStatus = 'Success';
-export const membersStatusFailure = state => state.actionMembersStatus = 'Failure';
 
-export const inviteStatusRequest = state => state.actionInviteStatus = 'Request';
-export const inviteStatusSuccess = state => state.actionInviteStatus = 'Success';
-export const inviteStatusFailure = state => state.actionInviteStatus = 'Failure';
-
-export const joinStatusRequest = state => state.actionJoinStatus = 'Request';
-export const joinStatusSuccess = state => state.actionJoinStatus = 'Success';
-export const joinStatusFailure = state => state.actionJoinStatus = 'Failure';
-
-export const excludeStatusRequest = state => state.actionExcludeStatus = 'Request';
-export const excludeStatusSuccess = state => state.actionExcludeStatus = 'Success';
-export const excludeStatusFailure = state => state.actionExcludeStatus = 'Failure';
-
-export const changeRoleStatusRequest = state => state.actionChangeRoleStatus = 'Request';
-export const changeRoleStatusSuccess = state => state.actionChangeRoleStatus = 'Success';
-export const changeRoleStatusFailure = state => state.actionChangeRoleStatus = 'Failure';
 
