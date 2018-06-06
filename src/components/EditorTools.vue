@@ -8,7 +8,7 @@
         <div v-show="isLinkEditing" class="editor-tools-link row">
             <div class="col-xs-8">
                 <q-input v-model="linkUrl">
-                    <q-autocomplete separator @search="search" :min-characters="3"/>
+                    <q-autocomplete separator @search="search" :min-characters="2"/>
                 </q-input>
             </div>
             <div class="col-xs-4 text-right">
