@@ -1,13 +1,16 @@
 <template>
-    <div class="row" v-if="items" v-show="items.length > 0">
-        <div class="col-xs-6 col-sm-6 col-md-3 q-mb-md" v-for="step in columns" :key="step">
-            <router-link
-                    class="home-collections-item"
+    <div class="row gutter-sm" v-if="items" v-show="items.length > 0">
+        <div class="col-xs-6 col-sm-6 col-md-3" v-for="step in columns" :key="step">
+            <q-card
+                    class="cursor-pointer q-mb-md"
                     v-for="collection in getItemsForStep(step)"
-                    :to="{name: 'collection_cards', params: {name: collection.name}}"
                     :key="collection.id"
-            >#{{collection.name}}({{collection.cards}})
-            </router-link>
+                    @click.native="$router.push({name: 'collection_cards', params: {name: collection.name}})">
+                <q-card-media>
+                    <img src="statics/blank-card.png" />
+                    <div class="home-card-title q-title">#{{collection.name}}({{collection.cards}})</div>
+                </q-card-media>
+            </q-card>
         </div>
     </div>
 </template>

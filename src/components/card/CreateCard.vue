@@ -2,17 +2,10 @@
     <q-modal v-model="isOpen" class="app-modal" no-esc-dismiss no-backdrop-dismiss :content-classes="['app-modal-content']" :content-css="{minWidth: '50vw', minHeight: '80vh'}" @click.native="close">
         <app-modal-layout>
             <q-toolbar slot="header">
-                <q-toolbar-title v-if="form">Editing {{form.name}}</q-toolbar-title>
+                <q-toolbar-title>Adding a new card</q-toolbar-title>
                 <q-btn flat icon="close" @click="close" class="float-right"/>
             </q-toolbar>
-
-            <div class="row text-center card-item" v-if="!form">
-                <div class="col">
-                    <q-spinner :size="50" color="red"></q-spinner>
-                </div>
-            </div>
-
-            <div class="row q-py-xl gutter-md flex-center" v-if="form">
+            <div class="row q-py-xl gutter-md flex-center">
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10" :error="$v.form.teamId.$error" :error-label="firstErrorFor($v.form.teamId)">
                     <q-select v-model="form.teamId" float-label="Team" :options="options" @change="$v.form.teamId.$touch"/>
                 </q-field>
@@ -44,14 +37,10 @@
                     </q-chips-input>
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <div class="edit-card-image-container" v-if="form.thumb" v-show="!flushImage">
-                        <img :src="form.thumb" class="round-borders" width="200px"/><br/>
-                        <q-btn round color="red" size="xs" icon="delete" class="edit-card-image-remove-btn" @click="flushImage = true"/>
-                    </div>
                     <q-uploader url="" float-label="Image" hide-upload-button @add="chooseFile" @remove:cancel="cancelFile" :disable="isProcessing" extensions=".jpg,.jpeg,.png"/>
                 </q-field>
                 <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <q-btn @click="save" color="primary" label="save" class="q-mt-lg" :disable="isProcessing"/>
+                    <q-btn @click="save" color="primary" class="q-mt-lg" :disable="isProcessing">create</q-btn>
                 </div>
             </div>
         </app-modal-layout>
@@ -61,20 +50,23 @@
     import AppModalLayout from '../../components/context/modal/AppModalLayout'
     import ValidatorMessages from '../../mixins/ValidatorMessages'
     import HasCardChanges from '../../mixins/HasCardChanges'
-    import EditorTools from '../../components/EditorTools'
     import CardResource from '../../resources/card/CardResource'
+    import EditorTools from '../../components/EditorTools'
     import {required} from 'vuelidate/lib/validators'
     import {mapActions, mapGetters} from 'vuex'
+    import {filter} from 'quasar'
+
 
     export default {
-        props: {
-            id: {
-                required: true
-            }
-        },
         data: () => {
             return {
-                form: null,
+                form: {
+                    teamId: '',
+                    name: '',
+                    shorthand: [],
+                    description: '',
+                    collections: [],
+                },
                 file: null,
                 links: [],
                 options: [],
@@ -84,27 +76,11 @@
                 isOpen: true
             }
         },
-        created() {
-            delete window.cardState;
-            Promise
-                .all([
-                    this.load(this.id).then(data => {
-                        this.links = data.links;
-                        this.form = data;
-                        this.form.collections = data.collections.map(item => item.name);
-
-                        document.title = `Editing ${this.form.name} - Wonderus`
-                    }), CardResource.teams().then(({data}) => {
-                        this.options = data.data.map(team => {
-                            return {value: team.id, label: team.name}
-                        })
-                    })])
-                .then(() => window.cardState = JSON.parse(JSON.stringify(this.$data)))
-        },
         mixins: [ValidatorMessages, HasCardChanges],
         computed: {
             ...mapGetters({
-                isProcessing: 'cards/isUpdating'
+                team: 'teams/current',
+                isProcessing: 'cards/isCreating'
             })
         },
         components: {
@@ -128,14 +104,30 @@
                     });
                 })
             },
-            team: function (val) {
-                this.form.teamId = val.id
+            team: function (val, old) {
+                this.form.teamId = val.id;
+                if (old === null) {
+                    window.cardState = JSON.parse(JSON.stringify(this.$data))
+                }
             }
+        },
+        created() {
+            delete window.cardState;
+            if (this.team !== null) {
+                this.form.teamId = this.team.id
+            }
+            CardResource.teams().then(({data}) => {
+                this.options = data.data.map(team => {
+                    return {value: team.id, label: team.name}
+                })
+            });
+            this.form.name = this.$route.query.name;
+            document.title = 'Creating a new card - Wonderus';
+            window.cardState = JSON.parse(JSON.stringify(this.$data))
         },
         methods: {
             ...mapActions({
-                load: 'cards/get',
-                update: 'cards/update',
+                create: 'cards/create',
                 loadTeamCollections: 'cards/collections'
             }),
             save() {
@@ -144,42 +136,41 @@
                     return
                 }
 
-                this.update({id: this.id, form: this.prepare()}).then(this.redirect);
+                this.create(this.prepare()).then(this.redirect)
             },
             close() {
+                const closing = () => {
+                    this.isOpen = false;
+                    this.$emit('closed');
+                };
                 if (window.cardState === undefined || !this.hasAnyChanges(window.cardState)) {
-                    return this.redirect();
+                    return closing()
                 }
 
-                this.confirm().then(() => {
-                    return this.redirect();
-                }).catch(() => {
-                })
+                this.confirm().then(closing).catch(() => {})
             },
             redirect() {
-                this.$router.push({name: 'view_card', params: {id: this.id}})
+                this.$router.push({name: 'cards_list'})
             },
             prepare() {
                 const data = new FormData();
                 for (let i in this.form) {
                     data.append(i, this.form[i])
                 }
-                data.append('_method', 'PUT');
-                data.append('flushImage', JSON.stringify(this.flushImage));
                 data.append('links', JSON.stringify(this.links));
                 if (this.file !== null) {
                     data.append('file', this.file);
                 }
                 return data
             },
+            addLink() {
+                this.links.push({name: '', url: ''})
+            },
             chooseFile(files) {
                 this.file = files[0]
             },
             cancelFile() {
                 this.file = null
-            },
-            addLink() {
-                this.links.push({name: '', url: ''})
             },
             toggleEditorTools(e) {
                 this.selection = e
@@ -190,14 +181,3 @@
         }
     }
 </script>
-<style lang="scss">
-    .edit-card-image-container {
-        position: relative;
-    }
-
-    .edit-card-image-remove-btn {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-    }
-</style>

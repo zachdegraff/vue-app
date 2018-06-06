@@ -1,27 +1,23 @@
 <template>
-    <q-modal v-model="isOpen" @hide="redirect" class="app-modal" :content-classes="['app-modal-content']" :content-css="{minWidth: '80vw', minHeight: '50vh'}">
-        <app-modal-layout>
+    <q-modal v-model="isOpen" @hide="$emit('closed')" class="app-modal" :content-classes="['app-modal-content']" :content-css="{minWidth: '80vw', minHeight: '50vh'}">
+        <app-modal-layout v-if="model">
             <q-toolbar slot="header">
-                <q-toolbar-title>Adding a new team</q-toolbar-title>
+                <q-toolbar-title>Editing {{model.name}}</q-toolbar-title>
                 <q-btn flat icon="close" @click="isOpen=false" class="float-right"/>
             </q-toolbar>
             <div class="row q-py-xl gutter-md flex-center">
-                <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10" :error="$v.form.name.$error" :error-label="firstErrorFor($v.form.name)">
-                    <q-input v-model="form.name" float-label="Name" @blur="$v.form.name.$touch"/>
+                <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10" :error="$v.model.name.$error" :error-label="firstErrorFor($v.model.name)">
+                    <q-input v-model="model.name" float-label="Name" @blur="$v.model.name.$touch"/>
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <q-input v-model="form.organization" float-label="Organization"/>
+                    <q-input v-model="model.organization" float-label="Name"/>
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
+                    <img :src="photo(model.photo)" class="round-borders" width="200px"/>
                     <q-uploader url="" float-label="Photo" hide-upload-button @add="chooseFile" @remove:cancel="cancelFile" :disable="isProcessing" extensions=".jpg,.jpeg,.png"/>
                 </q-field>
-                <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <strong>Members</strong><br/>
-                    <q-input v-for="(member, idx) in members" :key="idx" v-model="member.email" float-label="Email address"/>
-                    <q-btn @click="addMember" class="q-mt-sm">Add a new member</q-btn>
-                </q-field>
                 <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <q-btn @click="save" color="primary" class="q-mt-lg" :disable="isProcessing">create</q-btn>
+                    <q-btn @click="save" color="primary" class="q-mt-lg" :disable="isProcessing">save</q-btn>
                 </div>
             </div>
         </app-modal-layout>
@@ -34,20 +30,30 @@
     import {mapActions, mapGetters} from 'vuex'
 
     export default {
+        props: {
+            id: {
+                required: true
+            }
+        },
         data: () => {
             return {
-                form: {
+                model: {
                     name: '',
-                    organization: '',
+                    organization: ''
                 },
-                members: [],
                 file: null,
                 isOpen: true
             }
         },
+        created() {
+            this.load(this.id).then(data => {
+                this.model = data;
+                document.title = `Editing ${data.name} team - Wonderus`
+            });
+        },
         mixins: [ValidatorMessages],
         validations: {
-            form: {
+            model: {
                 name: {
                     required
                 }
@@ -55,7 +61,7 @@
         },
         computed: {
             ...mapGetters({
-                isProcessing: 'teams/isCreating'
+                isProcessing: 'teams/isUpdating'
             })
         },
         components: {
@@ -63,27 +69,31 @@
         },
         methods: {
             ...mapActions({
-                create: 'teams/create'
+                load: 'teams/get',
+                update: 'teams/update'
             }),
             save() {
-                this.$v.form.$touch();
-                if (this.$v.form.$error) {
+                this.$v.model.$touch();
+                if (this.$v.model.$error) {
                     return
                 }
 
-                this.create(this.prepare()).then((data) => {
-                    this.$router.push({name: 'view_team', params: {id: data.team.id}})
-                })
+                this.update({id: this.id, model: this.prepare()}).then(() => {
+                    this.$emit('closed')
+                });
             },
-            redirect() {
-                this.$router.push({name: 'teams'})
+            photo(path) {
+                if (!path) {
+                    return 'statics/team.png'
+                }
+                return path
             },
             prepare() {
                 const data = new FormData();
-                for (let i in this.form) {
-                    data.append(i, this.form[i])
+                for (let i in this.model) {
+                    data.append(i, this.model[i])
                 }
-                data.append('members', this.members.map(member => member.email).join(','));
+                data.append('_method', 'PUT');
                 if (this.file !== null) {
                     data.append('file', this.file);
                 }
@@ -94,9 +104,6 @@
             },
             cancelFile() {
                 this.file = null
-            },
-            addMember() {
-                this.members.push({email: ''})
             }
         }
     }

@@ -1,7 +1,9 @@
 <template>
     <div id="q-app">
         <q-ajax-bar :delay="100" size="2px" color="red"/>
-        <router-view/>
+        <keep-alive>
+            <router-view/>
+        </keep-alive>
     </div>
 </template>
 

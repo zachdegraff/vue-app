@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <q-page>
         <h5>My Profile</h5>
         <q-field class="q-py-sm" :error="$v.form.email.$error" :error-label="firstErrorFor($v.form.email)">
             <q-input type="text" float-label="Email" v-model="form.email" @blur="$v.form.email.$touch"/>
@@ -23,7 +23,7 @@
         <div class="q-pt-lg">
             <q-btn color="primary" label="save" @click="submit" :disabled="isProcessing"/>
         </div>
-    </div>
+    </q-page>
 </template>
 <script>
     import {required, email, sameAs, minLength} from 'vuelidate/lib/validators'

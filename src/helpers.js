@@ -10,6 +10,13 @@ export const notify = (message) => {
     })
 };
 
+export const prop = (obj, prop) => {
+    if (obj === null) {
+        return ''
+    }
+    return obj[prop]
+};
+
 export const error = (message) => {
     Notify.create({
         message,

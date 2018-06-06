@@ -3,7 +3,7 @@
         <app-header></app-header>
 
         <q-page-container>
-            <router-view/>
+            <router-view :key="$route.fullPath"/>
         </q-page-container>
 
         <app-footer></app-footer>
@@ -18,6 +18,9 @@
         data: () => {
             return {}
         },
-        components: {AppHeader, AppFooter}
+        components: {AppHeader, AppFooter},
+        created() {
+            console.log('layout created')
+        }
     }
 </script>
