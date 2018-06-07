@@ -18,9 +18,6 @@
         data: () => {
             return {}
         },
-        components: {AppHeader, AppFooter},
-        created() {
-            console.log('layout created')
-        }
+        components: {AppHeader, AppFooter}
     }
 </script>

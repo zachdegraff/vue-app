@@ -1,11 +1,18 @@
-import TeamResource from '../../resources/team/TeamResource'
+import api from '../../api'
 
-export const all = ({commit}) => {
+function loadDefaults(dispatch) {
+    dispatch('cards/recentlyAdded', {}, {root: true});
+    dispatch('cards/recentlyUpdated', {}, {root: true});
+    dispatch('collections/all', {}, {root: true});
+}
+
+export const all = ({commit, dispatch}) => {
     return new Promise((resolve, reject) => {
         commit('allStatusRequest');
-        TeamResource.all().then(req => {
-            commit('allStatusSuccess', req);
-            resolve(req.data.data)
+        api.teams.all().then(res => {
+            commit('allStatusSuccess', res);
+            loadDefaults(dispatch);
+            resolve(res.data.data)
         }).catch(err => {
             commit('allStatusFailure', err);
             reject(err)
@@ -16,9 +23,9 @@ export const all = ({commit}) => {
 export const get = ({getters, commit}, id) => {
     return new Promise((resolve, reject) => {
         commit('getStatusRequest');
-        TeamResource.get(id).then(req => {
-            commit('getStatusSuccess', req);
-            resolve(req.data.data)
+        api.teams.get(id).then(res => {
+            commit('getStatusSuccess', res);
+            resolve(res.data.data)
         }).catch(err => {
             commit('getStatusFailure', err);
             reject(err)
@@ -27,7 +34,12 @@ export const get = ({getters, commit}, id) => {
 };
 
 export const edit = ({commit, dispatch}, id) => {
-
+    return new Promise((resolve, reject) => {
+        dispatch('get', id).then(team => {
+            commit('changeEditingTeam', team);
+            resolve(team)
+        }).catch(err => reject(err));
+    })
 };
 
 export const view = ({commit, dispatch}, id) => {
@@ -43,9 +55,9 @@ export const view = ({commit, dispatch}, id) => {
 export const create = ({commit}, data) => {
     return new Promise((resolve, reject) => {
         commit('createStatusRequest');
-        TeamResource.create(data).then(req => {
-            commit('createStatusSuccess', req);
-            resolve(req.data)
+        api.teams.create(data).then(res => {
+            commit('createStatusSuccess', res);
+            resolve(res.data)
         }).catch(err => {
             commit('createStatusFailure', err);
             reject(err)
@@ -56,9 +68,9 @@ export const create = ({commit}, data) => {
 export const update = ({commit}, {id, model}) => {
     return new Promise((resolve, reject) => {
         commit('updateStatusRequest');
-        TeamResource.update(id, model).then(req => {
-            commit('updateStatusSuccess', req);
-            resolve(req.data)
+        api.teams.update(id, model).then(res => {
+            commit('updateStatusSuccess', res);
+            resolve(res.data)
         }).catch(err => {
             commit('updateStatusFailure', err);
             reject(err)
@@ -69,9 +81,9 @@ export const update = ({commit}, {id, model}) => {
 export const remove = ({commit}, id) => {
     return new Promise((resolve, reject) => {
         commit('removeStatusRequest');
-        TeamResource.delete(id).then(req => {
-            commit('removeStatusSuccess', req);
-            resolve(req.data)
+        api.teams.remove(id).then(res => {
+            commit('removeStatusSuccess', res);
+            resolve(res.data)
         }).catch(err => {
             commit('removeStatusFailure', err);
             reject(err)
@@ -79,25 +91,37 @@ export const remove = ({commit}, id) => {
     })
 };
 
-
-export const setCurrentTeam = ({dispatch, commit}, id) => {
+export const changeCurrentTeam = ({dispatch, commit}, id) => {
     localStorage.setItem('current-team', id);
 
-    dispatch('get', id).then(team => commit('changeCurrentTeam', team));
+    dispatch('get', id).then(team => {
+        commit('changeCurrentTeam', team);
+        loadDefaults(dispatch)
+    });
 };
 
-export const addSlackIntegration = ({}, {id, code}) => {
+export const addSlackIntegration = ({commit}, {id, code}) => {
     return new Promise((resolve, reject) => {
-        TeamResource.slack(id, code)
-            .then(req => resolve(req.data))
-            .catch(err => reject(err))
+        commit('addSlackStatusRequest');
+        api.teams.slack(id, code).then(res => {
+            commit('addSlackStatusSuccess');
+            resolve(res.data)
+        }).catch(err => {
+            commit('addSlackStatusFailure');
+            reject(err)
+        })
     })
 };
 
-export const disableSlack = ({}, id) => {
+export const disableSlack = ({commit}, id) => {
     return new Promise((resolve, reject) => {
-        TeamResource.disableSlack(id)
-            .then(req => resolve(req.data))
-            .catch(err => reject(err))
+        commit('disableSlackStatusRequest');
+        api.teams.disableSlack(id).then(res => {
+            commit('disableSlackStatusSuccess');
+            resolve(res.data)
+        }).catch(err => {
+            commit('disableSlackStatusFailure');
+            reject(err)
+        })
     })
 };

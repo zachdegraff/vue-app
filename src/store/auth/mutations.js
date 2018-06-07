@@ -1,7 +1,7 @@
 export const userStatusRequest = state => state.actionUserStatus = 'Request';
-export const userStatusSuccess = (state, user) => {
+export const userStatusSuccess = (state, res) => {
     state.actionUserStatus = 'Success';
-    state.user = user
+    state.user = res.data.data
 };
 export const userStatusFailure = state => state.actionUserStatus = 'Failure';
 
@@ -9,8 +9,8 @@ export const userStatusFailure = state => state.actionUserStatus = 'Failure';
 export const loginStatusRequest = state => state.actionLoginStatus = 'Request';
 export const loginStatusSuccess = (state, res) => {
     state.actionLoginStatus = 'Success';
-    state.token = res.token;
-    state.user = res.user
+    state.token = res.data.token;
+    state.user = res.data.user
 };
 export const loginStatusFailure = state => {
     state.actionLoginStatus = 'Failure';
@@ -21,8 +21,8 @@ export const loginStatusFailure = state => {
 export const registerStatusRequest = state => state.actionRegisterStatus = 'Request';
 export const registerStatusSuccess = (state, res) => {
     state.actionRegisterStatus = 'Success';
-    state.token = res.token;
-    state.user = res.user
+    state.token = res.data.token;
+    state.user = res.data.user
 };
 export const registerStatusFailure = state => {
     state.actionRegisterStatus = 'Failure';
@@ -45,7 +45,7 @@ export const forgotStatusFailure = state => state.actionForgotStatus = 'Failure'
 export const resetStatusRequest = state => state.actionResetStatus = 'Request';
 export const resetStatusSuccess = (state, res) => {
     state.actionResetStatus = 'Success';
-    state.token = res.token;
-    state.user = res.user
+    state.token = res.data.token;
+    state.user = res.data.user
 };
 export const resetStatusFailure = state => state.actionResetStatus = 'Failure';

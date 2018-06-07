@@ -60,7 +60,7 @@
         },
         methods: {
             ...mapActions({
-                invite: 'members/inviteNewMemberToTeam'
+                invite: 'members/inviteMemberToTeam'
             }),
             submit() {
                 this.$v.form.$touch();

@@ -50,7 +50,6 @@
     import AppModalLayout from '../../components/context/modal/AppModalLayout'
     import ValidatorMessages from '../../mixins/ValidatorMessages'
     import HasCardChanges from '../../mixins/HasCardChanges'
-    import CardResource from '../../resources/card/CardResource'
     import EditorTools from '../../components/EditorTools'
     import {required} from 'vuelidate/lib/validators'
     import {mapActions, mapGetters} from 'vuex'
@@ -79,6 +78,7 @@
         mixins: [ValidatorMessages, HasCardChanges],
         computed: {
             ...mapGetters({
+                teams: 'teams/all',
                 team: 'teams/current',
                 isProcessing: 'cards/isCreating'
             })
@@ -116,10 +116,8 @@
             if (this.team !== null) {
                 this.form.teamId = this.team.id
             }
-            CardResource.teams().then(({data}) => {
-                this.options = data.data.map(team => {
-                    return {value: team.id, label: team.name}
-                })
+            this.options = this.teams.map(team => {
+                return {value: team.id, label: team.name}
             });
             this.form.name = this.$route.query.name;
             document.title = 'Creating a new card - Wonderus';
@@ -147,7 +145,8 @@
                     return closing()
                 }
 
-                this.confirm().then(closing).catch(() => {})
+                this.confirm().then(closing).catch(() => {
+                })
             },
             redirect() {
                 this.$router.push({name: 'cards_list'})

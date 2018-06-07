@@ -7,7 +7,7 @@ export const getById = state => {
     }
 };
 
-export const items = state => state.items;
+export const all = state => state.items;
 
 export const current = state => {
     if (state.current !== null) {
@@ -25,6 +25,7 @@ export const current = state => {
 };
 
 export const getViewingTeam = state => state.viewing;
+export const getEditingTeam = state => state.editing;
 
 export const isCreating = state => state.actionCreateStatus === 'Request';
 export const isUpdating = state => state.actionUpdateStatus === 'Request';

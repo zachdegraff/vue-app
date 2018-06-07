@@ -25,6 +25,13 @@ export const replace = (arr, item) => {
     arr[idx] = item
 };
 
+export const remove = (arr, item) => {
+    const idx = arr.findIndex(el => el.id === item.id);
+    if (idx !== -1) {
+        return arr.splice(idx, 1)
+    }
+};
+
 export const error = (message) => {
     Notify.create({
         message,

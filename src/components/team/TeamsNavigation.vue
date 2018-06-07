@@ -25,8 +25,8 @@
         <div class="q-pt-lg text-center">
             <q-btn label="create team" color="primary" @click="create"/>
         </div>
-        <edit-team :id="team.id" v-if="team" @closed="closeEditing"></edit-team>
-        <create-team v-if="isCreation" @closed="closeCreation"></create-team>
+        <edit-team :id="team.id" v-if="team" @closed="closeEditing"/>
+        <create-team v-if="isCreation" @closed="closeCreating"/>
     </div>
 </template>
 <script>
@@ -44,7 +44,7 @@
         },
         computed: {
             ...mapGetters({
-                teams: 'teams/items'
+                teams: 'teams/all'
             })
         },
         mixins: [ModalManager],
@@ -74,7 +74,7 @@
                 this.openModalWindow('create_team');
                 this.isCreation = true
             },
-            closeCreation() {
+            closeCreating() {
                 this.isCreation = false;
                 this.closeModalWindow();
             },
@@ -91,7 +91,7 @@
             },
             confirm() {
                 return this.$q.dialog({
-                    title: 'Prompt',
+                    title: 'Confirm',
                     message: 'Are you sure?',
                     cancel: true,
                     color: 'secondary'

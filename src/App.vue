@@ -1,9 +1,7 @@
 <template>
     <div id="q-app">
         <q-ajax-bar :delay="100" size="2px" color="red"/>
-        <keep-alive>
-            <router-view/>
-        </keep-alive>
+        <router-view/>
     </div>
 </template>
 
@@ -15,7 +13,7 @@
         created() {
             if (localStorage.getItem('access-token') !== null) {
                 this.loadAuthUser();
-                this.loadUserTeams();
+                this.loadUserTeams()
             }
         },
         methods: {

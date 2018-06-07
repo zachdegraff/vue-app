@@ -37,19 +37,12 @@
         },
         data: () => {
             return {
-                model: {
-                    name: '',
-                    organization: ''
-                },
                 file: null,
                 isOpen: true
             }
         },
         created() {
-            this.load(this.id).then(data => {
-                this.model = data;
-                document.title = `Editing ${data.name} team - Wonderus`
-            });
+            this.edit(this.id).then(team => document.title = `Editing ${team.name} team - Wonderus`);
         },
         mixins: [ValidatorMessages],
         validations: {
@@ -61,6 +54,7 @@
         },
         computed: {
             ...mapGetters({
+                model: 'teams/getEditingTeam',
                 isProcessing: 'teams/isUpdating'
             })
         },
@@ -69,7 +63,7 @@
         },
         methods: {
             ...mapActions({
-                load: 'teams/get',
+                edit: 'teams/edit',
                 update: 'teams/update'
             }),
             save() {
@@ -78,9 +72,7 @@
                     return
                 }
 
-                this.update({id: this.id, model: this.prepare()}).then(() => {
-                    this.$emit('closed')
-                });
+                this.update({id: this.id, model: this.prepare()}).then(() => this.$emit('closed'));
             },
             photo(path) {
                 if (!path) {

@@ -68,7 +68,7 @@
         computed: {
             ...mapGetters({
                 user: 'auth/user',
-                teams: 'teams/items',
+                teams: 'teams/all',
                 current: 'teams/current'
             }),
             manage() {
@@ -83,7 +83,7 @@
         methods: {
             ...mapActions({
                 logout: 'auth/logout',
-                changeTeam: 'teams/setCurrentTeam'
+                changeTeam: 'teams/changeCurrentTeam'
             }),
             exit() {
                 this.logout().then(() => this.$router.push({name: 'login_user'}))

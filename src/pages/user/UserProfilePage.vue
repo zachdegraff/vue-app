@@ -1,27 +1,31 @@
 <template>
     <q-page>
-        <h5>My Profile</h5>
-        <q-field class="q-py-sm" :error="$v.form.email.$error" :error-label="firstErrorFor($v.form.email)">
-            <q-input type="text" float-label="Email" v-model="form.email" @blur="$v.form.email.$touch"/>
-        </q-field>
-        <q-field class="q-py-sm" :error="$v.form.firstName.$error" :error-label="firstErrorFor($v.form.firstName)">
-            <q-input type="text" float-label="First Name" v-model="form.firstName" @blur="$v.form.firstName.$touch"/>
-        </q-field>
-        <q-field class="q-py-sm">
-            <q-input type="text" float-label="Last Name" v-model="form.lastName"/>
-        </q-field>
-        <q-field class="q-py-sm" :error="$v.form.password.$error" :error-label="firstErrorFor($v.form.password)">
-            <q-input type="password" float-label="Password" v-model="form.password" @blur="$v.form.password.$touch"/>
-        </q-field>
-        <q-field class="q-py-sm" :error="$v.form.password_confirmation.$error" :error-label="firstErrorFor($v.form.password_confirmation)">
-            <q-input type="password" float-label="Repeat Password" v-model="form.password_confirmation" @blur="$v.form.password_confirmation.$touch"/>
-        </q-field>
-        <q-field class="q-py-sm">
-            <img :src="user.photo" class="round-borders" width="200px" v-if="user && user.photo"/>
-            <q-uploader url="" float-label="Photo" hide-upload-button @add="chooseFile" @remove:cancel="cancelFile" :disable="isProcessing" extensions=".jpg,.jpeg,.png"/>
-        </q-field>
-        <div class="q-pt-lg">
-            <q-btn color="primary" label="save" @click="submit" :disabled="isProcessing"/>
+        <div class="row flex-center">
+            <div class="col-xs-12 col-sm-8">
+                <h5>My Profile</h5>
+                <q-field class="q-py-sm" :error="$v.form.email.$error" :error-label="firstErrorFor($v.form.email)">
+                    <q-input type="text" float-label="Email" v-model="form.email" @blur="$v.form.email.$touch"/>
+                </q-field>
+                <q-field class="q-py-sm" :error="$v.form.firstName.$error" :error-label="firstErrorFor($v.form.firstName)">
+                    <q-input type="text" float-label="First Name" v-model="form.firstName" @blur="$v.form.firstName.$touch"/>
+                </q-field>
+                <q-field class="q-py-sm">
+                    <q-input type="text" float-label="Last Name" v-model="form.lastName"/>
+                </q-field>
+                <q-field class="q-py-sm" :error="$v.form.password.$error" :error-label="firstErrorFor($v.form.password)">
+                    <q-input type="password" float-label="Password" v-model="form.password" @blur="$v.form.password.$touch"/>
+                </q-field>
+                <q-field class="q-py-sm" :error="$v.form.password_confirmation.$error" :error-label="firstErrorFor($v.form.password_confirmation)">
+                    <q-input type="password" float-label="Repeat Password" v-model="form.password_confirmation" @blur="$v.form.password_confirmation.$touch"/>
+                </q-field>
+                <q-field class="q-py-sm">
+                    <img :src="user.photo" class="round-borders" width="200px" v-if="user && user.photo"/>
+                    <q-uploader url="" float-label="Photo" hide-upload-button @add="chooseFile" @remove:cancel="cancelFile" :disable="isProcessing" extensions=".jpg,.jpeg,.png"/>
+                </q-field>
+                <div class="q-pt-lg">
+                    <q-btn color="primary" label="save" @click="submit" :disabled="isProcessing"/>
+                </div>
+            </div>
         </div>
     </q-page>
 </template>
@@ -81,8 +85,7 @@
         },
         methods: {
             ...mapActions({
-                update: 'users/update',
-                loadAuthUser: 'auth/user',
+                update: 'users/update'
             }),
             loadValues(user) {
                 ['email', 'firstName', 'lastName'].forEach(i => this.form[i] = user[i])
@@ -94,8 +97,7 @@
                 }
 
                 this.update({id: this.user.id, model: this.prepare()}).then(() => {
-                    ['password', 'password_confirmation'].forEach(i => this.form[i] = '');
-                    this.loadAuthUser()
+                    ['password', 'password_confirmation'].forEach(i => this.form[i] = '')
                 })
             },
             prepare() {

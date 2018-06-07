@@ -53,10 +53,7 @@
     export default {
         data: () => {
             return {
-                card: null,
-                collections: [],
-                recentlyAdded: [],
-                recentlyUpdated: []
+                card: null
             }
         },
         created() {
@@ -66,21 +63,20 @@
                     this.$router.push({name: 'view_team', params: {id: data.member.teamId}})
                 })
             }
-            if (this.team !== null) {
-                this.load(this.team.id)
-            }
             document.title = this.title
         },
         mixins: [ModalManager],
         watch: {
             team: function (val) {
-                this.load(val.id);
                 document.title = this.title
             }
         },
         computed: {
             ...mapGetters({
-                team: 'teams/current'
+                team: 'teams/current',
+                recentlyAdded: 'cards/getRecentlyAdded',
+                recentlyUpdated: 'cards/getRecentlyUpdated',
+                collections: 'collections/all'
             }),
             title() {
                 if (this.team === null) {
@@ -94,16 +90,8 @@
         },
         methods: {
             ...mapActions({
-                join: 'teams/join',
-                loadRecentlyAdded: 'cards/recentlyAdded',
-                loadRecentlyUpdated: 'cards/recentlyUpdated',
-                loadTeamCollections: 'cards/collections'
+                join: 'teams/join'
             }),
-            load(id) {
-                this.loadRecentlyAdded(id).then(items => this.recentlyAdded = items);
-                this.loadRecentlyUpdated(id).then(items => this.recentlyUpdated = items);
-                this.loadTeamCollections(id).then(items => this.collections = items)
-            },
             open(card) {
                 this.openModalWindow('view_card', {id: card.id});
                 this.card = card

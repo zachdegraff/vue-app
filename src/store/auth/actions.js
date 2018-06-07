@@ -1,12 +1,12 @@
-import AuthResource from '../../resources/auth/AuthResource'
 import axios from 'axios'
+import api from '../../api'
 
 export const user = ({commit}) => {
     return new Promise((resolve, reject) => {
         commit('userStatusRequest');
-        AuthResource.user().then(({data}) => {
-            commit('userStatusSuccess', data.data);
-            resolve(data.data)
+        api.auth.user().then(res => {
+            commit('userStatusSuccess', res);
+            resolve(res.data.data)
         }).catch(err => {
             commit('userStatusFailure');
             reject(err)
@@ -17,10 +17,10 @@ export const user = ({commit}) => {
 export const login = ({commit, dispatch}, user) => {
     return new Promise((resolve, reject) => {
         commit('loginStatusRequest');
-        AuthResource.login(user).then(({data}) => {
-            commit('loginStatusSuccess', data);
-            setAuthorizeToken(data.token, dispatch);
-            resolve(data)
+        api.auth.login(user).then(res => {
+            commit('loginStatusSuccess', res);
+            setAuthorizeToken(res.data.token, dispatch);
+            resolve(res.data)
         }).catch(err => {
             commit('loginStatusFailure');
             reject(err)
@@ -31,10 +31,10 @@ export const login = ({commit, dispatch}, user) => {
 export const register = ({commit, dispatch}, user) => {
     return new Promise((resolve, reject) => {
         commit('registerStatusRequest');
-        AuthResource.register(user).then(({data}) => {
-            commit('registerStatusSuccess', data);
-            setAuthorizeToken(data.token, dispatch);
-            resolve(data)
+        api.auth.register(user).then(res => {
+            commit('registerStatusSuccess', res);
+            setAuthorizeToken(res.data.token, dispatch);
+            resolve(res.data)
         }).catch(err => {
             commit('registerStatusFailure');
             reject(err)
@@ -45,11 +45,11 @@ export const register = ({commit, dispatch}, user) => {
 export const logout = ({commit}) => {
     return new Promise((resolve, reject) => {
         commit('logoutStatusRequest');
-        AuthResource.logout().then(({data}) => {
+        api.auth.logout().then(res => {
             localStorage.removeItem('access-token');
             delete axios.defaults.headers.common['Authorization'];
-            commit('logoutStatusSuccess');
-            resolve(data)
+            commit('logoutStatusSuccess', res);
+            resolve(res.data)
         }).catch(err => {
             commit('logoutStatusFailure');
             reject(err)
@@ -60,9 +60,9 @@ export const logout = ({commit}) => {
 export const forgot = ({commit}, email) => {
     return new Promise((resolve, reject) => {
         commit('forgotStatusRequest');
-        AuthResource.forgot(email).then(({data}) => {
-            commit('forgotStatusSuccess');
-            resolve(data)
+        api.auth.forgot(email).then(res => {
+            commit('forgotStatusSuccess', res);
+            resolve(res.data)
         }).catch(err => {
             commit('forgotStatusFailure');
             reject(err)
@@ -73,10 +73,10 @@ export const forgot = ({commit}, email) => {
 export const reset = ({commit, dispatch}, form) => {
     return new Promise((resolve, reject) => {
         commit('resetStatusRequest');
-        AuthResource.reset(form).then(({data}) => {
-            commit('resetStatusSuccess', data);
+        api.auth.reset(form).then(res => {
+            commit('resetStatusSuccess', res);
             setAuthorizeToken(data.token, dispatch);
-            resolve(data)
+            resolve(res.data)
         }).catch(err => {
             commit('resetStatusFailure');
             reject(err)
@@ -89,5 +89,5 @@ function setAuthorizeToken(token, dispatch) {
 
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
-    dispatch('teams/all', {}, {root: true});
+    dispatch('teams/all', null, {root: true});
 }

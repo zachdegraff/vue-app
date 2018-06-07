@@ -1,6 +1,6 @@
 <template>
     <div>
-        <edit-team :id="id" @closed="$router.push({name:'view_team', params: {id}})"></edit-team>
+        <edit-team :id="id" @closed="redirect"></edit-team>
     </div>
 </template>
 <script>
@@ -12,6 +12,11 @@
                 required: true
             }
         },
-        components: {EditTeam}
+        components: {EditTeam},
+        methods: {
+            redirect() {
+                this.$router.push({name: 'view_team', params: {id: this.id}})
+            }
+        }
     }
 </script>

@@ -62,7 +62,6 @@
     import ValidatorMessages from '../../mixins/ValidatorMessages'
     import HasCardChanges from '../../mixins/HasCardChanges'
     import EditorTools from '../../components/EditorTools'
-    import CardResource from '../../resources/card/CardResource'
     import {required} from 'vuelidate/lib/validators'
     import {mapActions, mapGetters} from 'vuex'
 
@@ -86,24 +85,23 @@
         },
         created() {
             delete window.cardState;
-            Promise
-                .all([
-                    this.load(this.id).then(data => {
-                        this.links = data.links;
-                        this.form = data;
-                        this.form.collections = data.collections.map(item => item.name);
 
-                        document.title = `Editing ${this.form.name} - Wonderus`
-                    }), CardResource.teams().then(({data}) => {
-                        this.options = data.data.map(team => {
-                            return {value: team.id, label: team.name}
-                        })
-                    })])
-                .then(() => window.cardState = JSON.parse(JSON.stringify(this.$data)))
+            this.load(this.id).then(data => {
+                this.links = data.links;
+                this.form = data;
+                this.form.collections = data.collections.map(item => item.name);
+
+                document.title = `Editing ${this.form.name} - Wonderus`
+            }).then(() => window.cardState = JSON.parse(JSON.stringify(this.$data)));
+
+            this.options = this.teams.map(team => {
+                return {value: team.id, label: team.name}
+            })
         },
         mixins: [ValidatorMessages, HasCardChanges],
         computed: {
             ...mapGetters({
+                teams: 'teams/all',
                 isProcessing: 'cards/isUpdating'
             })
         },

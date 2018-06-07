@@ -167,7 +167,7 @@
             },
             confirm() {
                 return this.$q.dialog({
-                    title: 'Prompt',
+                    title: 'Confirm',
                     message: 'Are you sure?',
                     cancel: true,
                     color: 'secondary'

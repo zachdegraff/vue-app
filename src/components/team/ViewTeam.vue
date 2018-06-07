@@ -142,8 +142,8 @@
                 }).catch(() => {
                 })
             },
-            excludeFromTeam(memberId) {
-                this.confirm().then(() => this.excludeMember(memberId)).catch(() => {
+            excludeFromTeam(id) {
+                this.confirm().then(() => this.excludeMember(id)).catch(() => {
                 })
             }
         }

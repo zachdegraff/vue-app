@@ -1,4 +1,4 @@
-import {replace} from "../../helpers";
+import {replace, remove} from "../../helpers";
 
 export const loadMemberStatusRequest = state => state.loadMemberStatus = 'Request';
 export const loadMemberStatusSuccess = state => state.loadMemberStatus = 'Success';
@@ -8,17 +8,17 @@ export const loadTeamMembersStatusRequest = state => {
     state.loadTeamMembersStatus = 'Request';
     state.items = []
 };
-export const loadTeamMembersStatusSuccess = (state, req) => {
+export const loadTeamMembersStatusSuccess = (state, res) => {
     state.loadTeamMembersStatus = 'Success';
-    state.items = req.data.data
+    state.items = res.data.data
 };
 
 export const loadTeamMembersStatusFailure = state => state.loadTeamMembersStatus = 'Failure';
 
 export const inviteMemberToTeamStatusRequest = state => state.inviteMemberToTeamStatus = 'Request';
-export const inviteMemberToTeamStatusSuccess = (state, req) => {
+export const inviteMemberToTeamStatusSuccess = (state, res) => {
     state.inviteMemberToTeamStatus = 'Success';
-    state.items.push(req.data.member);
+    state.items.push(res.data.member);
 };
 export const inviteMemberToTeamStatusFailure = state => state.inviteMemberToTeamStatus = 'Failure';
 
@@ -27,9 +27,9 @@ export const joinMemberToTeamStatusSuccess = state => state.joinMemberToTeamStat
 export const joinMemberToTeamStatusFailure = state => state.joinMemberToTeamStatus = 'Failure';
 
 export const changeMemberRoleStatusRequest = state => state.changeMemberRoleStatus = 'Request';
-export const changeMemberRoleStatusSuccess = (state, req) => {
+export const changeMemberRoleStatusSuccess = (state, res) => {
     state.changeMemberRoleStatus = 'Success';
-    replace(state.items, req.data.member)
+    replace(state.items, res.data.member)
 };
 export const changeMemberRoleStatusFailure = state => state.changeMemberRoleStatus = 'Failure';
 
@@ -38,11 +38,8 @@ export const retryMemberInvitationStatusSuccess = state => state.retryMemberInvi
 export const retryMemberInvitationStatusFailure = state => state.retryMemberInvitationStatus = 'Failure';
 
 export const excludeMemberFromTeamStatusRequest = state => state.excludeMemberFromTeamStatus = 'Request';
-export const excludeMemberFromTeamStatusSuccess = (state, req) => {
+export const excludeMemberFromTeamStatusSuccess = (state, res) => {
     state.excludeMemberFromTeamStatus = 'Success';
-    const idx = state.items.findIndex(item => item.id === req.data.member.id);
-    if (idx !== -1) {
-        state.items.splice(idx, 1)
-    }
+    remove(state.items, res.data.member)
 };
 export const excludeMemberFromTeamStatusFailure = state => state.excludeMemberFromTeamStatus = 'Failure';
