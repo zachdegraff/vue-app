@@ -1,6 +1,6 @@
 <template>
     <div>
-        <q-modal v-model="isOpen" @hide="$emit('closed')" class="app-modal" :content-classes="['app-modal-content']" :content-css="{minWidth: '50vw', minHeight: '50vh'}">
+        <q-modal v-model="isOpen" @hide="closeViewing" class="app-modal" :content-classes="['app-modal-content']" :content-css="{minWidth: '50vw', minHeight: '50vh'}">
             <app-modal-layout>
                 <q-toolbar slot="header">
                     <q-toolbar-title v-if="card">{{card.name}}</q-toolbar-title>
@@ -83,52 +83,40 @@
                             <q-btn icon="bookmark_border" flat/>
                             <q-btn icon="help" flat/>
                             <q-btn icon="content_copy" flat/>
-                            <q-btn icon="edit" flat @click="edit" v-if="card.canUpdate"/>
+                            <q-btn icon="edit" flat @click="edit(card.id)" v-if="card.canUpdate"/>
                             <q-btn icon="delete" flat @click="flush" v-show="card.canRemove"/>
                         </div>
                         <div class="card-item-image">
                             <img :src="card.thumb" v-if="card.thumb"/>
                         </div>
-                        <card-note :id="id"></card-note>
+                        <card-note :id="card.id"></card-note>
                     </div>
                 </div>
             </app-modal-layout>
         </q-modal>
-        <edit-card :id="id" v-if="isEditing" @closed="closeEditing"></edit-card>
     </div>
 </template>
 <script>
     import AppModalLayout from '../../components/context/modal/AppModalLayout'
-    import ModalManager from '../../mixins/ModalManager'
     import Markdown from '../../mixins/Markdown'
     import {mapActions, mapGetters} from 'vuex'
-    import EditCard from './EditCard.vue'
     import CardNote from './CardNote.vue'
-    import {openURL, date} from 'quasar'
+    import {openURL} from 'quasar'
     import {prop} from '../../helpers'
 
     const APP_HOST = process.env.APP_HOST;
 
     export default {
-        props: {
-            id: {
-                required: true
-            }
-        },
         data: () => {
             return {
-                card: null,
-                isOpen: true,
-                isEditing: false
+                isOpen: true
             }
         },
-        created() {
-            this.load(this.id).then(data => this.card = data)
-        },
-        mixins: [Markdown, ModalManager],
+        mixins: [Markdown],
         computed: {
             ...mapGetters({
                 team: 'teams/current',
+                card: 'cards/getViewingCard',
             }),
             title() {
                 return `${prop(this.card, 'name')} - ${prop(this.team, 'name')} - Wonderus`;
@@ -146,25 +134,20 @@
         },
         watch: {
             card: function (val) {
-                document.title = this.title;
-            },
-            team: function (val) {
-                document.title = this.title;
+                if (val) {
+                    document.title = this.title;
+                }
             }
         },
         components: {
-            EditCard,
             AppModalLayout, CardNote
         },
         methods: {
             ...mapActions({
-                load: 'cards/get',
-                remove: 'cards/remove'
+                edit: 'cards/edit',
+                remove: 'cards/remove',
+                closeViewing: 'cards/closeViewing'
             }),
-            edit() {
-                this.openModalWindow('edit_card', {id: this.id});
-                this.isEditing = true;
-            },
             confirm() {
                 return this.$q.dialog({
                     title: 'Confirm',
@@ -175,7 +158,7 @@
             },
             flush() {
                 this.confirm().then(() => {
-                    this.remove(this.id).then(this.isOpen = false)
+                    this.remove(this.card.id).then(this.closeViewing)
                 }).catch(() => {
                 })
             },
@@ -191,11 +174,6 @@
             },
             redirect(link) {
                 openURL(link)
-            },
-            closeEditing() {
-                this.closeModalWindow();
-                this.isEditing = false;
-                this.load(this.id).then(data => this.card = data);
             },
             formatDescription() {
                 return this.markTags(this.card.description)

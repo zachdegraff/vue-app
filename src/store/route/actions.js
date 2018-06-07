@@ -1,14 +1,35 @@
-function isExcepted(path) {
-    const except = ['edit'];
+const routes = {
+    'create_card': () => `/cards/create`,
+    'view_card': ({id}) => `/cards/${id}`,
+    'edit_card': ({id}) => `/cards/${id}/edit`,
+    'create_team': () => `teams/create`,
+    'view_team': ({id}) => `teams/${id}`,
+    'edit_team': ({id}) => `teams/${id}/edit`,
+    'invite_member': ({id}) => `teams/${id}/invite`,
+    'change_role': ({id, memberId}) => `teams/${id}/change-role/${memberId}`,
+};
 
-    return except.some(el => path.indexOf(el) !== -1);
-}
+export const next = ({commit}, {name, ...params}) => {
+    if (routes[name] === undefined) return;
 
+    const item = {
+        name: name,
+        title: document.title,
+        url: window.location.href.toString(),
+    };
 
-export const current = ({getters, commit}, path) => {
-    const isWrong = isExcepted(path) || path === getters.current;
-
-    if (!isWrong) {
-        commit('push', path)
+    if (window.history !== undefined) {
+        window.history.pushState(item, '', routes[name](params))
     }
+    commit('push', item)
+};
+
+export const pop = ({state}) => {
+    const item = state.stack.length > 0 ? state.stack.pop() : null;
+    if (item === null) return this.$router.go(-1);
+
+    if (window.history !== undefined) {
+        window.history.pushState(item, '', item.url)
+    }
+    document.title = item.title
 };

@@ -5,7 +5,7 @@
     </div>
 </template>
 <script>
-    import {mapActions} from 'vuex'
+    import {mapGetters, mapActions} from 'vuex'
 
     export default {
         props: {
@@ -19,12 +19,12 @@
             }
         },
         created() {
-            this.load(this.id).then(data => this.note = data.note)
+            this.get(this.id).then(data => this.note = data.note)
         },
         methods: {
             ...mapActions({
-                load: 'cards/getNote',
-                store: 'cards/storeNote',
+                get: 'note/get',
+                store: 'note/store',
             }),
             save() {
                 this.store({id: this.id, note: this.note})

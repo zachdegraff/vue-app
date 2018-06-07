@@ -1,5 +1,12 @@
 import {replace, remove} from "../../helpers";
 
+export const changeAddingStatus = (state, status) => state.adding.status = status;
+
+export const changeViewingStatus = (state, status) => state.viewing.status = status;
+export const changeEditingStatus = (state, status) => state.editing.status = status;
+
+export const changeViewingCard = (state, card) => state.viewing.card = card;
+export const changeEditingCard = (state, card) => state.editing.card = card;
 
 export const allStatusRequest = state => {
     state.actionAllStatus = 'Request';
@@ -15,7 +22,7 @@ export const allStatusFailure = state => state.actionAllStatus = 'Failure';
 export const getStatusRequest = state => state.actionGetStatus = 'Request';
 export const getStatusSuccess = (state, res) => {
     state.actionGetStatus = 'Success';
-    replace(state.items, res.data)
+    replace(state.items, res.data.data)
 };
 export const getStatusFailure = state => state.actionGetStatus = 'Failure';
 
@@ -25,6 +32,7 @@ export const updateStatusSuccess = (state, res) => {
     state.actionUpdateStatus = 'Success';
     replace(state.searchResults, res.data.card);
     replace(state.items, res.data.card);
+    state.viewing.card = res.data.card;
 
 };
 export const updateStatusFailure = state => state.actionUpdateStatus = 'Failure';
@@ -33,7 +41,8 @@ export const updateStatusFailure = state => state.actionUpdateStatus = 'Failure'
 export const removeStatusRequest = state => state.actionRemoveStatus = 'Request';
 export const removeStatusSuccess = (state, res) => {
     state.actionRemoveStatus = 'Success';
-    remove(state.items, res.data)
+    remove(state.searchResults, res.data.card);
+    remove(state.items, res.data.card)
 };
 export const removeStatusFailure = state => state.actionRemoveStatus = 'Failure';
 

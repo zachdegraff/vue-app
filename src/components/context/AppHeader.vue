@@ -30,8 +30,8 @@
                         <img src="statics/header-logo.png"/>
                     </router-link>
                 </div>
-                <q-btn color="white" class="text-black gt-xs" icon="add" label="Add Card" @click="openCardCreation"/>
-                <q-btn color="white" class="short-add-button text-black lt-sm" icon="add" @click="openCardCreation"/>
+                <q-btn color="white" class="text-black gt-xs" icon="add" label="Add Card" @click="addCard"/>
+                <q-btn color="white" class="short-add-button text-black lt-sm" icon="add" @click="addCard"/>
                 <div class="auth-user q-ml-md" v-if="user">
                     <img :src="avatar(user.photo)" class="header-icon vertical-middle"/>
                     <q-popover>
@@ -51,12 +51,9 @@
                 </div>
             </q-toolbar>
         </q-layout-header>
-        <create-card v-if="isCardCreating" @closed="closeCardCreation"></create-card>
     </div>
 </template>
 <script>
-    import CreateCard from '../../components/card/CreateCard.vue'
-    import ModalManager from '../../mixins/ModalManager'
     import {mapActions, mapGetters} from 'vuex'
 
     export default {
@@ -78,23 +75,14 @@
                 return {name: 'teams'}
             }
         },
-        mixins: [ModalManager],
-        components: {CreateCard},
         methods: {
             ...mapActions({
+                addCard: 'cards/add',
                 logout: 'auth/logout',
                 changeTeam: 'teams/changeCurrentTeam'
             }),
             exit() {
                 this.logout().then(() => this.$router.push({name: 'login_user'}))
-            },
-            openCardCreation() {
-                this.openModalWindow('create_card');
-                this.isCardCreating = true
-            },
-            closeCardCreation() {
-                this.closeModalWindow();
-                this.isCardCreating = false
             },
             photo(path) {
                 if (!path) {

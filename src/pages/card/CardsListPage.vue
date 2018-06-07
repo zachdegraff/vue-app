@@ -9,7 +9,7 @@
                     </div>
                     <div class="row gutter-sm" v-show="items.length > 0">
                         <div class="col-xs-12 col-sm-6 col-lg-3" v-for="card in items">
-                            <q-card class="cursor-pointer" @click.native="open(card)">
+                            <q-card class="cursor-pointer" @click.native="showCard(card.id)">
                                 <q-card-media>
                                     <img :src="getCardImage(card.thumb)">
 
@@ -25,65 +25,41 @@
                 <q-spinner :size="36" color="red" v-show="isLoading"></q-spinner>
             </div>
         </q-page>
-        <view-card :id="card.id" v-if="card" @closed="cardClosed"></view-card>
+
     </div>
 </template>
 <script>
-    import ViewCard from '../../components/card/ViewCard.vue'
     import SearchForm from '../../components/SearchForm.vue'
-    import ModalManager from '../../mixins/ModalManager'
     import {mapActions, mapGetters} from 'vuex'
+    import {prop} from "../../helpers"
 
     export default {
-        data: () => {
-            return {
-                items: [],
-                card: null,
-            }
-        },
         computed: {
             ...mapGetters({
                 team: 'teams/current',
+                items: 'cards/getItems',
                 isLoading: 'cards/isCardsLoading'
             }),
             title() {
-                return `${this.team ? this.team.name : ''} cards - Wonderus`
+                return `${prop(this.team, 'name')} cards - Wonderus`
             }
         },
-        components: {SearchForm, ViewCard},
-        mixins: [ModalManager],
+        components: {SearchForm},
         watch: {
             team: function (val) {
+                this.load();
                 document.title = this.title;
-                this.load(this.params()).then(items => this.items = items)
             }
         },
         created() {
-            console.log('page created');
+            this.load();
             document.title = this.title;
-            this.load(this.params()).then(items => this.items = items)
-        },
-        mounted() {
-            console.log('page mounted');
         },
         methods: {
             ...mapActions({
-                load: 'cards/all'
+                load: 'cards/all',
+                showCard: 'cards/view'
             }),
-            params() {
-                if (this.team !== null) {
-                    return {teamId: this.team.id}
-                }
-                return {}
-            },
-            open(card) {
-                this.openModalWindow('view_card', {id: card.id});
-                this.card = card
-            },
-            cardClosed() {
-                this.closeModalWindow();
-                this.card = null
-            },
             getCardImage(path) {
                 if (path === null) {
                     return 'statics/blank-card.png'

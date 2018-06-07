@@ -6,12 +6,12 @@ export const all = ({commit, rootGetters}) => {
         if (team === null) {
             resolve([])
         }
-        commit('forTeamStatusRequest');
+        commit('allStatusRequest');
         api.collections.forTeam(team.id).then(res => {
-            commit('forTeamStatusSuccess', res);
+            commit('allStatusSuccess', res);
             resolve(res.data.data)
         }).catch(err => {
-            commit('forTeamStatusFailure', err);
+            commit('allStatusFailure', err);
             reject(err)
         })
     })

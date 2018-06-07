@@ -7,7 +7,7 @@
             </q-toolbar>
             <div class="row q-py-xl gutter-md flex-center">
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10" :error="$v.form.teamId.$error" :error-label="firstErrorFor($v.form.teamId)">
-                    <q-select v-model="form.teamId" float-label="Team" :options="options" @change="$v.form.teamId.$touch"/>
+                    <q-select v-model="form.teamId" float-label="Team" :options="options"/>
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10" :error="$v.form.name.$error" :error-label="firstErrorFor($v.form.name)">
                     <q-input v-model="form.name" float-label="Name" @blur="$v.form.name.$touch"/>
@@ -33,7 +33,7 @@
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
                     <q-chips-input v-model="form.collections" float-label="Collections" placeholder="Type collection name">
-                        <q-autocomplete :static-data="collections"/>
+                        <q-autocomplete :static-data="suggests"/>
                     </q-chips-input>
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
@@ -71,7 +71,7 @@
                 options: [],
                 flushImage: false,
                 selection: null,
-                collections: {field: 'label', list: []},
+                suggests: {field: 'label', list: []},
                 isOpen: true
             }
         },
@@ -80,6 +80,7 @@
             ...mapGetters({
                 teams: 'teams/all',
                 team: 'teams/current',
+                collections: 'collections/all',
                 isProcessing: 'cards/isCreating'
             })
         },
@@ -98,17 +99,17 @@
         },
         watch: {
             'form.teamId': function (val) {
-                this.loadTeamCollections(val).then(items => {
-                    this.collections.list = items.map(item => {
-                        return {label: item.name}
-                    });
-                })
+                this.changeTeam(val)
             },
-            team: function (val, old) {
-                this.form.teamId = val.id;
-                if (old === null) {
-                    window.cardState = JSON.parse(JSON.stringify(this.$data))
-                }
+            teams: function (val) {
+                this.options = val.map(team => {
+                    return {value: team.id, label: team.name}
+                });
+            },
+            collections: function (val) {
+                this.suggests.list = val.map(item => {
+                    return {label: item.name}
+                })
             }
         },
         created() {
@@ -119,6 +120,9 @@
             this.options = this.teams.map(team => {
                 return {value: team.id, label: team.name}
             });
+            this.suggests.list = this.collections.map(item => {
+                return {label: item.name}
+            });
             this.form.name = this.$route.query.name;
             document.title = 'Creating a new card - Wonderus';
             window.cardState = JSON.parse(JSON.stringify(this.$data))
@@ -126,7 +130,8 @@
         methods: {
             ...mapActions({
                 create: 'cards/create',
-                loadTeamCollections: 'cards/collections'
+                closeAdding: 'cards/closeAdding',
+                changeTeam: 'teams/changeCurrentTeam'
             }),
             save() {
                 this.$v.form.$touch();
@@ -134,22 +139,15 @@
                     return
                 }
 
-                this.create(this.prepare()).then(this.redirect)
+                this.create(this.prepare()).then(this.closeAdding)
             },
             close() {
-                const closing = () => {
-                    this.isOpen = false;
-                    this.$emit('closed');
-                };
                 if (window.cardState === undefined || !this.hasAnyChanges(window.cardState)) {
-                    return closing()
+                    return this.closeAdding()
                 }
 
-                this.confirm().then(closing).catch(() => {
+                this.confirm().then(this.closeAdding).catch(() => {
                 })
-            },
-            redirect() {
-                this.$router.push({name: 'cards_list'})
             },
             prepare() {
                 const data = new FormData();

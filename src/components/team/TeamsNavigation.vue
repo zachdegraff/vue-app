@@ -32,7 +32,6 @@
 <script>
     import CreateTeam from '../../components/team/CreateTeam.vue'
     import EditTeam from '../../components/team/EditTeam.vue'
-    import ModalManager from '../../mixins/ModalManager'
     import {mapActions, mapGetters} from 'vuex'
 
     export default {
@@ -47,7 +46,6 @@
                 teams: 'teams/all'
             })
         },
-        mixins: [ModalManager],
         components: {CreateTeam, EditTeam},
         methods: {
             ...mapActions({

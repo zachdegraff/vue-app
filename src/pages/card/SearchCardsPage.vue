@@ -9,7 +9,7 @@
                     </div>
                     <div class="row gutter-sm" v-show="items.length > 0">
                         <div class="col-xs-12 col-sm-6 col-lg-3" v-for="card in items">
-                            <q-card class="cursor-pointer" @click.native="open(card)">
+                            <q-card class="cursor-pointer" @click.native="showCard(card.id)">
                                 <q-card-media>
                                     <img :src="getCardImage(card.thumb)">
 
@@ -29,24 +29,20 @@
                 </div>
             </div>
         </q-page>
-        <view-card :id="card.id" v-if="card" @closed="cardClosed"></view-card>
+
     </div>
 </template>
 <script>
     import ViewCard from '../../components/card/ViewCard.vue'
     import SearchForm from '../../components/SearchForm.vue'
-    import ModalManager from '../../mixins/ModalManager'
     import {mapActions, mapGetters} from 'vuex'
 
     export default {
         data: () => {
             return {
-                items: [],
-                card: null,
                 isEmptyResult: false
             }
         },
-        mixins: [ModalManager],
         created() {
             document.title = this.title;
             this.search(this.params()).then(this.result);
@@ -66,7 +62,8 @@
         computed: {
             ...mapGetters({
                 team: 'teams/current',
-                isLoading: 'cards/isSearching'
+                isLoading: 'cards/isSearching',
+                items: 'cards/getSearchResults'
             }),
             query() {
                 return this.$route.query.q
@@ -78,23 +75,12 @@
         components: {SearchForm, ViewCard},
         methods: {
             ...mapActions({
-                search: 'cards/search'
+                search: 'cards/search',
+                showCard: 'cards/view'
             }),
 
             params(query = null) {
-                let params = {query: query || this.query};
-                if (this.team !== null) {
-                    params['teamId'] = this.team.id
-                }
-                return params
-            },
-            open(card) {
-                this.openModalWindow('view_card', {id: card.id});
-                this.card = card
-            },
-            cardClosed() {
-                this.closeModalWindow();
-                this.card = null
+                return {query: query || this.query}
             },
             getCardImage(path) {
                 if (path === null) {
@@ -103,7 +89,6 @@
                 return path
             },
             result(items) {
-                this.items = items;
                 this.isEmptyResult = items.length === 0
             }
         }

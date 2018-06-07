@@ -43,7 +43,6 @@
 <script>
     import InviteMember from '../../components/team/InviteMember.vue'
     import ChangeRole from '../../components/team/ChangeRole.vue'
-    import ModalManager from '../../mixins/ModalManager'
     import {mapActions, mapGetters} from 'vuex'
 
     const SLACK_CLIENT_ID = process.env.SLACK_CLIENT_ID;
@@ -75,7 +74,6 @@
         created() {
             this.load(this.id).then(this.setPageTitle);
         },
-        mixins: [ModalManager],
         watch: {
             id: function (val) {
                 this.load(val).then(this.setPageTitle);

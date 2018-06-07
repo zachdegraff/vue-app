@@ -25,13 +25,12 @@
                 <q-spinner :size="36" color="red" v-show="isLoading"></q-spinner>
             </div>
         </q-page>
-        <view-card :id="card.id" v-if="card" @closed="cardClosed"></view-card>
+
     </div>
 </template>
 <script>
     import ViewCard from '../../components/card/ViewCard.vue'
     import SearchForm from '../../components/SearchForm.vue'
-    import ModalManager from '../../mixins/ModalManager'
     import {mapActions, mapGetters} from 'vuex'
 
     export default {
@@ -54,7 +53,6 @@
             }
         },
         components: {SearchForm, ViewCard},
-        mixins: [ModalManager],
         watch: {
             team: function (val) {
                 document.title = this.title;

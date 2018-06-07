@@ -2,17 +2,17 @@
     <q-modal v-model="isOpen" class="app-modal" no-esc-dismiss no-backdrop-dismiss :content-classes="['app-modal-content']" :content-css="{minWidth: '50vw', minHeight: '80vh'}" @click.native="close">
         <app-modal-layout>
             <q-toolbar slot="header">
-                <q-toolbar-title v-if="form">Editing {{form.name}}</q-toolbar-title>
+                <q-toolbar-title v-if="card">Editing {{card.name}}</q-toolbar-title>
                 <q-btn flat icon="close" @click="close" class="float-right"/>
             </q-toolbar>
 
-            <div class="row text-center card-item" v-if="!form">
+            <div class="row text-center card-item" v-if="!card">
                 <div class="col">
                     <q-spinner :size="50" color="red"></q-spinner>
                 </div>
             </div>
 
-            <div class="row q-py-xl gutter-md flex-center" v-if="form">
+            <div class="row q-py-xl gutter-md flex-center" v-if="card">
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10" :error="$v.form.teamId.$error" :error-label="firstErrorFor($v.form.teamId)">
                     <q-select v-model="form.teamId" float-label="Team" :options="options" @change="$v.form.teamId.$touch"/>
                 </q-field>
@@ -40,12 +40,12 @@
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
                     <q-chips-input v-model="form.collections" float-label="Collections" placeholder="Type collection name">
-                        <q-autocomplete :static-data="collections"/>
+                        <q-autocomplete :static-data="suggests"/>
                     </q-chips-input>
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <div class="edit-card-image-container" v-if="form.thumb" v-show="!flushImage">
-                        <img :src="form.thumb" class="round-borders" width="200px"/><br/>
+                    <div class="edit-card-image-container" v-if="card.thumb" v-show="!flushImage">
+                        <img :src="card.thumb" class="round-borders" width="200px"/><br/>
                         <q-btn round color="red" size="xs" icon="delete" class="edit-card-image-remove-btn" @click="flushImage = true"/>
                     </div>
                     <q-uploader url="" float-label="Image" hide-upload-button @add="chooseFile" @remove:cancel="cancelFile" :disable="isProcessing" extensions=".jpg,.jpeg,.png"/>
@@ -66,42 +66,33 @@
     import {mapActions, mapGetters} from 'vuex'
 
     export default {
-        props: {
-            id: {
-                required: true
-            }
-        },
         data: () => {
             return {
-                form: null,
+                form: {
+                    teamId: '',
+                    name: '',
+                    description: '',
+                    shorthand: [],
+                    collections: []
+                },
                 file: null,
                 links: [],
                 options: [],
                 flushImage: false,
                 selection: null,
-                collections: {field: 'label', list: []},
+                suggests: {field: 'label', list: []},
                 isOpen: true
             }
         },
         created() {
-            delete window.cardState;
-
-            this.load(this.id).then(data => {
-                this.links = data.links;
-                this.form = data;
-                this.form.collections = data.collections.map(item => item.name);
-
-                document.title = `Editing ${this.form.name} - Wonderus`
-            }).then(() => window.cardState = JSON.parse(JSON.stringify(this.$data)));
-
-            this.options = this.teams.map(team => {
-                return {value: team.id, label: team.name}
-            })
+            console.log('created');
         },
         mixins: [ValidatorMessages, HasCardChanges],
         computed: {
             ...mapGetters({
                 teams: 'teams/all',
+                card: 'cards/getEditingCard',
+                collections: 'collections/all',
                 isProcessing: 'cards/isUpdating'
             })
         },
@@ -119,22 +110,42 @@
             }
         },
         watch: {
-            'form.teamId': function (val) {
-                this.loadTeamCollections(val).then(items => {
-                    this.collections.list = items.map(item => {
-                        return {label: item.name}
-                    });
+            card: function (val) {
+                if (val === null) return;
+                delete window.cardState;
+
+                Object.keys(this.form).forEach(key => this.form[key] = val[key]);
+                console.log(this.form.name);
+
+                this.links = val.links;
+                this.form.collections = val.collections.map(item => item.name);
+
+                this.options = this.teams.map(team => {
+                    return {value: team.id, label: team.name}
+                });
+
+                document.title = `Editing ${val.name} - Wonderus`;
+                window.cardState = JSON.parse(JSON.stringify({...this.$data}));
+            },
+            teams: function (val) {
+                this.options = val.map(team => {
+                    return {value: team.id, label: team.name}
+                });
+            },
+            collections: function (val) {
+                this.suggests.list = val.map(item => {
+                    return {label: item.name}
                 })
             },
-            team: function (val) {
-                this.form.teamId = val.id
-            }
+            'form.teamId': function (val) {
+                this.changeTeam(val)
+            },
         },
         methods: {
             ...mapActions({
-                load: 'cards/get',
                 update: 'cards/update',
-                loadTeamCollections: 'cards/collections'
+                closeEditing: 'cards/closeEditing',
+                changeTeam: 'teams/changeCurrentTeam'
             }),
             save() {
                 this.$v.form.$touch();
@@ -142,21 +153,14 @@
                     return
                 }
 
-                this.update({id: this.id, form: this.prepare()}).then(this.redirect);
+                this.update({id: this.card.id, form: this.prepare()}).then(this.closeEditing);
             },
             close() {
                 if (window.cardState === undefined || !this.hasAnyChanges(window.cardState)) {
-                    return this.redirect();
+                    return this.closeEditing()
                 }
-
-                this.confirm().then(() => {
-                    return this.redirect();
-                }).catch(() => {
+                this.confirm().then(this.closeEditing).catch(() => {
                 })
-            },
-            redirect() {
-                this.isOpen = false;
-                return this.$emit('closed');
             },
             prepare() {
                 const data = new FormData();

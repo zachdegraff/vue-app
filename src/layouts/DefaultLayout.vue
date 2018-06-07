@@ -7,17 +7,20 @@
         </q-page-container>
 
         <app-footer></app-footer>
+        <dialogs-store></dialogs-store>
     </q-layout>
 </template>
 
 <script>
     import AppHeader from '../components/context/AppHeader.vue'
     import AppFooter from '../components/context/AppFooter.vue'
+    import DialogsStore from '../components/DialogsStore.vue'
 
     export default {
-        data: () => {
-            return {}
-        },
-        components: {AppHeader, AppFooter}
+        components: {
+            AppHeader,
+            AppFooter,
+            DialogsStore
+        }
     }
 </script>

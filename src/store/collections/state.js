@@ -1,5 +1,5 @@
 export default {
     items: [],
 
-    actionForTeamStatus: ''
+    actionAllStatus: ''
 }

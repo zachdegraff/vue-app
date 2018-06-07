@@ -6,9 +6,9 @@ const loadHomeItems = (dispatch) => {
     dispatch('collections/all', null, {root: true});
 };
 
-export const all = ({commit, getters}, params) => {
+export const all = ({commit, rootGetters}, params = {}) => {
     return new Promise((resolve, reject) => {
-        const team = getters['teams/current'];
+        const team = rootGetters['teams/current'];
         if (team === null) {
             resolve([])
         }
@@ -35,6 +35,51 @@ export const get = ({commit}, id) => {
             reject(err)
         })
     });
+};
+
+export const add = ({dispatch, commit}) => {
+    dispatch('route/next', {name: 'create_card'}, {root: true});
+    commit('changeAddingStatus', true);
+}
+
+
+export const closeAdding = ({dispatch, commit}) => {
+    dispatch('route/pop', null, {root: true});
+    commit('changeAddingStatus', false);
+};
+
+export const edit = ({commit, dispatch}, id) => {
+    dispatch('route/next', {name: 'edit_card', id}, {root: true});
+    return new Promise((resolve, reject) => {
+        commit('changeEditingStatus', true);
+        dispatch('get', id).then(card => {
+            commit('changeEditingCard', card);
+            resolve(card)
+        }).catch(reject);
+    })
+};
+
+export const closeEditing = ({dispatch, commit}) => {
+    dispatch('route/pop', null, {root: true});
+    commit('changeEditingStatus', false);
+    commit('changeEditingCard', null);
+};
+
+export const view = ({commit, dispatch}, id) => {
+    dispatch('route/next', {name: 'view_card', id}, {root: true});
+    return new Promise((resolve, reject) => {
+        commit('changeViewingStatus', true);
+        dispatch('get', id).then(card => {
+            commit('changeViewingCard', card);
+            resolve(card)
+        }).catch(reject);
+    })
+};
+
+export const closeViewing = ({dispatch, commit}) => {
+    dispatch('route/pop', null, {root: true});
+    commit('changeViewingStatus', false);
+    commit('changeViewingCard', null);
 };
 
 export const create = ({commit, dispatch}, data) => {
@@ -65,21 +110,27 @@ export const update = ({commit, dispatch}, {id, form}) => {
     })
 };
 
-export const remove = ({commit}, id) => {
+export const remove = ({commit, dispatch}, id) => {
     return new Promise((resolve, reject) => {
         commit('removeStatusRequest');
-        api.cards.remove(id).then(({data}) => {
-            commit('removeStatusSuccess');
-            resolve(data)
+        api.cards.remove(id).then(res => {
+            commit('removeStatusSuccess', res);
+            loadHomeItems(dispatch);
+            resolve(res.data)
         }).catch(err => {
-            commit('removeStatusFailure');
+            commit('removeStatusFailure', err);
             reject(err)
         })
     })
 };
 
-export const hints = ({commit}, params) => {
+export const hints = ({commit, rootGetters}, params) => {
     return new Promise((resolve, reject) => {
+        const team = rootGetters['teams/current'];
+        if (team === null) {
+            resolve([])
+        }
+        params['teamId'] = team.id;
         commit('hintsStatusRequest');
         api.cards.hints(params).then(res => {
             commit('hintsStatusSuccess', res);
@@ -91,8 +142,13 @@ export const hints = ({commit}, params) => {
     })
 };
 
-export const cardsHints = ({commit}, params) => {
+export const cardsHints = ({commit, rootGetters}, params) => {
     return new Promise((resolve, reject) => {
+        const team = rootGetters['teams/current'];
+        if (team === null) {
+            resolve([])
+        }
+        params['teamId'] = team.id;
         commit('hintsStatusRequest');
         api.cards.cardsHints(params).then(res => {
             commit('hintsStatusSuccess', res);
@@ -104,9 +160,9 @@ export const cardsHints = ({commit}, params) => {
     })
 };
 
-export const search = ({commit, getters}, params) => {
+export const search = ({commit, rootGetters}, params) => {
     return new Promise((resolve, reject) => {
-        const team = getters['teams/current'];
+        const team = rootGetters['teams/current'];
         if (team === null) {
             resolve([])
         }

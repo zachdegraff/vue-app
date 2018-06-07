@@ -9,13 +9,13 @@ const HasCardChanges = {
             });
         },
         hasAnyChanges(state) {
-            return this.__isFormChanged(state.form) ||
+            return this.__isCardChanged(state.form) ||
                 this.__isLinksChanged(state.links) ||
                 this.__isFileChanged(state.file) ||
                 this.__isFlushImageChanged(state.flushImage) ||
                 this.__isCollectionsChanged(state.form.collections)
         },
-        __isFormChanged(form) {
+        __isCardChanged(form) {
             for (let i in this.form) {
                 if (this.form[i] instanceof Object) {
                     continue;

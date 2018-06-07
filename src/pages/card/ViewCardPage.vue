@@ -1,10 +1,8 @@
 <template>
-    <q-page>
-        <view-card :id="id" @closed="$router.push({name: 'cards_list'})"></view-card>
-    </q-page>
+    <q-page></q-page>
 </template>
 <script>
-    import ViewCard from '../../components/card/ViewCard.vue'
+    import {mapActions, mapGetters} from 'vuex'
 
     export default {
         props: {
@@ -12,8 +10,25 @@
                 required: true
             }
         },
-        components: {
-            ViewCard
+        watch: {
+            isCardViewing: function (val) {
+                if (!val) {
+                    this.$router.push({name: 'cards_list'})
+                }
+            }
+        },
+        computed: {
+            ...mapGetters({
+                isCardViewing: 'cards/getViewingStatus'
+            })
+        },
+        created() {
+            this.showCard(this.id)
+        },
+        methods: {
+            ...mapActions({
+                showCard: 'cards/view'
+            })
         }
     }
 </script>

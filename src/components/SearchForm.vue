@@ -5,40 +5,36 @@
                 <q-autocomplete separator @search="search" @selected="selected" :min-characters="3"/>
             </q-search>
         </div>
-        <view-card :id="card.id" v-if="card" @closed="close"/>
     </div>
 </template>
 <script>
-    import ViewCard from '../components/card/ViewCard.vue'
-    import ModalManager from '../mixins/ModalManager'
     import {mapActions, mapGetters} from 'vuex'
 
     export default {
         data: () => {
             return {
-                query: '',
-                card: null
+                query: ''
             }
         },
         computed: {
             ...mapGetters({
-                team: 'teams/current'
+                team: 'teams/current',
+                card: 'cards/getViewingCard'
             }),
         },
-        components: {ViewCard},
         created() {
             this.query = this.$route.query.q;
         },
-        mixins: [ModalManager],
         methods: {
             ...mapActions({
-                hints: 'cards/hints'
+                hints: 'cards/hints',
+                showCard: 'cards/view'
             }),
             submit() {
                 this.$router.push({name: 'search_cards', query: {q: this.query}})
             },
             search(terms, done) {
-                this.hints(this.params(terms)).then(items => {
+                this.hints({terms}).then(items => {
                     const result = items.map(item => {
                         return {
                             ...item,
@@ -49,24 +45,12 @@
                     done(result);
                 }).catch(() => done([]));
             },
-            close() {
-                this.closeModalWindow();
-                this.card = null
-            },
             selected(item) {
                 if (item.type === 'collection') {
                     return this.$router.push({name: 'collection_cards', params: {name: item.name}})
                 }
-                this.openModalWindow('view_card', {id: item.id});
-                this.card = item
+                this.showCard(item.id)
             },
-            params(terms) {
-                let params = {terms};
-                if (this.team !== null) {
-                    params['teamId'] = this.team.id
-                }
-                return params
-            }
         }
     }
 </script>

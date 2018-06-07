@@ -1,6 +1,19 @@
 export default {
-    hints: [],
     items: [],
+
+    adding: {
+        status: false
+    },
+
+    viewing: {
+        card: null,
+        status: false
+    },
+    editing: {
+        card: null,
+        status: false
+    },
+
     searchResults: [],
     recentlyAdded: [],
     recentlyUpdated: [],

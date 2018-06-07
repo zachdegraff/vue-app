@@ -8,6 +8,13 @@ export const getById = state => {
 };
 
 export const getItems = state => state.items;
+
+export const getViewingCard = state => state.viewing.card;
+export const getEditingCard = state => state.editing.card;
+export const getAddingStatus = state => state.adding.status;
+export const getViewingStatus = state => state.viewing.status;
+export const getEditingStatus = state => state.editing.status;
+
 export const getSearchResults = state => state.searchResults;
 export const getRecentlyAdded = state => state.recentlyAdded;
 export const getRecentlyUpdated = state => state.recentlyUpdated;

@@ -91,7 +91,10 @@ export const remove = ({commit}, id) => {
     })
 };
 
-export const changeCurrentTeam = ({dispatch, commit}, id) => {
+export const changeCurrentTeam = ({dispatch, commit, getters}, id) => {
+    const current = getters['current'];
+    if (current === null || current.id === id) return;
+
     localStorage.setItem('current-team', id);
 
     dispatch('get', id).then(team => {

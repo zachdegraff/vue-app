@@ -1,3 +1,1 @@
-export const push = (state, path) => {
-    state.stack.push(path)
-};
+export const push = (state, data) => state.stack.push(data);

@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import routes from './routes'
-import store from '../store'
 
 Vue.use(VueRouter);
 
@@ -20,11 +19,6 @@ const Router = new VueRouter({
     base: process.env.VUE_ROUTER_BASE,
     scrollBehavior: () => ({y: 0}),
     routes
-});
-
-
-Router.afterEach(route => {
-    store.dispatch('route/current', route.fullPath)
 });
 
 export default Router

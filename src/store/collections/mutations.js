@@ -1,6 +1,6 @@
-export const forTeamStatusRequest = state => state.actionForTeamStatus = 'Request';
-export const forTeamStatusSuccess = (state, res) => {
-    state.actionForTeamStatus = 'Success';
+export const allStatusRequest = state => state.actionAllStatus = 'Request';
+export const allStatusSuccess = (state, res) => {
+    state.actionAllStatus = 'Success';
     state.items = res.data.data
 };
-export const forTeamStatusFailure = state => state.actionForTeamStatus = 'Failure';
+export const allStatusFailure = state => state.actionAllStatus = 'Failure';

@@ -8,7 +8,7 @@
                 </div>
                 <div class="row gutter-sm" v-show="recentlyAdded.length > 0">
                     <div class="col-xs-12 col-sm-6 col-lg-3" v-for="card in recentlyAdded">
-                        <q-card class="cursor-pointer" @click.native="open(card)">
+                        <q-card class="cursor-pointer" @click.native="showCard(card.id)">
                             <q-card-media>
                                 <img :src="getCardImage(card.thumb)">
 
@@ -23,7 +23,7 @@
                 </div>
                 <div class="row gutter-sm" v-show="recentlyUpdated.length > 0">
                     <div class="col-xs-12 col-sm-6 col-lg-3" v-for="card in recentlyUpdated">
-                        <q-card class="cursor-pointer" @click.native="open(card)">
+                        <q-card class="cursor-pointer" @click.native="showCard(card.id)">
                             <q-card-media>
                                 <img :src="getCardImage(card.thumb)">
 
@@ -39,23 +39,15 @@
                 <collections-grid-list :items="collections"></collections-grid-list>
             </div>
         </div>
-        <view-card :id="card.id" v-if="card" @closed="cardClosed"></view-card>
     </q-page>
 </template>
 
 <script>
     import CollectionsGridList from '../components/card/CollectionsGridList.vue'
-    import ViewCard from '../components/card/ViewCard.vue'
     import SearchForm from '../components/SearchForm.vue'
-    import ModalManager from '../mixins/ModalManager'
     import {mapActions, mapGetters} from 'vuex'
 
     export default {
-        data: () => {
-            return {
-                card: null
-            }
-        },
         created() {
             const hash = localStorage.getItem('join-token');
             if (hash !== null) {
@@ -65,7 +57,6 @@
             }
             document.title = this.title
         },
-        mixins: [ModalManager],
         watch: {
             team: function (val) {
                 document.title = this.title
@@ -86,26 +77,19 @@
             }
         },
         components: {
-            SearchForm, CollectionsGridList, ViewCard
+            SearchForm, CollectionsGridList
         },
         methods: {
             ...mapActions({
+                showCard: 'cards/view',
                 join: 'teams/join'
             }),
-            open(card) {
-                this.openModalWindow('view_card', {id: card.id});
-                this.card = card
-            },
-            cardClosed() {
-                this.closeModalWindow();
-                this.card = null
-            },
             getCardImage(path) {
                 if (path === null) {
                     return 'statics/blank-card.png'
                 }
                 return path
-            }
+            },
         }
     }
 </script>
