@@ -42,7 +42,7 @@
                 isLoading: 'cards/isCardsLoading'
             }),
             title() {
-                return `${this.collection} - ${prop(this.team.name)} - Wonderus`;
+                return `${this.collection} - ${prop(this.team, 'name')} - Wonderus`;
             },
             collection() {
                 return this.$route.params.name
