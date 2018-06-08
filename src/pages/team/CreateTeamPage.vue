@@ -1,12 +1,40 @@
 <template>
     <q-page>
-        <create-team @closed="$router.push({name:'teams'})"></create-team>
+        <div class="row gutter-md q-pa-md">
+            <div class="col-xs-4">
+                <teams-navigation></teams-navigation>
+            </div>
+            <div class="col-xs-8">
+
+            </div>
+        </div>
     </q-page>
 </template>
 <script>
-    import CreateTeam from '../../components/team/CreateTeam.vue'
+    import TeamsNavigation from '../../components/team/TeamsNavigation.vue'
+    import {mapActions, mapGetters} from 'vuex'
 
     export default {
-        components: {CreateTeam}
+        watch: {
+            isTeamAdding: function (val) {
+                if (!val) {
+                    this.$router.push({name: 'teams'})
+                }
+            }
+        },
+        computed: {
+            ...mapGetters({
+                isTeamAdding: 'teams/getAddingStatus'
+            })
+        },
+        components: {TeamsNavigation},
+        created() {
+            this.add()
+        },
+        methods: {
+            ...mapActions({
+                add: 'teams/add'
+            })
+        }
     }
 </script>

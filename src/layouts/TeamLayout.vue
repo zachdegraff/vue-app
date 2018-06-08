@@ -8,7 +8,7 @@
                         <teams-navigation></teams-navigation>
                     </div>
                     <div class="col-xs-8">
-                        <view-team :id="$route.params.id"></view-team>
+                        <view-team></view-team>
                         <router-view :key="$route.fullPath"/>
                     </div>
                 </div>

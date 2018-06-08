@@ -1,10 +1,8 @@
 <template>
-    <div>
-        <edit-team :id="id" @closed="redirect"></edit-team>
-    </div>
+    <div></div>
 </template>
 <script>
-    import EditTeam from "../../components/team/EditTeam"
+    import {mapActions, mapGetters} from 'vuex'
 
     export default {
         props: {
@@ -12,11 +10,25 @@
                 required: true
             }
         },
-        components: {EditTeam},
-        methods: {
-            redirect() {
-                this.$router.push({name: 'view_team', params: {id: this.id}})
+        watch: {
+            isTeamEditing: function (val) {
+                if (!val) {
+                    this.$router.push({name: 'view_team', params: {id: this.id}})
+                }
             }
+        },
+        computed: {
+            ...mapGetters({
+                isTeamEditing: 'teams/getEditingStatus'
+            })
+        },
+        created() {
+            this.edit(this.id)
+        },
+        methods: {
+            ...mapActions({
+                edit: 'teams/edit'
+            })
         }
     }
 </script>

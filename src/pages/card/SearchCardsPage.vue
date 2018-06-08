@@ -24,8 +24,7 @@
             <div class="row flex-center q-mt-lg">
                 <q-spinner :size="36" color="red" v-show="isLoading"></q-spinner>
                 <div class="col text-center q-mt-xl" v-show="isEmptyResult">There are no results.
-                    <router-link :to="{name: 'create_card', query: {name: this.query}}">Create a card for {{query}}</router-link>
-                    ?
+                    <a href="javascript:void(0)" @click="createCard(query)">Create a card for {{query}}</a>?
                 </div>
             </div>
         </q-page>
@@ -53,7 +52,6 @@
                 this.search(this.params()).then(this.result);
             },
             query: function (val) {
-                this.items = [];
                 this.isEmptyResult = false;
                 document.title = this.title;
                 this.search(this.params(val)).then(this.result);
@@ -76,7 +74,8 @@
         methods: {
             ...mapActions({
                 search: 'cards/search',
-                showCard: 'cards/view'
+                showCard: 'cards/view',
+                createCard: 'cards/addWithName'
             }),
 
             params(query = null) {

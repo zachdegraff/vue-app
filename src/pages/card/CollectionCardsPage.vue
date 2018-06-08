@@ -9,7 +9,7 @@
                     </div>
                     <div class="row gutter-sm" v-show="items.length > 0">
                         <div class="col-xs-12 col-sm-6 col-lg-3" v-for="card in items">
-                            <q-card class="cursor-pointer" @click.native="open(card)">
+                            <q-card class="cursor-pointer" @click.native="showCard(card.id)">
                                 <q-card-media>
                                     <img :src="getCardImage(card.thumb)">
 
@@ -32,21 +32,17 @@
     import ViewCard from '../../components/card/ViewCard.vue'
     import SearchForm from '../../components/SearchForm.vue'
     import {mapActions, mapGetters} from 'vuex'
+    import {prop} from "../../helpers";
 
     export default {
-        data: () => {
-            return {
-                items: [],
-                card: null,
-            }
-        },
         computed: {
             ...mapGetters({
                 team: 'teams/current',
+                items: 'cards/getItems',
                 isLoading: 'cards/isCardsLoading'
             }),
             title() {
-                return `${this.collection} - ${this.team ? this.team.name : ''} - Wonderus`;
+                return `${this.collection} - ${prop(this.team.name)} - Wonderus`;
             },
             collection() {
                 return this.$route.params.name
@@ -56,31 +52,20 @@
         watch: {
             team: function (val) {
                 document.title = this.title;
-                this.filter(this.params()).then(items => this.items = items)
+                this.filter(this.params())
             }
         },
         created() {
             document.title = this.title;
-            this.filter(this.params()).then(items => this.items = items)
+            this.filter(this.params())
         },
         methods: {
             ...mapActions({
-                filter: 'cards/all'
+                filter: 'cards/all',
+                showCard: 'cards/view'
             }),
             params() {
-                let params = {collection: this.collection};
-                if (this.team !== null) {
-                    params['teamId'] = this.team.id
-                }
-                return params
-            },
-            open(card) {
-                this.openModalWindow('view_card', {id: card.id});
-                this.card = card
-            },
-            cardClosed() {
-                this.closeModalWindow();
-                this.card = null
+                return {collection: this.collection};
             },
             getCardImage(path) {
                 if (path === null) {

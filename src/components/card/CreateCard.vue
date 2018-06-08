@@ -101,6 +101,9 @@
             'form.teamId': function (val) {
                 this.changeTeam(val)
             },
+            team: function (val) {
+                this.form.teamId = val.id
+            },
             teams: function (val) {
                 this.options = val.map(team => {
                     return {value: team.id, label: team.name}
@@ -123,7 +126,7 @@
             this.suggests.list = this.collections.map(item => {
                 return {label: item.name}
             });
-            this.form.name = this.$route.query.name;
+            this.form.name = this.$route.query.q;
             document.title = 'Creating a new card - Wonderus';
             window.cardState = JSON.parse(JSON.stringify(this.$data))
         },

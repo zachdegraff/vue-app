@@ -24,8 +24,12 @@ export const current = state => {
     return state.items[0]
 };
 
-export const getViewingTeam = state => state.viewing;
-export const getEditingTeam = state => state.editing;
+export const getViewingTeam = state => state.viewing.team;
+export const getEditingTeam = state => state.editing.team;
+
+export const getAddingStatus = state => state.adding.status;
+export const getViewingStatus = state => state.viewing.status;
+export const getEditingStatus = state => state.editing.status;
 
 export const isCreating = state => state.actionCreateStatus === 'Request';
 export const isUpdating = state => state.actionUpdateStatus === 'Request';

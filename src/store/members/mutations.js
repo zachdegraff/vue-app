@@ -1,5 +1,11 @@
 import {replace, remove} from "../../helpers";
 
+export const changeInvitingStatus = (state, status) => state.inviting.status = status;
+export const changeChangingStatus = (state, status) => state.changing.status = status;
+
+export const changeInvitingTeam = (state, team) => state.inviting.team = team;
+export const changeChangingMember = (state, member) => state.changing.member = member;
+
 export const loadMemberStatusRequest = state => state.loadMemberStatus = 'Request';
 export const loadMemberStatusSuccess = state => state.loadMemberStatus = 'Success';
 export const loadMemberStatusFailure = state => state.loadMemberStatus = 'Failure';
@@ -29,7 +35,7 @@ export const joinMemberToTeamStatusFailure = state => state.joinMemberToTeamStat
 export const changeMemberRoleStatusRequest = state => state.changeMemberRoleStatus = 'Request';
 export const changeMemberRoleStatusSuccess = (state, res) => {
     state.changeMemberRoleStatus = 'Success';
-    replace(state.items, res.data.member)
+    state.items = replace(state.items, res.data.member)
 };
 export const changeMemberRoleStatusFailure = state => state.changeMemberRoleStatus = 'Failure';
 
@@ -40,6 +46,6 @@ export const retryMemberInvitationStatusFailure = state => state.retryMemberInvi
 export const excludeMemberFromTeamStatusRequest = state => state.excludeMemberFromTeamStatus = 'Request';
 export const excludeMemberFromTeamStatusSuccess = (state, res) => {
     state.excludeMemberFromTeamStatus = 'Success';
-    remove(state.items, res.data.member)
+    state.items = remove(state.items, res.data.member)
 };
 export const excludeMemberFromTeamStatusFailure = state => state.excludeMemberFromTeamStatus = 'Failure';

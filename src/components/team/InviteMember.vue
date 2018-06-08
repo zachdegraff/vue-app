@@ -1,5 +1,5 @@
 <template>
-    <q-modal v-model="isOpen" @hide="$emit('closed')" class="app-modal" :content-classes="['app-modal-invite']">
+    <q-modal v-model="isOpen" @hide="closeInviting" class="app-modal" :content-classes="['app-modal-invite']">
         <app-modal-layout>
             <q-toolbar slot="header">
                 <q-toolbar-title>Invite a new member</q-toolbar-title>
@@ -25,11 +25,6 @@
     import {mapActions, mapGetters} from 'vuex'
 
     export default {
-        props: {
-            id: {
-                required: true
-            }
-        },
         data: () => {
             return {
                 form: {
@@ -49,6 +44,7 @@
         },
         computed: {
             ...mapGetters({
+                team: 'teams/getViewingTeam',
                 isProcessing: 'members/isInviting'
             })
         },
@@ -60,14 +56,15 @@
         },
         methods: {
             ...mapActions({
-                invite: 'members/inviteMemberToTeam'
+                invite: 'members/inviteMemberToTeam',
+                closeInviting: 'members/closeInviting'
             }),
             submit() {
                 this.$v.form.$touch();
                 if (this.$v.form.$error) {
                     return
                 }
-                this.invite({id: this.id, params: this.form}).then(() => this.$emit('closed'))
+                this.invite({id: this.team.id, params: this.form}).then(this.closeInviting)
             }
         }
     }

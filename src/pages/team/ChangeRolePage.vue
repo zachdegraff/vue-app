@@ -1,10 +1,8 @@
 <template>
-    <div>
-        <change-role :id="id" :member-id="memberId" @closed="redirect"/>
-    </div>
+    <div></div>
 </template>
 <script>
-    import ChangeRole from '../../components/team/ChangeRole.vue'
+    import {mapActions, mapGetters} from 'vuex'
 
     export default {
         props: {
@@ -13,15 +11,29 @@
             },
             memberId: {
                 required: true
-            },
+            }
         },
-        components: {
-            ChangeRole
+        watch: {
+            isMemberInviting: function (val) {
+                if (!val) {
+                    this.$router.push({name: 'view_team', params: {id: this.id}})
+                }
+            }
+        },
+        computed: {
+            ...mapGetters({
+                isMemberInviting: 'members/getChangingStatus',
+            })
+        },
+        created() {
+            this.view(this.id).then(() => this.changeRole(this.memberId))
+
         },
         methods: {
-            redirect() {
-                this.$router.push({name: 'view_team', params: {id: this.id}})
-            }
+            ...mapActions({
+                view: 'teams/view',
+                changeRole: 'members/changeRole',
+            })
         }
     }
 </script>

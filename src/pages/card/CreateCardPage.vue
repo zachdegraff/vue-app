@@ -1,19 +1,29 @@
 <template>
-    <q-page>
-        <create-card @closed="redirect"></create-card>
-    </q-page>
+    <q-page></q-page>
 </template>
 <script>
-    import CreateCard from "../../components/card/CreateCard.vue";
+    import {mapActions, mapGetters} from 'vuex'
 
     export default {
-        components: {
-            CreateCard
+        watch: {
+            isCardAdding: function (val) {
+                if (!val) {
+                    this.$router.push({name: 'cards_list'})
+                }
+            }
+        },
+        computed: {
+            ...mapGetters({
+                isCardAdding: 'cards/getAddingStatus'
+            })
+        },
+        created() {
+            this.add()
         },
         methods: {
-            redirect() {
-                this.$router.push({name: 'cards_list'})
-            }
+            ...mapActions({
+                add: 'cards/add'
+            })
         }
     }
 </script>

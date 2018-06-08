@@ -1,5 +1,5 @@
 <template>
-    <q-modal v-model="isOpen" @hide="$emit('closed')" class="app-modal" :content-classes="['app-modal-content']" :content-css="{minWidth: '80vw', minHeight: '50vh'}">
+    <q-modal v-model="isOpen" @hide="closeEditing" class="app-modal" :content-classes="['app-modal-content']" :content-css="{minWidth: '80vw', minHeight: '50vh'}">
         <app-modal-layout v-if="model">
             <q-toolbar slot="header">
                 <q-toolbar-title>Editing {{model.name}}</q-toolbar-title>
@@ -30,21 +30,18 @@
     import {mapActions, mapGetters} from 'vuex'
 
     export default {
-        props: {
-            id: {
-                required: true
-            }
-        },
         data: () => {
             return {
                 file: null,
                 isOpen: true
             }
         },
-        created() {
-            this.edit(this.id).then(team => document.title = `Editing ${team.name} team - Wonderus`);
-        },
         mixins: [ValidatorMessages],
+        watch: {
+            model: function(val) {
+                document.title = `Editing ${val.name} team - Wonderus`
+            }
+        },
         validations: {
             model: {
                 name: {
@@ -63,8 +60,8 @@
         },
         methods: {
             ...mapActions({
-                edit: 'teams/edit',
-                update: 'teams/update'
+                update: 'teams/update',
+                closeEditing: 'teams/closeEditing',
             }),
             save() {
                 this.$v.model.$touch();
@@ -72,7 +69,7 @@
                     return
                 }
 
-                this.update({id: this.id, model: this.prepare()}).then(() => this.$emit('closed'));
+                this.update({id: this.model.id, model: this.prepare()}).then(this.closeEditing);
             },
             photo(path) {
                 if (!path) {

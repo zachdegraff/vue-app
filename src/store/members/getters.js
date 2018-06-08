@@ -9,6 +9,12 @@ export const get = state => {
 
 export const getTeamMembers = state => state.items;
 
+export const getInvitingStatus = state => state.inviting.status;
+export const getChangingStatus = state => state.changing.status;
+
+export const getInvitingTeam = state => state.inviting.team;
+export const getChangingMember = state => state.changing.member;
+
 export const isInviting = state => state.inviteMemberToTeamStatus === 'Request';
 export const isChangingRole = state => state.changeMemberRoleStatus === 'Request';
 export const isMemberLoading = state => state.loadMemberStatus === 'Request';

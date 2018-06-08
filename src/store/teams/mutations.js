@@ -14,14 +14,19 @@ export const remove = (state, id) => {
 
 export const changeCurrentTeam = (state, item) => state.current = item;
 
-export const changeViewingTeam = (state, team) => state.viewing = team;
-export const changeEditingTeam = (state, team) => state.editing = team;
+export const changeAddingStatus = (state, status) => state.adding.status = status;
+
+export const changeViewingStatus = (state, status) => state.viewing.status = status;
+export const changeEditingStatus = (state, status) => state.editing.status = status;
+
+export const changeViewingTeam = (state, team) => state.viewing.team = team;
+export const changeEditingTeam = (state, team) => state.editing.team = team;
 
 
 export const getStatusRequest = state => state.actionGetStatus = 'Request';
 export const getStatusSuccess = (state, res) => {
     state.actionGetStatus = 'Success';
-    replace(state.items, res.data.data);
+    state.items = replace(state.items, res.data.data);
 };
 export const getStatusFailure = state => state.actionGetStatus = 'Failure';
 
@@ -43,7 +48,7 @@ export const createStatusFailure = state => state.actionCreateStatus = 'Failure'
 export const updateStatusRequest = state => state.actionUpdateStatus = 'Request';
 export const updateStatusSuccess = (state, res) => {
     state.actionUpdateStatus = 'Success';
-    replace(state.items, res.data.team);
+    state.items = replace(state.items, res.data.team);
     state.current = res.data.team;
     state.viewing = res.data.team
 };

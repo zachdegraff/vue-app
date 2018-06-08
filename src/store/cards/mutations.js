@@ -22,7 +22,7 @@ export const allStatusFailure = state => state.actionAllStatus = 'Failure';
 export const getStatusRequest = state => state.actionGetStatus = 'Request';
 export const getStatusSuccess = (state, res) => {
     state.actionGetStatus = 'Success';
-    replace(state.items, res.data.data)
+    state.items = replace(state.items, res.data.data)
 };
 export const getStatusFailure = state => state.actionGetStatus = 'Failure';
 
@@ -30,8 +30,8 @@ export const getStatusFailure = state => state.actionGetStatus = 'Failure';
 export const updateStatusRequest = state => state.actionUpdateStatus = 'Request';
 export const updateStatusSuccess = (state, res) => {
     state.actionUpdateStatus = 'Success';
-    replace(state.searchResults, res.data.card);
-    replace(state.items, res.data.card);
+    state.searchResults = replace(state.searchResults, res.data.card);
+    state.items = replace(state.items, res.data.card);
     state.viewing.card = res.data.card;
 
 };
@@ -41,8 +41,8 @@ export const updateStatusFailure = state => state.actionUpdateStatus = 'Failure'
 export const removeStatusRequest = state => state.actionRemoveStatus = 'Request';
 export const removeStatusSuccess = (state, res) => {
     state.actionRemoveStatus = 'Success';
-    remove(state.searchResults, res.data.card);
-    remove(state.items, res.data.card)
+    state.searchResults = remove(state.searchResults, res.data.card);
+    state.items = remove(state.items, res.data.card)
 };
 export const removeStatusFailure = state => state.actionRemoveStatus = 'Failure';
 

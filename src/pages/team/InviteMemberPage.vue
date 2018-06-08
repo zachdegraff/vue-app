@@ -1,10 +1,8 @@
 <template>
-    <div>
-        <invite-member :id="id" @closed="redirect"/>
-    </div>
+    <div></div>
 </template>
 <script>
-    import InviteMember from '../../components/team/InviteMember.vue'
+    import {mapActions, mapGetters} from 'vuex'
 
     export default {
         props: {
@@ -12,13 +10,27 @@
                 required: true
             }
         },
-        components: {
-            InviteMember
+        watch: {
+            isMemberInviting: function (val) {
+                if (!val) {
+                    this.$router.push({name: 'view_team', params: {id: this.id}})
+                }
+            }
+        },
+        computed: {
+            ...mapGetters({
+                isMemberInviting: 'members/getInvitingStatus',
+            })
+        },
+        created() {
+            this.view(this.id);
+            this.invite(this.id)
         },
         methods: {
-            redirect() {
-                this.$router.push({name: 'view_team', params: {id: this.id}})
-            }
+            ...mapActions({
+                view: 'teams/view',
+                invite: 'members/invite',
+            })
         }
     }
 </script>

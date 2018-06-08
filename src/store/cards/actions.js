@@ -40,7 +40,12 @@ export const get = ({commit}, id) => {
 export const add = ({dispatch, commit}) => {
     dispatch('route/next', {name: 'create_card'}, {root: true});
     commit('changeAddingStatus', true);
-}
+};
+
+export const addWithName = ({dispatch, commit}, param) => {
+    dispatch('route/next', {name: 'create_card_name', param}, {root: true});
+    commit('changeAddingStatus', true);
+};
 
 
 export const closeAdding = ({dispatch, commit}) => {

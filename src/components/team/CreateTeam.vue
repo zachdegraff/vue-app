@@ -1,5 +1,5 @@
 <template>
-    <q-modal v-model="isOpen" @hide="$emit('closed')" class="app-modal" :content-classes="['app-modal-content']" :content-css="{minWidth: '80vw', minHeight: '50vh'}">
+    <q-modal v-model="isOpen" @hide="closeAdding" class="app-modal" :content-classes="['app-modal-content']" :content-css="{minWidth: '80vw', minHeight: '50vh'}">
         <app-modal-layout>
             <q-toolbar slot="header">
                 <q-toolbar-title>Adding a new team</q-toolbar-title>
@@ -66,7 +66,9 @@
         },
         methods: {
             ...mapActions({
-                create: 'teams/create'
+                view: 'teams/view',
+                create: 'teams/create',
+                closeAdding: 'teams/closeAdding'
             }),
             save() {
                 this.$v.form.$touch();
@@ -75,7 +77,8 @@
                 }
 
                 this.create(this.prepare()).then((data) => {
-                    this.$router.push({name: 'view_team', params: {id: data.team.id}})
+                    this.view(data.team.id);
+                    this.closeAdding();
                 })
             },
             prepare() {

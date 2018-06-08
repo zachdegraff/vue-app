@@ -30,14 +30,14 @@
                 </q-td>
             </q-table>
             <div class="q-mt-xl">
-                <q-btn size="lg" label="Invite new member" color="primary" @click="invite"/>
+                <q-btn size="lg" label="Invite new member" color="primary" @click="invite(team.id)"/>
 
                 <q-btn size="lg" label="Connect with Slack" color="white" class="text-black q-ml-md" @click="slack" v-if="!hasSlackIntegration"/>
                 <q-btn size="lg" label="Disable Slack" color="red" class="q-ml-md" @click="disableSlack" v-if="hasSlackIntegration"/>
             </div>
         </div>
-        <invite-member :id="id" v-if="isInviting" @closed="closeInvitation"></invite-member>
-        <change-role :id="id" :member-id="idForChange" v-if="idForChange" @closed="closeRoleChanging"></change-role>
+        <invite-member v-if="isMemberInviting"></invite-member>
+        <change-role v-if="isChangingRole"></change-role>
     </div>
 </template>
 <script>
@@ -48,14 +48,7 @@
     const SLACK_CLIENT_ID = process.env.SLACK_CLIENT_ID;
 
     export default {
-        props: {
-            id: {
-                required: true
-            }
-        },
         data: () => ({
-            isInviting: false,
-            idForChange: null,
             columns: [
                 {
                     name: 'fullName',
@@ -70,19 +63,17 @@
                 {name: 'actions', align: 'right', label: ''},
             ]
         }),
-
-        created() {
-            this.load(this.id).then(this.setPageTitle);
-        },
         watch: {
-            id: function (val) {
-                this.load(val).then(this.setPageTitle);
+            team: function (val) {
+                document.title = `Manage ${val.name} team - Wonderus`
             }
         },
         computed: {
             ...mapGetters({
                 team: 'teams/getViewingTeam',
                 members: 'members/getTeamMembers',
+                isChangingRole: 'members/getChangingStatus',
+                isMemberInviting: 'members/getInvitingStatus',
                 isMembersLoading: 'members/isMembersLoading'
             }),
             hasSlackIntegration() {
@@ -98,7 +89,8 @@
         },
         methods: {
             ...mapActions({
-                load: 'teams/view',
+                invite: 'members/invite',
+                changeRole: 'members/changeRole',
                 excludeMember: 'members/excludeMemberFromTeam',
                 reSendInvite: 'members/retryMemberInvitation',
                 disableSlackIntegration: 'teams/disableSlack'
@@ -112,27 +104,8 @@
                 }
                 return path
             },
-            invite() {
-                this.openModalWindow('invite_member', {id: this.id});
-                this.isInviting = true;
-            },
-            changeRole(id) {
-                this.openModalWindow('change_role', {id: this.id, memberId: id});
-                this.idForChange = id;
-            },
             confirm() {
                 return this.$q.dialog({title: 'Confirm', message: 'Are you sure?', ok: 'Yes', cancel: 'No'})
-            },
-            closeInvitation() {
-                this.closeModalWindow();
-                this.isInviting = false;
-            },
-            closeRoleChanging() {
-                this.closeModalWindow();
-                this.idForChange = null
-            },
-            setPageTitle(team) {
-                document.title = `Manage ${team.name} team - Wonderus`
             },
             disableSlack() {
                 this.confirm().then(() => {

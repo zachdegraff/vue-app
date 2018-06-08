@@ -10,7 +10,7 @@
                     <q-btn flat round dense icon="more_vert" v-if="team.isEditable">
                         <q-popover>
                             <q-list link>
-                                <q-item @click.native="edit(team)" v-close-overlay>
+                                <q-item @click.native="edit(team.id)" v-close-overlay>
                                     <q-item-main label="Edit"/>
                                 </q-item>
                                 <q-item @click.native="flush(team.id)" v-close-overlay>
@@ -25,8 +25,8 @@
         <div class="q-pt-lg text-center">
             <q-btn label="create team" color="primary" @click="create"/>
         </div>
-        <edit-team :id="team.id" v-if="team" @closed="closeEditing"/>
-        <create-team v-if="isCreation" @closed="closeCreating"/>
+        <edit-team v-if="isTeamEditing"/>
+        <create-team v-if="isTeamAdding"/>
     </div>
 </template>
 <script>
@@ -43,13 +43,17 @@
         },
         computed: {
             ...mapGetters({
-                teams: 'teams/all'
+                teams: 'teams/all',
+                isTeamEditing: 'teams/getEditingStatus',
+                isTeamAdding: 'teams/getAddingStatus'
             })
         },
         components: {CreateTeam, EditTeam},
         methods: {
             ...mapActions({
-                remove: 'teams/remove'
+                edit: 'teams/edit',
+                create: 'teams/add',
+                remove: 'teams/remove',
             }),
             photo(path) {
                 if (!path) {
@@ -67,22 +71,6 @@
                     })
                 }).catch(() => {
                 })
-            },
-            create() {
-                this.openModalWindow('create_team');
-                this.isCreation = true
-            },
-            closeCreating() {
-                this.isCreation = false;
-                this.closeModalWindow();
-            },
-            edit(team) {
-                this.openModalWindow('edit_team', {id: team.id});
-                this.team = team
-            },
-            closeEditing() {
-                this.closeModalWindow();
-                this.team = null
             },
             isActive(item) {
                 return item.id === parseInt(this.$route.params.id)

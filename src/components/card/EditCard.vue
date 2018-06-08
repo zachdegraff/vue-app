@@ -84,9 +84,6 @@
                 isOpen: true
             }
         },
-        created() {
-            console.log('created');
-        },
         mixins: [ValidatorMessages, HasCardChanges],
         computed: {
             ...mapGetters({
@@ -115,7 +112,6 @@
                 delete window.cardState;
 
                 Object.keys(this.form).forEach(key => this.form[key] = val[key]);
-                console.log(this.form.name);
 
                 this.links = val.links;
                 this.form.collections = val.collections.map(item => item.name);

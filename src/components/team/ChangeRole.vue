@@ -1,5 +1,5 @@
 <template>
-    <q-modal v-model="isOpen" @hide="$emit('closed')" class="app-modal" :content-classes="['app-modal-invite']">
+    <q-modal v-model="isOpen" @hide="closeChangingRole" class="app-modal" :content-classes="['app-modal-invite']">
         <app-modal-layout>
             <q-toolbar slot="header">
                 <q-toolbar-title>Change member role</q-toolbar-title>
@@ -28,14 +28,6 @@
     import {mapActions, mapGetters} from 'vuex'
 
     export default {
-        props: {
-            id: {
-                required: true
-            },
-            memberId: {
-                required: true
-            },
-        },
         data: () => {
             return {
                 role: 2,
@@ -52,8 +44,14 @@
                 isOpen: true
             }
         },
+        watch: {
+            member: function (val) {
+                this.role = val.role
+            }
+        },
         computed: {
             ...mapGetters({
+                member: 'members/getChangingMember',
                 isProcessing: 'members/isChangingRole',
                 isMemberLoading: 'members/isMemberLoading'
             })
@@ -63,15 +61,14 @@
         },
         created() {
             document.title = 'Change member role - Wonderus';
-            this.loadMember(this.memberId).then(member => this.role = member.role)
         },
         methods: {
             ...mapActions({
-                loadMember: 'members/loadMember',
-                changeRole: 'members/changeMemberRole'
+                changeRole: 'members/changeMemberRole',
+                closeChangingRole: 'members/closeChangingRole'
             }),
             submit() {
-                this.changeRole({id: this.memberId, role: this.role}).then(() => this.$emit('closed'))
+                this.changeRole({id: this.member.id, role: this.role}).then(this.closeChangingRole)
             }
         }
     }
