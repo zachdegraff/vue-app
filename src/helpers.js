@@ -19,10 +19,8 @@ export const prop = (obj, prop) => {
 
 export const replace = (arr, item) => {
     const idx = arr.findIndex(el => el.id === item.id);
-    if (idx === -1) {
-        return arr.push(item)
-    }
-    arr[idx] = item;
+
+    idx === -1 ? arr.push(item) : arr[idx] = item;
     return arr
 };
 
