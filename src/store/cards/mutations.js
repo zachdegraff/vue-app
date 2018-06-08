@@ -48,7 +48,10 @@ export const removeStatusFailure = state => state.actionRemoveStatus = 'Failure'
 
 
 export const createStatusRequest = state => state.actionCreateStatus = 'Request';
-export const createStatusSuccess = state => state.actionCreateStatus = 'Success';
+export const createStatusSuccess = (state, res) => {
+    state.actionCreateStatus = 'Success';
+    state.items.push(res.data.card)
+};
 export const createStatusFailure = state => state.actionCreateStatus = 'Failure';
 
 export const searchStatusRequest = state => {
