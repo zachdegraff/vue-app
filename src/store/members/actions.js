@@ -1,37 +1,5 @@
 import api from "../../api";
 
-export const invite = ({commit, dispatch, rootGetters}, id) => {
-    dispatch('route/next', {name: 'invite_member', id}, {root: true});
-    commit('changeInvitingStatus', true);
-    commit('changeInvitingTeam', rootGetters['teams/getViewingTeam'])
-};
-
-
-export const closeInviting = ({dispatch, commit}) => {
-    dispatch('route/pop', null, {root: true});
-    commit('changeInvitingStatus', false);
-    commit('changeInvitingTeam', null);
-};
-
-
-export const changeRole = ({commit, dispatch, rootGetters}, id) => {
-    const team = rootGetters['teams/getViewingTeam'];
-    dispatch('route/next', {name: 'change_role', ...{id: team.id, memberId: id}}, {root: true});
-    return new Promise((resolve, reject) => {
-        commit('changeChangingStatus', true);
-        dispatch('loadMember', id).then(member => {
-            commit('changeChangingMember', member);
-            resolve(member)
-        }).catch(reject);
-    })
-};
-
-export const closeChangingRole = ({dispatch, commit}) => {
-    dispatch('route/pop', null, {root: true});
-    commit('changeChangingStatus', false);
-    commit('changeChangingMember', null);
-};
-
 export const loadMember = ({commit}, id) => {
     return new Promise((resolve, reject) => {
         commit('loadMemberStatusRequest');

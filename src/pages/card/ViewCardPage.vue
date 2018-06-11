@@ -19,7 +19,7 @@
         },
         computed: {
             ...mapGetters({
-                isCardViewing: 'cards/getViewingStatus'
+                isCardViewing: 'modals/isViewCardOpen'
             })
         },
         created() {
@@ -27,7 +27,7 @@
         },
         methods: {
             ...mapActions({
-                showCard: 'cards/view'
+                showCard: 'modals/openViewCard'
             })
         }
     }

@@ -72,9 +72,9 @@
             ...mapGetters({
                 team: 'teams/getViewingTeam',
                 members: 'members/getTeamMembers',
-                isChangingRole: 'members/getChangingStatus',
-                isMemberInviting: 'members/getInvitingStatus',
-                isMembersLoading: 'members/isMembersLoading'
+                isMembersLoading: 'members/isMembersLoading',
+                isMemberInviting: 'modals/isInviteMemberOpen',
+                isChangingRole: 'modals/isChangeMemberRoleOpen'
             }),
             hasSlackIntegration() {
                 if (!this.team) {
@@ -89,8 +89,8 @@
         },
         methods: {
             ...mapActions({
-                invite: 'members/invite',
-                changeRole: 'members/changeRole',
+                invite: 'modals/openInviteMember',
+                changeRole: 'modals/openChangeMemberRole',
                 excludeMember: 'members/excludeMemberFromTeam',
                 reSendInvite: 'members/retryMemberInvitation',
                 disableSlackIntegration: 'teams/disableSlack'

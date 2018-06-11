@@ -77,8 +77,8 @@
         },
         methods: {
             ...mapActions({
-                addCard: 'cards/add',
                 logout: 'auth/logout',
+                addCard: 'modals/openCreateCard',
                 changeTeam: 'teams/changeCurrentTeam'
             }),
             exit() {

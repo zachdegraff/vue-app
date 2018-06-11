@@ -33,37 +33,8 @@ export const get = ({getters, commit}, id) => {
     });
 };
 
-export const add = ({dispatch, commit, getters}) => {
-    dispatch('route/next', {name: 'create_team'}, {root: true});
-    commit('changeAddingStatus', true);
-};
-
-
-export const closeAdding = ({dispatch, commit}) => {
-    dispatch('route/pop', null, {root: true});
-    commit('changeAddingStatus', false);
-};
-
-export const edit = ({commit, dispatch}, id) => {
-    dispatch('route/next', {name: 'edit_team', id}, {root: true});
-    return new Promise((resolve, reject) => {
-        commit('changeEditingStatus', true);
-        dispatch('get', id).then(team => {
-            commit('changeEditingTeam', team);
-            resolve(team)
-        }).catch(reject);
-    })
-};
-
-export const closeEditing = ({dispatch, commit}) => {
-    dispatch('route/pop', null, {root: true});
-    commit('changeEditingStatus', false);
-    commit('changeEditingTeam', null);
-};
-
 export const view = ({commit, dispatch}, id) => {
     return new Promise((resolve, reject) => {
-        commit('changeViewingStatus', true);
         dispatch('get', id).then(team => {
             commit('changeViewingTeam', team);
             resolve(team)

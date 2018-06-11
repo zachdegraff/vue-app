@@ -24,7 +24,7 @@
         },
         computed: {
             ...mapGetters({
-                isTeamAdding: 'teams/getAddingStatus'
+                isTeamAdding: 'modals/isCreateTeamOpen'
             })
         },
         components: {TeamsNavigation},
@@ -33,7 +33,7 @@
         },
         methods: {
             ...mapActions({
-                add: 'teams/add'
+                add: 'modals/openCreateTeam'
             })
         }
     }

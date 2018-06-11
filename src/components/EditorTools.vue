@@ -57,7 +57,7 @@
         },
         methods: {
             ...mapActions({
-                hints: 'cards/cardsHints'
+                hints: 'search/cardsHints'
             }),
             wrap(symbol) {
                 if (this.event === null) return null;

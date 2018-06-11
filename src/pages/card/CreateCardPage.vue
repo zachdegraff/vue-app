@@ -14,7 +14,7 @@
         },
         computed: {
             ...mapGetters({
-                isCardAdding: 'cards/getAddingStatus'
+                isCardAdding: 'modals/isCreateCardOpen'
             })
         },
         created() {
@@ -22,7 +22,7 @@
         },
         methods: {
             ...mapActions({
-                add: 'cards/add'
+                add: 'modals/openCreateCard'
             })
         }
     }

@@ -57,7 +57,7 @@
         methods: {
             ...mapActions({
                 invite: 'members/inviteMemberToTeam',
-                closeInviting: 'members/closeInviting'
+                closeInviting: 'modals/closeInviteMember'
             }),
             submit() {
                 this.$v.form.$touch();

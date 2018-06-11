@@ -22,7 +22,7 @@
         },
         computed: {
             ...mapGetters({
-                isMemberInviting: 'members/getChangingStatus',
+                isMemberInviting: 'modals/isChangeMemberRoleOpen',
             })
         },
         created() {
@@ -32,7 +32,7 @@
         methods: {
             ...mapActions({
                 view: 'teams/view',
-                changeRole: 'members/changeRole',
+                changeRole: 'modals/openChangeMemberRole',
             })
         }
     }

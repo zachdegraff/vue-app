@@ -51,18 +51,20 @@
         components: {SearchForm, ViewCard},
         watch: {
             team: function (val) {
+                this.filter(this.params());
                 document.title = this.title;
-                this.filter(this.params())
             }
         },
         created() {
+            this.filter(this.params());
             document.title = this.title;
-            this.filter(this.params())
+            this.changeQuery('#' + this.collection)
         },
         methods: {
             ...mapActions({
                 filter: 'cards/all',
-                showCard: 'cards/view'
+                showCard: 'modals/openViewCard',
+                changeQuery: 'search/changeQuery'
             }),
             params() {
                 return {collection: this.collection};

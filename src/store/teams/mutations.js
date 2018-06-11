@@ -13,14 +13,7 @@ export const remove = (state, id) => {
 };
 
 export const changeCurrentTeam = (state, item) => state.current = item;
-
-export const changeAddingStatus = (state, status) => state.adding.status = status;
-
-export const changeViewingStatus = (state, status) => state.viewing.status = status;
-export const changeEditingStatus = (state, status) => state.editing.status = status;
-
-export const changeViewingTeam = (state, team) => state.viewing.team = team;
-export const changeEditingTeam = (state, team) => state.editing.team = team;
+export const changeViewingTeam = (state, team) => state.viewing = team;
 
 
 export const getStatusRequest = state => state.actionGetStatus = 'Request';

@@ -21,10 +21,10 @@
                     </div>
                 </div>
             </div>
-            <div class="row flex-center q-mt-lg">
+            <div class="row flex-center q-mt-lg" v-show="suggestQuery">
                 <q-spinner :size="36" color="red" v-show="isLoading"></q-spinner>
                 <div class="col text-center q-mt-xl" v-show="isEmptyResult">There are no results.
-                    <a href="javascript:void(0)" @click="createCard(query)">Create a card for {{query}}</a>?
+                    <a href="javascript:void(0)" @click="createCard({query: suggestQuery})">Create a card for {{suggestQuery}}</a>?
                 </div>
             </div>
             <div class="row flex-center q-mt-lg" v-if="isAskHelpAvailable">
@@ -66,8 +66,8 @@
         computed: {
             ...mapGetters({
                 team: 'teams/current',
-                isLoading: 'cards/isSearching',
-                items: 'cards/getSearchResults',
+                isLoading: 'search/isSearching',
+                items: 'search/getResults',
                 isAskHelpOpen: 'modals/isAskHelpOpen'
             }),
             query() {
@@ -75,6 +75,12 @@
             },
             title() {
                 return `Search results for ${this.query} - ${this.team ? this.team.name : ''} - Wonderus`
+            },
+            suggestQuery() {
+                if (this.query.indexOf('#') !== -1) {
+                    return this.query.replace(/#(.*?)($|\s+)/, '').trim()
+                }
+                return this.query;
             },
             isAskHelpAvailable() {
                 if (this.team === null) {
@@ -86,10 +92,10 @@
         components: {AskHelp, SearchForm, ViewCard},
         methods: {
             ...mapActions({
-                search: 'cards/search',
-                showCard: 'cards/view',
-                createCard: 'cards/addWithName',
-                openAskHelp: 'modals/openAskHelp'
+                search: 'search/search',
+                showCard: 'modals/openViewCard',
+                openAskHelp: 'modals/openAskHelp',
+                createCard: 'modals/openCreateCardWithName'
             }),
 
             params(query = null) {

@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="search-form-container row justify-center">
-            <q-search v-model="query" @keyup.enter="submit" class="col-sx-12 col-md-8 bg-white q-pa-md">
+            <q-search v-model.lazy="query" @keyup.enter="submit" class="col-sx-12 col-md-8 bg-white q-pa-md">
                 <q-autocomplete separator @search="search" @selected="selected" :min-characters="3"/>
             </q-search>
         </div>
@@ -18,17 +18,25 @@
         },
         computed: {
             ...mapGetters({
-                team: 'teams/current',
-                card: 'cards/getViewingCard'
+                searchQuery: 'search/getQuery'
             }),
         },
         created() {
-            this.query = this.$route.query.q;
+            this.query = this.searchQuery;
+            if (this.$route.query.q !== undefined) {
+                this.query = this.$route.query.q;
+            }
+        },
+        watch: {
+            query: function (val) {
+                this.changeQuery(val)
+            }
         },
         methods: {
             ...mapActions({
-                hints: 'cards/hints',
-                showCard: 'cards/view'
+                hints: 'search/hints',
+                showCard: 'modals/openViewCard',
+                changeQuery: 'search/changeQuery'
             }),
             submit() {
                 this.$router.push({name: 'search_cards', query: {q: this.query}})

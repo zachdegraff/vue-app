@@ -1,18 +1,7 @@
 export default {
     items: [],
 
-    adding: {
-        status: false
-    },
-    viewing: {
-        team: null,
-        status: false
-    },
-    editing: {
-        team: null,
-        status: false
-    },
-
+    viewing: null,
     current: null,
 
     actionAllStatus: '',

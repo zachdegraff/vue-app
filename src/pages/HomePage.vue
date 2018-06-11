@@ -81,7 +81,7 @@
         },
         methods: {
             ...mapActions({
-                showCard: 'cards/view',
+                showCard: 'modals/openViewCard',
                 join: 'teams/join'
             }),
             getCardImage(path) {

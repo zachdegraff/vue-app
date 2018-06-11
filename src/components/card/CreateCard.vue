@@ -32,7 +32,7 @@
                     <q-btn @click="addLink" class="q-mt-sm">Add a new field</q-btn>
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <q-chips-input v-model="form.collections" float-label="Collections" placeholder="Type collection name">
+                    <q-chips-input v-model="form.collections" float-label="Collections" placeholder="Type collection name" @input="filterCollectionName">
                         <q-autocomplete :static-data="suggests"/>
                     </q-chips-input>
                 </q-field>
@@ -126,14 +126,14 @@
             this.suggests.list = this.collections.map(item => {
                 return {label: item.name}
             });
-            this.form.name = this.$route.query.q;
+            this.parseQuery();
             document.title = 'Creating a new card - Wonderus';
             window.cardState = JSON.parse(JSON.stringify(this.$data))
         },
         methods: {
             ...mapActions({
                 create: 'cards/create',
-                closeAdding: 'cards/closeAdding',
+                closeAdding: 'modals/closeCreateCard',
                 changeTeam: 'teams/changeCurrentTeam'
             }),
             save() {
@@ -172,11 +172,33 @@
             cancelFile() {
                 this.file = null
             },
+            parseQuery() {
+                if (this.$route.query.q === undefined) return;
+
+                const query = this.$route.query.q;
+                if (query.indexOf('#') !== -1) {
+                    const matches = query.match(/#(.*?)($|\s+)/);
+
+                    this.form.collections.push(matches[1]);
+                    return this.form.name = query.replace(matches[0], '').trim();
+                }
+                this.form.name = query;
+            },
             toggleEditorTools(e) {
                 this.selection = e
             },
             changeFormatting(e) {
                 this.form.description = e.content
+            },
+            filterCollectionName(e) {
+                let result = [];
+                if (this.form.collections.length === 0) return;
+
+                this.form.collections.forEach(item => {
+                    result.push(item.replace(/\s+/g, ''));
+                });
+
+                this.form.collections = result
             }
         }
     }

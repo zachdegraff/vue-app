@@ -51,7 +51,7 @@
         },
         computed: {
             ...mapGetters({
-                model: 'teams/getEditingTeam',
+                model: 'modals/getEditingTeam',
                 isProcessing: 'teams/isUpdating'
             })
         },
@@ -61,7 +61,7 @@
         methods: {
             ...mapActions({
                 update: 'teams/update',
-                closeEditing: 'teams/closeEditing',
+                closeEditing: 'modals/closeEditTeam',
             }),
             save() {
                 this.$v.model.$touch();

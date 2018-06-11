@@ -35,25 +35,19 @@
     import {mapActions, mapGetters} from 'vuex'
 
     export default {
-        data: () => {
-            return {
-                team: null,
-                isCreation: false
-            }
-        },
         computed: {
             ...mapGetters({
                 teams: 'teams/all',
-                isTeamEditing: 'teams/getEditingStatus',
-                isTeamAdding: 'teams/getAddingStatus'
+                isTeamEditing: 'modals/isEditTeamOpen',
+                isTeamAdding: 'modals/isCreateTeamOpen'
             })
         },
         components: {CreateTeam, EditTeam},
         methods: {
             ...mapActions({
-                edit: 'teams/edit',
-                create: 'teams/add',
                 remove: 'teams/remove',
+                edit: 'modals/openEditTeam',
+                create: 'modals/openCreateTeam',
             }),
             photo(path) {
                 if (!path) {

@@ -18,9 +18,9 @@
         },
         computed: {
             ...mapGetters({
-                isCardViewing: 'cards/getViewingStatus',
-                isCardEditing: 'cards/getEditingStatus',
-                isCardAdding: 'cards/getAddingStatus'
+                isCardViewing: 'modals/isViewCardOpen',
+                isCardEditing: 'modals/isEditCardOpen',
+                isCardAdding: 'modals/isCreateCardOpen'
             })
         },
         components: {

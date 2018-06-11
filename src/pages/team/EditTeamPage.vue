@@ -19,7 +19,7 @@
         },
         computed: {
             ...mapGetters({
-                isTeamEditing: 'teams/getEditingStatus'
+                isTeamEditing: 'modals/isEditTeamOpen'
             })
         },
         created() {
@@ -27,7 +27,7 @@
         },
         methods: {
             ...mapActions({
-                edit: 'teams/edit'
+                edit: 'modals/openEditTeam'
             })
         }
     }

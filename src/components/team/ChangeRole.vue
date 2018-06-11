@@ -51,7 +51,7 @@
         },
         computed: {
             ...mapGetters({
-                member: 'members/getChangingMember',
+                member: 'modals/getChangingMember',
                 isProcessing: 'members/isChangingRole',
                 isMemberLoading: 'members/isMemberLoading'
             })
@@ -65,7 +65,7 @@
         methods: {
             ...mapActions({
                 changeRole: 'members/changeMemberRole',
-                closeChangingRole: 'members/closeChangingRole'
+                closeChangingRole: 'modals/closeChangeMemberRole'
             }),
             submit() {
                 this.changeRole({id: this.member.id, role: this.role}).then(this.closeChangingRole)

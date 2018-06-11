@@ -37,63 +37,13 @@ export const get = ({commit}, id) => {
     });
 };
 
-export const add = ({dispatch, commit}) => {
-    dispatch('route/next', {name: 'create_card'}, {root: true});
-    commit('changeAddingStatus', true);
-};
-
-export const addWithName = ({dispatch, commit}, param) => {
-    dispatch('route/next', {name: 'create_card_name', param}, {root: true});
-    commit('changeAddingStatus', true);
-};
-
-
-export const closeAdding = ({dispatch, commit}) => {
-    dispatch('route/pop', null, {root: true});
-    commit('changeAddingStatus', false);
-};
-
-export const edit = ({commit, dispatch}, id) => {
-    dispatch('route/next', {name: 'edit_card', id}, {root: true});
-    return new Promise((resolve, reject) => {
-        commit('changeEditingStatus', true);
-        dispatch('get', id).then(card => {
-            commit('changeEditingCard', card);
-            resolve(card)
-        }).catch(reject);
-    })
-};
-
-export const closeEditing = ({dispatch, commit}) => {
-    dispatch('route/pop', null, {root: true});
-    commit('changeEditingStatus', false);
-    commit('changeEditingCard', null);
-};
-
-export const view = ({commit, dispatch}, id) => {
-    dispatch('route/next', {name: 'view_card', id}, {root: true});
-    return new Promise((resolve, reject) => {
-        commit('changeViewingStatus', true);
-        dispatch('get', id).then(card => {
-            commit('changeViewingCard', card);
-            resolve(card)
-        }).catch(reject);
-    })
-};
-
-export const closeViewing = ({dispatch, commit}) => {
-    dispatch('route/pop', null, {root: true});
-    commit('changeViewingStatus', false);
-    commit('changeViewingCard', null);
-};
-
 export const create = ({commit, dispatch}, data) => {
     return new Promise((resolve, reject) => {
         commit('createStatusRequest');
         api.cards.create(data).then(res => {
             commit('createStatusSuccess', res);
             loadHomeItems(dispatch);
-            resolve(res.data.data)
+            resolve(res.data)
         }).catch(err => {
             commit('createStatusFailure', err);
             reject(err)
@@ -105,9 +55,10 @@ export const update = ({commit, dispatch}, {id, form}) => {
     return new Promise((resolve, reject) => {
         commit('updateStatusRequest');
         api.cards.update(id, form).then(res => {
+            dispatch('search/changeCardInResults', {card: res.data.card}, {root: true});
             commit('updateStatusSuccess', res);
             loadHomeItems(dispatch);
-            resolve(res.data.data)
+            resolve(res.data)
         }).catch(err => {
             commit('updateStatusFailure', err);
             reject(err)
@@ -129,59 +80,6 @@ export const remove = ({commit, dispatch}, id) => {
     })
 };
 
-export const hints = ({commit, rootGetters}, params) => {
-    return new Promise((resolve, reject) => {
-        const team = rootGetters['teams/current'];
-        if (team === null) {
-            resolve([])
-        }
-        params['teamId'] = team.id;
-        commit('hintsStatusRequest');
-        api.cards.hints(params).then(res => {
-            commit('hintsStatusSuccess', res);
-            resolve(res.data)
-        }).catch(err => {
-            commit('hintsStatusFailure', err);
-            reject(err)
-        })
-    })
-};
-
-export const cardsHints = ({commit, rootGetters}, params) => {
-    return new Promise((resolve, reject) => {
-        const team = rootGetters['teams/current'];
-        if (team === null) {
-            resolve([])
-        }
-        params['teamId'] = team.id;
-        commit('hintsStatusRequest');
-        api.cards.cardsHints(params).then(res => {
-            commit('hintsStatusSuccess', res);
-            resolve(res.data)
-        }).catch(err => {
-            commit('hintsStatusFailure', err);
-            reject(err)
-        })
-    })
-};
-
-export const search = ({commit, rootGetters}, params) => {
-    return new Promise((resolve, reject) => {
-        const team = rootGetters['teams/current'];
-        if (team === null) {
-            resolve([])
-        }
-        params['teamId'] = team.id;
-        commit('searchStatusRequest');
-        api.cards.search(params).then(res => {
-            commit('searchStatusSuccess', res);
-            resolve(res.data.data)
-        }).catch(err => {
-            commit('searchStatusFailure', err);
-            reject(err)
-        })
-    })
-};
 
 export const recentlyAdded = ({commit, rootGetters}) => {
     return new Promise((resolve, reject) => {

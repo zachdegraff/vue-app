@@ -19,7 +19,7 @@
         },
         computed: {
             ...mapGetters({
-                isMemberInviting: 'members/getInvitingStatus',
+                isMemberInviting: 'modals/isInviteMemberOpen',
             })
         },
         created() {
@@ -29,7 +29,7 @@
         methods: {
             ...mapActions({
                 view: 'teams/view',
-                invite: 'members/invite',
+                invite: 'modals/openInviteMember',
             })
         }
     }

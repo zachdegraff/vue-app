@@ -1,6 +1,6 @@
 const routes = {
     'create_card': () => `/cards/create`,
-    'create_card_name': ({param}) => `/cards/create?name=${param}`,
+    'create_card_name': ({query}) => `/cards/create?name=${query}`,
     'view_card': ({id}) => `/cards/${id}`,
     'edit_card': ({id}) => `/cards/${id}/edit`,
     'create_team': () => `/teams/create`,

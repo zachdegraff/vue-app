@@ -58,7 +58,7 @@
         methods: {
             ...mapActions({
                 load: 'cards/all',
-                showCard: 'cards/view'
+                showCard: 'modals/openViewCard'
             }),
             getCardImage(path) {
                 if (path === null) {

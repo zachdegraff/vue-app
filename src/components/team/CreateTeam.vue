@@ -68,7 +68,7 @@
             ...mapActions({
                 view: 'teams/view',
                 create: 'teams/create',
-                closeAdding: 'teams/closeAdding'
+                closeAdding: 'modals/closeCreateTeam'
             }),
             save() {
                 this.$v.form.$touch();

@@ -88,7 +88,7 @@
         computed: {
             ...mapGetters({
                 teams: 'teams/all',
-                card: 'cards/getEditingCard',
+                card: 'modals/getEditingCard',
                 collections: 'collections/all',
                 isProcessing: 'cards/isUpdating'
             })
@@ -140,7 +140,7 @@
         methods: {
             ...mapActions({
                 update: 'cards/update',
-                closeEditing: 'cards/closeEditing',
+                closeEditing: 'modals/closeEditCard',
                 changeTeam: 'teams/changeCurrentTeam'
             }),
             save() {

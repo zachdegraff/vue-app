@@ -58,19 +58,29 @@
                             <q-icon name="menu"/>
                             <q-popover>
                                 <q-list separator link>
-                                    <q-item>
+                                    <q-item v-close-overlay>
+                                        <q-item-main>
+                                            <q-item-tile class="uppercase">bookmark</q-item-tile>
+                                        </q-item-main>
+                                    </q-item>
+                                    <q-item v-close-overlay>
                                         <q-item-main>
                                             <q-item-tile class="uppercase">ask the team</q-item-tile>
                                         </q-item-main>
                                     </q-item>
-                                    <q-item>
+                                    <q-item v-close-overlay>
                                         <q-item-main>
-                                            <q-item-tile class="uppercase">save</q-item-tile>
+                                            <q-item-tile class="uppercase">copy card</q-item-tile>
                                         </q-item-main>
                                     </q-item>
-                                    <q-item>
+                                    <q-item @click.native="edit(card.id)" v-if="card.canUpdate" v-close-overlay>
                                         <q-item-main>
                                             <q-item-tile class="uppercase">edit card</q-item-tile>
+                                        </q-item-main>
+                                    </q-item>
+                                    <q-item @click.native="flush" v-show="card.canRemove" v-close-overlay>
+                                        <q-item-main>
+                                            <q-item-tile class="uppercase">delete card</q-item-tile>
                                         </q-item-main>
                                     </q-item>
                                 </q-list>
@@ -79,7 +89,7 @@
                     </div>
                     <div class="gt-xs col-sm-1 col-md-1 col-lg-1"></div>
                     <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
-                        <div class="card-item-actions">
+                        <div class="card-item-actions gt-xs">
                             <q-btn icon="bookmark_border" flat/>
                             <q-btn icon="help" flat/>
                             <q-btn icon="content_copy" flat/>
@@ -116,7 +126,7 @@
         computed: {
             ...mapGetters({
                 team: 'teams/current',
-                card: 'cards/getViewingCard',
+                card: 'modals/getViewingCard',
             }),
             title() {
                 return `${prop(this.card, 'name')} - ${prop(this.team, 'name')} - Wonderus`;
@@ -144,9 +154,9 @@
         },
         methods: {
             ...mapActions({
-                edit: 'cards/edit',
                 remove: 'cards/remove',
-                closeViewing: 'cards/closeViewing'
+                edit: 'modals/openEditCard',
+                closeViewing: 'modals/closeViewCard'
             }),
             confirm() {
                 return this.$q.dialog({
