@@ -31,3 +31,7 @@ export const slack = (id, code) => {
 export const disableSlack = (id) => {
     return request.delete(`/teams/${id}/slack`);
 };
+
+export const askHelp = (id, params) => {
+    return request.post(`/teams/${id}/help`, params)
+};

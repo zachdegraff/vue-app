@@ -27,13 +27,19 @@
                     <a href="javascript:void(0)" @click="createCard(query)">Create a card for {{query}}</a>?
                 </div>
             </div>
+            <div class="row flex-center q-mt-lg" v-if="isAskHelpAvailable">
+                <div class="col text-center q-mt-xl">
+                    Not finding what you need? <a href="javascript:void(0)" @click="openAskHelp">Ask for help</a>.
+                </div>
+            </div>
+            <ask-help v-if="isAskHelpOpen"></ask-help>
         </q-page>
-
     </div>
 </template>
 <script>
     import ViewCard from '../../components/card/ViewCard.vue'
     import SearchForm from '../../components/SearchForm.vue'
+    import AskHelp from '../../components/team/AskHelp.vue'
     import {mapActions, mapGetters} from 'vuex'
 
     export default {
@@ -61,21 +67,29 @@
             ...mapGetters({
                 team: 'teams/current',
                 isLoading: 'cards/isSearching',
-                items: 'cards/getSearchResults'
+                items: 'cards/getSearchResults',
+                isAskHelpOpen: 'modals/isAskHelpOpen'
             }),
             query() {
                 return this.$route.query.q
             },
             title() {
                 return `Search results for ${this.query} - ${this.team ? this.team.name : ''} - Wonderus`
+            },
+            isAskHelpAvailable() {
+                if (this.team === null) {
+                    return false;
+                }
+                return !this.team.isEditable;
             }
         },
-        components: {SearchForm, ViewCard},
+        components: {AskHelp, SearchForm, ViewCard},
         methods: {
             ...mapActions({
                 search: 'cards/search',
                 showCard: 'cards/view',
-                createCard: 'cards/addWithName'
+                createCard: 'cards/addWithName',
+                openAskHelp: 'modals/openAskHelp'
             }),
 
             params(query = null) {

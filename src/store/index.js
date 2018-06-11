@@ -7,6 +7,7 @@ import cards from './cards'
 import note from './note'
 import teams from './teams'
 import users from './users'
+import modals from './modals'
 import members from './members'
 import collections from './collections'
 
@@ -20,6 +21,7 @@ const store = new Vuex.Store({
         note,
         teams,
         users,
+        modals,
         members,
         collections
     }

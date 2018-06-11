@@ -33,6 +33,13 @@ export default [
         ]
     },
     {
+        path: '/ask-help/',
+        component: () => import('layouts/ClearLayout.vue'),
+        children: [
+            {path: '', name: 'ask_help', component: () => import('pages/team/AskHelpPage.vue'), props: true}
+        ]
+    },
+    {
         path: '/auth/',
         component: () => import('layouts/AuthLayout.vue'),
         beforeEnter: ifNotAuthenticated,
@@ -82,7 +89,11 @@ export default [
             {path: 'create', name: 'create_card', component: () => import('pages/card/CreateCardPage.vue')},
             {path: ':id', name: 'view_card', component: () => import('pages/card/ViewCardPage.vue'), props: true},
             {path: ':id/edit', name: 'edit_card', component: () => import('pages/card/EditCardPage.vue'), props: true},
-            {path: 'collection/:name', name: 'collection_cards', component: () => import('pages/card/CollectionCardsPage.vue')},
+            {
+                path: 'collection/:name',
+                name: 'collection_cards',
+                component: () => import('pages/card/CollectionCardsPage.vue')
+            },
             {path: '', name: 'cards_list', component: () => import('pages/card/CardsListPage.vue')}
         ]
     },
@@ -102,8 +113,18 @@ export default [
         children: [
             {path: ':id', name: 'view_team', component: () => import('pages/team/ViewTeamPage.vue'), props: true},
             {path: ':id/edit', name: 'edit_team', component: () => import('pages/team/EditTeamPage.vue'), props: true},
-            {path: ':id/invite', name: 'invite_member', component: () => import('pages/team/InviteMemberPage.vue'), props: true},
-            {path: ':id/change-role/:memberId', name: 'change_role', component: () => import('pages/team/ChangeRolePage.vue'), props: true},
+            {
+                path: ':id/invite',
+                name: 'invite_member',
+                component: () => import('pages/team/InviteMemberPage.vue'),
+                props: true
+            },
+            {
+                path: ':id/change-role/:memberId',
+                name: 'change_role',
+                component: () => import('pages/team/ChangeRolePage.vue'),
+                props: true
+            },
         ]
     },
     { // Always leave this as last one

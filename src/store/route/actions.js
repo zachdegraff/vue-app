@@ -3,11 +3,12 @@ const routes = {
     'create_card_name': ({param}) => `/cards/create?name=${param}`,
     'view_card': ({id}) => `/cards/${id}`,
     'edit_card': ({id}) => `/cards/${id}/edit`,
-    'create_team': () => `teams/create`,
-    'view_team': ({id}) => `teams/${id}`,
-    'edit_team': ({id}) => `teams/${id}/edit`,
-    'invite_member': ({id}) => `teams/${id}/invite`,
-    'change_role': ({id, memberId}) => `teams/${id}/change-role/${memberId}`,
+    'create_team': () => `/teams/create`,
+    'view_team': ({id}) => `/teams/${id}`,
+    'edit_team': ({id}) => `/teams/${id}/edit`,
+    'invite_member': ({id}) => `/teams/${id}/invite`,
+    'ask_help': () => `/ask-help`,
+    'change_role': ({id, memberId}) => `/teams/${id}/change-role/${memberId}`,
 };
 
 export const next = ({commit}, {name, ...params}) => {
