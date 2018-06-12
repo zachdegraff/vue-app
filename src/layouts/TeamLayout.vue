@@ -4,10 +4,10 @@
         <q-page-container>
             <q-page>
                 <div class="row gutter-md q-pa-md">
-                    <div class="col-xs-4">
+                    <div class="col-xs-12 col-sm-4">
                         <teams-navigation></teams-navigation>
                     </div>
-                    <div class="col-xs-8">
+                    <div class="col-xs-12 col-sm-8">
                         <view-team></view-team>
                         <router-view :key="$route.fullPath"/>
                     </div>

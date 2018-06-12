@@ -20,7 +20,7 @@ export const all = ({commit, dispatch}) => {
     });
 };
 
-export const get = ({getters, commit}, id) => {
+export const get = ({commit}, id) => {
     return new Promise((resolve, reject) => {
         commit('getStatusRequest');
         api.teams.get(id).then(res => {
@@ -58,10 +58,10 @@ export const create = ({commit, dispatch}, data) => {
     })
 };
 
-export const update = ({commit, dispatch}, {id, model}) => {
+export const update = ({commit, dispatch}, {id, form}) => {
     return new Promise((resolve, reject) => {
         commit('updateStatusRequest');
-        api.teams.update(id, model).then(res => {
+        api.teams.update(id, form).then(res => {
             dispatch('changeCurrentTeam', res.data.team.id);
             commit('updateStatusSuccess', res);
             resolve(res.data)

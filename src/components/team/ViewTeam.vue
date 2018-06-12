@@ -7,12 +7,19 @@
         </div>
         <div v-if="team">
             <div class="row q-mt-md">
-                <div class="col-xs-3">
+                <div class="col-xs-12 col-sm-6 col-lg-4 col-xl-3">
                     <img :src="photo(team.photo)" class="round-borders" width="200px"/>
                 </div>
-                <div class="col-xs-9">
-                    <h4>{{team.name}}</h4>
-                    <h5>{{team.organization}}</h5>
+                <div class="col-xs-12 col-sm-6 col-lg-8 col-xl-9">
+                    <q-field class="q-mt-md" :error="$v.form.name.$error" :error-label="firstErrorFor($v.form.name)">
+                        <q-input v-model="form.name" float-label="Name" @blur="$v.form.name.$touch"/>
+                    </q-field>
+                    <q-field class="q-mt-lg">
+                        <q-input v-model="form.organization" float-label="Organization"/>
+                    </q-field>
+                    <div>
+                        <q-btn @click="save" color="primary" class="q-mt-lg" label="save" :disable="isUpdating"/>
+                    </div>
                 </div>
             </div>
             <q-table title="Team Members" class="q-mt-xl" :data="members" :columns="columns" :pagination="{rowsPerPage: 20}" row-key="name" :loading="isMembersLoading">
@@ -35,10 +42,10 @@
                 </q-td>
             </q-table>
             <div class="q-mt-xl">
-                <q-btn size="lg" label="Invite new member" color="primary" @click="invite(team.id)"/>
+                <q-btn size="lg" label="Invite new member" color="primary" class="q-mr-md q-mb-md" @click="invite(team.id)"/>
 
-                <q-btn size="lg" label="Connect with Slack" color="white" class="text-black q-ml-md" @click="slack" v-if="!hasSlackIntegration"/>
-                <q-btn size="lg" label="Disable Slack" color="red" class="q-ml-md" @click="disableSlack" v-if="hasSlackIntegration"/>
+                <q-btn size="lg" label="Connect with Slack" color="white" class="text-black q-mb-md" @click="slack" v-if="!hasSlackIntegration"/>
+                <q-btn size="lg" label="Disable Slack" color="red" class="q-mb-md" @click="disableSlack" v-if="hasSlackIntegration"/>
             </div>
         </div>
         <invite-member v-if="isMemberInviting"></invite-member>
@@ -48,12 +55,18 @@
 <script>
     import InviteMember from '../../components/team/InviteMember.vue'
     import ChangeRole from '../../components/team/ChangeRole.vue'
+    import ValidatorMessages from '../../mixins/ValidatorMessages'
+    import {required} from 'vuelidate/lib/validators'
     import {mapActions, mapGetters} from 'vuex'
 
     const SLACK_CLIENT_ID = process.env.SLACK_CLIENT_ID;
 
     export default {
         data: () => ({
+            form: {
+                name: '',
+                organization: ''
+            },
             columns: [
                 {
                     name: 'fullName',
@@ -68,10 +81,19 @@
                 {name: 'actions', align: 'right', label: ''},
             ]
         }),
+        mixins: [ValidatorMessages],
         watch: {
             team: function (val) {
                 if (val !== null) {
+                    this.form = val;
                     document.title = `Manage ${val.name} team - Wonderus`
+                }
+            }
+        },
+        validations: {
+            form: {
+                name: {
+                    required
                 }
             }
         },
@@ -79,6 +101,7 @@
             ...mapGetters({
                 team: 'teams/getViewingTeam',
                 members: 'members/getTeamMembers',
+                isUpdating: 'teams/isUpdating',
                 isMembersLoading: 'members/isMembersLoading',
                 isMemberInviting: 'modals/isInviteMemberOpen',
                 isChangingRole: 'modals/isChangeMemberRoleOpen'
@@ -96,6 +119,7 @@
         },
         methods: {
             ...mapActions({
+                update: 'teams/update',
                 invite: 'modals/openInviteMember',
                 changeRole: 'modals/openChangeMemberRole',
                 excludeMember: 'members/excludeMemberFromTeam',
@@ -105,6 +129,14 @@
             slack() {
                 window.location = `https://slack.com/oauth/authorize?client_id=${SLACK_CLIENT_ID}&scope=commands&state=${this.id}`;
             },
+            save() {
+                this.$v.form.$touch();
+                if (this.$v.form.$error) {
+                    return
+                }
+
+                this.update({id: this.team.id, form: this.prepare()});
+            },
             photo(path) {
                 if (!path) {
                     return 'statics/team.png'
@@ -113,6 +145,14 @@
             },
             confirm() {
                 return this.$q.dialog({title: 'Confirm', message: 'Are you sure?', ok: 'Yes', cancel: 'No'})
+            },
+            prepare() {
+                const data = new FormData();
+                for (let i in this.team) {
+                    data.append(i, this.team[i])
+                }
+                data.append('_method', 'PUT');
+                return data
             },
             disableSlack() {
                 this.confirm().then(() => {
