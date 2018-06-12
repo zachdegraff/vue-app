@@ -34,8 +34,7 @@ export const allStatusFailure = state => state.actionAllStatus = 'Failure';
 export const createStatusRequest = state => state.actionCreateStatus = 'Request';
 export const createStatusSuccess = (state, res) => {
     state.actionCreateStatus = 'Success';
-    state.items.push(res.data.team);
-    state.current = res.data.team
+    state.items.push(res.data.team)
 };
 export const createStatusFailure = state => state.actionCreateStatus = 'Failure';
 
@@ -43,7 +42,6 @@ export const updateStatusRequest = state => state.actionUpdateStatus = 'Request'
 export const updateStatusSuccess = (state, res) => {
     state.actionUpdateStatus = 'Success';
     state.items = replace(state.items, res.data.team);
-    state.current = res.data.team;
     state.viewing = res.data.team
 };
 export const updateStatusFailure = state => state.actionUpdateStatus = 'Failure';

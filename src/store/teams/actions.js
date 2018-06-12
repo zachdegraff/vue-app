@@ -44,10 +44,11 @@ export const view = ({commit, dispatch}, id) => {
     })
 };
 
-export const create = ({commit}, data) => {
+export const create = ({commit, dispatch}, data) => {
     return new Promise((resolve, reject) => {
         commit('createStatusRequest');
         api.teams.create(data).then(res => {
+            dispatch('changeCurrentTeam', res.data.team.id);
             commit('createStatusSuccess', res);
             resolve(res.data)
         }).catch(err => {
@@ -57,10 +58,11 @@ export const create = ({commit}, data) => {
     })
 };
 
-export const update = ({commit}, {id, model}) => {
+export const update = ({commit, dispatch}, {id, model}) => {
     return new Promise((resolve, reject) => {
         commit('updateStatusRequest');
         api.teams.update(id, model).then(res => {
+            dispatch('changeCurrentTeam', res.data.team.id);
             commit('updateStatusSuccess', res);
             resolve(res.data)
         }).catch(err => {
