@@ -1,6 +1,9 @@
 export default {
     items: [],
 
+    viewing: null,
+    editing: null,
+
     recentlyAdded: [],
     recentlyUpdated: [],
 

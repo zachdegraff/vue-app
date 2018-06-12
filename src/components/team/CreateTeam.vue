@@ -12,8 +12,8 @@
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
                     <q-input v-model="form.organization" float-label="Organization"/>
                 </q-field>
-                <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <q-uploader url="" float-label="Photo" hide-upload-button @add="chooseFile" @remove:cancel="cancelFile" :disable="isProcessing" extensions=".jpg,.jpeg,.png"/>
+                <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10 text-left" label="Image" label-width="12">
+                    <image-chooser @change="changeFile"></image-chooser>
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
                     <strong>Members</strong><br/>
@@ -32,6 +32,7 @@
     import ValidatorMessages from '../../mixins/ValidatorMessages'
     import {required} from 'vuelidate/lib/validators'
     import {mapActions, mapGetters} from 'vuex'
+    import ImageChooser from "../ImageChooser";
 
     export default {
         data: () => {
@@ -62,6 +63,7 @@
             })
         },
         components: {
+            ImageChooser,
             AppModalLayout
         },
         methods: {
@@ -92,11 +94,8 @@
                 }
                 return data
             },
-            chooseFile(files) {
-                this.file = files[0]
-            },
-            cancelFile() {
-                this.file = null
+            changeFile(file) {
+                this.file = file
             },
             addMember() {
                 this.members.push({email: ''})

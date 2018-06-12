@@ -1,6 +1,8 @@
 export default {
     items: [],
 
+    editing: null,
+
     loadMemberStatus: '',
     loadTeamMembersStatus: '',
     inviteMemberToTeamStatus: '',

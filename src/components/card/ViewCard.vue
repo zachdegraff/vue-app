@@ -126,7 +126,7 @@
         computed: {
             ...mapGetters({
                 team: 'teams/current',
-                card: 'modals/getViewingCard',
+                card: 'cards/getViewingCard',
             }),
             title() {
                 return `${prop(this.card, 'name')} - ${prop(this.team, 'name')} - Wonderus`;

@@ -36,8 +36,8 @@
                         <q-autocomplete :static-data="suggests"/>
                     </q-chips-input>
                 </q-field>
-                <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <q-uploader url="" float-label="Image" hide-upload-button @add="chooseFile" @remove:cancel="cancelFile" :disable="isProcessing" extensions=".jpg,.jpeg,.png"/>
+                <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10 text-left" label="Image" label-width="12">
+                    <image-chooser @change="changeFile"></image-chooser>
                 </q-field>
                 <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
                     <q-btn @click="save" color="primary" class="q-mt-lg" :disable="isProcessing">create</q-btn>
@@ -54,6 +54,7 @@
     import {required} from 'vuelidate/lib/validators'
     import {mapActions, mapGetters} from 'vuex'
     import {filter} from 'quasar'
+    import ImageChooser from "../ImageChooser";
 
 
     export default {
@@ -85,6 +86,7 @@
             })
         },
         components: {
+            ImageChooser,
             AppModalLayout, EditorTools
         },
         validations: {
@@ -166,11 +168,8 @@
             addLink() {
                 this.links.push({name: '', url: ''})
             },
-            chooseFile(files) {
-                this.file = files[0]
-            },
-            cancelFile() {
-                this.file = null
+            changeFile(file) {
+                this.file = file
             },
             parseQuery() {
                 if (this.$route.query.q === undefined) return;

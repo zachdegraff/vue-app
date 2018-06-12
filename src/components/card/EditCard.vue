@@ -43,12 +43,8 @@
                         <q-autocomplete :static-data="suggests"/>
                     </q-chips-input>
                 </q-field>
-                <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <div class="edit-card-image-container" v-if="card.thumb" v-show="!flushImage">
-                        <img :src="card.thumb" class="round-borders" width="200px"/><br/>
-                        <q-btn round color="red" size="xs" icon="delete" class="edit-card-image-remove-btn" @click="flushImage = true"/>
-                    </div>
-                    <q-uploader url="" float-label="Image" hide-upload-button @add="chooseFile" @remove:cancel="cancelFile" :disable="isProcessing" extensions=".jpg,.jpeg,.png"/>
+                <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10" label="Image" label-width="12">
+                    <image-chooser :path="card.thumb" @change="changeFile"></image-chooser>
                 </q-field>
                 <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
                     <q-btn @click="save" color="primary" label="save" class="q-mt-lg" :disable="isProcessing"/>
@@ -64,6 +60,7 @@
     import EditorTools from '../../components/EditorTools'
     import {required} from 'vuelidate/lib/validators'
     import {mapActions, mapGetters} from 'vuex'
+    import ImageChooser from "../ImageChooser";
 
     export default {
         data: () => {
@@ -88,13 +85,15 @@
         computed: {
             ...mapGetters({
                 teams: 'teams/all',
-                card: 'modals/getEditingCard',
+                card: 'cards/getEditingCard',
                 collections: 'collections/all',
                 isProcessing: 'cards/isUpdating'
             })
         },
         components: {
-            AppModalLayout, EditorTools
+            ImageChooser,
+            AppModalLayout,
+            EditorTools
         },
         validations: {
             form: {
@@ -171,11 +170,9 @@
                 }
                 return data
             },
-            chooseFile(files) {
-                this.file = files[0]
-            },
-            cancelFile() {
-                this.file = null
+            changeFile(file) {
+                this.file = file;
+                this.flushImage = file === null;
             },
             addLink() {
                 this.links.push({name: '', url: ''})
@@ -189,14 +186,3 @@
         }
     }
 </script>
-<style lang="scss">
-    .edit-card-image-container {
-        position: relative;
-    }
-
-    .edit-card-image-remove-btn {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-    }
-</style>

@@ -1,21 +1,28 @@
 <template>
     <q-modal v-model="isOpen" @hide="closeEditing" class="app-modal" :content-classes="['app-modal-content']" :content-css="{minWidth: '80vw', minHeight: '50vh'}">
-        <app-modal-layout v-if="model">
+        <app-modal-layout>
             <q-toolbar slot="header">
-                <q-toolbar-title>Editing {{model.name}}</q-toolbar-title>
+                <q-toolbar-title v-if="team">Editing {{team.name}}</q-toolbar-title>
                 <q-btn flat icon="close" @click="isOpen=false" class="float-right"/>
             </q-toolbar>
-            <div class="row q-py-xl gutter-md flex-center">
-                <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10" :error="$v.model.name.$error" :error-label="firstErrorFor($v.model.name)">
-                    <q-input v-model="model.name" float-label="Name" @blur="$v.model.name.$touch"/>
+
+            <div class="row text-center card-item" v-if="!team">
+                <div class="col">
+                    <q-spinner :size="50" color="red"></q-spinner>
+                </div>
+            </div>
+
+            <div class="row q-py-xl gutter-md flex-center" v-if="team">
+                <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10" :error="$v.team.name.$error" :error-label="firstErrorFor($v.team.name)">
+                    <q-input v-model="team.name" float-label="Name" @blur="$v.team.name.$touch"/>
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <q-input v-model="model.organization" float-label="Name"/>
+                    <q-input v-model="team.organization" float-label="Name"/>
                 </q-field>
-                <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <img :src="photo(model.photo)" class="round-borders" width="200px"/>
-                    <q-uploader url="" float-label="Photo" hide-upload-button @add="chooseFile" @remove:cancel="cancelFile" :disable="isProcessing" extensions=".jpg,.jpeg,.png"/>
+                <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10" label="Image" label-width="12">
+                    <image-chooser :path="team.photo" @change="changeFile"></image-chooser>
                 </q-field>
+
                 <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
                     <q-btn @click="save" color="primary" class="q-mt-lg" :disable="isProcessing">save</q-btn>
                 </div>
@@ -28,6 +35,7 @@
     import ValidatorMessages from '../../mixins/ValidatorMessages'
     import {required} from 'vuelidate/lib/validators'
     import {mapActions, mapGetters} from 'vuex'
+    import ImageChooser from "../ImageChooser";
 
     export default {
         data: () => {
@@ -38,12 +46,14 @@
         },
         mixins: [ValidatorMessages],
         watch: {
-            model: function(val) {
-                document.title = `Editing ${val.name} team - Wonderus`
+            team: function(val) {
+                if (val) {
+                    document.title = `Editing ${val.name} team - Wonderus`
+                }
             }
         },
         validations: {
-            model: {
+            team: {
                 name: {
                     required
                 }
@@ -51,11 +61,12 @@
         },
         computed: {
             ...mapGetters({
-                model: 'modals/getEditingTeam',
+                team: 'teams/getEditingTeam',
                 isProcessing: 'teams/isUpdating'
             })
         },
         components: {
+            ImageChooser,
             AppModalLayout
         },
         methods: {
@@ -64,23 +75,17 @@
                 closeEditing: 'modals/closeEditTeam',
             }),
             save() {
-                this.$v.model.$touch();
-                if (this.$v.model.$error) {
+                this.$v.team.$touch();
+                if (this.$v.team.$error) {
                     return
                 }
 
-                this.update({id: this.model.id, model: this.prepare()}).then(this.closeEditing);
-            },
-            photo(path) {
-                if (!path) {
-                    return 'statics/team.png'
-                }
-                return path
+                this.update({id: this.team.id, model: this.prepare()}).then(this.closeEditing);
             },
             prepare() {
                 const data = new FormData();
-                for (let i in this.model) {
-                    data.append(i, this.model[i])
+                for (let i in this.team) {
+                    data.append(i, this.team[i])
                 }
                 data.append('_method', 'PUT');
                 if (this.file !== null) {
@@ -88,11 +93,8 @@
                 }
                 return data
             },
-            chooseFile(files) {
-                this.file = files[0]
-            },
-            cancelFile() {
-                this.file = null
+            changeFile(file) {
+                this.file = file
             }
         }
     }

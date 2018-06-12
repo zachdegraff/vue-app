@@ -40,6 +40,10 @@
                         label: 'Contributor',
                         value: 'Contributor'
                     },
+                    {
+                        label: 'Admin',
+                        value: 'Admin'
+                    }
                 ],
                 isOpen: true
             }
@@ -51,7 +55,7 @@
         },
         computed: {
             ...mapGetters({
-                member: 'modals/getChangingMember',
+                member: 'members/getEditingMember',
                 isProcessing: 'members/isChangingRole',
                 isMemberLoading: 'members/isMemberLoading'
             })

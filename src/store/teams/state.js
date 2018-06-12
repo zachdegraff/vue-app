@@ -2,6 +2,8 @@ export default {
     items: [],
 
     viewing: null,
+    editing: null,
+
     current: null,
 
     actionAllStatus: '',

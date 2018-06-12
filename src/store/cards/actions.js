@@ -114,3 +114,11 @@ export const recentlyUpdated = ({commit, rootGetters}) => {
         })
     })
 };
+
+export const changeViewingCard = ({commit, dispatch}, id) => {
+    dispatch('get', id).then(card => commit('changeViewingCard', card))
+};
+
+export const changeEditingCard = ({commit, dispatch}, id) => {
+    dispatch('get', id).then(card => commit('changeEditingCard', card))
+};

@@ -1,5 +1,10 @@
 <template>
     <div>
+        <div class="row text-center card-item" v-if="!team">
+            <div class="col">
+                <q-spinner :size="50" color="red"></q-spinner>
+            </div>
+        </div>
         <div v-if="team">
             <div class="row q-mt-md">
                 <div class="col-xs-3">
@@ -18,7 +23,7 @@
                                 <q-item v-if="props.row.user === null" @click.native="reSendInvite(props.row.id)" v-close-overlay>
                                     <q-item-main label="Resent Invite"/>
                                 </q-item>
-                                <q-item @click.native="changeRole(props.row.id)" v-close-overlay>
+                                <q-item @click.native="changeRole({teamId: team.id, memberId: props.row.id})" v-close-overlay>
                                     <q-item-main label="Change Role"/>
                                 </q-item>
                                 <q-item @click.native="excludeFromTeam(props.row.id)" v-close-overlay>
@@ -65,7 +70,9 @@
         }),
         watch: {
             team: function (val) {
-                document.title = `Manage ${val.name} team - Wonderus`
+                if (val !== null) {
+                    document.title = `Manage ${val.name} team - Wonderus`
+                }
             }
         },
         computed: {

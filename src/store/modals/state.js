@@ -8,17 +8,17 @@ export default {
     },
 
     viewCard: {
-        card: null,
         status: false
     },
+
     editCard: {
-        card: null,
         status: false
     },
 
     createTeam: {
         status: false
     },
+
     editTeam: {
         team: null,
         status: false

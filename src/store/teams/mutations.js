@@ -12,8 +12,9 @@ export const remove = (state, id) => {
     }
 };
 
-export const changeCurrentTeam = (state, item) => state.current = item;
+export const changeCurrentTeam = (state, team) => state.current = team;
 export const changeViewingTeam = (state, team) => state.viewing = team;
+export const changeEditingTeam = (state, team) => state.editing = team;
 
 
 export const getStatusRequest = state => state.actionGetStatus = 'Request';

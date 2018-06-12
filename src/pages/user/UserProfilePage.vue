@@ -19,8 +19,7 @@
                     <q-input type="password" float-label="Repeat Password" v-model="form.password_confirmation" @blur="$v.form.password_confirmation.$touch"/>
                 </q-field>
                 <q-field class="q-py-sm">
-                    <img :src="user.photo" class="round-borders" width="200px" v-if="user && user.photo"/>
-                    <q-uploader url="" float-label="Photo" hide-upload-button @add="chooseFile" @remove:cancel="cancelFile" :disable="isProcessing" extensions=".jpg,.jpeg,.png"/>
+                    <image-chooser :path="user.photo" @change="changeFile"></image-chooser>
                 </q-field>
                 <div class="q-pt-lg">
                     <q-btn color="primary" label="save" @click="submit" :disabled="isProcessing"/>
@@ -33,8 +32,10 @@
     import {required, email, sameAs, minLength} from 'vuelidate/lib/validators'
     import ValidatorMessages from '../../mixins/ValidatorMessages'
     import {mapActions, mapGetters} from 'vuex'
+    import ImageChooser from "../../components/ImageChooser";
 
     export default {
+        components: {ImageChooser},
         data: () => {
             return {
                 form: {
@@ -108,11 +109,8 @@
                 }
                 return data
             },
-            chooseFile(files) {
-                this.form.file = files[0]
-            },
-            cancelFile() {
-                this.form.file = null
+            changeFile(file) {
+                this.form.file = file
             }
         }
     }

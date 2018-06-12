@@ -34,6 +34,7 @@ export const get = ({getters, commit}, id) => {
 };
 
 export const view = ({commit, dispatch}, id) => {
+    commit('changeViewingTeam', null);
     return new Promise((resolve, reject) => {
         dispatch('get', id).then(team => {
             commit('changeViewingTeam', team);
@@ -92,6 +93,11 @@ export const changeCurrentTeam = ({dispatch, commit, getters}, id) => {
         commit('changeCurrentTeam', team);
         loadDefaults(dispatch)
     });
+};
+
+export const changeEditingTeam = ({commit, dispatch}, id) => {
+    commit('changeEditingTeam', null);
+    dispatch('get', id).then(team => commit('changeEditingTeam', team))
 };
 
 export const askHelp = ({commit}, {id, ...params}) => {

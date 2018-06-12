@@ -68,6 +68,10 @@ export const changeMemberRole = ({commit}, {id, role}) => {
     })
 };
 
+export const changeEditingMember = ({commit, dispatch}, id) => {
+    dispatch('loadMember', id).then(member => commit('changeEditingMember', member))
+};
+
 export const retryMemberInvitation = ({commit}, id) => {
     return new Promise((resolve, reject) => {
         commit('retryMemberInvitationStatusRequest');

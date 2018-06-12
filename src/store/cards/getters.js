@@ -9,6 +9,10 @@ export const getById = state => {
 
 export const getItems = state => state.items;
 
+
+export const getViewingCard = state => state.viewing;
+export const getEditingCard = state => state.editing;
+
 export const getRecentlyAdded = state => state.recentlyAdded;
 export const getRecentlyUpdated = state => state.recentlyUpdated;
 

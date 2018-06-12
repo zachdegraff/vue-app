@@ -25,6 +25,7 @@ export const current = state => {
 };
 
 export const getViewingTeam = state => state.viewing;
+export const getEditingTeam = state => state.editing;
 
 export const isCreating = state => state.actionCreateStatus === 'Request';
 export const isUpdating = state => state.actionUpdateStatus === 'Request';

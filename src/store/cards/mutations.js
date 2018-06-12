@@ -21,6 +21,7 @@ export const getStatusFailure = state => state.actionGetStatus = 'Failure';
 
 export const updateStatusRequest = state => state.actionUpdateStatus = 'Request';
 export const updateStatusSuccess = (state, res) => {
+    state.viewing = res.data.card;
     state.actionUpdateStatus = 'Success';
     state.items = replace(state.items, res.data.card);
 };
@@ -41,6 +42,8 @@ export const createStatusSuccess = (state, res) => {
 };
 export const createStatusFailure = state => state.actionCreateStatus = 'Failure';
 
+export const changeViewingCard = (state, card) => state.viewing = card;
+export const changeEditingCard = (state, card) => state.editing = card;
 
 export const recentlyAddedStatusRequest = state => state.actionRecentlyAddedStatus = 'Request';
 export const recentlyAddedStatusSuccess = (state, res) => {
