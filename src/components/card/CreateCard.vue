@@ -81,6 +81,7 @@
             ...mapGetters({
                 teams: 'teams/all',
                 team: 'teams/current',
+                query: 'search/getQuery',
                 collections: 'collections/all',
                 isProcessing: 'cards/isCreating'
             })
@@ -172,14 +173,13 @@
                 this.file = file
             },
             parseQuery() {
-                if (this.$route.query.q === undefined) return;
+                if (this.query === '') return;
 
-                const query = this.$route.query.q;
-                if (query.indexOf('#') !== -1) {
-                    const matches = query.match(/#(.*?)($|\s+)/);
+                if (this.query.indexOf('#') !== -1) {
+                    const matches = this.query.match(/#(.*?)($|\s+)/);
 
                     this.form.collections.push(matches[1]);
-                    return this.form.name = query.replace(matches[0], '').trim();
+                    return this.form.name = this.query.replace(matches[0], '').trim();
                 }
                 this.form.name = query;
             },
