@@ -1,8 +1,8 @@
 <template>
-    <div class="row gutter-sm flex-center" v-show="items.length > 0">
+    <div class="row gutter-sm cards-list" v-show="items.length > 0">
         <div class="col-xs-8 col-sm-6 col-lg-3" v-for="card in items">
             <a :href="createViewUrl(card)" @click.prevent.stop="showCard(card.id)">
-                <q-card class="cards-list-item cursor-pointer">
+                <q-card class="cards-list-item cursor-pointer self-center">
                     <q-card-media>
                         <img :src="getCardImage(card.thumb)">
 
@@ -68,6 +68,12 @@
         width: 100%;
         div {
             font-size: 16px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .cards-list {
+            justify-content: center;
         }
     }
 </style>
