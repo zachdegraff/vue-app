@@ -12,7 +12,8 @@ export const getFilteredItems = state => {
     return filter => {
         const result = [],
             name = filter.name.toLowerCase(),
-            shorthand = filter.shorthand.toLowerCase();
+            shorthand = filter.shorthand.toLowerCase(),
+            description = filter.description.toLowerCase();
 
         state.items.forEach(item => {
             if (name !== '') {
@@ -31,6 +32,11 @@ export const getFilteredItems = state => {
                     }
                 }
                 if (!isInList) {
+                    return;
+                }
+            }
+            if (description !== '') {
+                if (item.description.toLowerCase().indexOf(description) === -1) {
                     return;
                 }
             }

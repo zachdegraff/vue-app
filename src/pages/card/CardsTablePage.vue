@@ -18,17 +18,16 @@
 
                             <tr slot="header" slot-scope="props">
                                 <q-th key="name" :props="props">
-                                    <q-input v-model.lazy="filter.name" float-label="Card Name" class="q-mb-md" style="display: inline-block"/>
+                                    <q-input v-model.lazy="filter.name" float-label="Card Name" style="display: inline-block"/>
                                 </q-th>
                                 <q-th key="shorthand" :props="props">
-                                    <q-input v-model.lazy="filter.shorthand" float-label="Shorthand" class="q-mb-md" style="display: inline-block"/>
+                                    <q-input v-model.lazy="filter.shorthand" float-label="Shorthand" style="display: inline-block"/>
                                 </q-th>
                                 <q-th key="description" :props="props">
-                                    <br/>
-                                    Description
+                                    <q-input v-model.lazy="filter.description" float-label="Description"/>
                                 </q-th>
                                 <q-th key="collections" :props="props">
-                                    <q-select v-model="filter.collection" :options="options" float-label=" " class="q-mb-md"/>
+                                    <q-select v-model="filter.collection" :options="options" float-label=" "/>
                                 </q-th>
                             </tr>
 
@@ -63,6 +62,7 @@
             filter: {
                 name: '',
                 shorthand: '',
+                description: '',
                 collection: ''
             },
             options: [],
@@ -136,6 +136,9 @@
                 this.items = this.getFilteredItems(this.filter)
             },
             'filter.shorthand': function (val) {
+                this.items = this.getFilteredItems(this.filter)
+            },
+            'filter.description': function (val) {
                 this.items = this.getFilteredItems(this.filter)
             },
             'filter.collection': function (val) {
