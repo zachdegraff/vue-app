@@ -63,7 +63,7 @@
                                             <q-item-tile class="uppercase">bookmark</q-item-tile>
                                         </q-item-main>
                                     </q-item>
-                                    <q-item v-close-overlay>
+                                    <q-item @click.native="openAskHelp" v-close-overlay>
                                         <q-item-main>
                                             <q-item-tile class="uppercase">ask the team</q-item-tile>
                                         </q-item-main>
@@ -91,13 +91,13 @@
                     <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
                         <div class="card-item-actions gt-xs">
                             <q-btn icon="bookmark_border" flat/>
-                            <q-btn icon="help" flat/>
+                            <q-btn icon="help" flat @click="openAskHelp"/>
                             <q-btn icon="content_copy" flat/>
                             <q-btn icon="edit" flat @click="edit(card.id)" v-if="card.canUpdate"/>
                             <q-btn icon="delete" flat @click="flush" v-show="card.canRemove"/>
                         </div>
                         <div class="card-item-image">
-                            <img :src="card.thumb" v-if="card.thumb"/>
+                            <img :src="card.image" v-if="card.image"/>
                         </div>
                         <card-note :id="card.id"></card-note>
                     </div>
@@ -156,6 +156,7 @@
             ...mapActions({
                 remove: 'cards/remove',
                 edit: 'modals/openEditCard',
+                openAskHelp: 'modals/openAskHelp',
                 closeViewing: 'modals/closeViewCard'
             }),
             confirm() {
@@ -260,7 +261,7 @@
 
     .card-item-image {
         margin-top: 30px;
-        max-width: 350px;
+        //max-width: 350px;
         img {
             width: 100%;
         }

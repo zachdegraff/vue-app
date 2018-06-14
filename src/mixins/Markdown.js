@@ -3,7 +3,7 @@ const APP_HOST = process.env.APP_HOST;
 const Markdown = {
     methods: {
         markTags(content) {
-            if (content === null) return '';
+            if (!content) return '';
             let result = content
                 .replace(/([\s\.,\'\"]+)\*([^*]*)\*([\s\.,\'\"]+)/g, '$1<strong>$2</strong>$3')
                 .replace(/([\s\.,\'\"]+)_([^_]*)_([\s\.,\'\"]+)/g, '$1<em>$2</em>$3');
@@ -24,7 +24,7 @@ const Markdown = {
             return result.replace(APP_HOST, '');
         },
         clearMarks(content) {
-            if (content === null) return '';
+            if (!content) return '';
             return content
                 .replace(/([\s\.,\'\"]+)\*([^*]*)\*([\s\.,\'\"]+)/g, '$1$2$3')
                 .replace(/([\s\.,\'\"]+)_([^_]*)_([\s\.,\'\"]+)/g, '$1$2$3')

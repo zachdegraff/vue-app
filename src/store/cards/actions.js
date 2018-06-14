@@ -116,9 +116,15 @@ export const recentlyUpdated = ({commit, rootGetters}) => {
 };
 
 export const changeViewingCard = ({commit, dispatch}, id) => {
+    if (id === null) {
+        return commit('changeViewingCard', null);
+    }
     dispatch('get', id).then(card => commit('changeViewingCard', card))
 };
 
 export const changeEditingCard = ({commit, dispatch}, id) => {
+    if (id === null) {
+        return commit('changeEditingCard', null);
+    }
     dispatch('get', id).then(card => commit('changeEditingCard', card))
 };

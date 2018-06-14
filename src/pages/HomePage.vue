@@ -1,38 +1,21 @@
 <template>
     <q-page>
         <search-form></search-form>
+        <div class="row flex-center q-mt-md">
+            <div class="col-xs-12 col-sm-8">
+                <q-btn :to="{name: 'cards_table'}">All Cards</q-btn>
+            </div>
+        </div>
         <div class="row flex-center">
             <div class="col-xs-12 col-sm-8">
                 <div class="row q-my-lg" v-show="recentlyAdded.length > 0">
                     <div class="col q-headline">Recently Added</div>
                 </div>
-                <div class="row gutter-sm" v-show="recentlyAdded.length > 0">
-                    <div class="col-xs-12 col-sm-6 col-lg-3" v-for="card in recentlyAdded">
-                        <q-card class="cursor-pointer" @click.native="showCard(card.id)">
-                            <q-card-media>
-                                <img :src="getCardImage(card.thumb)">
-
-                                <q-card-title slot="overlay" v-if="card.thumb">{{card.name}}</q-card-title>
-                                <div class="home-card-title q-title" v-if="!card.thumb">{{card.name}}</div>
-                            </q-card-media>
-                        </q-card>
-                    </div>
-                </div>
+                <cards-list :items="recentlyAdded"></cards-list>
                 <div class="row q-my-lg" v-show="recentlyUpdated.length > 0">
                     <div class="col q-headline">Recently Updated</div>
                 </div>
-                <div class="row gutter-sm" v-show="recentlyUpdated.length > 0">
-                    <div class="col-xs-12 col-sm-6 col-lg-3" v-for="card in recentlyUpdated">
-                        <q-card class="cursor-pointer" @click.native="showCard(card.id)">
-                            <q-card-media>
-                                <img :src="getCardImage(card.thumb)">
-
-                                <q-card-title slot="overlay" v-if="card.thumb">{{card.name}}</q-card-title>
-                                <div class="home-card-title q-title" v-if="!card.thumb">{{card.name}}</div>
-                            </q-card-media>
-                        </q-card>
-                    </div>
-                </div>
+                <cards-list :items="recentlyUpdated"></cards-list>
                 <div class="row q-my-lg" v-if="collections.length > 0">
                     <div class="col q-headline">Collections</div>
                 </div>
@@ -44,6 +27,7 @@
 
 <script>
     import CollectionsGridList from '../components/card/CollectionsGridList.vue'
+    import CardsList from '../components/card/CardsList.vue'
     import SearchForm from '../components/SearchForm.vue'
     import {mapActions, mapGetters} from 'vuex'
 
@@ -55,7 +39,8 @@
                     this.$router.push({name: 'view_team', params: {id: data.member.teamId}})
                 })
             }
-            document.title = this.title
+            document.title = this.title;
+            this.changeQuery('')
         },
         watch: {
             team: function (val) {
@@ -67,7 +52,7 @@
                 team: 'teams/current',
                 recentlyAdded: 'cards/getRecentlyAdded',
                 recentlyUpdated: 'cards/getRecentlyUpdated',
-                collections: 'collections/all'
+                collections: 'collections/allNonEmpty'
             }),
             title() {
                 if (this.team === null) {
@@ -77,30 +62,13 @@
             }
         },
         components: {
-            SearchForm, CollectionsGridList
+            SearchForm, CollectionsGridList, CardsList
         },
         methods: {
             ...mapActions({
-                showCard: 'modals/openViewCard',
-                join: 'teams/join'
-            }),
-            getCardImage(path) {
-                if (path === null) {
-                    return 'statics/blank-card.png'
-                }
-                return path
-            },
+                join: 'teams/join',
+                changeQuery: 'search/changeQuery'
+            })
         }
     }
 </script>
-<style lang="scss">
-    .home-card-title {
-        position: absolute;
-        color: #0c0c0c;
-        top: 50%;
-        left: 0;
-        width: 100%;
-        transform: translateY(-50%);
-        text-align: center;
-    }
-</style>

@@ -8,6 +8,51 @@ export const getById = state => {
 };
 
 export const getItems = state => state.items;
+export const getFilteredItems = state => {
+    return filter => {
+        const result = [],
+            name = filter.name.toLowerCase(),
+            shorthand = filter.shorthand.toLowerCase();
+
+        state.items.forEach(item => {
+            if (name !== '') {
+                if (item.name.toLowerCase().indexOf(name) === -1) {
+                    return;
+                }
+            }
+            if (shorthand !== '') {
+                if (!item.shorthand || !item.shorthand.length) {
+                    return;
+                }
+                let isInList = false;
+                for (let i in item.shorthand) {
+                    if (item.shorthand[i].toLowerCase().indexOf(shorthand) !== -1) {
+                        isInList = true;
+                    }
+                }
+                if (!isInList) {
+                    return;
+                }
+            }
+            if (filter.collection !== '') {
+                if (!item.collections || !item.collections.length) {
+                    return;
+                }
+                let isInCollection = false;
+                for (let i in item.collections) {
+                    if (item.collections[i].id === filter.collection) {
+                        isInCollection = true;
+                    }
+                }
+                if (!isInCollection) {
+                    return;
+                }
+            }
+            result.push(item)
+        });
+        return result;
+    }
+};
 
 
 export const getViewingCard = state => state.viewing;

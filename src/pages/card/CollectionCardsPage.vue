@@ -7,18 +7,7 @@
                     <div class="row q-my-lg" v-show="items.length > 0">
                         <div class="col q-headline">#{{collection}} collection</div>
                     </div>
-                    <div class="row gutter-sm" v-show="items.length > 0">
-                        <div class="col-xs-12 col-sm-6 col-lg-3" v-for="card in items">
-                            <q-card class="cursor-pointer" @click.native="showCard(card.id)">
-                                <q-card-media>
-                                    <img :src="getCardImage(card.thumb)">
-
-                                    <q-card-title slot="overlay" v-if="card.thumb">{{card.name}}</q-card-title>
-                                    <div class="list-card-title q-title" v-if="!card.thumb">{{card.name}}</div>
-                                </q-card-media>
-                            </q-card>
-                        </div>
-                    </div>
+                    <cards-list :items="items"/>
                 </div>
             </div>
             <div class="row flex-center q-mt-lg">
@@ -33,6 +22,7 @@
     import SearchForm from '../../components/SearchForm.vue'
     import {mapActions, mapGetters} from 'vuex'
     import {prop} from "../../helpers";
+    import CardsList from "../../components/card/CardsList";
 
     export default {
         computed: {
@@ -48,7 +38,7 @@
                 return this.$route.params.name
             }
         },
-        components: {SearchForm, ViewCard},
+        components: {CardsList, SearchForm, ViewCard},
         watch: {
             team: function (val) {
                 this.filter(this.params());
@@ -63,18 +53,11 @@
         methods: {
             ...mapActions({
                 filter: 'cards/all',
-                showCard: 'modals/openViewCard',
                 changeQuery: 'search/changeQuery'
             }),
             params() {
                 return {collection: this.collection};
-            },
-            getCardImage(path) {
-                if (path === null) {
-                    return 'statics/blank-card.png'
-                }
-                return path
-            },
+            }
         }
     }
 </script>

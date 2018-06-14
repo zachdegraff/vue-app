@@ -30,6 +30,7 @@ export const openEditCard = ({commit, dispatch}, id) => {
 };
 export const closeEditCard = ({dispatch, commit}) => {
     dispatch('route/pop', null, {root: true});
+    dispatch('cards/changeEditingCard', null, {root: true});
     commit('changeEditCardStatus', false);
 };
 
@@ -41,6 +42,7 @@ export const openViewCard = ({commit, dispatch}, id) => {
 };
 export const closeViewCard = ({dispatch, commit}) => {
     dispatch('route/pop', null, {root: true});
+    dispatch('cards/changeViewingCard', null, {root: true});
     commit('changeViewCardStatus', false);
 };
 

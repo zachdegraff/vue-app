@@ -3,23 +3,25 @@
         <q-layout-header>
             <q-toolbar color="primary">
                 <q-toolbar-title link v-if="teams.length > 0">
-                    <img :src="photo(current.photo)" class="team-photo round-borders vertical-middle" v-if="current"/><span class="gt-xs" v-if="current">{{current.name}}</span>
-                    <q-popover max-height="1000px">
-                        <q-list link>
-                            <q-item v-close-overlay v-for="team in teams" :key="team.id" @click.native="changeTeam(team.id)">
-                                <q-item-side>
-                                    <q-item-tile>
-                                        <img :src="photo(team.photo)" class="vertical-middle round-borders" style="width: 50px"/>
-                                    </q-item-tile>
-                                </q-item-side>
-                                <q-item-main :label="team.name"/>
-                            </q-item>
-                            <q-item-separator/>
-                            <q-item :to="manage">
-                                <q-item-main label="Manage Teams"/>
-                            </q-item>
-                        </q-list>
-                    </q-popover>
+                    <div style="display: inline-block">
+                        <img :src="photo(current.photo)" class="team-photo round-borders vertical-middle" v-if="current"/><span class="gt-xs" v-if="current">{{current.name}}</span>
+                        <q-popover max-height="1000px">
+                            <q-list link>
+                                <q-item v-close-overlay v-for="team in teams" :key="team.id" @click.native="changeTeam(team.id)">
+                                    <q-item-side>
+                                        <q-item-tile>
+                                            <img :src="photo(team.photo)" class="vertical-middle round-borders" style="width: 50px"/>
+                                        </q-item-tile>
+                                    </q-item-side>
+                                    <q-item-main :label="team.name"/>
+                                </q-item>
+                                <q-item-separator/>
+                                <q-item :to="manage">
+                                    <q-item-main label="Manage Teams"/>
+                                </q-item>
+                            </q-list>
+                        </q-popover>
+                    </div>
                 </q-toolbar-title>
                 <q-toolbar-title v-if="teams.length === 0">
                     <q-btn color="white" class="text-black gt-xs" icon="add" label="Create Team" @click="$router.push({name:'create_team'})"/>

@@ -7,7 +7,7 @@
             </q-toolbar>
             <form class="row q-pa-xl flex-center">
                 <q-field class="col-xs-12" :error="$v.question.$error" :error-label="firstErrorFor($v.question)">
-                    <q-input type="textarea" v-model="question" @blur="$v.question.$touch" float-label="Type your question"></q-input>
+                    <q-input ref="field" type="textarea" v-model="question" @blur="$v.question.$touch" float-label="Type your question"></q-input>
                 </q-field>
                 <q-field class="col-xs-12 q-mt-xl">
                     <q-btn color="primary" label="Submit" @click="submit" :disable="isProcessing"></q-btn>
@@ -34,6 +34,7 @@
         computed: {
             ...mapGetters({
                 team: 'teams/current',
+                card: 'cards/getViewingCard',
                 isProcessing: 'teams/isHelpAsking'
             })
         },
@@ -42,6 +43,14 @@
             question: {
                 required
             },
+        },
+        created() {
+            if (this.card !== null) {
+                this.question = `Card: ${this.card.name}\n\n`
+            }
+        },
+        mounted() {
+            this.$refs.field.focus()
         },
         methods: {
             ...mapActions({

@@ -6,18 +6,7 @@
                 <div class="row q-my-lg" v-show="items.length > 0">
                     <div class="col q-headline">Search results</div>
                 </div>
-                <div class="row gutter-sm" v-show="items.length > 0">
-                    <div class="col-xs-12 col-sm-6 col-lg-3" v-for="card in items">
-                        <q-card class="cursor-pointer" @click.native="showCard(card.id)">
-                            <q-card-media>
-                                <img :src="getCardImage(card.thumb)">
-
-                                <q-card-title slot="overlay" v-if="card.thumb">{{card.name}}</q-card-title>
-                                <div class="search-card-title q-title" v-if="!card.thumb">{{card.name}}</div>
-                            </q-card-media>
-                        </q-card>
-                    </div>
-                </div>
+                <cards-list :items="items"/>
             </div>
         </div>
         <div class="row flex-center q-mt-lg" v-show="suggestQuery">
@@ -31,14 +20,14 @@
                 Not finding what you need? <a href="javascript:void(0)" @click="openAskHelp">Ask for help</a>.
             </div>
         </div>
-        <ask-help v-if="isAskHelpOpen"></ask-help>
     </q-page>
 </template>
 <script>
     import ViewCard from '../../components/card/ViewCard.vue'
     import SearchForm from '../../components/SearchForm.vue'
-    import AskHelp from '../../components/team/AskHelp.vue'
+    import CardsList from '../../components/card/CardsList'
     import {mapActions, mapGetters} from 'vuex'
+    import {route} from '../../helpers'
 
     export default {
         data: () => {
@@ -64,9 +53,8 @@
         computed: {
             ...mapGetters({
                 team: 'teams/current',
-                isLoading: 'search/isSearching',
                 items: 'search/getResults',
-                isAskHelpOpen: 'modals/isAskHelpOpen'
+                isLoading: 'search/isSearching',
             }),
             query() {
                 return this.$route.query.q
@@ -84,41 +72,25 @@
                 if (this.team === null) {
                     return false;
                 }
-                return !this.team.isEditable;
+                return true;
             }
         },
-        components: {AskHelp, SearchForm, ViewCard},
+        components: {CardsList, SearchForm, ViewCard},
         methods: {
             ...mapActions({
                 search: 'search/search',
-                showCard: 'modals/openViewCard',
                 openAskHelp: 'modals/openAskHelp',
                 createCard: 'modals/openCreateCardWithName'
             }),
-
+            result(items) {
+                this.isEmptyResult = items.length === 0
+            },
             params(query = null) {
                 return {query: query || this.query}
             },
-            getCardImage(path) {
-                if (path === null) {
-                    return 'statics/blank-card.png'
-                }
-                return path
-            },
-            result(items) {
-                this.isEmptyResult = items.length === 0
+            createViewUrl(card) {
+                return route('view_card', {id: card.id})
             }
         }
     }
 </script>
-<style lang="scss">
-    .search-card-title {
-        position: absolute;
-        color: #0c0c0c;
-        top: 50%;
-        left: 0;
-        width: 100%;
-        transform: translateY(-50%);
-        text-align: center;
-    }
-</style>

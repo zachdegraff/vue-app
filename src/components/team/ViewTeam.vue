@@ -44,8 +44,8 @@
             <div class="q-mt-xl">
                 <q-btn size="lg" label="Invite new member" color="primary" class="q-mr-md q-mb-md" @click="invite(team.id)"/>
 
-                <q-btn size="lg" label="Connect with Slack" color="white" class="text-black q-mb-md" @click="slack" v-if="!hasSlackIntegration"/>
-                <q-btn size="lg" label="Disable Slack" color="red" class="q-mb-md" @click="disableSlack" v-if="hasSlackIntegration"/>
+                <q-btn size="lg" label="Connect with Slack" color="white" class="text-black q-mb-md" @click="slack" v-if="canEnableSlack"/>
+                <q-btn size="lg" label="Disable Slack" color="red" class="q-mb-md" @click="disableSlack" v-if="canDisableSlack"/>
             </div>
         </div>
         <invite-member v-if="isMemberInviting"></invite-member>
@@ -106,8 +106,21 @@
                 isMemberInviting: 'modals/isInviteMemberOpen',
                 isChangingRole: 'modals/isChangeMemberRoleOpen'
             }),
-            hasSlackIntegration() {
+            isOwner() {
                 if (!this.team) {
+                    return false;
+                }
+                return this.team.isOwner
+            },
+            canEnableSlack() {
+                if (!this.isOwner) {
+                    return false;
+                }
+
+                return this.team.integrations.find(i => i.service === 'slack') === undefined;
+            },
+            canDisableSlack() {
+                if (!this.isOwner) {
                     return false;
                 }
 

@@ -1,4 +1,11 @@
 import {Notify} from 'quasar'
+import Router from './router'
+
+export const route = (name, params = {}) => {
+    const url = Router.resolve({name, params});
+
+    return url.href
+};
 
 export const notify = (message) => {
     Notify.create({

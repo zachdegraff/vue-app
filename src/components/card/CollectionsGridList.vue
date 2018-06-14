@@ -1,14 +1,12 @@
 <template>
     <div class="row gutter-sm" v-if="items" v-show="items.length > 0">
-        <div class="col-xs-6 col-sm-6 col-md-3" v-for="step in columns" :key="step">
+        <div class="col-xs-6 col-sm-6 col-md-3" v-for="collection in items" :key="collection.id">
             <q-card
                     class="cursor-pointer q-mb-md"
-                    v-for="collection in getItemsForStep(step)"
-                    :key="collection.id"
                     @click.native="$router.push({name: 'collection_cards', params: {name: collection.name}})">
                 <q-card-media>
                     <img src="statics/blank-card.png" />
-                    <div class="home-card-title q-title">#{{collection.name}}({{collection.cards}})</div>
+                    <div class="collections-item-title q-title">#{{collection.name}}({{collection.cards}})</div>
                 </q-card-media>
             </q-card>
         </div>
@@ -41,8 +39,14 @@
     }
 </script>
 <style lang="scss">
-    .home-collections-item {
-        display: block;
-        padding: 5px 0;
+    .collections-item-title {
+        color: #0c0c0c;
+        position: absolute;
+        left: 0;
+        line-height: 1.5;
+        transform: translateY(-50%);
+        text-align: center;
+        top: 50%;
+        width: 100%;
     }
 </style>

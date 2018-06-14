@@ -18,7 +18,7 @@
                 <q-field class="q-py-sm" :error="$v.form.password_confirmation.$error" :error-label="firstErrorFor($v.form.password_confirmation)">
                     <q-input type="password" float-label="Repeat Password" v-model="form.password_confirmation" @blur="$v.form.password_confirmation.$touch"/>
                 </q-field>
-                <q-field class="q-py-sm">
+                <q-field class="q-py-sm" label="Profile Picture" label-width="12">
                     <image-chooser :path="user.photo" @change="changeFile"></image-chooser>
                 </q-field>
                 <div class="q-pt-lg">
@@ -81,7 +81,9 @@
         },
         watch: {
             user: function (val) {
-                this.loadValues(val)
+                if (val !== null) {
+                    this.loadValues(val)
+                }
             }
         },
         methods: {

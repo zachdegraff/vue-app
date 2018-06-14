@@ -118,6 +118,9 @@
                 this.options = this.teams.map(team => {
                     return {value: team.id, label: team.name}
                 });
+                this.suggests.list = this.collections.map(item => {
+                    return {label: item.name}
+                });
 
                 document.title = `Editing ${val.name} - Wonderus`;
                 window.cardState = JSON.parse(JSON.stringify({...this.$data}));
