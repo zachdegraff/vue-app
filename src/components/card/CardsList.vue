@@ -1,6 +1,6 @@
 <template>
-    <div class="row gutter-sm" v-show="items.length > 0">
-        <div class="col-xs-12 col-sm-6 col-lg-3" v-for="card in items">
+    <div class="row gutter-sm flex-center" v-show="items.length > 0">
+        <div class="col-xs-8 col-sm-6 col-lg-3" v-for="card in items">
             <a :href="createViewUrl(card)" @click.prevent.stop="showCard(card.id)">
                 <q-card class="cards-list-item cursor-pointer">
                     <q-card-media>
