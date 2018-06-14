@@ -45,7 +45,7 @@
                                 Collections
                             </div>
                             <div class="card-item-section-content">
-                                <router-link v-for="collection in card.collections" :key="collection.id" :to="{name:'collection_cards', params: {name: collection.name}}">#{{collection.name}}</router-link>
+                                <router-link v-for="collection in card.collections" :key="collection.id" :to="{name:'collection_cards', params: {name: collection.name}}" @click.native="closeViewing">#{{collection.name}}</router-link>
                             </div>
                         </div>
 

@@ -18,10 +18,11 @@ export const next = ({commit}, {name, ...params}) => {
         name: name,
         title: document.title,
         url: window.location.href.toString(),
+        next: routes[name](params)
     };
 
     if (window.history !== undefined) {
-        window.history.pushState(item, '', routes[name](params))
+        window.history.pushState(item, '', item.next)
     }
     commit('push', item)
 };
@@ -31,7 +32,9 @@ export const pop = ({state}) => {
     if (item === null) return this.$router.go(-1);
 
     if (window.history !== undefined) {
-        window.history.pushState(item, '', item.url)
+        if (window.location.pathname === item.next) {
+            window.history.pushState(item, '', item.url)
+        }
     }
     document.title = item.title
 };
