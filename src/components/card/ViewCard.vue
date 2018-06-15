@@ -24,9 +24,7 @@
                                 <q-icon name="style"/>
                                 Shorthand
                             </div>
-                            <q-chip color="primary" class="q-mr-sm" v-for="(tag, idx) in card.shorthand" :key="idx">
-                                {{tag}}
-                            </q-chip>
+                            <em>{{card.shorthand.join(', ')}}</em>
                         </div>
 
                         <div class="card-item-section" v-if="card.links.length > 0">
@@ -45,7 +43,9 @@
                                 Collections
                             </div>
                             <div class="card-item-section-content">
-                                <router-link v-for="collection in card.collections" :key="collection.id" :to="{name:'collection_cards', params: {name: collection.name}}" @click.native="closeViewing">#{{collection.name}}</router-link>
+                                <q-chip color="primary" class="q-mr-sm" v-for="collection in card.collections" :key="collection.id">
+                                    <router-link :to="{name:'collection_cards', params: {name: collection.name}}" @click.native="closeViewing" class="text-white">#{{collection.name}}</router-link>
+                                </q-chip>
                             </div>
                         </div>
 
@@ -211,7 +211,7 @@
 
     .card-item-description {
         line-height: 1.5;
-        font-size: .9rem;
+        font-size: 1rem;
         margin-bottom: 40px;
         white-space: pre-line;
     }
@@ -234,7 +234,6 @@
         margin-top: 5px;
         a {
             color: #757575;
-            font-style: italic;
             text-decoration: none;
             + a:before {
                 content: ', '

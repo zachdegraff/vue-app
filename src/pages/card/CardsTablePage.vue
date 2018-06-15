@@ -2,7 +2,7 @@
     <q-page>
         <search-form></search-form>
         <div class="row flex-center">
-            <div class="col-xs-12 col-sm-8">
+            <div class="col-xs-12 col-sm-11">
                 <div class="row gutter-sm">
                     <div class="col">
                         <q-table
@@ -14,6 +14,7 @@
                                 :filter="filter.name"
                                 row-key="id"
                                 :loading="isCardsLoading"
+                                @update:pagination="fixSorting"
                                 class="q-mt-xl">
 
                             <tr slot="header" slot-scope="props">
@@ -29,6 +30,9 @@
                                 <q-th key="collections" :props="props">
                                     <q-select v-model="filter.collection" :options="options" float-label=" "/>
                                 </q-th>
+                                <q-th key="updatedAt" :props="props">
+                                    Last Updated
+                                </q-th>
                             </tr>
 
 
@@ -36,13 +40,13 @@
                                 <a :href="createViewUrl(props.row)" @click.prevent.stop="showCard(props.row.id)">{{props.value}}</a>
                             </q-td>
                             <q-td slot="body-cell-shorthand" slot-scope="props" :props="props" style="max-width: 200px;white-space: normal">
-                                <q-chip v-for="(tag, idx) in props.value" :key="idx" small color="primary" class="q-ma-xs">{{tag}}</q-chip>
+                                <em>{{props.value.join(', ')}}</em>
                             </q-td>
                             <q-td slot="body-cell-description" slot-scope="props" :props="props" style="max-width: 500px;white-space: normal">
                                 <p v-html="replaceNewLines(props.value)"></p>
                             </q-td>
                             <q-td slot="body-cell-collections" slot-scope="props" :props="props" style="max-width: 300px;white-space: normal">
-                                <q-chip v-for="(col, idx) in props.value" :key="idx" small square color="faded" class="q-ma-xs">#{{col.name}}</q-chip>
+                                <q-chip v-for="(col, idx) in props.value" :key="idx" small color="primary" class="q-ma-xs">#{{col.name}}</q-chip>
                             </q-td>
                         </q-table>
                     </div>
@@ -68,7 +72,7 @@
             options: [],
             table: {
                 visible: [
-                    'name', 'shorthand', 'description', 'collections'
+                    'name', 'shorthand', 'description', 'collections', 'updatedAt'
                 ],
                 columns: [
                     {
@@ -90,8 +94,6 @@
                         label: 'Shorthand',
                         align: 'left',
                         field: 'shorthand',
-                        sortable: true,
-                        sort: (a, b) => a.length - b.length
                     },
                     {
                         name: 'description',
@@ -103,15 +105,21 @@
                         name: 'collections',
                         label: 'Collections',
                         field: 'collections',
-                        align: 'left',
-                        sort: (a, b) => a.length - b.length
+                        align: 'left'
                     },
+                    {
+                        name: 'updatedAt',
+                        label: 'Last Updated',
+                        field: 'updatedAt',
+                        align: 'right',
+                        sortable: true,
+                    }
                 ],
                 pagination: {
                     page: 1,
                     rowsPerPage: 100,
-                    sortBy: 'name',
-                    descending: false
+                    sortBy: 'updatedAt',
+                    descending: true
                 }
             },
 
@@ -167,6 +175,12 @@
                 load: 'cards/all',
                 showCard: 'modals/openViewCard',
             }),
+            fixSorting(e) {
+                if (e.sortBy === null) {
+                    this.table.pagination.sortBy = 'updatedAt';
+                    this.table.pagination.descending = !this.table.pagination.descending
+                }
+            },
             fillOptions(collections) {
                 this.options.push({value: '', label: 'Collections'});
 
