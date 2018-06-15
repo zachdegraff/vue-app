@@ -182,7 +182,7 @@
                 }
             },
             fillOptions(collections) {
-                this.options.push({value: '', label: 'Collections'});
+                this.options = [{value: '', label: 'Collections'}];
 
                 collections.forEach(item => {
                     if (item.cards > 0) {
