@@ -18,10 +18,10 @@ export const current = state => {
     }
     const id = parseInt(localStorage.getItem('current-team')),
         team = state.items.find(item => item.id === id);
-    if (team !== undefined) {
-        return team
-    }
-    return state.items[0]
+
+    state.current = team !== undefined ? team : state.items[0];
+
+    return state.current;
 };
 
 export const getViewingTeam = state => state.viewing;

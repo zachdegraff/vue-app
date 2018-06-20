@@ -3,7 +3,7 @@
         <q-layout-header>
             <q-toolbar color="primary">
                 <q-toolbar-title link v-if="teams.length > 0">
-                    <div style="display: inline-block">
+                    <div class="current-team-wrapper">
                         <img :src="photo(current.photo)" class="team-photo round-borders vertical-middle" v-if="current"/><span class="gt-xs" v-if="current">{{current.name}}</span>
                         <q-popover max-height="1000px">
                             <q-list link>
@@ -129,4 +129,12 @@
         padding: 4px 10px;
     }
 
+    .current-team-wrapper {
+        margin: 0 -12px;
+        padding: 0 12px;
+        max-width: 50%;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
 </style>

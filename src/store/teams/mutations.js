@@ -40,9 +40,15 @@ export const createStatusFailure = state => state.actionCreateStatus = 'Failure'
 
 export const updateStatusRequest = state => state.actionUpdateStatus = 'Request';
 export const updateStatusSuccess = (state, res) => {
+    state.viewing = res.data.team;
     state.actionUpdateStatus = 'Success';
     state.items = replace(state.items, res.data.team);
-    state.viewing = res.data.team
+
+    if (state.current !== null) {
+        if (state.current.id === res.data.team.id) {
+            state.current = res.data.team
+        }
+    }
 };
 export const updateStatusFailure = state => state.actionUpdateStatus = 'Failure';
 
