@@ -83,7 +83,8 @@
                 team: 'teams/current',
                 query: 'search/getQuery',
                 collections: 'collections/all',
-                isProcessing: 'cards/isCreating'
+                isProcessing: 'cards/isCreating',
+                params: 'modals/getCreateCardParams'
             })
         },
         components: {
@@ -130,13 +131,14 @@
                 return {label: item.name}
             });
             this.parseQuery();
+            this.form.name = this.params.cardName || '';
             document.title = 'Creating a new card - Wonderus';
             window.cardState = JSON.parse(JSON.stringify(this.$data))
         },
         methods: {
             ...mapActions({
                 create: 'cards/create',
-                changeQuery: 'search/changeQuery',
+                search: 'search/search',
                 closeAdding: 'modals/closeCreateCard',
                 changeTeam: 'teams/changeCurrentTeam'
             }),
@@ -146,7 +148,12 @@
                     return
                 }
 
-                this.create(this.prepare()).then(this.closeAdding)
+                this.create(this.prepare()).then(() => {
+                    if (this.query !== '') {
+                        this.search()
+                    }
+                    this.closeAdding()
+                })
             },
             close() {
                 if (window.cardState === undefined || !this.hasAnyChanges(window.cardState)) {
@@ -181,11 +188,9 @@
                     if (matches !== null) {
                         matches.forEach(item => {
                             this.form.collections.push(item);
-                            this.changeQuery(this.query.replace(item, '').trim())
                         })
                     }
                 }
-                this.form.name = this.query;
             },
             toggleEditorTools(e) {
                 this.selection = e

@@ -45,14 +45,17 @@ export const cardsHints = ({commit, rootGetters}, params) => {
     })
 };
 
-export const search = ({commit, rootGetters}, params) => {
+export const search = ({commit, rootGetters}, params = {}) => {
     return new Promise((resolve, reject) => {
         const team = rootGetters['teams/current'];
         if (team === null) {
             resolve([])
         }
-        params['teamId'] = team.id;
+
         commit('searchStatusRequest');
+
+        params['teamId'] = team.id;
+        params['query'] = rootGetters['search/getQuery'];
         api.cards.search(params).then(res => {
             commit('searchStatusSuccess', res);
             resolve(res.data.data || [])

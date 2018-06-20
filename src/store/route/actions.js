@@ -1,6 +1,6 @@
 const routes = {
     'create_card': () => `/cards/create`,
-    'create_card_name': ({query}) => `/cards/create?name=${query}`,
+    'create_card_name': ({cardName}) => `/cards/create?name=${cardName}`,
     'view_card': ({id}) => `/cards/${id}`,
     'edit_card': ({id}) => `/cards/${id}/edit`,
     'create_team': () => `/teams/create`,
@@ -29,10 +29,11 @@ export const next = ({commit}, {name, ...params}) => {
 
 export const pop = ({state}) => {
     const item = state.stack.length > 0 ? state.stack.pop() : null;
-    if (item === null) return this.$router.go(-1);
+    if (item === null) return window.history.go(-1);
 
     if (window.history !== undefined) {
-        if (window.location.pathname === item.next) {
+        const path = window.location.pathname + window.location.search;
+        if (path === item.next) {
             window.history.pushState(item, '', item.url)
         }
     }

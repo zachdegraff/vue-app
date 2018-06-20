@@ -12,7 +12,7 @@
         <div class="row flex-center q-mt-lg" v-show="suggestQuery">
             <q-spinner :size="36" color="red" v-show="isLoading"></q-spinner>
             <div class="col text-center q-mt-xl" v-show="isEmptyResult">There are no results.
-                <a href="javascript:void(0)" @click="createCard({query: suggestQuery})">Create a card for {{suggestQuery}}</a>?
+                <a href="javascript:void(0)" @click="createCard({cardName: suggestQuery})">Create a card for {{suggestQuery}}</a>?
             </div>
         </div>
         <div class="row flex-center q-mt-lg" v-if="isAskHelpAvailable">
@@ -37,17 +37,17 @@
         },
         created() {
             document.title = this.title;
-            this.search(this.params()).then(this.result);
+            this.search().then(this.result);
         },
         watch: {
             team: function (val) {
                 document.title = this.title;
-                this.search(this.params()).then(this.result);
+                this.search().then(this.result);
             },
             query: function (val) {
                 this.isEmptyResult = false;
                 document.title = this.title;
-                this.search(this.params(val)).then(this.result);
+                this.search().then(this.result);
             }
         },
         computed: {
@@ -79,14 +79,12 @@
         methods: {
             ...mapActions({
                 search: 'search/search',
+                changeQuery: 'search/changeQuery',
                 openAskHelp: 'modals/openAskHelp',
                 createCard: 'modals/openCreateCardWithName'
             }),
             result(items) {
                 this.isEmptyResult = items.length === 0
-            },
-            params(query = null) {
-                return {query: query || this.query}
             },
             createViewUrl(card) {
                 return route('view_card', {id: card.id})

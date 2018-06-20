@@ -4,6 +4,7 @@ export default {
     },
 
     createCard: {
+        params: {},
         status: false
     },
 

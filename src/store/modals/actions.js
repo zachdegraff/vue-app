@@ -13,9 +13,10 @@ export const openCreateCard = ({dispatch, commit}) => {
     dispatch('route/next', {name: 'create_card'}, {root: true});
     commit('changeCreateCardStatus', true);
 };
-export const openCreateCardWithName = ({dispatch, commit}, param) => {
-    dispatch('route/next', {name: 'create_card_name', ...param}, {root: true});
+export const openCreateCardWithName = ({dispatch, commit}, params) => {
+    dispatch('route/next', {name: 'create_card_name', ...params}, {root: true});
     commit('changeCreateCardStatus', true);
+    commit('changeCreateCardParams', params)
 };
 export const closeCreateCard = ({dispatch, commit}) => {
     dispatch('route/pop', null, {root: true});
