@@ -64,7 +64,7 @@
             },
             suggestQuery() {
                 if (this.query.indexOf('#') !== -1) {
-                    return this.query.replace(/#(.*?)($|\s+)/, '').trim()
+                    return this.query.replace(/#(.*?)($|\s+)/g, '').trim()
                 }
                 return this.query;
             },

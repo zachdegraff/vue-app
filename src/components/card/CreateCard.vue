@@ -136,6 +136,7 @@
         methods: {
             ...mapActions({
                 create: 'cards/create',
+                changeQuery: 'search/changeQuery',
                 closeAdding: 'modals/closeCreateCard',
                 changeTeam: 'teams/changeCurrentTeam'
             }),
@@ -176,12 +177,15 @@
                 if (this.query === '') return;
 
                 if (this.query.indexOf('#') !== -1) {
-                    const matches = this.query.match(/#(.*?)($|\s+)/);
-
-                    this.form.collections.push(matches[1]);
-                    return this.form.name = this.query.replace(matches[0], '').trim();
+                    const matches = this.query.match(/#(.*?)($|\s+)/g);
+                    if (matches !== null) {
+                        matches.forEach(item => {
+                            this.form.collections.push(item);
+                            this.changeQuery(this.query.replace(item, '').trim())
+                        })
+                    }
                 }
-                this.form.name = query;
+                this.form.name = this.query;
             },
             toggleEditorTools(e) {
                 this.selection = e
