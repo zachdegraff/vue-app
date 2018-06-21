@@ -45,6 +45,13 @@ export const createStatusFailure = state => state.actionCreateStatus = 'Failure'
 export const changeViewingCard = (state, card) => state.viewing = card;
 export const changeEditingCard = (state, card) => state.editing = card;
 
+export const cardsAmountStatusRequest = state => state.actionCardsAmount = 'Request';
+export const cardsAmountStatusSuccess = (state, res) => {
+    state.actionCardsAmount = 'Success';
+    state.amount = res.data
+};
+export const cardsAmountStatusFailure = state => state.actionCardsAmount = 'Failure';
+
 export const recentlyAddedStatusRequest = state => state.actionRecentlyAddedStatus = 'Request';
 export const recentlyAddedStatusSuccess = (state, res) => {
     state.actionRecentlyAddedStatus = 'Success';

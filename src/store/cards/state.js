@@ -1,5 +1,6 @@
 export default {
     items: [],
+    amount: 0,
 
     viewing: null,
     editing: null,
@@ -12,6 +13,7 @@ export default {
     actionUpdateStatus: '',
     actionRemoveStatus: '',
     actionCreateStatus: '',
+    actionCardsAmount: '',
     actionRecentlyAddedStatus: '',
     actionRecentlyUpdatedStatus: '',
 }

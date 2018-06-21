@@ -6,7 +6,7 @@
                     @click.native="$router.push({name: 'collection_cards', params: {name: collection.name}})">
                 <q-card-media>
                     <img src="statics/blank-card.png" />
-                    <div class="collections-item-title q-title">#{{collection.name}}({{collection.cards}})</div>
+                    <div class="collections-item-title q-title">#{{collection.name}} ({{collection.cards}})</div>
                 </q-card-media>
             </q-card>
         </div>

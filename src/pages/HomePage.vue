@@ -3,7 +3,7 @@
         <search-form></search-form>
         <div class="row flex-center q-mt-md">
             <div class="col-xs-12 col-sm-8">
-                <q-btn :to="{name: 'cards_table'}">All Cards</q-btn>
+                <q-btn :to="{name: 'cards_table'}" v-if="amount">All Cards ({{amount}})</q-btn>
             </div>
         </div>
         <div class="row flex-center">
@@ -50,6 +50,7 @@
         computed: {
             ...mapGetters({
                 team: 'teams/current',
+                amount: 'cards/getCardsAmount',
                 recentlyAdded: 'cards/getRecentlyAdded',
                 recentlyUpdated: 'cards/getRecentlyUpdated',
                 collections: 'collections/allNonEmpty'

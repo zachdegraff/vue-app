@@ -20,6 +20,10 @@ export const update = (id, attr) => {
     return request.post(`/cards/${id}`, attr);
 };
 
+export const count = (params) => {
+    return request.get(`/cards/count`, {params});
+};
+
 export const remove = (id) => {
     return request.delete(`/cards/${id}`);
 };
