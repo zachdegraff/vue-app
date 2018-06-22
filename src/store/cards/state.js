@@ -2,7 +2,7 @@ export default {
     items: [],
     amount: 0,
 
-    viewing: null,
+    viewStack: [],
     editing: null,
 
     recentlyAdded: [],

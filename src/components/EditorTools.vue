@@ -16,6 +16,7 @@
                 <q-btn flat icon="close" color="red" @click="isLinkEditing=false"/>
             </div>
         </div>
+        <i class="editor-tools-dir"></i>
     </div>
 </template>
 <script>
@@ -46,7 +47,10 @@
         },
         watch: {
             target: function (val) {
-                this.handle(val);
+                if (val === null) {
+                    return this.isEditorTools = false
+                }
+                this.handle(val)
             },
             isEditorTools: function (val) {
                 if (val === true) return;
@@ -138,8 +142,8 @@
             setToolsPosition(e) {
                 if (!this.isEditorTools) return;
 
-                this.position.top = (e.offsetY - 20) + 'px';
-                this.position.left = (e.offsetX - 30) + 'px';
+                this.position.top = (e.offsetY - 25) + 'px';
+                this.position.left = (e.offsetX - 33) + 'px';
             }
         }
     }
@@ -152,13 +156,24 @@
         min-width: 130px;
         padding: 10px;
         position: absolute;
-        overflow-y: auto;
-        overflow-x: hidden;
         -webkit-box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px rgba(0, 0, 0, 0.14), 0 1px 18px rgba(0, 0, 0, 0.12);
         z-index: 9000;
         .q-btn {
             padding: 4px 10px;
         }
+    }
+
+    .editor-tools-dir {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #747474 transparent transparent transparent;
+        bottom: -10px;
+        margin-left: -5px;
+        left: 50%;
     }
 
     .editor-tools-link {

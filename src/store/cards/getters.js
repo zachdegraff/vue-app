@@ -64,7 +64,12 @@ export const getFilteredItems = state => {
 };
 
 
-export const getViewingCard = state => state.viewing;
+export const getViewingCard = state => {
+    if (state.viewStack.length > 0) {
+        return state.viewStack[state.viewStack.length - 1]
+    }
+    return null
+};
 export const getEditingCard = state => state.editing;
 
 export const getRecentlyAdded = state => state.recentlyAdded;

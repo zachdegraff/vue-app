@@ -20,8 +20,15 @@
                     <q-input v-model="form.name" float-label="Name" @blur="$v.form.name.$touch"/>
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10 relative-position">
-                    <q-input v-model="form.description" type="textarea" float-label="Short Description" @mouseup.native="toggleEditorTools"/>
-                    <editor-tools :target="selection" @format="changeFormatting"/>
+                    <q-input
+                            type="textarea" float-label="Short Description"
+                            v-model="form.description"
+                            @blur="flushEvents"
+                            @keyup="toggleEvent('keyEvent', $event)"
+                            @mouseup.native="toggleEvent('mouseEvent', $event)"/>
+
+                    <editor-tools :target="mouseEvent" @format="changeFormatting"/>
+                    <reference-tools :keyEvent="keyEvent" :mouseEvent="mouseEvent" @format="changeFormatting"/>
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
                     <q-chips-input v-model="form.shorthand" float-label="Shorthand"/>
@@ -60,7 +67,8 @@
     import EditorTools from '../../components/EditorTools'
     import {required} from 'vuelidate/lib/validators'
     import {mapActions, mapGetters} from 'vuex'
-    import ImageChooser from "../ImageChooser";
+    import ImageChooser from '../ImageChooser';
+    import ReferenceTools from '../ReferenceTools';
 
     export default {
         data: () => {
@@ -76,7 +84,8 @@
                 links: [],
                 options: [],
                 flushImage: false,
-                selection: null,
+                keyEvent: null,
+                mouseEvent: null,
                 suggests: {field: 'label', list: []},
                 isOpen: true
             }
@@ -91,6 +100,7 @@
             })
         },
         components: {
+            ReferenceTools,
             ImageChooser,
             AppModalLayout,
             EditorTools
@@ -180,8 +190,12 @@
             addLink() {
                 this.links.push({name: '', url: ''})
             },
-            toggleEditorTools(e) {
-                this.selection = e
+            flushEvents() {
+                this.keyEvent = null;
+                //this.mouseEvent = null;
+            },
+            toggleEvent(name, e) {
+                this[name] = e
             },
             changeFormatting(e) {
                 this.form.description = e.content

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <q-modal v-model="isOpen" @hide="closeViewing" class="app-modal" :content-classes="['app-modal-content']" :content-css="{minWidth: '50vw', minHeight: '50vh'}">
+        <q-modal v-model="isOpen" @hide="close" no-route-dismiss class="app-modal" :content-classes="['app-modal-content']" :content-css="{minWidth: '50vw', minHeight: '50vh'}">
             <app-modal-layout>
                 <q-toolbar slot="header">
                     <q-toolbar-title v-if="card">{{card.name}}</q-toolbar-title>
@@ -17,7 +17,7 @@
                     <div class="col-xs-12 col-sm-5 col-md-6 col-lg-7">
                         <div class="card-item-team" v-if="card.team">{{card.team.name}}</div>
                         <div class="card-item-name">{{card.name}}</div>
-                        <div class="card-item-description" v-html="formatDescription()"></div>
+                        <component :is="description" v-bind="$props"/>
 
                         <div class="card-item-section" v-if="card.shorthand.length > 0">
                             <div class="card-item-section-title q-mb-sm">
@@ -140,6 +140,27 @@
                 if (!this.card || !this.card.lastChange) return '';
 
                 return `Last updated by ${this.card.lastChange.user.fullName} on ${this.card.lastChange.createdAt}`;
+            },
+            description() {
+                return {
+                    template: `<div class="card-item-description">${this.markTags(this.card.description)}</div>`,
+                    props: this.$options.props,
+                    methods: {
+                        ...mapActions({
+                            view: 'modals/openViewCard',
+                            closeViewing: 'modals/closeViewCard'
+                        }),
+                        open(link) {
+                            if (link.indexOf('cards/collection') !== -1) {
+                                this.closeViewing();
+                                return this.$router.push(link)
+                            }
+                            const id = link.replace('/cards/', '');
+
+                            this.view(id)
+                        }
+                    }
+                }
             }
         },
         watch: {
@@ -167,9 +188,13 @@
                     color: 'secondary'
                 });
             },
+            close() {
+                this.closeViewing();
+                this.isOpen = true;
+            },
             flush() {
                 this.confirm().then(() => {
-                    this.remove(this.card.id).then(this.closeViewing)
+                    this.remove(this.card.id).then(this.close)
                 }).catch(() => {
                 })
             },
@@ -185,9 +210,6 @@
             },
             redirect(link) {
                 openURL(link)
-            },
-            formatDescription() {
-                return this.markTags(this.card.description)
             }
         }
     }

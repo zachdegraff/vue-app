@@ -23,6 +23,7 @@ module.exports = function (ctx) {
         },
         build: {
             scopeHoisting: true,
+            vueCompiler: true,
             vueRouterMode: 'history',
             publicPath: '/',
             env: ctx.dev

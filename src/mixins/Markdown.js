@@ -16,12 +16,11 @@ const Markdown = {
             matches.forEach(i => {
                 let tmpl = '<a href="$1" target="_blank">$2</a>';
                 if (i.indexOf(APP_HOST) !== -1) {
-                    //tmpl = '<router-link to="$1">$2</router-link>'
-                    tmpl = '<a href="$1">$2</a>'
+                    tmpl = '<a href="$1" @click.prevent="open(\'$1\')">$2</a>';
                 }
-                result = result.replace(i, i.replace(/<(.*)\|(.*)>/, tmpl))
+                result = result.replace(i, i.replace(APP_HOST, '').replace(/<(.*)\|(.*)>/, tmpl))
             });
-            return result.replace(APP_HOST, '');
+            return result
         },
         clearMarks(content) {
             if (!content) return '';

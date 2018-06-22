@@ -133,9 +133,14 @@ export const recentlyUpdated = ({commit, rootGetters}) => {
     })
 };
 
-export const changeViewingCard = ({commit, dispatch}, id) => {
+export const changeViewingCard = ({commit, dispatch, getters}, id) => {
     if (id === null) {
-        return commit('changeViewingCard', null);
+        commit('changeViewingCard', null);
+        const card = getters['getViewingCard'];
+        if (card !== null) {
+            dispatch('modals/openPrevCard', null, {root: true});
+        }
+        return;
     }
     dispatch('get', id).then(card => commit('changeViewingCard', card))
 };

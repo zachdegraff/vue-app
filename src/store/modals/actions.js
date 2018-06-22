@@ -41,10 +41,13 @@ export const openViewCard = ({commit, dispatch}, id) => {
     dispatch('cards/changeViewingCard', id, {root: true});
     commit('changeViewCardStatus', true);
 };
+export const openPrevCard = ({commit}) => {
+    commit('changeViewCardStatus', true);
+};
 export const closeViewCard = ({dispatch, commit}) => {
+    commit('changeViewCardStatus', false);
     dispatch('route/pop', null, {root: true});
     dispatch('cards/changeViewingCard', null, {root: true});
-    commit('changeViewCardStatus', false);
 };
 
 
