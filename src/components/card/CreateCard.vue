@@ -13,8 +13,15 @@
                     <q-input v-model="form.name" float-label="Name" @blur="$v.form.name.$touch"/>
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10 relative-position">
-                    <q-input v-model="form.description" type="textarea" float-label="Short Description" @mouseup.native="toggleEditorTools"/>
-                    <editor-tools :target="selection" @format="changeFormatting"/>
+                    <q-input
+                            type="textarea" float-label="Short Description"
+                            v-model="form.description"
+                            @blur="flushEvents"
+                            @keydown.native="toggleEvent('keyEvent', $event)"
+                            @mouseup.native="toggleEvent('mouseEvent', $event)"/>
+
+                    <editor-tools :target="mouseEvent" @format="changeFormatting"/>
+                    <reference-tools :keyEvent="keyEvent" :mouseEvent="mouseEvent" @format="changeFormatting" @toggle="toggleReferenceToolsState"/>
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
                     <q-chips-input v-model="form.shorthand" float-label="Shorthand"/>
@@ -55,6 +62,7 @@
     import {mapActions, mapGetters} from 'vuex'
     import {filter} from 'quasar'
     import ImageChooser from "../ImageChooser";
+    import ReferenceTools from "../ReferenceTools";
 
 
     export default {
@@ -71,9 +79,11 @@
                 links: [],
                 options: [],
                 flushImage: false,
-                selection: null,
+                keyEvent: null,
+                mouseEvent: null,
                 suggests: {field: 'label', list: []},
-                isOpen: true
+                isOpen: true,
+                referenceToolsState: false
             }
         },
         mixins: [ValidatorMessages, HasCardChanges],
@@ -88,6 +98,7 @@
             })
         },
         components: {
+            ReferenceTools,
             ImageChooser,
             AppModalLayout, EditorTools
         },
@@ -180,6 +191,18 @@
             changeFile(file) {
                 this.file = file
             },
+            isNavChars(e) {
+                if (!(e instanceof KeyboardEvent)) {
+                    return false;
+                }
+                const chars = [13, 38, 40];
+                for (let i in chars) {
+                    if (e.keyCode === chars[i]) {
+                        return true;
+                    }
+                }
+                return false;
+            },
             parseQuery() {
                 if (this.query === '') return;
 
@@ -192,8 +215,15 @@
                     }
                 }
             },
-            toggleEditorTools(e) {
-                this.selection = e
+            flushEvents() {
+                this.keyEvent = null;
+                //this.mouseEvent = null;
+            },
+            toggleEvent(name, e) {
+                if (e !== null && this.referenceToolsState && this.isNavChars(e)) {
+                    e.preventDefault();
+                }
+                this[name] = e
             },
             changeFormatting(e) {
                 this.form.description = e.content
@@ -207,6 +237,9 @@
                 });
 
                 this.form.collections = result
+            },
+            toggleReferenceToolsState(e) {
+                this.referenceToolsState = e.state
             }
         }
     }

@@ -9,10 +9,11 @@
         <div class="reference-tools-items">
             <q-btn
                     flat
-                    v-for="item in items"
+                    v-for="(item, idx) in items"
                     :key="item.id"
                     :icon="item.icon"
                     :label="item.name"
+                    :class="{active: idx === caret}"
                     @click="select(item)"
             />
         </div>
@@ -34,6 +35,7 @@
                 cache: {},
                 start: -1,
                 query: '',
+                caret: 0,
                 target: null,
                 space: [10, 32],  // New Line, Space
                 controls: [62, 64], // >, @
@@ -93,7 +95,9 @@
                 this.handle(val)
             },
             isReferenceTools: function (val) {
+                this.$emit('toggle', {state: val});
                 if (val === true) {
+                    this.caret = 0;
                     if (this.cache[this.query] !== undefined) {
                         return this.items = this.cache[this.query]
                     }
@@ -115,6 +119,7 @@
                 if (e === null) {
                     return this.isReferenceTools = false
                 }
+                this.handleNavigation(e);
                 this.start = this.getStartPos();
                 this.isReferenceTools = this.start !== -1;
 
@@ -127,13 +132,15 @@
                 const el = this.target,
                     content = [
                         el.value.slice(0, this.start),
-                        `<${this.getLinkUrl(item)}|${item.name}>`,
+                        `<${this.getLinkUrl(item)}|${item.name}> `,
                         el.value.slice(this.target.selectionEnd)
                     ].join('');
 
                 this.$emit('format', {content});
 
                 this.isReferenceTools = false;
+
+                el.focus();
             },
             isInChars(str, idx, chars = []) {
                 for (let i in chars) {
@@ -142,6 +149,20 @@
                     }
                 }
                 return false
+            },
+            handleNavigation(e) {
+                if (this.isReferenceTools === false || this.items.length === 0) return;
+
+                if (e.keyCode === 38) { // up
+                    this.caret = this.caret === 0 ? this.items.length - 1 : this.caret - 1
+                }
+                if (e.keyCode === 40) { // down
+                    this.caret = this.caret === this.items.length - 1 ? 0 : this.caret + 1
+                }
+                if (e.keyCode === 13) { // enter
+                    this.select(this.items[this.caret]);
+                    this.$refs.container.style.display = 'none';
+                }
             },
             getStartPos() {
                 const target = this.target;
@@ -190,11 +211,14 @@
         -webkit-box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px rgba(0, 0, 0, 0.14), 0 1px 18px rgba(0, 0, 0, 0.12);
         z-index: 9000;
         .q-btn {
-            padding: 4px 10px;
+            padding: 4px 11px;
             display: block;
+            &.active {
+                background: rgba(255, 255, 255, 0.1);
+            }
             .q-btn-inner {
                 div {
-                    width: 125px;
+                    width: 126px;
                     text-align: left;
                     white-space: nowrap;
                     overflow: hidden;

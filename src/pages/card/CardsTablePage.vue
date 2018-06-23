@@ -48,6 +48,9 @@
                             <q-td slot="body-cell-collections" slot-scope="props" :props="props" style="max-width: 300px;white-space: normal">
                                 <q-chip v-for="(col, idx) in props.value" :key="idx" small color="primary" class="q-ma-xs">#{{col.name}}</q-chip>
                             </q-td>
+                            <q-td slot="body-cell-updatedAt" slot-scope="props" :props="props">
+                                <em>{{toLocaleString(props.value)}}</em>
+                            </q-td>
                         </q-table>
                     </div>
                 </div>
@@ -57,6 +60,7 @@
 </template>
 <script>
     import SearchForm from '../../components/SearchForm.vue'
+    import DateFormatter from '../../mixins/DateFormatter'
     import {mapActions, mapGetters} from 'vuex'
     import {route} from '../../helpers'
 
@@ -124,6 +128,7 @@
             },
 
         }),
+        mixins: [DateFormatter],
         computed: {
             ...mapGetters({
                 team: 'teams/current',

@@ -12,12 +12,15 @@
                 </div>
                 <div class="col-xs-12 col-sm-6 col-lg-8 col-xl-9">
                     <q-field class="q-mt-md" :error="$v.form.name.$error" :error-label="firstErrorFor($v.form.name)">
-                        <q-input v-model="form.name" float-label="Name" @blur="$v.form.name.$touch"/>
+                        <q-input v-model="form.name" float-label="Name" @blur="$v.form.name.$touch" :readonly="!isOwner"/>
                     </q-field>
                     <q-field class="q-mt-lg">
-                        <q-input v-model="form.organization" float-label="Organization"/>
+                        <q-input v-model="form.organization" float-label="Organization" :readonly="!isOwner"/>
                     </q-field>
-                    <div>
+                    <q-field class="q-mt-lg" v-if="isOwner">
+                        <image-chooser @change="changeFile"></image-chooser>
+                    </q-field>
+                    <div v-show="isOwner">
                         <q-btn @click="save" color="primary" class="q-mt-lg" label="save" :disable="isUpdating"/>
                     </div>
                 </div>
@@ -58,6 +61,7 @@
     import ValidatorMessages from '../../mixins/ValidatorMessages'
     import {required} from 'vuelidate/lib/validators'
     import {mapActions, mapGetters} from 'vuex'
+    import ImageChooser from "../ImageChooser";
 
     const SLACK_CLIENT_ID = process.env.SLACK_CLIENT_ID;
 
@@ -67,6 +71,7 @@
                 name: '',
                 organization: ''
             },
+            file: null,
             columns: [
                 {
                     name: 'fullName',
@@ -128,6 +133,7 @@
             }
         },
         components: {
+            ImageChooser,
             InviteMember, ChangeRole
         },
         methods: {
@@ -165,7 +171,13 @@
                     data.append(i, this.team[i])
                 }
                 data.append('_method', 'PUT');
+                if (this.file !== null) {
+                    data.append('file', this.file);
+                }
                 return data
+            },
+            changeFile(file) {
+                this.file = file
             },
             disableSlack() {
                 this.confirm().then(() => {

@@ -94,7 +94,7 @@
                             <q-btn icon="help" flat @click="openAskHelp"/>
                             <q-btn icon="content_copy" flat/>
                             <q-btn icon="edit" flat @click="edit(card.id)" v-if="card.canUpdate"/>
-                            <q-btn icon="delete" flat @click="flush" v-show="card.canRemove"/>
+                            <q-btn icon="delete" flat @click.prevent.stop="flush($event)" v-show="card.canRemove"/>
                         </div>
                         <div class="card-item-image">
                             <img :src="card.image" v-if="card.image"/>
@@ -108,6 +108,7 @@
 </template>
 <script>
     import AppModalLayout from '../../components/context/modal/AppModalLayout'
+    import DateFormatter from '../../mixins/DateFormatter'
     import Markdown from '../../mixins/Markdown'
     import {mapActions, mapGetters} from 'vuex'
     import CardNote from './CardNote.vue'
@@ -122,7 +123,7 @@
                 isOpen: true
             }
         },
-        mixins: [Markdown],
+        mixins: [Markdown, DateFormatter],
         computed: {
             ...mapGetters({
                 team: 'teams/current',
@@ -134,12 +135,12 @@
             createdBy() {
                 if (!this.card) return '';
 
-                return `Created by ${this.card.user.fullName} on ${this.card.createdAt}`
+                return `Created by ${this.card.user.fullName} on ${this.toLocaleString(this.card.createdAt)}`
             },
             updatedBy() {
                 if (!this.card || !this.card.lastChange) return '';
 
-                return `Last updated by ${this.card.lastChange.user.fullName} on ${this.card.lastChange.createdAt}`;
+                return `Last updated by ${this.card.lastChange.user.fullName} on ${this.toLocaleString(this.card.lastChange.createdAt)}`;
             },
             description() {
                 return {
@@ -192,7 +193,8 @@
                 this.closeViewing();
                 this.isOpen = true;
             },
-            flush() {
+            flush(e) {
+                e.target.closest('button').blur();
                 this.confirm().then(() => {
                     this.remove(this.card.id).then(this.close)
                 }).catch(() => {

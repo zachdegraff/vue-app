@@ -9,7 +9,7 @@ const Markdown = {
                 .replace(/([\s\.,\'\"]+)_([^_]*)_([\s\.,\'\"]+)/g, '$1<em>$2</em>$3');
 
 
-            const matches = result.match(/<([^<]*)\|([^<]*)>/g);
+            const matches = result.match(/<([^<]*)\|([^>]*)>/g);
             if (matches === null) {
                 return result
             }
@@ -18,8 +18,9 @@ const Markdown = {
                 if (i.indexOf(APP_HOST) !== -1) {
                     tmpl = '<a href="$1" @click.prevent="open(\'$1\')">$2</a>';
                 }
-                result = result.replace(i, i.replace(APP_HOST, '').replace(/<(.*)\|(.*)>/, tmpl))
+                result = result.replace(i, i.replace(APP_HOST, '').replace(/<([^<]*)\|([^>]*)>/, tmpl))
             });
+            console.log(result);
             return result
         },
         clearMarks(content) {
