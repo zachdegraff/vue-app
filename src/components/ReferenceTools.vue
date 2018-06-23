@@ -73,6 +73,7 @@
             query: function (val) {
                 if (val.length < 2) return;
 
+                this.caret = 0;
                 this.items = [];
                 if (this.cache[val] !== undefined) {
                     return this.items = this.cache[val];
