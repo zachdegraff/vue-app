@@ -24,11 +24,11 @@
                             type="textarea" float-label="Short Description"
                             v-model="form.description"
                             @blur="flushEvents"
-                            @keyup="toggleEvent('keyEvent', $event)"
+                            @keydown.native="toggleEvent('keyEvent', $event)"
                             @mouseup.native="toggleEvent('mouseEvent', $event)"/>
 
                     <editor-tools :target="mouseEvent" @format="changeFormatting"/>
-                    <reference-tools :keyEvent="keyEvent" :mouseEvent="mouseEvent" @format="changeFormatting"/>
+                    <reference-tools :keyEvent="keyEvent" :mouseEvent="mouseEvent" @format="changeFormatting" @toggle="toggleReferenceToolsState"/>
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
                     <q-chips-input v-model="form.shorthand" float-label="Shorthand"/>
@@ -64,6 +64,7 @@
     import AppModalLayout from '../../components/context/modal/AppModalLayout'
     import ValidatorMessages from '../../mixins/ValidatorMessages'
     import HasCardChanges from '../../mixins/HasCardChanges'
+    import ToolsMethods from '../../mixins/ToolsMethods'
     import EditorTools from '../../components/EditorTools'
     import {required} from 'vuelidate/lib/validators'
     import {mapActions, mapGetters} from 'vuex'
@@ -84,13 +85,11 @@
                 links: [],
                 options: [],
                 flushImage: false,
-                keyEvent: null,
-                mouseEvent: null,
                 suggests: {field: 'label', list: []},
                 isOpen: true
             }
         },
-        mixins: [ValidatorMessages, HasCardChanges],
+        mixins: [ValidatorMessages, HasCardChanges, ToolsMethods],
         computed: {
             ...mapGetters({
                 teams: 'teams/all',
@@ -189,16 +188,6 @@
             },
             addLink() {
                 this.links.push({name: '', url: ''})
-            },
-            flushEvents() {
-                this.keyEvent = null;
-                //this.mouseEvent = null;
-            },
-            toggleEvent(name, e) {
-                this[name] = e
-            },
-            changeFormatting(e) {
-                this.form.description = e.content
             }
         }
     }

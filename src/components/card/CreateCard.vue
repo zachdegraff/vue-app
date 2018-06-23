@@ -57,6 +57,7 @@
     import AppModalLayout from '../../components/context/modal/AppModalLayout'
     import ValidatorMessages from '../../mixins/ValidatorMessages'
     import HasCardChanges from '../../mixins/HasCardChanges'
+    import ToolsMethods from '../../mixins/ToolsMethods'
     import EditorTools from '../../components/EditorTools'
     import {required} from 'vuelidate/lib/validators'
     import {mapActions, mapGetters} from 'vuex'
@@ -79,14 +80,11 @@
                 links: [],
                 options: [],
                 flushImage: false,
-                keyEvent: null,
-                mouseEvent: null,
                 suggests: {field: 'label', list: []},
-                isOpen: true,
-                referenceToolsState: false
+                isOpen: true
             }
         },
-        mixins: [ValidatorMessages, HasCardChanges],
+        mixins: [ValidatorMessages, HasCardChanges, ToolsMethods],
         computed: {
             ...mapGetters({
                 teams: 'teams/all',
@@ -191,18 +189,6 @@
             changeFile(file) {
                 this.file = file
             },
-            isNavChars(e) {
-                if (!(e instanceof KeyboardEvent)) {
-                    return false;
-                }
-                const chars = [13, 38, 40];
-                for (let i in chars) {
-                    if (e.keyCode === chars[i]) {
-                        return true;
-                    }
-                }
-                return false;
-            },
             parseQuery() {
                 if (this.query === '') return;
 
@@ -215,19 +201,6 @@
                     }
                 }
             },
-            flushEvents() {
-                this.keyEvent = null;
-                //this.mouseEvent = null;
-            },
-            toggleEvent(name, e) {
-                if (e !== null && this.referenceToolsState && this.isNavChars(e)) {
-                    e.preventDefault();
-                }
-                this[name] = e
-            },
-            changeFormatting(e) {
-                this.form.description = e.content
-            },
             filterCollectionName(e) {
                 let result = [];
                 if (this.form.collections.length === 0) return;
@@ -237,9 +210,6 @@
                 });
 
                 this.form.collections = result
-            },
-            toggleReferenceToolsState(e) {
-                this.referenceToolsState = e.state
             }
         }
     }
