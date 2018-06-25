@@ -75,7 +75,7 @@ export const reset = ({commit, dispatch}, form) => {
         commit('resetStatusRequest');
         api.auth.reset(form).then(res => {
             commit('resetStatusSuccess', res);
-            setAuthorizeToken(data.token, dispatch);
+            setAuthorizeToken(res.data.token, dispatch);
             resolve(res.data)
         }).catch(err => {
             commit('resetStatusFailure');

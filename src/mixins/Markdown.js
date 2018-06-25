@@ -5,8 +5,8 @@ const Markdown = {
         markTags(content) {
             if (!content) return '';
             let result = content
-                .replace(/([\s\.,\'\"]+)\*([^*]*)\*([\s\.,\'\"]+)/g, '$1<strong>$2</strong>$3')
-                .replace(/([\s\.,\'\"]+)_([^_]*)_([\s\.,\'\"]+)/g, '$1<em>$2</em>$3');
+                .replace(/([\s\.,\'\"]*)\*([^*]*)\*([\s\.,\'\"]*)/g, '$1<strong>$2</strong>$3')
+                .replace(/([\s\.,\'\"]*)_([^_]*)_([\s\.,\'\"]*)/g, '$1<em>$2</em>$3');
 
 
             const matches = result.match(/<([^<]*)\|([^>]*)>/g);
@@ -26,9 +26,9 @@ const Markdown = {
         clearMarks(content) {
             if (!content) return '';
             return content
-                .replace(/([\s\.,\'\"]+)\*([^*]*)\*([\s\.,\'\"]+)/g, '$1$2$3')
-                .replace(/([\s\.,\'\"]+)_([^_]*)_([\s\.,\'\"]+)/g, '$1$2$3')
-                .replace(/<([^<]*)\|([^<]*)>/g, '$2');
+                .replace(/([\s\.,\'\"]*)\*([^*]*)\*([\s\.,\'\"]*)/g, '$1$2$3')
+                .replace(/([\s\.,\'\"]*)_([^_]*)_([\s\.,\'\"]*)/g, '$1$2$3')
+                .replace(/<([^<]*)\|([^>]*)>/g, '$2');
         }
     }
 };

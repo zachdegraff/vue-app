@@ -43,7 +43,7 @@
                                 <em>{{props.value.join(', ')}}</em>
                             </q-td>
                             <q-td slot="body-cell-description" slot-scope="props" :props="props" style="max-width: 500px;white-space: normal">
-                                <p v-html="replaceNewLines(props.value)"></p>
+                                {{truncate(clearMarks(props.value))}}
                             </q-td>
                             <q-td slot="body-cell-collections" slot-scope="props" :props="props" style="max-width: 300px;white-space: normal">
                                 <q-chip v-for="(col, idx) in props.value" :key="idx" small color="primary" class="q-ma-xs">#{{col.name}}</q-chip>
@@ -61,6 +61,7 @@
 <script>
     import SearchForm from '../../components/SearchForm.vue'
     import DateFormatter from '../../mixins/DateFormatter'
+    import Markdown from '../../mixins/Markdown'
     import {mapActions, mapGetters} from 'vuex'
     import {route} from '../../helpers'
 
@@ -128,7 +129,7 @@
             },
 
         }),
-        mixins: [DateFormatter],
+        mixins: [DateFormatter, Markdown],
         computed: {
             ...mapGetters({
                 team: 'teams/current',
@@ -194,6 +195,12 @@
                         this.options.push({value: item.id, label: item.name})
                     }
                 })
+            },
+            truncate(str) {
+                if (str.length <= 250) {
+                    return str
+                }
+                return str.substring(0, 250) + '...'
             },
             createViewUrl(card) {
                 return route('view_card', {id: card.id})

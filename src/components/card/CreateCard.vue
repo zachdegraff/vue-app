@@ -24,7 +24,7 @@
                     <reference-tools :keyEvent="keyEvent" :mouseEvent="mouseEvent" @format="changeFormatting" @toggle="toggleReferenceToolsState"/>
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <q-chips-input v-model="form.shorthand" float-label="Shorthand"/>
+                    <q-input v-model="form.shorthand" float-label="Shorthand"/>
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
                     <strong>Links</strong><br/>
@@ -57,13 +57,13 @@
     import AppModalLayout from '../../components/context/modal/AppModalLayout'
     import ValidatorMessages from '../../mixins/ValidatorMessages'
     import HasCardChanges from '../../mixins/HasCardChanges'
-    import ToolsMethods from '../../mixins/ToolsMethods'
     import EditorTools from '../../components/EditorTools'
+    import ToolsMethods from '../../mixins/ToolsMethods'
     import {required} from 'vuelidate/lib/validators'
+    import ReferenceTools from '../ReferenceTools'
     import {mapActions, mapGetters} from 'vuex'
+    import ImageChooser from '../ImageChooser'
     import {filter} from 'quasar'
-    import ImageChooser from "../ImageChooser";
-    import ReferenceTools from "../ReferenceTools";
 
 
     export default {
@@ -72,7 +72,7 @@
                 form: {
                     teamId: '',
                     name: '',
-                    shorthand: [],
+                    shorthand: '',
                     description: '',
                     collections: [],
                 },

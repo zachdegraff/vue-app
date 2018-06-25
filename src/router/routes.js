@@ -47,14 +47,7 @@ export default [
             {path: 'login', name: 'login_user', component: () => import('pages/auth/LoginUserPage.vue')},
             {path: 'register', name: 'register_user', component: () => import('pages/auth/RegisterUserPage.vue')},
             {path: 'forgot', name: 'forgot_password', component: () => import('pages/auth/ForgotPasswordPage.vue')},
-        ]
-    },
-    {
-        path: '/reset/',
-        component: () => import('layouts/ClearLayout.vue'),
-        beforeEnter: ifNotAuthenticated,
-        children: [
-            {path: ':token', name: 'reset_password', component: () => import('pages/auth/ResetPasswordPage.vue')}
+            {path: 'reset/:token', name: 'reset_password', component: () => import('pages/auth/ResetPasswordPage.vue')}
         ]
     },
     {

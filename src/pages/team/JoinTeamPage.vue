@@ -25,11 +25,11 @@
                 })
             }
             localStorage.setItem('join-token', this.hash);
-            this.$router.push({name: 'login_user'})
+            this.$router.push({name: 'register_user'})
         },
         methods: {
             ...mapActions({
-                join: 'teams/join'
+                join: 'members/joinMemberToTeam'
             })
         }
     }

@@ -4,6 +4,13 @@ export const loadMemberStatusRequest = state => state.loadMemberStatus = 'Reques
 export const loadMemberStatusSuccess = state => state.loadMemberStatus = 'Success';
 export const loadMemberStatusFailure = state => state.loadMemberStatus = 'Failure';
 
+export const loadInvitationStatusRequest = state => state.loadInvitationStatus = 'Request';
+export const loadInvitationStatusSuccess = (state, res) => {
+    state.loadInvitationStatus = 'Success';
+    state.invitation = res.data.data
+};
+export const loadInvitationStatusFailure = state => state.loadInvitationStatus = 'Failure';
+
 export const loadTeamMembersStatusRequest = state => {
     state.loadTeamMembersStatus = 'Request';
     state.items = []

@@ -29,3 +29,7 @@ export const exclude = (id) => {
 export const changeRole = (id, role) => {
     return request.post(`/members/${id}/role`, {role});
 };
+
+export const invitation = (hash) => {
+    return request.get(`/teams/invitation/${hash}`)
+};

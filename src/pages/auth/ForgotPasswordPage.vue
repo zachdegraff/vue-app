@@ -1,26 +1,16 @@
 <template>
-    <q-modal v-model="isOpen" @hide="close" class="app-modal" :content-classes="['app-modal-auth-forgot']">
-        <app-modal-layout>
-            <q-toolbar slot="header">
-                <q-toolbar-title>Restore password</q-toolbar-title>
-                <q-btn flat icon="close" @click="isOpen=false" class="float-right"/>
-            </q-toolbar>
-
-            <div class="row q-pa-xl flex-center">
-                <div class="card-content col-xs-12">
-                    <q-field class="q-py-sm" :error="$v.email.$error" :error-label="firstErrorFor($v.email)">
-                        <q-input type="text" float-label="Email" v-model="email" @click="submit" @blur="$v.email.$touch"/>
-                    </q-field>
-                    <div class="q-pt-lg text-center">
-                        <q-btn color="primary" label="restore" :disabled="isProcessing"/>
-                    </div>
-                </div>
-            </div>
-        </app-modal-layout>
-    </q-modal>
+    <q-card class="q-pa-md">
+        <q-card-main>
+            <strong class="q-headline">Restore password</strong>
+            <div class="q-mt-xs">or <router-link :to="{name:'login_user'}" class="text-primary">log into an existing account</router-link></div>
+            <q-field class="q-py-md" :error="$v.email.$error" :error-label="firstErrorFor($v.email)">
+                <q-input type="text" float-label="Email" v-model="email" @keyup.enter="submit" @blur="$v.email.$touch"/>
+            </q-field>
+            <q-btn color="primary" label="restore" class="full-width q-my-md" @click="submit" :disabled="isDisabledSubmitBtn"/>
+        </q-card-main>
+    </q-card>
 </template>
 <script>
-    import AppModalLayout from '../../components/context/modal/AppModalLayout'
     import ValidatorMessages from '../../mixins/ValidatorMessages'
     import {required, email} from 'vuelidate/lib/validators'
     import {mapActions, mapGetters} from 'vuex'
@@ -29,8 +19,7 @@
     export default {
         data: () => {
             return {
-                email: '',
-                isOpen: true
+                email: ''
             }
         },
         mixins: [ValidatorMessages],
@@ -43,10 +32,10 @@
         computed: {
             ...mapGetters({
                 isProcessing: 'auth/isRestoring'
-            })
-        },
-        components: {
-            AppModalLayout
+            }),
+            isDisabledSubmitBtn() {
+                return this.$v.email.$invalid || this.isProcessing
+            }
         },
         created() {
             document.title = 'Forgot password - Wonderus';

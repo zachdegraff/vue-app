@@ -31,7 +31,7 @@
                     <reference-tools :keyEvent="keyEvent" :mouseEvent="mouseEvent" @format="changeFormatting" @toggle="toggleReferenceToolsState"/>
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <q-chips-input v-model="form.shorthand" float-label="Shorthand"/>
+                    <q-input v-model="form.shorthand" float-label="Shorthand"/>
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
                     <strong>Links</strong><br/>
@@ -78,7 +78,7 @@
                     teamId: '',
                     name: '',
                     description: '',
-                    shorthand: [],
+                    shorthand: '',
                     collections: []
                 },
                 file: null,
@@ -119,10 +119,17 @@
                 if (val === null) return;
                 delete window.cardState;
 
-                Object.keys(this.form).forEach(key => this.form[key] = val[key]);
-
                 this.links = val.links;
-                this.form.collections = val.collections.map(item => item.name);
+
+                Object.keys(this.form).forEach(key => {
+                    if (key === 'shorthand') {
+                        return this.form.shorthand = val.shorthand.join(', ');
+                    }
+                    if (key === 'collections') {
+                        return this.form.collections = val.collections.map(item => item.name);
+                    }
+                    this.form[key] = val[key]
+                });
 
                 this.options = this.teams.map(team => {
                     return {value: team.id, label: team.name}

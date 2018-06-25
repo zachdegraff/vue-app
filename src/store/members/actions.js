@@ -46,7 +46,6 @@ export const joinMemberToTeam = ({commit, dispatch}, hash) => {
         commit('joinMemberToTeamStatusRequest');
         api.members.join(hash).then(res => {
             commit('joinMemberToTeamStatusSuccess', res);
-            dispatch('all');
             resolve(res.data)
         }).catch(err => {
             commit('joinMemberToTeamStatusFailure', err);
@@ -63,6 +62,23 @@ export const changeMemberRole = ({commit}, {id, role}) => {
             resolve(res.data)
         }).catch(err => {
             commit('changeMemberRoleStatusFailure', err);
+            reject(err)
+        })
+    })
+};
+
+export const loadInvitation = ({commit}) => {
+    return new Promise((resolve, reject) => {
+        const hash = localStorage.getItem('join-token');
+        if (hash === null) {
+            return resolve(null)
+        }
+        commit('loadInvitationStatusRequest');
+        api.members.invitation(hash).then(res => {
+            commit('loadInvitationStatusSuccess', res);
+            resolve(res)
+        }).catch(err => {
+            commit('loadInvitationStatusFailure', err);
             reject(err)
         })
     })

@@ -10,7 +10,7 @@ export const route = (name, params = {}) => {
 export const notify = (message) => {
     Notify.create({
         message,
-        timeout: 1000,
+        timeout: 3000,
         type: 'positive',
         color: 'positive',
         position: 'top-left'
@@ -42,7 +42,7 @@ export const remove = (arr, item) => {
 export const error = (message) => {
     Notify.create({
         message,
-        timeout: 1000,
+        timeout: 3000,
         type: 'negative',
         color: 'negative',
         position: 'top-left'

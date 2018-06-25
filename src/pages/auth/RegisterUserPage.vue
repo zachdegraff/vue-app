@@ -1,45 +1,63 @@
 <template>
-    <q-modal v-model="isOpen" @hide="close" class="app-modal" :content-classes="['app-modal-auth-register']">
-        <app-modal-layout>
-            <q-toolbar slot="header">
-                <q-toolbar-title>Registration</q-toolbar-title>
-                <q-btn flat icon="close" @click="isOpen=false" class="float-right"/>
-            </q-toolbar>
+    <div>
+        <q-card class="q-pa-md" v-show="step == 1">
+            <q-card-main>
+                <strong class="q-headline">{{caption}}</strong>
+                <div class="q-mt-xs" v-if="team">Create a new account by entering your email address to access {{team.name}} team or
+                    <router-link :to="{name:'login_user'}" class="text-primary">log into an existing account</router-link>
+                </div>
+                <div class="q-mt-xs" v-if="!team">or
+                    <router-link :to="{name:'login_user'}" class="text-primary">log into an existing account</router-link>
+                </div>
 
-            <div class="row q-pa-xl flex-center">
-                <div class="card-content col-xs-12">
-                    <q-field class="q-py-sm" :error="$v.form.email.$error" :error-label="firstErrorFor($v.form.email)">
-                        <q-input type="text" float-label="Email" v-model="form.email" @blur="$v.form.email.$touch"/>
-                    </q-field>
-                    <q-field class="q-py-sm" :error="$v.form.firstName.$error" :error-label="firstErrorFor($v.form.firstName)">
-                        <q-input type="text" float-label="First Name" v-model="form.firstName" @blur="$v.form.firstName.$touch"/>
-                    </q-field>
-                    <q-field class="q-py-sm">
-                        <q-input type="text" float-label="Last Name" v-model="form.lastName"/>
-                    </q-field>
-                    <q-field class="q-py-sm" :error="$v.form.password.$error" :error-label="firstErrorFor($v.form.password)">
-                        <q-input type="password" float-label="Password" v-model="form.password" @blur="$v.form.password.$touch"/>
-                    </q-field>
-                    <q-field class="q-py-sm" :error="$v.form.password_confirmation.$error" :error-label="firstErrorFor($v.form.password_confirmation)">
-                        <q-input type="password" float-label="Repeat Password" v-model="form.password_confirmation" @blur="$v.form.password_confirmation.$touch"/>
-                    </q-field>
-                    <q-field class="q-py-sm" label="Profile Picture" label-width="12">
-                        <image-chooser @change="changeUserPhoto"></image-chooser>
-                    </q-field>
-                    <div class="q-pt-lg text-center">
-                        <q-btn color="primary" label="register" @click="submit" :disabled="isProcessing"/>
+                <q-field class="q-py-md" :error="emailError" :error-label="emailErrorMessage">
+                    <q-input type="text" float-label="Email" v-model="form.email" @blur="$v.form.email.$touch" @keyup.enter="next"/>
+                </q-field>
+                <q-btn label="next" color="primary" class="full-width q-my-md" @click="next" :disabled="isDisabledNextBtn"/>
+            </q-card-main>
+        </q-card>
+
+        <q-card class="q-pa-md" v-show="step == 2">
+            <q-card-main>
+                <strong class="q-headline">Set up your Wonderus account</strong>
+                <div class="q-mt-xs">Enter your information to complete the sign up process</div>
+                <div class="row gutter-sm q-py-sm">
+                    <div class="col-6">
+                        <q-field :error="$v.form.firstName.$error" :error-label="firstErrorFor($v.form.firstName)">
+                            <q-input type="text" float-label="First Name" v-model="form.firstName" @blur="$v.form.firstName.$touch"/>
+                        </q-field>
+                    </div>
+                    <div class="col-6">
+                        <q-field>
+                            <q-input type="text" float-label="Last Name" v-model="form.lastName"/>
+                        </q-field>
                     </div>
                 </div>
-            </div>
-        </app-modal-layout>
-    </q-modal>
+                <q-field class="q-py-sm" :error="$v.form.email.$error" :error-label="firstErrorFor($v.form.email)">
+                    <q-input type="text" float-label="Email" v-model="form.email" @blur="$v.form.email.$touch"/>
+                </q-field>
+                <q-field class="q-py-sm" :error="$v.form.password.$error" :error-label="firstErrorFor($v.form.password)">
+                    <q-input type="password" float-label="Password" v-model="form.password" @blur="$v.form.password.$touch"/>
+                </q-field>
+                <q-field class="q-py-sm" label="Profile Picture" label-width="12">
+                    <image-chooser @change="changeUserPhoto"></image-chooser>
+                </q-field>
+                <div class="q-my-md text-tertiary">
+                    By creating an account and using Wonderus you agree to our
+                    <a href="https://wonderus.app/terms" class="text-primary">Terms of Service</a> and
+                    <a href="https://wonderus.app/privacy" class="text-primary">Privacy Policy</a>
+                </div>
+                <q-btn color="primary" label="finish creating account" class="full-width q-my-md" @click="submit" :disabled="isDisabledSubmitBtn"/>
+            </q-card-main>
+        </q-card>
+    </div>
 </template>
 <script>
     import AppModalLayout from '../../components/context/modal/AppModalLayout'
-    import {required, email, sameAs, minLength} from 'vuelidate/lib/validators'
+    import {required, email, minLength} from 'vuelidate/lib/validators'
     import ValidatorMessages from '../../mixins/ValidatorMessages'
+    import ImageChooser from '../../components/ImageChooser'
     import {mapActions, mapGetters} from 'vuex'
-    import ImageChooser from "../../components/ImageChooser";
 
 
     export default {
@@ -50,10 +68,10 @@
                     firstName: '',
                     lastName: '',
                     password: '',
-                    password_confirmation: '',
                     file: null,
                 },
-                isOpen: true
+                isUnique: true,
+                step: 1
             }
         },
         mixins: [ValidatorMessages],
@@ -69,19 +87,54 @@
                 password: {
                     required,
                     minLength: minLength(3)
-                },
-                password_confirmation: {
-                    sameAsPassword: sameAs('password')
                 }
             }
         },
         created() {
             document.title = 'Register a new account - Wonderus';
+
+            if (this.invitation === null) {
+                this.loadInvitation()
+            }
         },
         computed: {
             ...mapGetters({
-                isProcessing: 'auth/isRegistering'
-            })
+                isCounting: 'users/isCounting',
+                isProcessing: 'auth/isRegistering',
+                invitation: 'members/getInvitation'
+            }),
+            caption() {
+                if (this.invitation !== null) {
+                    if (this.invitation.inviter) {
+                        return `Join ${this.invitation.inviter.fullName} on Wonderus!`
+                    }
+                }
+                return 'Create your new Wonderus account'
+            },
+            team() {
+                if (this.invitation !== null) {
+                    return this.invitation.team
+                }
+                return null
+            },
+            emailError() {
+                if (this.isUnique === false) {
+                    return true
+                }
+                return this.$v.form.email.$error
+            },
+            emailErrorMessage() {
+                if (this.isUnique === false) {
+                    return 'Email is already in use by an existing account';
+                }
+                return this.firstErrorFor(this.$v.form.email)
+            },
+            isDisabledNextBtn() {
+                return this.$v.form.email.$invalid || this.isCounting
+            },
+            isDisabledSubmitBtn() {
+                return this.$v.form.$invalid || this.isProcessing
+            }
         },
         components: {
             ImageChooser,
@@ -89,8 +142,18 @@
         },
         methods: {
             ...mapActions({
-                register: 'auth/register'
+                usersCount: 'users/count',
+                register: 'auth/register',
+                loadInvitation: 'members/loadInvitation'
             }),
+            next() {
+                this.usersCount({email: this.form.email}).then(count => {
+                    if (count > 0) {
+                        return this.isUnique = false
+                    }
+                    this.step = 2
+                })
+            },
             submit() {
                 this.$v.form.$touch();
                 if (this.$v.form.$error) {

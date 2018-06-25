@@ -67,7 +67,7 @@
         },
         methods: {
             ...mapActions({
-                join: 'teams/join',
+                join: 'members/joinMemberToTeam',
                 changeQuery: 'search/changeQuery'
             })
         }
