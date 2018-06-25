@@ -42,12 +42,15 @@ export const register = ({commit, dispatch}, user) => {
     })
 };
 
-export const logout = ({commit}) => {
+export const logout = ({commit, dispatch}) => {
     return new Promise((resolve, reject) => {
         commit('logoutStatusRequest');
         api.auth.logout().then(res => {
             localStorage.removeItem('access-token');
             delete axios.defaults.headers.common['Authorization'];
+            dispatch('cards/flush', null, {root: true});
+            dispatch('collections/flush', null, {root: true});
+
             commit('logoutStatusSuccess', res);
             resolve(res.data)
         }).catch(err => {

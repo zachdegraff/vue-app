@@ -81,6 +81,10 @@ export const remove = ({commit, dispatch}, id) => {
     })
 };
 
+export const flush = ({commit}) => {
+    commit('flushCardsState')
+};
+
 export const cardsAmount = ({commit, rootGetters}) => {
     return new Promise((resolve, reject) => {
         const team = rootGetters['teams/current'];

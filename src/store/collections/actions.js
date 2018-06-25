@@ -16,3 +16,7 @@ export const all = ({commit, rootGetters}) => {
         })
     })
 };
+
+export const flush = ({commit}) => {
+    commit('flushCollectionsState')
+};

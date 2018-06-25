@@ -1,3 +1,7 @@
+export const flushCollectionsState = state => {
+    state.items = []
+};
+
 export const allStatusRequest = state => state.actionAllStatus = 'Request';
 export const allStatusSuccess = (state, res) => {
     state.actionAllStatus = 'Success';

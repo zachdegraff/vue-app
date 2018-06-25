@@ -1,5 +1,13 @@
 import {replace, remove} from "../../helpers";
 
+export const flushCardsState = state => {
+    state.items = [];
+    state.amount = 0;
+
+    state.recentlyAdded = [];
+    state.recentlyUpdated = []
+};
+
 export const allStatusRequest = state => {
     state.actionAllStatus = 'Request';
     state.items = []

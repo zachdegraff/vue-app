@@ -11,7 +11,10 @@ export const all = state => state.items;
 
 export const current = state => {
     if (state.current !== null) {
-        return state.current
+        const team = state.items.find(item => item.id === state.current.id);
+        if (team !== undefined) {
+            return team
+        }
     }
     if (state.items.length === 0) {
         return null
