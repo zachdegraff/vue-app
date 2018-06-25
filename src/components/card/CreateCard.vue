@@ -196,7 +196,7 @@
                     const matches = this.query.match(/#(.*?)($|\s+)/g);
                     if (matches !== null) {
                         matches.forEach(item => {
-                            this.form.collections.push(item);
+                            this.form.collections.push(item.substring(1));
                         })
                     }
                 }

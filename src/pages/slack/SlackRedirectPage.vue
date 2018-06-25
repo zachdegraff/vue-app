@@ -14,11 +14,9 @@
             const params = {
                 id: this.$route.query.state,
                 code: this.$route.query.code
-            };
-            this.addSlackIntegration(params)
-                .then(() => {
-                    this.$router.push({name: 'view_team', params: {id: this.$route.query.state}})
-                })
+            }, redirect = () => this.$router.push({name: 'view_team', params: {id: this.$route.query.state}});
+
+            this.addSlackIntegration(params).then(redirect).catch(redirect)
         },
         methods: {
             ...mapActions({

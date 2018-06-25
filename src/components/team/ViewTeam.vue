@@ -146,7 +146,7 @@
                 disableSlackIntegration: 'teams/disableSlack'
             }),
             slack() {
-                window.location = `https://slack.com/oauth/authorize?client_id=${SLACK_CLIENT_ID}&scope=commands&state=${this.id}`;
+                window.location = `https://slack.com/oauth/authorize?client_id=${SLACK_CLIENT_ID}&scope=commands&state=${this.team.id}`;
             },
             save() {
                 this.$v.form.$touch();
@@ -181,7 +181,7 @@
             },
             disableSlack() {
                 this.confirm().then(() => {
-                    this.disableSlackIntegration(this.id).then(() => this.load(this.id))
+                    this.disableSlackIntegration(this.team.id).then(() => this.load(this.team.id))
                 }).catch(() => {
                 })
             },
