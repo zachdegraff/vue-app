@@ -13,13 +13,15 @@
         created() {
             if (localStorage.getItem('access-token') !== null) {
                 this.loadAuthUser();
-                this.loadUserTeams()
+                this.loadUserTeams();
+                this.loadFavorite()
             }
         },
         methods: {
             ...mapActions({
                 loadAuthUser: 'auth/user',
                 loadUserTeams: 'teams/all',
+                loadFavorite: 'users/loadFavorite'
             })
         },
     }

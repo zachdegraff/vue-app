@@ -26,3 +26,30 @@ export const update = ({commit, dispatch}, {id, model}) => {
         })
     })
 };
+
+
+export const favorite = ({commit}, id) => {
+    return new Promise((resolve, reject) => {
+        commit('favoriteStatusRequest');
+        api.users.toggleFavoriteCard(id).then(res => {
+            commit('favoriteStatusSuccess', res);
+            resolve(res.data.data)
+        }).catch(err => {
+            commit('favoriteStatusFailure', err);
+            reject(err)
+        })
+    })
+};
+
+export const loadFavorite = ({commit}) => {
+    return new Promise((resolve, reject) => {
+        commit('loadFavoriteStatusRequest');
+        api.users.getFavoriteCards().then(res => {
+            commit('loadFavoriteStatusSuccess', res);
+            resolve(res.data.data)
+        }).catch(err => {
+            commit('loadFavoriteStatusFailure', err);
+            reject(err)
+        })
+    })
+};

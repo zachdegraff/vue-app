@@ -58,9 +58,10 @@
                             <q-icon name="menu"/>
                             <q-popover>
                                 <q-list separator link>
-                                    <q-item v-close-overlay>
+                                    <q-item @click.native="toggleFavorite(card.id)" v-close-overlay>
                                         <q-item-main>
-                                            <q-item-tile class="uppercase">bookmark</q-item-tile>
+                                            <q-item-tile class="uppercase" v-show="!isSaved(card.id)">bookmark</q-item-tile>
+                                            <q-item-tile class="uppercase" v-show="isSaved(card.id)">remove bookmark</q-item-tile>
                                         </q-item-main>
                                     </q-item>
                                     <q-item @click.native="openAskHelp" v-close-overlay>
@@ -90,7 +91,8 @@
                     <div class="gt-xs col-sm-1 col-md-1 col-lg-1"></div>
                     <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
                         <div class="card-item-actions gt-xs">
-                            <q-btn icon="bookmark_border" flat/>
+                            <q-btn icon="bookmark" flat @click="toggleFavorite(card.id)" v-show="isSaved(card.id)"/>
+                            <q-btn icon="bookmark_border" flat @click="toggleFavorite(card.id)" v-show="!isSaved(card.id)"/>
                             <q-btn icon="help" flat @click="openAskHelp"/>
                             <q-btn icon="content_copy" flat/>
                             <q-btn icon="edit" flat @click="edit(card.id)" v-if="card.canUpdate"/>
@@ -128,6 +130,7 @@
             ...mapGetters({
                 team: 'teams/current',
                 card: 'cards/getViewingCard',
+                isSaved: 'users/isFavorite',
             }),
             title() {
                 return `${prop(this.card, 'name')} - ${prop(this.team, 'name')} - Wonderus`;
@@ -179,6 +182,7 @@
             ...mapActions({
                 remove: 'cards/remove',
                 edit: 'modals/openEditCard',
+                toggleFavorite: 'users/favorite',
                 openAskHelp: 'modals/openAskHelp',
                 closeViewing: 'modals/closeViewCard'
             }),

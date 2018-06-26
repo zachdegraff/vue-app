@@ -45,10 +45,7 @@
         methods: {
             ...mapActions({
                 load: 'cards/all'
-            }),
-            createViewUrl(card) {
-                return route('view_card', {id: card.id})
-            },
+            })
         }
     }
 </script>

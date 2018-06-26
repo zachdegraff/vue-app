@@ -23,3 +23,11 @@ export const update = (id, attr) => {
 export const remove = (id) => {
     return request.delete(`/users/${id}`);
 };
+
+export const toggleFavoriteCard = (id) => {
+    return request.post(`/users/favorite/${id}`);
+};
+
+export const getFavoriteCards = () => {
+    return request.get(`/users/favorite`);
+};

@@ -81,6 +81,7 @@ export default [
         children: [
             {path: 'create', name: 'create_card', component: () => import('pages/card/CreateCardPage.vue')},
             {path: 'table', name: 'cards_table', component: () => import('pages/card/CardsTablePage.vue')},
+            {path: 'saved', name: 'saved_cards', component: () => import('pages/card/SavedCardsPage.vue')},
             {path: ':id', name: 'view_card', component: () => import('pages/card/ViewCardPage.vue'), props: true},
             {path: ':id/edit', name: 'edit_card', component: () => import('pages/card/EditCardPage.vue'), props: true},
             {

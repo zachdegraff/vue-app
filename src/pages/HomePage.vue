@@ -3,7 +3,8 @@
         <search-form></search-form>
         <div class="row flex-center q-mt-md">
             <div class="col-xs-12 col-sm-8">
-                <q-btn :to="{name: 'cards_table'}" v-if="amount">All Cards ({{amount}})</q-btn>
+                <q-btn :to="{name: 'cards_table'}" :label="allCardsCaption" icon="note" class="q-mr-md" v-if="cardsAmount" />
+                <q-btn :to="{name: 'saved_cards'}" :label="savedCardsCaption" icon="bookmark" v-if="savedCardsAmount"/>
             </div>
         </div>
         <div class="row flex-center">
@@ -50,7 +51,8 @@
         computed: {
             ...mapGetters({
                 team: 'teams/current',
-                amount: 'cards/getCardsAmount',
+                cardsAmount: 'cards/getCardsAmount',
+                savedCardsAmount: 'users/getFavoriteCardsCount',
                 recentlyAdded: 'cards/getRecentlyAdded',
                 recentlyUpdated: 'cards/getRecentlyUpdated',
                 collections: 'collections/allNonEmpty'
@@ -60,6 +62,12 @@
                     return 'Wonderus'
                 }
                 return `${this.team.name} - Wonderus`
+            },
+            allCardsCaption() {
+                return `all cards (${this.cardsAmount})`
+            },
+            savedCardsCaption() {
+                return `saved cards (${this.savedCardsAmount})`
             }
         },
         components: {
