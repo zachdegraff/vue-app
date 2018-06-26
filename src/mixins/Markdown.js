@@ -2,6 +2,21 @@ const APP_HOST = process.env.APP_HOST;
 
 const Markdown = {
     methods: {
+        __markBracketsTag(str) {
+            const matches = str.match(/\[([^\[]*)\|([^\]]*)\]/g);
+            if (matches === null) {
+                return str
+            }
+            matches.forEach(i => {
+                let tmpl = '<a href="$1" target="_blank">$2</a>';
+                if (i.indexOf(APP_HOST) !== -1) {
+                    tmpl = '<a href="$1" @click.prevent="open(\'$1\')">$2</a>';
+                }
+                str = str.replace(i, i.replace(APP_HOST, '').replace(/\[([^\[]*)\|([^\]]*)\]/, tmpl))
+            });
+            return str
+        },
+
         markTags(content) {
             if (!content) return '';
             let result = content
@@ -11,7 +26,7 @@ const Markdown = {
 
             const matches = result.match(/<([^<]*)\|([^>]*)>/g);
             if (matches === null) {
-                return result
+                return this.__markBracketsTag(result)
             }
             matches.forEach(i => {
                 let tmpl = '<a href="$1" target="_blank">$2</a>';
@@ -20,13 +35,14 @@ const Markdown = {
                 }
                 result = result.replace(i, i.replace(APP_HOST, '').replace(/<([^<]*)\|([^>]*)>/, tmpl))
             });
-            return result
+            return this.__markBracketsTag(result)
         },
         clearMarks(content) {
             if (!content) return '';
             return content
                 .replace(/([\s\.,\'\"]*)\*([^*]*)\*([\s\.,\'\"]*)/g, '$1$2$3')
                 .replace(/([\s\.,\'\"]*)_([^_]*)_([\s\.,\'\"]*)/g, '$1$2$3')
+                .replace(/\[([^\[]*)\|([^\]]*)\]/g, '$2')
                 .replace(/<([^<]*)\|([^>]*)>/g, '$2');
         }
     }

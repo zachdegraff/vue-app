@@ -90,7 +90,7 @@
                     selection = el.value.substring(this.start, this.finish),
                     content = [
                         el.value.slice(0, this.start),
-                        `<${this.linkUrl}|${selection}>`,
+                        `[${this.linkUrl}|${selection}]`,
                         el.value.slice(this.finish)
                     ].join('');
 

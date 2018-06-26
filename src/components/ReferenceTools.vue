@@ -133,7 +133,7 @@
                 const el = this.target,
                     content = [
                         el.value.slice(0, this.start),
-                        `<${this.getLinkUrl(item)}|${item.name}> `,
+                        `[${this.getLinkUrl(item)}|${item.name}] `,
                         el.value.slice(this.target.selectionEnd)
                     ].join('');
 

@@ -67,6 +67,7 @@
     import ToolsMethods from '../../mixins/ToolsMethods'
     import EditorTools from '../../components/EditorTools'
     import {required} from 'vuelidate/lib/validators'
+    import {decode} from '../../helpers'
     import {mapActions, mapGetters} from 'vuex'
     import ImageChooser from '../ImageChooser';
     import ReferenceTools from '../ReferenceTools';
@@ -127,6 +128,9 @@
                     }
                     if (key === 'collections') {
                         return this.form.collections = val.collections.map(item => item.name);
+                    }
+                    if (key === 'description') {
+                        return this.form.description = decode(val.description);
                     }
                     this.form[key] = val[key]
                 });
