@@ -18,7 +18,7 @@
                 <q-field class="q-py-sm" :error="$v.form.password_confirmation.$error" :error-label="firstErrorFor($v.form.password_confirmation)">
                     <q-input type="password" float-label="Repeat Password" v-model="form.password_confirmation" @blur="$v.form.password_confirmation.$touch"/>
                 </q-field>
-                <q-field class="q-py-sm" label="Profile Picture" label-width="12">
+                <q-field class="q-py-sm" label="Profile Picture" label-width="12" v-if="user">
                     <image-chooser :path="user.photo" @change="changeFile"></image-chooser>
                 </q-field>
                 <div class="q-pt-lg">
@@ -60,7 +60,13 @@
                     required
                 },
                 password: {
-                    minLength: minLength(3)
+                    minLength: minLength(8),
+                    exactPattern: (value) => {
+                        if (value === '') {
+                            return true
+                        }
+                        return value.match(/^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/) !== null
+                    }
                 },
                 password_confirmation: {
                     sameAsPassword: sameAs('password')

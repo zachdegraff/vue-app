@@ -20,7 +20,6 @@ const Markdown = {
                 }
                 result = result.replace(i, i.replace(APP_HOST, '').replace(/<([^<]*)\|([^>]*)>/, tmpl))
             });
-            console.log(result);
             return result
         },
         clearMarks(content) {

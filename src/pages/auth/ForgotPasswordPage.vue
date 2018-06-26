@@ -1,12 +1,12 @@
 <template>
     <q-card class="q-pa-md">
         <q-card-main>
-            <strong class="q-headline">Restore password</strong>
+            <strong class="q-headline">Send password reset email</strong>
             <div class="q-mt-xs">or <router-link :to="{name:'login_user'}" class="text-primary">log into an existing account</router-link></div>
             <q-field class="q-py-md" :error="$v.email.$error" :error-label="firstErrorFor($v.email)">
                 <q-input type="text" float-label="Email" v-model="email" @keyup.enter="submit" @blur="$v.email.$touch"/>
             </q-field>
-            <q-btn color="primary" label="restore" class="full-width q-my-md" @click="submit" :disabled="isDisabledSubmitBtn"/>
+            <q-btn color="primary" label="send" class="full-width q-my-md" @click="submit" :disabled="isDisabledSubmitBtn"/>
         </q-card-main>
     </q-card>
 </template>

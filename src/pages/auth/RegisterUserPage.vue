@@ -3,7 +3,8 @@
         <q-card class="q-pa-md" v-show="step == 1">
             <q-card-main>
                 <strong class="q-headline">{{caption}}</strong>
-                <div class="q-mt-xs" v-if="team">Create a new account by entering your email address to access {{team.name}} team or
+                <div class="q-mt-xs" v-if="team">Create a new account to access the {{team.name}} team knowledge base.<br/>
+                    Or
                     <router-link :to="{name:'login_user'}" class="text-primary">log into an existing account</router-link>
                 </div>
                 <div class="q-mt-xs" v-if="!team">or
@@ -36,7 +37,7 @@
                 <q-field class="q-py-sm" :error="$v.form.email.$error" :error-label="firstErrorFor($v.form.email)">
                     <q-input type="text" float-label="Email" v-model="form.email" @blur="$v.form.email.$touch"/>
                 </q-field>
-                <q-field class="q-py-sm" :error="$v.form.password.$error" :error-label="firstErrorFor($v.form.password)">
+                <q-field class="q-py-sm" :error="$v.form.password.$error" :error-label="firstErrorFor($v.form.password)" helper="Use 8 or more characters with a mix of letters, numbers and symbols">
                     <q-input type="password" float-label="Password" v-model="form.password" @blur="$v.form.password.$touch"/>
                 </q-field>
                 <q-field class="q-py-sm" label="Profile Picture" label-width="12">
@@ -86,7 +87,8 @@
                 },
                 password: {
                     required,
-                    minLength: minLength(3)
+                    minLength: minLength(8),
+                    exactPattern: (value) => value.match(/^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/) !== null
                 }
             }
         },

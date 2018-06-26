@@ -31,7 +31,7 @@
                         <q-popover>
                             <q-list link>
                                 <q-item v-if="props.row.user === null" @click.native="reSendInvite(props.row.id)" v-close-overlay>
-                                    <q-item-main label="Resent Invite"/>
+                                    <q-item-main label="Resend invite email"/>
                                 </q-item>
                                 <q-item @click.native="changeRole({teamId: team.id, memberId: props.row.id})" v-close-overlay>
                                     <q-item-main label="Change Role"/>

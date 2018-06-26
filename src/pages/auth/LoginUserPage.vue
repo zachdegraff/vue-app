@@ -53,7 +53,7 @@
             }
         },
         created() {
-            document.title = 'Authorization - Wonderus';
+            document.title = 'Wonderus';
         },
         methods: {
             ...mapActions({

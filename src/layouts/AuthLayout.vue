@@ -2,7 +2,7 @@
     <q-layout>
         <q-page-container>
             <q-page>
-                <div class="row flex-center window-height">
+                <div class="row flex-center q-mt-xl">
                     <div class="auth-login col-xs-11 col-sm-6 col-md-5 col-lg-4">
                         <div class="auth-login-logo text-center q-pb-xl">
                             <img src="statics/auth-logo.png"/>

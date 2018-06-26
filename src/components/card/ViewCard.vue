@@ -1,6 +1,6 @@
 <template>
     <div>
-        <q-modal v-model="isOpen" @hide="close" no-route-dismiss class="app-modal" :content-classes="['app-modal-content']" :content-css="{minWidth: '50vw', minHeight: '50vh'}">
+        <q-modal v-model="isOpen" @hide="close" no-route-dismiss class="app-modal" ref="modal" :content-classes="['app-modal-content']" :content-css="{minWidth: '50vw', minHeight: '50vh'}">
             <app-modal-layout>
                 <q-toolbar slot="header">
                     <q-toolbar-title v-if="card">{{card.name}}</q-toolbar-title>
@@ -169,6 +169,7 @@
                 if (val) {
                     document.title = this.title;
                 }
+                this.$refs.modal.$el.scrollTop = 0
             }
         },
         components: {
