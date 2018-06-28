@@ -9,5 +9,13 @@ export const isFavorite = state => {
 export const isCounting = state => state.actionCountStatus === 'Request';
 export const isUpdating = state => state.actionUpdateStatus === 'Request';
 
-export const getFavoriteCards = state => state.favorite;
-export const getFavoriteCardsCount = state => state.favorite.length;
+export const getFavoriteCards = (state, getters, rootState, rootGetters) => {
+    const team = rootGetters['teams/current'];
+    if (team === null) {
+        return []
+    }
+    return state.favorite.filter(card => card.teamId === team.id);
+};
+export const getFavoriteCardsCount = (state, getters) => {
+    return getters['getFavoriteCards'].length
+};

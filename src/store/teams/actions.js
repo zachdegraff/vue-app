@@ -103,19 +103,6 @@ export const changeEditingTeam = ({commit, dispatch}, id) => {
     dispatch('get', id).then(team => commit('changeEditingTeam', team))
 };
 
-export const askHelp = ({commit}, {id, ...params}) => {
-    return new Promise((resolve, reject) => {
-        commit('askHelpStatusRequest');
-        api.teams.askHelp(id, params).then(res => {
-            commit('askHelpStatusSuccess');
-            resolve(res.data)
-        }).catch(err => {
-            commit('askHelpStatusFailure');
-            reject(err)
-        })
-    })
-};
-
 export const addSlackIntegration = ({commit}, {id, code}) => {
     return new Promise((resolve, reject) => {
         commit('addSlackStatusRequest');

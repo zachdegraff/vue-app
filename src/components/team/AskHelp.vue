@@ -35,7 +35,8 @@
             ...mapGetters({
                 team: 'teams/current',
                 card: 'cards/getViewingCard',
-                isProcessing: 'teams/isHelpAsking'
+                searchQuery: 'search/getQuery',
+                isProcessing: 'questions/isHelpAsking'
             })
         },
         mixins: [ValidatorMessages],
@@ -44,17 +45,12 @@
                 required
             },
         },
-        created() {
-            if (this.card !== null) {
-                this.question = `Card: ${this.card.name}\n\n`
-            }
-        },
         mounted() {
             this.$refs.field.focus()
         },
         methods: {
             ...mapActions({
-                askHelp: 'teams/askHelp',
+                askHelp: 'questions/store',
                 closeAskHelp: 'modals/closeAskHelp'
             }),
             submit() {
@@ -65,8 +61,15 @@
                 if (this.team === null) {
                     return this.$q.notify('Please, choose team.')
                 }
-
-                this.askHelp({id: this.team.id, question: this.question}).then(this.closeAskHelp);
+                const params = {
+                    id: this.team.id,
+                    content: this.question,
+                    searchQuery: this.searchQuery
+                };
+                if (this.card !== null) {
+                    params['cardId'] = this.card.id
+                }
+                this.askHelp(params).then(this.closeAskHelp);
             }
         }
     }

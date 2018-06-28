@@ -2,7 +2,7 @@ const messages = {
     'required': 'Field is required',
     'minLength': 'Field must have at least :min letters',
     'email': 'Invalid email address',
-    'exactPattern': 'Weak password'
+    'exactPattern': 'Password must contain letters, numbers, and special characters.'
 };
 
 function replace(str, params) {

@@ -11,7 +11,6 @@ export default {
     actionUpdateStatus: '',
     actionCreateStatus: '',
     actionRemoveStatus: '',
-    actionAskHelpStatus: '',
     actionAddSlackStatus: '',
     actionDisableSlackStatus: ''
 }

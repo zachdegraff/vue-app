@@ -96,6 +96,10 @@ module.exports = function (ctx) {
                 'QTd',
                 'QTableColumns',
                 'QTooltip',
+                'QTabs',
+                'QTab',
+                'QTabPane',
+                'QInfiniteScroll'
             ],
             directives: [
                 'Ripple', 'CloseOverlay'

@@ -4,7 +4,8 @@
         <div class="row flex-center q-mt-md">
             <div class="col-xs-12 col-sm-8">
                 <q-btn :to="{name: 'cards_table'}" :label="allCardsCaption" icon="note" class="q-mr-md" v-if="cardsAmount" />
-                <q-btn :to="{name: 'saved_cards'}" :label="savedCardsCaption" icon="bookmark" v-if="savedCardsAmount"/>
+                <q-btn :to="{name: 'saved_cards'}" :label="savedCardsCaption" icon="bookmark" class="q-mr-md" v-if="savedCardsAmount"/>
+                <q-btn :to="{name: 'questions'}" label="questions" icon="help"/>
             </div>
         </div>
         <div class="row flex-center">

@@ -122,6 +122,14 @@ export default [
             },
         ]
     },
+    {
+        path: '/questions/',
+        component: () => import('layouts/DefaultLayout.vue'),
+        beforeEnter: ifAuthenticated,
+        children: [
+            {path: '', name: 'questions', component: () => import('pages/question/QuestionsPage.vue')}
+        ]
+    },
     { // Always leave this as last one
         path: '*',
         component: () => import('pages/404')

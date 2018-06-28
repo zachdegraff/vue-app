@@ -10,6 +10,7 @@ import users from './users'
 import modals from './modals'
 import search from './search'
 import members from './members'
+import questions from './questions'
 import collections from './collections'
 
 Vue.use(Vuex);
@@ -25,6 +26,7 @@ const store = new Vuex.Store({
         modals,
         search,
         members,
+        questions,
         collections
     }
 });
