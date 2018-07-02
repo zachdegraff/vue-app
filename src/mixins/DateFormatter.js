@@ -11,7 +11,7 @@ const DateFormatter = {
                     date.getSeconds()
                 ));
 
-            return `${utc.getMonth()}/${utc.getDate()}/${utc.getFullYear()} ${utc.getHours()}:${utc.getMinutes()}`
+            return `${utc.getMonth() + 1}/${utc.getDate()}/${utc.getFullYear()} ${utc.getHours()}:${utc.getMinutes()}`
         }
     }
 };
