@@ -11,7 +11,7 @@
                     </q-item-side>
                     <q-item-main>
                         <q-item-tile label>{{item.user.fullName}}</q-item-tile>
-                        <q-item-tile sublabel>Asked at 3:45pm, June 16 2018</q-item-tile>
+                        <q-item-tile sublabel>Asked at {{toUserFriendlyFormat(item.createdAt)}}</q-item-tile>
                     </q-item-main>
                 </q-item>
                 <q-item>
@@ -46,7 +46,7 @@
                             </q-item-side>
                             <q-item-main>
                                 <q-item-tile label>{{comment.user.fullName}}</q-item-tile>
-                                <q-item-tile sublabel>Asked at 3:45pm, June 16 2018</q-item-tile>
+                                <q-item-tile sublabel>Asked at {{toUserFriendlyFormat(comment.createdAt)}}</q-item-tile>
                             </q-item-main>
                         </q-item>
                         <q-item>
@@ -78,6 +78,7 @@
     </div>
 </template>
 <script>
+    import DateFormatter from '../../mixins/DateFormatter'
     import {mapActions} from 'vuex'
 
     export default {
@@ -92,6 +93,7 @@
                 questions: []
             }
         },
+        mixins: [DateFormatter],
         watch: {
             items: function (val) {
                 this.questions = val.map(i => {
