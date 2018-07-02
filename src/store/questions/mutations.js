@@ -17,6 +17,10 @@ export const storeStatusRequest = state => state.actionStoreStatus = 'Request';
 export const storeStatusSuccess = state => state.actionStoreStatus = 'Success';
 export const storeStatusFailure = state => state.actionStoreStatus = 'Failure';
 
+export const commentStatusRequest = state => state.actionCommentStatus = 'Request';
+export const commentStatusSuccess = state => state.actionCommentStatus = 'Success';
+export const commentStatusFailure = state => state.actionCommentStatus = 'Failure';
+
 export const loadOpenQuestionsStatusRequest = state => state.actionLoadOpenQuestions = 'Request';
 export const loadOpenQuestionsStatusSuccess = (state, res) => {
     state.actionLoadOpenQuestions = 'Success';

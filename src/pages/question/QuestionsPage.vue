@@ -7,7 +7,7 @@
                     <div class="col q-headline">Questions</div>
                 </div>
                 <div class="row q-my-lg questions-container">
-                    <q-tabs inverted no-pane-border>
+                    <q-tabs inverted no-pane-border class="col">
                         <!-- Tabs - notice slot="title" -->
                         <q-tab default label="Open" slot="title" name="open"/>
                         <q-tab label="Answered" slot="title" name="answered"/>
@@ -46,20 +46,27 @@
     export default {
         computed: {
             ...mapGetters({
+                team: 'teams/current',
                 userQuestions: 'questions/getUserQuestions',
                 openQuestions: 'questions/getOpenQuestions',
                 answeredQuestions: 'questions/getAnsweredQuestions'
             })
         },
+        watch: {
+            team: function (val) {
+                if (val === null) return;
+
+                this.loadOpenQuestions();
+                this.loadUserQuestions();
+                this.loadAnsweredQuestions()
+            }
+        },
         components: {
             SearchForm, QuestionsList
         },
-        created() {
-            this.flushToDefaults()
-        },
+
         methods: {
             ...mapActions({
-                flushToDefaults: 'questions/flushToDefaults',
                 loadOpenQuestions: 'questions/loadOpenQuestions',
                 loadUserQuestions: 'questions/loadUserQuestions',
                 loadAnsweredQuestions: 'questions/loadAnsweredQuestions'
@@ -108,6 +115,7 @@
             margin-top: 0;
         }
     }
+
     .q-infinite-scroll-message {
         text-align: center;
     }

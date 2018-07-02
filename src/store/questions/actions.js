@@ -13,6 +13,19 @@ export const store = ({commit}, {id, ...params}) => {
     })
 };
 
+export const comment = ({commit}, {id, ...params}) => {
+    return new Promise((resolve, reject) => {
+        commit('commentStatusRequest');
+        api.questions.comment(id, params).then(res => {
+            commit('commentStatusSuccess');
+            resolve(res.data)
+        }).catch(err => {
+            commit('commentStatusFailure');
+            reject(err)
+        })
+    })
+};
+
 export const flushToDefaults = ({commit}) => {
     commit('flushState')
 };

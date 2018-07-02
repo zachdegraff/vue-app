@@ -9,5 +9,5 @@ export const store = (team, attr) => {
 };
 
 export const comment = (id, attr) => {
-    return request.post(`/questions/${team}/comment`, attr)
+    return request.post(`/questions/${id}/comment`, attr)
 };

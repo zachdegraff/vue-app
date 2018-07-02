@@ -13,6 +13,7 @@ export default {
     answeredQuestionsLastPage: null,
 
     actionStoreStatus: '',
+    actionCommentStatus: '',
     actionLoadOpenQuestionsStatus: '',
     actionLoadUserQuestionsStatus: '',
     actionLoadAnsweredQuestionsStatus: ''
