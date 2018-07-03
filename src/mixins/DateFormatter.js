@@ -1,5 +1,20 @@
 const DateFormatter = {
     methods: {
+        __time(date) {
+            const meridiem = date.getHours() > 12 ? 'pm' : 'am',
+                hours = date.getHours() % 12 || 12,
+                minutes = date.getMinutes() > 10 ? date.getMinutes() : `0${date.getMinutes()}`;
+
+            return `${hours}:${minutes} ${meridiem}`
+        },
+
+        __month(value) {
+            const months = ['January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'];
+
+            return months[value]
+        },
+
         toLocaleString(value) {
             const date = new Date(value),
                 utc = new Date(Date.UTC(
@@ -10,23 +25,7 @@ const DateFormatter = {
                     date.getMinutes(),
                     date.getSeconds()
                 ));
-
-            return `${utc.getMonth() + 1}/${utc.getDate()}/${utc.getFullYear()} ${utc.getHours()}:${utc.getMinutes()}`
-        },
-        toUserFriendlyFormat(value) {
-            const months = ['January', 'February', 'March', 'April', 'May', 'June',
-                'July', 'August', 'September', 'October', 'November', 'December'];
-            const date = new Date(value),
-                utc = new Date(Date.UTC(
-                    date.getFullYear(),
-                    date.getMonth(),
-                    date.getDate(),
-                    date.getHours(),
-                    date.getMinutes(),
-                    date.getSeconds()
-                ));
-
-            return `${utc.getHours()}:${utc.getMinutes()}, ${months[utc.getMonth()]} ${utc.getDate()} ${utc.getFullYear()} `
+            return `${this.__time(utc)}, ${this.__month(utc.getMonth())} ${utc.getDate()} ${utc.getFullYear()}`
         }
     }
 };

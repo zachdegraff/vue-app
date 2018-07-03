@@ -11,7 +11,7 @@
                     </q-item-side>
                     <q-item-main>
                         <q-item-tile label>{{item.user.fullName}}</q-item-tile>
-                        <q-item-tile sublabel>Asked at {{toUserFriendlyFormat(item.createdAt)}}</q-item-tile>
+                        <q-item-tile sublabel>Asked at {{toLocaleString(item.createdAt)}}</q-item-tile>
                     </q-item-main>
                 </q-item>
                 <q-item>
@@ -46,7 +46,7 @@
                             </q-item-side>
                             <q-item-main>
                                 <q-item-tile label>{{comment.user.fullName}}</q-item-tile>
-                                <q-item-tile sublabel>Asked at {{toUserFriendlyFormat(comment.createdAt)}}</q-item-tile>
+                                <q-item-tile sublabel>Asked at {{toLocaleString(comment.createdAt)}}</q-item-tile>
                             </q-item-main>
                         </q-item>
                         <q-item>

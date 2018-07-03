@@ -2,7 +2,7 @@
     <q-modal v-model="isOpen" @hide="closeAskHelp" class="app-modal" :content-classes="['app-ask-help-content']">
         <app-modal-layout>
             <q-toolbar slot="header">
-                <q-toolbar-title>What do you want to know?</q-toolbar-title>
+                <q-toolbar-title>What are you wondering?</q-toolbar-title>
                 <q-btn flat icon="close" @click="isOpen=false" class="float-right"/>
             </q-toolbar>
             <form class="row q-pa-xl flex-center">
