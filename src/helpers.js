@@ -91,6 +91,30 @@ export const error = (message) => {
     })
 };
 
+export const selectNode = (node) => {
+    const range = document.createRange(),
+        sel = window.getSelection(),
+        text = node.firstChild;
+
+    range.setStart(text, 0);
+    range.setEnd(text, text.length);
+
+    sel.removeAllRanges();
+    sel.addRange(range);
+};
+
+export const setCaretAtEnd = (node) => {
+    const range = document.createRange(),
+        sel = window.getSelection(),
+        text = node.firstChild;
+
+    range.setStart(text, text.length);
+    range.collapse(true);
+
+    sel.removeAllRanges();
+    sel.addRange(range);
+};
+
 export const handleServerMessage = (response) => {
     let data = response.data;
     if (data.message !== undefined) {

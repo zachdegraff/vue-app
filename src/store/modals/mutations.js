@@ -5,6 +5,7 @@ export const changeCreateCardParams = (state, params) => state.createCard.params
 
 export const changeViewCardStatus = (state, status) => state.viewCard.status = status;
 export const changeEditCardStatus = (state, status) => state.editCard.status = status;
+export const changeCardsEditorStatus = (state, status) => state.cardsEditor.status = status;
 
 export const changeCreateTeamStatus = (state, status) => state.createTeam.status = status;
 export const changeEditTeamStatus = (state, status) => state.editTeam.status = status;

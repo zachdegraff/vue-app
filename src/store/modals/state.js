@@ -16,6 +16,10 @@ export default {
         status: false
     },
 
+    cardsEditor: {
+        status: false
+    },
+
     createTeam: {
         status: false
     },

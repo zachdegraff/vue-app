@@ -1,7 +1,7 @@
 <template>
     <div>
         <view-card v-if="isCardViewing"/>
-        <edit-card v-if="isCardEditing"/>
+        <cards-editor v-if="isCardEditing"/>
         <create-card v-if="isCardAdding"/>
         <ask-help v-if="isAskHelpOpen"/>
     </div>
@@ -11,6 +11,7 @@
     import EditCard from '../components/card/EditCard.vue'
     import CreateCard from '../components/card/CreateCard.vue'
     import AskHelp from '../components/team/AskHelp.vue'
+    import CardsEditor from "./card/CardsEditor";
 
     import {mapGetters} from 'vuex'
 
@@ -21,15 +22,15 @@
         computed: {
             ...mapGetters({
                 isCardViewing: 'modals/isViewCardOpen',
-                isCardEditing: 'modals/isEditCardOpen',
+                isCardEditing: 'modals/isCardsEditorOpen',
                 isCardAdding: 'modals/isCreateCardOpen',
                 isAskHelpOpen: 'modals/isAskHelpOpen'
             })
         },
         components: {
+            CardsEditor,
             AskHelp,
             ViewCard,
-            EditCard,
             CreateCard
         }
     }

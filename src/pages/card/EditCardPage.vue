@@ -19,7 +19,7 @@
         },
         computed: {
             ...mapGetters({
-                isCardEditing: 'modals/isEditCardOpen'
+                isCardEditing: 'modals/isCardsEditorOpen'
             })
         },
         created() {
@@ -27,7 +27,7 @@
         },
         methods: {
             ...mapActions({
-                edit: 'modals/openEditCard'
+                edit: 'modals/openCardsEditor'
             })
         }
     }

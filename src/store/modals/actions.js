@@ -35,6 +35,17 @@ export const closeEditCard = ({dispatch, commit}) => {
     commit('changeEditCardStatus', false);
 };
 
+export const openCardsEditor = ({commit, dispatch}, id) => {
+    dispatch('route/next', {name: 'edit_card', id}, {root: true});
+    dispatch('cards/changeEditingCard', id, {root: true});
+    commit('changeCardsEditorStatus', true);
+};
+export const closeCardsEditor = ({dispatch, commit}) => {
+    dispatch('route/pop', null, {root: true});
+    dispatch('cards/changeEditingCard', null, {root: true});
+    commit('changeCardsEditorStatus', false);
+};
+
 
 export const openViewCard = ({commit, dispatch}, id) => {
     dispatch('route/next', {name: 'view_card', id}, {root: true});
