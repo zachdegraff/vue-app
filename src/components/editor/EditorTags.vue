@@ -74,11 +74,11 @@
                             selectNode(li)
                         }
                     },
-                    {
+                    /*{
                         icon: 'check_circle', label: 'Task list', handler: function (content) {
 
                         }
-                    },
+                    },*/
                     {
                         icon: 'link', label: 'Link', handler: function (content) {
                             const node = document.createElement('p');
@@ -91,15 +91,17 @@
                     },
                     {
                         icon: 'attach_file', label: 'Upload file', handler: function (content) {
+                            this.$refs.file.removeAttribute('accept');
                             this.$refs.file.click()
                         }
                     },
                     {
                         icon: 'insert_photo', label: 'Upload image', handler: function (content) {
+                            this.$refs.file.setAttribute('accept', 'image/*');
                             this.$refs.file.click()
                         }
                     },
-                    {
+                    /*{
                         icon: 'format_quote', label: 'Quote', handler: function (content) {
                             const quote = document.createElement('blockquote');
                             quote.innerHTML = '<br/>';
@@ -107,13 +109,14 @@
                             content.replaceChild(quote, this.activeElement);
                             selectNode(quote)
                         }
-                    },
+                    },*/
                     {
                         icon: 'remove', label: 'Horizontal line', handler: function (content) {
                             const node = document.createElement('p');
                             node.innerHTML = '<hr/><br/>';
 
                             content.replaceChild(node, this.activeElement);
+                            setCaretAtEnd(node)
                         }
                     },
                 ],
@@ -165,6 +168,7 @@
         color: #fff;
         width: 185px;
         .q-item-side {
+            color: #fff;
             font-size: .8rem;
             min-width: 20px;
         }

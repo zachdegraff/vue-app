@@ -99,7 +99,8 @@ module.exports = function (ctx) {
                 'QTabs',
                 'QTab',
                 'QTabPane',
-                'QInfiniteScroll'
+                'QInfiniteScroll',
+                'QProgress'
             ],
             directives: [
                 'Ripple', 'CloseOverlay'
