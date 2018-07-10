@@ -82,7 +82,7 @@
 
                 this.files.progress = 0;
                 this.files.isUploading = true;
-                api.files.uploadEditorFile(this.id, form, config).then(res => {
+                api.files.uploadEditorFile(this.card.id, form, config).then(res => {
                     let content = res.data.tag, isImg = res.data.tag.indexOf('<img') !== -1;
                     if (isImg) {
                         content = `<div class="text-center">${res.data.tag}</div>`
