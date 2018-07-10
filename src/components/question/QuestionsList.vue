@@ -108,7 +108,7 @@
             ...mapActions({
                 hints: 'search/cardsHints',
                 reply: 'questions/comment',
-                showCard: 'modals/openViewCard',
+                showCard: 'modals/openCardsEditor',
                 flushToDefaults: 'questions/flushToDefaults'
             }),
             submit(item) {

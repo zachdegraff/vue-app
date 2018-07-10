@@ -1,9 +1,7 @@
 <template>
     <div class="content-editor-panel">
         <div class="content-editor-content-helper" @click="editor.focus()" v-show="isHelperVisible">Type here card description. Type @ to link to cards or collections.</div>
-        <div id="contentEditor" class="content-editor-content" contenteditable="true">
-            <p><br/></p>
-        </div>
+        <div id="contentEditor" class="content-editor-content" v-html="card.description"></div>
         <q-progress :percentage="files.uploading" v-show="files.isUploading" ref="progressBar" class="content-editor-progress-bar"/>
         <editor-tags :position="tags.position" :is-visible="tags.isVisible" @choose="handleTagChoosing"/>
         <reference-tools :editor="editor"></reference-tools>
@@ -12,14 +10,17 @@
 </template>
 <script>
     import ReferenceTools from './ReferenceTools.vue'
-    import FormatTools from './FormatTools.vue'
+    import MediumOptions from './MediumOptions'
     import EditorTags from './EditorTags.vue'
+    import MediumEditor from 'medium-editor'
     import api from '../../api'
 
     export default {
+        props: ['card'],
         data: () => {
             return {
                 editor: null,
+                medium: null,
                 tags: {
                     position: {},
                     isVisible: false
@@ -29,58 +30,42 @@
                     isUploading: false
                 },
                 activeElement: null,
-                childNodesLength: 0,
                 isHelperVisible: false
             }
         },
-        components: {ReferenceTools, EditorTags, FormatTools},
+        components: {ReferenceTools, EditorTags},
         mounted() {
             this.editor = document.getElementById('contentEditor');
             this.editor.addEventListener('keyup', this.handleKeyPress);
             this.editor.addEventListener('mouseup', this.handleKeyPress);
 
-            this.childNodesLength = this.editor.childNodes.length;
-            if (this.childNodesLength !== 0) {
-                this.activeElement = this.editor.childNodes[this.editor.childNodes.length - 1]
-            }
+            this.medium = new MediumEditor('#contentEditor', MediumOptions);
+            this.medium.subscribe('editableInput', (e, el) => {
+                this.handleKeyPress();
+                this.$emit('input', el.innerHTML)
+            });
+            this.medium.subscribe('blur', (e, el) => this.$emit('blur', el));
 
-            this.checkTagsVisibility();
-            this.checkHelperVisibility();
+            this.checkTagsVisibility()
         },
         watch: {
-            activeElement: function () {
-                this.checkTagsVisibility();
-                this.checkHelperVisibility();
-            },
-            childNodesLength: function (val) {
-                if (val === 0) {
-                    this.activeElement = this.createParagraph();
-                    return this.editor.appendChild(this.activeElement)
-                }
+            card: function (val) {
+                this.tags.isVisible = false;
+                this.isHelperVisible = false;
 
-                this.editor.childNodes.forEach(node => {
-                    if (node.nodeName === 'DIV') {
-                        const p = this.createParagraph();
-                        if (this.activeElement === node) {
-                            this.activeElement = p
-                        }
-                        this.editor.replaceChild(p, node)
-                    }
-                })
-            },
+                this.medium.setContent(val.description)
+            }
         },
         methods: {
-            handleKeyPress(e) {
-                this.childNodesLength = this.editor.childNodes.length;
-
+            handleKeyPress() {
                 this.setActiveElement();
                 this.setCaretPosition();
 
-                this.checkTagsVisibility();
-                this.checkHelperVisibility()
+                this.checkTagsVisibility()
             },
             handleTagChoosing(e) {
-                e.handler.call(this, this.editor)
+                this.tags.isVisible = false;
+                e.handler.call(this, this.medium)
             },
             handleUploading(e) {
                 let file = e.target.files[0];
@@ -97,23 +82,26 @@
 
                 this.files.progress = 0;
                 this.files.isUploading = true;
-                api.files.uploadEditorFile(68, form, config).then(res => {
+                api.files.uploadEditorFile(this.id, form, config).then(res => {
                     let content = res.data.tag, isImg = res.data.tag.indexOf('<img') !== -1;
                     if (isImg) {
                         content = `<div class="text-center">${res.data.tag}</div>`
                     }
                     this.activeElement.innerHTML = content;
                     if (isImg) {
-                        this.flushHelpers();
+                        this.tags.isVisible = false;
                         const p = this.createParagraph();
-                        this.activeElement.parentNode.insertBefore(p, this.activeElement.nextSibling);
+                        this.activeElement.parentNode.insertBefore(p, this.activeElement.nextSibling)
                     }
                     this.$refs.file.value = ''
                 })
             },
-            flushHelpers() {
-                this.tags.isVisible = false;
-                this.isHelperVisible = false;
+            replaceActiveElement(el) {
+                if (this.activeElement === null) return;
+
+                this.activeElement.parentNode.replaceChild(el, this.activeElement);
+                this.medium.selectElement(el.firstChild);
+                this.medium.trigger('editableInput', {}, this.editor)
             },
             createParagraph() {
                 const el = document.createElement('p');
@@ -144,7 +132,8 @@
                 }
             },
             checkTagsVisibility() {
-                if (this.isEmptyEditor()) {
+                this.isHelperVisible = this.isEmptyEditor();
+                if (this.isHelperVisible) {
                     return this.tags.isVisible = true
                 }
                 if (this.activeElement === null) {
@@ -152,13 +141,7 @@
                 }
                 this.tags.isVisible = this.activeElement.nodeName === 'P' && this.activeElement.innerHTML === '<br>'
             },
-            checkHelperVisibility() {
-                this.isHelperVisible = this.isEmptyEditor()
-            },
             isEmptyEditor() {
-                if (this.childNodesLength > 1) {
-                    return false
-                }
                 if (this.editor.childNodes[0] === undefined) {
                     return true
                 }
@@ -197,5 +180,9 @@
         top: 100px;
         left: 0;
         width: 100%;
+    }
+
+    .medium-editor-toolbar {
+        z-index: 6001;
     }
 </style>

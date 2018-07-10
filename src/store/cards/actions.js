@@ -56,7 +56,8 @@ export const update = ({commit, dispatch}, {id, form}) => {
     return new Promise((resolve, reject) => {
         commit('updateStatusRequest');
         api.cards.update(id, form).then(res => {
-            dispatch('search/changeCardInResults', {card: res.data.card}, {root: true});
+            dispatch('search/changeCardInResults', res.data.card, {root: true});
+            dispatch('editor/changeEditorCard', res.data.card, {root: true});
             commit('updateStatusSuccess', res);
             loadHomeItems(dispatch);
             resolve(res.data)
@@ -135,6 +136,13 @@ export const recentlyUpdated = ({commit, rootGetters}) => {
             reject(err)
         })
     })
+};
+
+export const changeEditorCard = ({commit, dispatch, getters}, id) => {
+    if (id === null) {
+        return commit('changeEditorCard', null);
+    }
+    dispatch('get', id).then(card => commit('changeEditorCard', card))
 };
 
 export const changeViewingCard = ({commit, dispatch, getters}, id) => {

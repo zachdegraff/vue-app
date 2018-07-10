@@ -71,6 +71,7 @@ export const getViewingCard = state => {
     return null
 };
 export const getEditingCard = state => state.editing;
+export const getEditorCard = state => state.editorCard;
 
 export const getRecentlyAdded = state => state.recentlyAdded;
 export const getRecentlyUpdated = state => state.recentlyUpdated;

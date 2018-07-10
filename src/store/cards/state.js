@@ -4,6 +4,7 @@ export default {
 
     viewStack: [],
     editing: null,
+    editorCard: null,
 
     recentlyAdded: [],
     recentlyUpdated: [],

@@ -18,7 +18,7 @@
     </div>
 </template>
 <script>
-    import {selectNode, setCaretAtEnd} from '../../helpers'
+    import {setCaretAtEnd} from '../../helpers'
 
     export default {
         props: ['position', 'isVisible'],
@@ -26,30 +26,27 @@
             return {
                 elements: [
                     {
-                        text: 'H1', label: 'Large heading', handler: function (content) {
+                        text: 'H1', label: 'Large heading', handler: function () {
                             const el = document.createElement('h1');
                             el.innerHTML = 'Large heading';
 
-                            content.replaceChild(el, this.activeElement);
-                            selectNode(el)
+                            this.replaceActiveElement(el)
                         }
                     },
                     {
-                        text: 'H2', label: 'Medium heading', handler: function (content) {
+                        text: 'H2', label: 'Medium heading', handler: function () {
                             const el = document.createElement('h2');
                             el.innerHTML = 'Medium heading';
 
-                            content.replaceChild(el, this.activeElement);
-                            selectNode(el)
+                            this.replaceActiveElement(el)
                         }
                     },
                     {
-                        text: 'H3', label: 'Small heading', handler: function (content) {
+                        text: 'H3', label: 'Small heading', handler: function () {
                             const el = document.createElement('h3');
                             el.innerHTML = 'Small heading';
 
-                            content.replaceChild(el, this.activeElement);
-                            selectNode(el)
+                            this.replaceActiveElement(el)
                         }
                     },
                     {
@@ -59,19 +56,17 @@
                             li.innerHTML = '<br/>';
                             ul.appendChild(li);
 
-                            content.replaceChild(ul, this.activeElement);
-                            selectNode(li)
+                            this.replaceActiveElement(ul)
                         }
                     },
                     {
-                        icon: 'format_list_numbered', label: 'Numbered list', handler: function (content) {
-                            const ul = document.createElement('ol'),
+                        icon: 'format_list_numbered', label: 'Numbered list', handler: function () {
+                            const ol = document.createElement('ol'),
                                 li = document.createElement('li');
                             li.innerHTML = '<br/>';
-                            ul.appendChild(li);
+                            ol.appendChild(li);
 
-                            content.replaceChild(ul, this.activeElement);
-                            selectNode(li)
+                            this.replaceActiveElement(ol)
                         }
                     },
                     /*{
@@ -80,43 +75,37 @@
                         }
                     },*/
                     {
-                        icon: 'link', label: 'Link', handler: function (content) {
-                            const node = document.createElement('p');
-                            node.innerHTML = '@';
+                        icon: 'link', label: 'Link', handler: function () {
+                            if (this.activeElement === null) return;
 
+                            this.activeElement.innerHTML = '@';
+                            setCaretAtEnd(this.activeElement);
 
-                            content.replaceChild(node, this.activeElement);
-                            setCaretAtEnd(node)
+                            this.medium.trigger('editableInput', {}, this.editor)
                         }
                     },
                     {
-                        icon: 'attach_file', label: 'Upload file', handler: function (content) {
+                        icon: 'attach_file', label: 'Upload file', handler: function () {
                             this.$refs.file.removeAttribute('accept');
                             this.$refs.file.click()
                         }
                     },
                     {
-                        icon: 'insert_photo', label: 'Upload image', handler: function (content) {
+                        icon: 'insert_photo', label: 'Upload image', handler: function () {
                             this.$refs.file.setAttribute('accept', 'image/*');
                             this.$refs.file.click()
                         }
                     },
-                    /*{
-                        icon: 'format_quote', label: 'Quote', handler: function (content) {
-                            const quote = document.createElement('blockquote');
-                            quote.innerHTML = '<br/>';
-
-                            content.replaceChild(quote, this.activeElement);
-                            selectNode(quote)
-                        }
-                    },*/
                     {
-                        icon: 'remove', label: 'Horizontal line', handler: function (content) {
+                        icon: 'remove', label: 'Horizontal line', handler: function () {
+                            if (this.activeElement === null) return;
+
                             const node = document.createElement('p');
                             node.innerHTML = '<hr/><br/>';
 
-                            content.replaceChild(node, this.activeElement);
-                            setCaretAtEnd(node)
+                            this.activeElement.parentNode.insertBefore(node, this.activeElement);
+                            this.medium.selectElement(this.activeElement);
+                            this.medium.trigger('editableInput', {}, this.editor)
                         }
                     },
                 ],
@@ -160,8 +149,12 @@
     }
 
     .cards-editor-content-tags {
-        background: #2fab64;
-        border-radius: 2px;
+        background-color: #242424;
+        background: -webkit-linear-gradient(top, #242424, rgba(36, 36, 36, 0.75));
+        background: linear-gradient(to bottom, #242424, rgba(36, 36, 36, 0.75));
+        border: 1px solid #000;
+        border-radius: 5px;
+        box-shadow: 0 0 3px #000;
         position: absolute;
         left: 30px;
         top: -10px;
@@ -181,7 +174,7 @@
         height: 0;
         border-width: 5px;
         border-style: solid;
-        border-color: transparent #2fab64 transparent transparent;
+        border-color: transparent #242424 transparent transparent;
         top: 17px;
         left: -10px;
     }

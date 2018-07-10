@@ -36,7 +36,7 @@
         },
         methods: {
             ...mapActions({
-                showCard: 'modals/openViewCard'
+                showCard: 'modals/openCardsEditor'
             }),
             createViewUrl(card) {
                 return route('view_card', {id: card.id})

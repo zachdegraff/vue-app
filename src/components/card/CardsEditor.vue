@@ -1,43 +1,16 @@
 <template>
-    <q-modal v-model="isOpen" class="app-modal" no-esc-dismiss no-backdrop-dismiss :content-classes="['app-modal-content']" :content-css="{minWidth: '50vw', minHeight: '80vh'}" @click.native="close">
+    <q-modal v-model="isOpen" @hide="close" no-route-dismiss class="app-modal" :content-classes="['app-modal-content']" :content-css="{minWidth: '50vw', minHeight: '80vh'}">
         <app-modal-layout>
             <div class="cards-editor">
                 <div class="cards-editor-sidebar">
-                    <div class="cards-editor-team">
-                        <img src="http://wonderus/storage/44/conversions/33303252_1869432083354331_3231613228362498048_o-thumb.jpg" class="round-borders">
-                        <span>Barahta</span>
+                    <div class="cards-editor-team" v-if="team">
+                        <img :src="photo(team.photo)" class="round-borders">
+                        <span>{{team.name}}</span>
                         <q-icon name="chevron_left" size="30px"/>
                     </div>
                     <ul class="cards-editor-cards">
-                        <li class="active">
-                            Activity-Based Costing
-                            <div class="cards-editor-cards-actions">
-                                <q-icon name="more_vert"/>
-                                <q-popover>
-                                    <q-list>
-                                        <q-item v-close-overlay>
-                                            <q-item-main>
-                                                <q-item-tile class="uppercase">close</q-item-tile>
-                                            </q-item-main>
-                                        </q-item>
-                                    </q-list>
-                                </q-popover>
-                            </div>
-                        </li>
-                        <li>
-                            Untitled Card
-                            <div class="cards-editor-cards-actions">
-                                <q-icon name="more_vert"/>
-                                <q-popover>
-                                    <q-list>
-                                        <q-item v-close-overlay>
-                                            <q-item-main>
-                                                <q-item-tile class="uppercase">close</q-item-tile>
-                                            </q-item-main>
-                                        </q-item>
-                                    </q-list>
-                                </q-popover>
-                            </div>
+                        <li v-for="card in cards" :key="card.id" @click="changeActiveCard(card.id)" :class="{active: card.id === active.id}">
+                            {{card.name}}
                         </li>
                     </ul>
                     <div class="cards-editor-sidebar-actions">
@@ -46,27 +19,36 @@
                     </div>
                 </div>
                 <div class="cards-editor-main">
-                    <q-btn outline dense size="xl" icon="add" color="primary" class="cards-editor-btn-create"/>
-                    <div class="cards-editor-stamp">
-                        Created by Jeff Stern on 3:25pm, June 6 2018
-                    </div>
+                    <q-btn outline dense size="xl" icon="add" color="primary" class="cards-editor-btn-create" @click="add"/>
+                    <q-btn flat icon="close" @click="isOpen=false" class="cards-editor-close"/>
                     <div class="cards-editor-shorthand">
                         <q-input
                                 dense
                                 hide-underline
-                                value="ASC, ASC"
+                                v-model="form.shorthand"
+                                placeholder="Shorthand"
                                 :before="[{icon: 'style', handler () {}}]"
-                        />
+                                @blur="save"/>
                     </div>
                     <div class="cards-editor-collections">
                         <q-chips-input
                                 hide-underline
-                                :value="[]"
-                                :before="[{icon: 'folder_open', handler () {}}]">
+                                v-model="form.collections"
+                                placeholder="Collections"
+                                :before="[{icon: 'folder_open', handler () {}}]"
+                                @blur="save">
+                            <q-autocomplete :static-data="suggests"/>
                         </q-chips-input>
                     </div>
-                    <div class="cards-editor-title">Activity-Based Costing</div>
-                    <content-editor></content-editor>
+                    <div class="q-mt-lg q-mb-md">
+                        <q-input
+                                dense
+                                hide-underline
+                                class="q-title"
+                                v-model="form.name"
+                                @blur="save"/>
+                    </div>
+                    <content-editor :card="active" @input="changeContent" @blur="save" v-if="active"></content-editor>
                 </div>
             </div>
         </app-modal-layout>
@@ -74,29 +56,92 @@
 </template>
 <script>
     import AppModalLayout from '../context/modal/AppModalLayout'
-    import ContentEditor from "../editor/ContentEditor.vue";
+    import ContentEditor from '../editor/ContentEditor.vue'
+    import {mapGetters, mapActions} from 'vuex'
 
     export default {
         data: () => {
             return {
-                card: {
+                form: {
+                    id: '',
+                    name: '',
+                    teamId: '',
+                    shorthand: '',
+                    collections: [],
                     description: ''
                 },
+                suggests: {field: 'label', list: []},
                 isOpen: true
             }
         },
         components: {AppModalLayout, ContentEditor},
-        methods: {
-            close() {
-
+        computed: {
+            ...mapGetters({
+                team: 'teams/current',
+                active: 'editor/getActiveCard',
+                cards: 'editor/getEditorCards',
+                collections: 'collections/all',
+            })
+        },
+        watch: {
+            active: function (val) {
+                Object.keys(this.form).forEach(key => {
+                    if (key === 'shorthand') {
+                        return this.form.shorthand = val.shorthand.join(', ');
+                    }
+                    if (key === 'collections') {
+                        return this.form.collections = val.collections.map(item => item.name);
+                    }
+                    this.form[key] = val[key]
+                })
             },
+            'form.description': function (val) {
+                this.retrieveCards(val)
+            }
+        },
+        created() {
+            this.suggests.list = this.collections.map(item => {
+                return {label: item.name}
+            })
+        },
+        methods: {
+            ...mapActions({
+                create: 'cards/create',
+                update: 'cards/update',
+                close: 'modals/closeCardsEditor',
+                changeActiveCard: 'editor/changeActiveCard',
+                retrieveCards: 'editor/retrieveCardsFromContent'
+            }),
+            add() {
+                const params = {
+                    name: 'Untitled card',
+                    teamId: this.team.id
+                };
+
+                this.create(params).then(card => this.changeActiveCard(card.card.id))
+            },
+            save() {
+                const data = {...this.form},
+                    form = new FormData();
+                for (let i in data) {
+                    form.append(i, data[i])
+                }
+                form.append('_method', 'PUT');
+                this.update({id: data.id, form});
+            },
+            photo(path) {
+                if (!path) {
+                    return 'statics/team.png'
+                }
+                return path
+            },
+            changeContent(e) {
+                this.form.description = e
+            }
         }
     }
 </script>
 <style lang="scss">
-    .cards-editor {
-    }
-
     .cards-editor-sidebar {
         background: #fafafa;
         position: absolute;
@@ -165,6 +210,12 @@
         top: 0;
     }
 
+    .cards-editor-close {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
     .cards-editor-main {
         color: #8b8b8b;
         padding: 20px 35px 15px 70px;
@@ -184,6 +235,7 @@
 
     .cards-editor-collections {
         display: inline-block;
+        font-size: .8rem;
         margin-right: 10px;
         .q-icon {
             font-size: 15px;
@@ -200,6 +252,8 @@
         float: right;
         padding-top: 7px;
         font-size: .8rem;
+        position: absolute;
+        bottom: 0;
     }
 
     .cards-editor-title {

@@ -179,7 +179,7 @@
         methods: {
             ...mapActions({
                 load: 'cards/all',
-                showCard: 'modals/openViewCard',
+                showCard: 'modals/openCardsEditor',
             }),
             fixSorting(e) {
                 if (e.sortBy === null) {
@@ -204,11 +204,6 @@
             },
             createViewUrl(card) {
                 return route('view_card', {id: card.id})
-            },
-            replaceNewLines(value) {
-                if (value === null) return '';
-
-                return value.replace(/\n/g, '<br/>')
             }
         }
     }

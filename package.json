@@ -12,6 +12,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "caret-xy": "^2.0.2",
+    "medium-editor": "^5.23.3",
     "quasar-framework": "^0.16.0",
     "vuelidate": "^0.6.2"
   },

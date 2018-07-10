@@ -35,7 +35,7 @@
         methods: {
             ...mapActions({
                 hints: 'search/hints',
-                showCard: 'modals/openViewCard',
+                showCard: 'modals/openCardsEditor',
                 changeQuery: 'search/changeQuery'
             }),
             submit() {

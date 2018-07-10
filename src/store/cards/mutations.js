@@ -58,6 +58,7 @@ export const changeViewingCard = (state, card) => {
     state.viewStack.push(card)
 };
 export const changeEditingCard = (state, card) => state.editing = card;
+export const changeEditorCard = (state, card) => state.editorCard = card;
 
 export const cardsAmountStatusRequest = state => state.actionCardsAmount = 'Request';
 export const cardsAmountStatusSuccess = (state, res) => {

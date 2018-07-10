@@ -22,7 +22,7 @@
 </template>
 <script>
     import {mapGetters, mapActions} from 'vuex'
-    import {route} from '../../helpers'
+    import {route, setCaretAtEnd} from '../../helpers'
 
     const APP_HOST = process.env.APP_HOST;
 
@@ -109,7 +109,7 @@
             }),
             handle(e) {
                 const node = document.getSelection().focusNode;
-                if (node.nodeName !== '#text') {
+                if (node === null || node.nodeName !== '#text') {
                     return this.isReferenceTools = false
                 }
                 this.start = this.getStartPos();
@@ -124,7 +124,7 @@
             select(item) {
                 const node = document.getSelection().focusNode,
                     content = node.nodeValue.substring(this.start, document.getSelection().focusOffset),
-                    link = `<a href="${this.getLinkUrl(item)}" contenteditable="false" target="_blank">${item.name}</a>&nbsp;`;
+                    link = `<a href="${this.getLinkUrl(item)}" contenteditable="false" target="_blank">${item.name}</a> `;
 
                 node.parentNode.innerHTML = node.parentNode.innerHTML.replace(content, link);
 
