@@ -1,5 +1,7 @@
 const APP_HOST = process.env.APP_HOST;
 
+import {strip_tags} from '../helpers'
+
 const Markdown = {
     methods: {
         __markBracketsTag(str) {
@@ -39,11 +41,13 @@ const Markdown = {
         },
         clearMarks(content) {
             if (!content) return '';
-            return content
+            return strip_tags(content).replace('&nbsp;', '')
+
+            /*return content
                 .replace(/([\s\.,\'\"]*)\*([^*]*)\*([\s\.,\'\"]*)/g, '$1$2$3')
                 .replace(/([\s\.,\'\"]*)_([^_]*)_([\s\.,\'\"]*)/g, '$1$2$3')
                 .replace(/\[([^\[]*)\|([^\]]*)\]/g, '$2')
-                .replace(/<([^<]*)\|([^>]*)>/g, '$2');
+                .replace(/<([^<]*)\|([^>]*)>/g, '$2');*/
         }
     }
 };

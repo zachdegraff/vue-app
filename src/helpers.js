@@ -81,6 +81,49 @@ export const decode = (string, quoteStyle) => {
     return string
 };
 
+export const strip_tags = (str, allowed_tags = '') => {
+    let allowed_array = [];
+
+    const replacer = function (search, replace, str) {
+        return str.split(search).join(replace);
+    };
+    if (allowed_tags) {
+        allowed_array = allowed_tags.match(/([a-zA-Z]+)/gi);
+    }
+    str += '';
+    const matches = str.match(/(<\/?[\S][^>]*>)/gi);
+    for (let key in matches) {
+        if (isNaN(key)) {
+            continue;
+        }
+        const html = matches[key].toString();
+        let allowed = false;
+        for (let k in allowed_array) {
+            const allowed_tag = allowed_array[k];
+            let i = -1;
+
+            if (i !== 0) {
+                i = html.toLowerCase().indexOf('<' + allowed_tag + '>');
+            }
+            if (i !== 0) {
+                i = html.toLowerCase().indexOf('<' + allowed_tag + ' ');
+            }
+            if (i !== 0) {
+                i = html.toLowerCase().indexOf('</' + allowed_tag);
+            }
+            if (i === 0) {
+                allowed = true;
+                break;
+            }
+        }
+        if (!allowed) {
+            str = replacer(html, ' ', str);
+        }
+    }
+    return str;
+}
+
+
 export const error = (message) => {
     Notify.create({
         message,

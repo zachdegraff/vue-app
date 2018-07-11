@@ -4,9 +4,9 @@
             <a :href="createViewUrl(card)" @click.prevent.stop="showCard(card.id)">
                 <q-card class="cards-list-item cursor-pointer self-center">
                     <q-card-media>
-                        <img :src="getCardImage(card.thumb)">
+                        <img :src="getCardImage(card.image)">
 
-                        <q-card-title slot="overlay" v-if="card.thumb">
+                        <q-card-title slot="overlay" v-if="card.image">
                             {{card.name}}
                             <span slot="subtitle" v-if="card.shorthand.length"><q-icon name="style" class="q-mr-sm"/><span v-html="shorthand(card.shorthand)"></span></span>
                         </q-card-title>
