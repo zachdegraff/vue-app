@@ -21,6 +21,13 @@ export const commentStatusRequest = state => state.actionCommentStatus = 'Reques
 export const commentStatusSuccess = state => state.actionCommentStatus = 'Success';
 export const commentStatusFailure = state => state.actionCommentStatus = 'Failure';
 
+export const loadQuestionsCountRequest = state => state.actionLoadQuestionsCount = 'Request';
+export const loadQuestionsCountSuccess = (state, res) => {
+    state.actionLoadQuestionsCount = 'Success';
+    state.count = res.data
+};
+export const loadQuestionsCountFailure = state => state.actionLoadQuestionsCount = 'Failure';
+
 export const loadOpenQuestionsStatusRequest = state => state.actionLoadOpenQuestions = 'Request';
 export const loadOpenQuestionsStatusSuccess = (state, res) => {
     state.actionLoadOpenQuestions = 'Success';

@@ -39,8 +39,7 @@
                     email
                 },
                 password: {
-                    required,
-                    minLength: minLength(3)
+                    required
                 }
             }
         },

@@ -4,6 +4,10 @@ export const all = (team, params = {}) => {
     return request.get(`/teams/${team}/questions`, {params})
 };
 
+export const count = (team) => {
+    return request.get(`/teams/${team}/questions/count`)
+};
+
 export const store = (team, attr) => {
     return request.post(`/teams/${team}/help`, attr)
 };

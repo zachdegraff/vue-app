@@ -3,9 +3,9 @@
         <search-form></search-form>
         <div class="row flex-center q-mt-md">
             <div class="col-xs-12 col-sm-8">
-                <q-btn :to="{name: 'cards_table'}" :label="allCardsCaption" icon="note" class="q-mr-md" v-if="cardsAmount" />
+                <q-btn :to="{name: 'cards_table'}" :label="allCardsCaption" icon="note" class="q-mr-md" v-if="cardsAmount"/>
                 <q-btn :to="{name: 'saved_cards'}" :label="savedCardsCaption" icon="bookmark" class="q-mr-md" :disabled="!savedCardsAmount"/>
-                <q-btn :to="{name: 'questions'}" label="questions" icon="help"/>
+                <q-btn :to="{name: 'questions'}" :label="questionsCaption" icon="help"/>
             </div>
         </div>
         <div class="row flex-center">
@@ -42,7 +42,8 @@
                 })
             }
             document.title = this.title;
-            this.changeQuery('')
+            this.changeQuery('');
+            this.loadQuestionsCount();
         },
         watch: {
             team: function (val) {
@@ -53,6 +54,7 @@
             ...mapGetters({
                 team: 'teams/current',
                 cardsAmount: 'cards/getCardsAmount',
+                questionsAmount: 'questions/getCount',
                 savedCardsAmount: 'users/getFavoriteCardsCount',
                 recentlyAdded: 'cards/getRecentlyAdded',
                 recentlyUpdated: 'cards/getRecentlyUpdated',
@@ -69,6 +71,9 @@
             },
             savedCardsCaption() {
                 return `saved cards (${this.savedCardsAmount})`
+            },
+            questionsCaption() {
+                return `questions (${this.questionsAmount})`;
             }
         },
         components: {
@@ -77,7 +82,8 @@
         methods: {
             ...mapActions({
                 join: 'members/joinMemberToTeam',
-                changeQuery: 'search/changeQuery'
+                changeQuery: 'search/changeQuery',
+                loadQuestionsCount: 'questions/loadQuestionsCount'
             })
         }
     }

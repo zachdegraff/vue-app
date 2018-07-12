@@ -5,6 +5,7 @@ function loadDefaults(dispatch) {
     dispatch('cards/recentlyAdded', {}, {root: true});
     dispatch('cards/recentlyUpdated', {}, {root: true});
     dispatch('collections/all', {}, {root: true});
+    dispatch('questions/loadQuestionsCount', {}, {root: true});
 }
 
 export const all = ({commit, dispatch}) => {

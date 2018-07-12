@@ -1,4 +1,6 @@
 
+export const getCount = state => state.count;
+
 export const getOpenQuestions = state => state.openQuestions;
 export const getUserQuestions = state => state.userQuestions;
 export const getAnsweredQuestions = state => state.answeredQuestions;

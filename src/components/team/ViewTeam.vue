@@ -84,7 +84,8 @@
                 {name: 'email', required: true, label: 'Email Address', field: 'email', sortable: true},
                 {name: 'role', required: true, label: 'Team Role', field: 'role', sortable: true},
                 {name: 'actions', align: 'right', label: ''},
-            ]
+            ],
+            isDisableBtnClicked: false
         }),
         mixins: [ValidatorMessages],
         watch: {
@@ -138,6 +139,7 @@
         },
         methods: {
             ...mapActions({
+                view: 'teams/view',
                 update: 'teams/update',
                 invite: 'modals/openInviteMember',
                 changeRole: 'modals/openChangeMemberRole',
@@ -181,7 +183,7 @@
             },
             disableSlack() {
                 this.confirm().then(() => {
-                    this.disableSlackIntegration(this.team.id).then(() => this.load(this.team.id))
+                    this.disableSlackIntegration(this.team.id).then(() => this.view(this.team.id))
                 }).catch(() => {
                 })
             },

@@ -46,7 +46,7 @@
                             </q-item-side>
                             <q-item-main>
                                 <q-item-tile label>{{comment.user.fullName}}</q-item-tile>
-                                <q-item-tile sublabel>Asked at {{toLocaleString(comment.createdAt)}}</q-item-tile>
+                                <q-item-tile sublabel>{{toLocaleString(comment.createdAt)}}</q-item-tile>
                             </q-item-main>
                         </q-item>
                         <q-item>

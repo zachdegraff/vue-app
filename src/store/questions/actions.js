@@ -30,6 +30,23 @@ export const flushToDefaults = ({commit}) => {
     commit('flushState')
 };
 
+export const loadQuestionsCount = ({commit, rootGetters}) => {
+    return new Promise((resolve, reject) => {
+        const team = rootGetters['teams/current'];
+        if (team === null) {
+            resolve(0)
+        }
+        commit('loadQuestionsCountRequest');
+        api.questions.count(team.id).then(res => {
+            commit('loadQuestionsCountSuccess', res);
+            resolve(res.data)
+        }).catch(err => {
+            commit('loadQuestionsCountFailure', err);
+            reject(err)
+        })
+    })
+};
+
 export const loadOpenQuestions = ({commit, state, rootGetters}) => {
     if (state.openQuestionsPage === state.openQuestionsLastPage) {
         return []

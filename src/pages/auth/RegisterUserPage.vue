@@ -22,6 +22,9 @@
             <q-card-main>
                 <strong class="q-headline">Set up your Wonderus account</strong>
                 <div class="q-mt-xs">Enter your information to complete the sign up process</div>
+                <q-field class="q-py-sm" :error="$v.form.email.$error" :error-label="firstErrorFor($v.form.email)">
+                    <q-input type="text" float-label="Email" v-model="form.email" @blur="$v.form.email.$touch"/>
+                </q-field>
                 <div class="row gutter-sm q-py-sm">
                     <div class="col-6">
                         <q-field :error="$v.form.firstName.$error" :error-label="firstErrorFor($v.form.firstName)">
@@ -34,9 +37,6 @@
                         </q-field>
                     </div>
                 </div>
-                <q-field class="q-py-sm" :error="$v.form.email.$error" :error-label="firstErrorFor($v.form.email)">
-                    <q-input type="text" float-label="Email" v-model="form.email" @blur="$v.form.email.$touch"/>
-                </q-field>
                 <q-field class="q-py-sm" :error="$v.form.password.$error" :error-label="firstErrorFor($v.form.password)" helper="Use 8 or more characters with a mix of letters, numbers and symbols">
                     <q-input type="password" float-label="Password" v-model="form.password" @blur="$v.form.password.$touch"/>
                 </q-field>

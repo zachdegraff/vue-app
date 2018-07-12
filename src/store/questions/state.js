@@ -1,4 +1,6 @@
 export default {
+    count: 0,
+
     openQuestions: [],
     userQuestions: [],
     answeredQuestions: [],
@@ -16,5 +18,6 @@ export default {
     actionCommentStatus: '',
     actionLoadOpenQuestionsStatus: '',
     actionLoadUserQuestionsStatus: '',
-    actionLoadAnsweredQuestionsStatus: ''
+    actionLoadAnsweredQuestionsStatus: '',
+    actionLoadQuestionsCount: ''
 }
