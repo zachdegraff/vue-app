@@ -37,12 +37,12 @@ export const closeEditCard = ({dispatch, commit}) => {
 
 export const openCardsEditor = ({commit, dispatch}, id) => {
     dispatch('route/next', {name: 'view_card', id}, {root: true});
-    dispatch('editor/openCard', id, {root: true});
+    dispatch('editor/open', id, {root: true});
     commit('changeCardsEditorStatus', true);
 };
 export const closeCardsEditor = ({dispatch, commit}) => {
     dispatch('route/pop', null, {root: true});
-    dispatch('editor/closeCard', null, {root: true});
+    dispatch('editor/close', null, {root: true});
     commit('changeCardsEditorStatus', false);
 };
 

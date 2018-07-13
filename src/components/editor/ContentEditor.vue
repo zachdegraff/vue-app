@@ -13,6 +13,7 @@
     import MediumOptions from './MediumOptions'
     import EditorTags from './EditorTags.vue'
     import MediumEditor from 'medium-editor'
+    import {mapActions} from 'vuex'
     import api from '../../api'
 
     export default {
@@ -34,11 +35,16 @@
             }
         },
         components: {ReferenceTools, EditorTags},
+        created() {
+
+        },
         mounted() {
             this.editor = document.getElementById('contentEditor');
-            this.editor.addEventListener('keyup', this.handleKeyPress);
-            this.editor.addEventListener('mouseup', this.handleKeyPress);
-
+            if (this.editor !== null) {
+                this.editor.addEventListener('keyup', this.handleKeyPress);
+                this.editor.addEventListener('mouseup', this.handleKeyPress);
+                this.editor.addEventListener('click', this.handleLinkClicks);
+            }
             this.medium = new MediumEditor('#contentEditor', MediumOptions);
             this.medium.subscribe('editableInput', (e, el) => {
                 this.handleKeyPress();
@@ -50,13 +56,20 @@
         },
         watch: {
             card: function (val) {
+                if (val === null) return;
+
                 this.tags.isVisible = false;
                 this.isHelperVisible = false;
 
-                this.medium.setContent(val.description)
+                if (this.medium !== null) {
+                    this.medium.setContent(val.description)
+                }
             }
         },
         methods: {
+            ...mapActions({
+                changeActiveCard: 'editor/open',
+            }),
             handleKeyPress() {
                 this.setActiveElement();
                 this.setCaretPosition();
@@ -66,6 +79,16 @@
             handleTagChoosing(e) {
                 this.tags.isVisible = false;
                 e.handler.call(this, this.medium)
+            },
+            handleLinkClicks(e) {
+                if (e.target.nodeName !== 'A') return true;
+
+                const matches = e.target.href.match(/\/cards\/([0-9]+)/);
+                if (matches !== null) {
+                    e.preventDefault();
+                    this.changeActiveCard(parseInt(matches[1]))
+                }
+                return true
             },
             handleUploading(e) {
                 let file = e.target.files[0];
@@ -121,6 +144,8 @@
                 this.$refs.progressBar.$el.style.top = this.tags.position.y + 'px'
             },
             setActiveElement() {
+                if (document.activeElement !== this.editor) return;
+
                 const selection = document.getSelection();
 
                 this.activeElement = selection.focusNode;
