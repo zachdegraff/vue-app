@@ -32,8 +32,8 @@
                         <img src="statics/header-logo.png"/>
                     </router-link>
                 </div>
-                <q-btn color="white" class="text-black gt-xs" icon="add" label="Add Card" @click="addCard"/>
-                <q-btn color="white" class="short-add-button text-black lt-sm" icon="add" @click="addCard"/>
+                <q-btn color="white" class="text-black gt-xs" icon="add" label="Add Card" v-if="canAddCard" @click="addCard"/>
+                <q-btn color="white" class="short-add-button text-black lt-sm" icon="add" v-if="canAddCard" @click="addCard"/>
                 <div class="auth-user q-ml-md" v-if="user">
                     <img :src="avatar(user.photo)" class="header-icon vertical-middle"/>
                     <q-popover>
@@ -75,6 +75,12 @@
                     return {name: 'view_team', params: {id: this.current.id}}
                 }
                 return {name: 'teams'}
+            },
+            canAddCard() {
+                if (this.current === null) {
+                    return false
+                }
+                return this.current.isEditable
             }
         },
         methods: {
