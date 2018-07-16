@@ -1,6 +1,7 @@
 <template>
     <div class="content-editor-panel">
-        <div class="content-editor-content-helper" @click="editor.focus()" v-show="isHelperVisible">Type here card description. Type @ to link to cards or collections.</div>
+        <div class="content-editor-content-helper" @click="editor.focus()" v-show="isHelperVisible">What is your team wondering?<br/>
+            <span class="q-caption">(Hint: Type @ to mention other cards.)</span></div>
         <div id="contentEditor" class="content-editor-content" v-html="card.description"></div>
         <q-progress :percentage="files.uploading" v-show="files.isUploading" ref="progressBar" class="content-editor-progress-bar"/>
         <editor-tags :position="tags.position" :is-visible="tags.isVisible" @choose="handleTagChoosing"/>

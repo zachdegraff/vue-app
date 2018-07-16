@@ -35,8 +35,7 @@
                         <i></i>
                     </button>
                     <div class="cards-editor-status">
-                        <q-spinner color="secondary" :size="16" v-show="isUpdating"/>
-                        <span v-show="!isUpdating">Saved</span>
+                        <span>{{processStatus}}</span>
                     </div>
                     <div class="float-right" v-if="active">
                         <q-btn icon="bookmark" flat dense @click="toggleFavorite(active.id)" v-show="isSaved(active.id)"/>
@@ -81,6 +80,7 @@
 <script>
     import AppModalLayout from '../context/modal/AppModalLayout'
     import ContentEditor from '../editor/ContentEditor.vue'
+    import DateFormatter from '../../mixins/DateFormatter'
     import {mapGetters, mapActions} from 'vuex'
 
     export default {
@@ -101,6 +101,7 @@
                 isOpen: true
             }
         },
+        mixins: [DateFormatter],
         components: {AppModalLayout, ContentEditor},
         computed: {
             ...mapGetters({
@@ -111,6 +112,16 @@
                 cards: 'editor/getEditorCards',
                 collections: 'collections/all',
             }),
+            processStatus() {
+                if (this.isUpdating) {
+                    return 'Saving...'
+                }
+                if (this.active && this.active.lastChange) {
+                    const name = this.active.lastChange.user.fullName,
+                        date = this.toLocaleString(this.active.lastChange.createdAt);
+                    return `Last saved by ${name} at ${date}`
+                }
+            },
             contentClasses() {
                 let list = ['app-modal-content'];
                 if (this.isFullScreen) {
