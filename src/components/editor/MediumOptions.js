@@ -1,4 +1,5 @@
 const MediumOptions = {
+    autoLink: true,
     toolbar: {
         buttons: ['bold', 'italic', 'anchor', 'quote']
     },

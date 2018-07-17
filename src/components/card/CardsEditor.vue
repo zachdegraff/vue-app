@@ -324,12 +324,12 @@
         background: #f4f4f4;
         color: #707070;
         list-style: none;
-        position: relative;
         padding: 0;
         margin: 0;
         li {
             border-left: solid 5px #f4f4f4;
             cursor: pointer;
+            position: relative;
             padding: 20px 30px 20px 20px;
             &.active, &:hover {
                 background: #e6f0ea;

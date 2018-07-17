@@ -6,11 +6,13 @@
         <q-progress :percentage="files.uploading" v-show="files.isUploading" ref="progressBar" class="content-editor-progress-bar"/>
         <editor-tags :position="tags.position" :is-visible="tags.isVisible" @choose="handleTagChoosing"/>
         <reference-tools :editor="editor" :medium="medium"></reference-tools>
+        <anchor-helper :medium="medium"></anchor-helper>
         <input type="file" class="content-editor-uploader" ref="file" @change="handleUploading"/>
     </div>
 </template>
 <script>
     import ReferenceTools from './ReferenceTools.vue'
+    import AnchorHelper from './AnchorHelper.vue'
     import MediumOptions from './MediumOptions'
     import EditorTags from './EditorTags.vue'
     import MediumEditor from 'medium-editor'
@@ -35,7 +37,7 @@
                 isHelperVisible: false
             }
         },
-        components: {ReferenceTools, EditorTags},
+        components: {ReferenceTools, EditorTags, AnchorHelper},
         mounted() {
             this.editor = document.getElementById('contentEditor');
             if (this.editor !== null) {
@@ -159,6 +161,9 @@
             },
             checkTagsVisibility() {
                 this.isHelperVisible = this.isEmptyEditor();
+                if (document.activeElement !== this.editor) {
+                    return this.tags.isVisible = false
+                }
                 if (this.isHelperVisible) {
                     return this.tags.isVisible = true
                 }

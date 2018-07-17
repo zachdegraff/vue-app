@@ -7,5 +7,3 @@ export const isCreateTeamOpen = state => state.createTeam.status;
 
 export const isInviteMemberOpen = state => state.inviteMember.status;
 export const isChangeMemberRoleOpen = state => state.changeMemberRole.status;
-
-export const getCreateCardParams = state => state.createCard.params;
