@@ -3,19 +3,6 @@ export default {
         status: false
     },
 
-    createCard: {
-        params: {},
-        status: false
-    },
-
-    viewCard: {
-        status: false
-    },
-
-    editCard: {
-        status: false
-    },
-
     cardsEditor: {
         status: false
     },

@@ -4,7 +4,6 @@ import Vuex from 'vuex'
 import auth from './auth'
 import route from './route'
 import cards from './cards'
-import note from './note'
 import teams from './teams'
 import users from './users'
 import editor from './editor'
@@ -21,7 +20,6 @@ const store = new Vuex.Store({
         auth,
         route,
         cards,
-        note,
         teams,
         users,
         editor,

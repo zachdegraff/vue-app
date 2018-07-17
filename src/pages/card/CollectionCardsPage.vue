@@ -18,7 +18,6 @@
     </div>
 </template>
 <script>
-    import ViewCard from '../../components/card/ViewCard.vue'
     import SearchForm from '../../components/SearchForm.vue'
     import {mapActions, mapGetters} from 'vuex'
     import {prop} from "../../helpers";
@@ -38,7 +37,7 @@
                 return this.$route.params.name
             }
         },
-        components: {CardsList, SearchForm, ViewCard},
+        components: {CardsList, SearchForm},
         watch: {
             team: function (val) {
                 this.filter(this.params());

@@ -8,33 +8,6 @@ export const closeAskHelp = ({dispatch, commit}) => {
     commit('changeAskHelpStatus', false);
 };
 
-
-export const openCreateCard = ({dispatch, commit}) => {
-    dispatch('route/next', {name: 'create_card'}, {root: true});
-    commit('changeCreateCardStatus', true);
-};
-export const openCreateCardWithName = ({dispatch, commit}, params) => {
-    dispatch('route/next', {name: 'create_card_name', ...params}, {root: true});
-    commit('changeCreateCardStatus', true);
-    commit('changeCreateCardParams', params)
-};
-export const closeCreateCard = ({dispatch, commit}) => {
-    dispatch('route/pop', null, {root: true});
-    commit('changeCreateCardStatus', false);
-};
-
-
-export const openEditCard = ({commit, dispatch}, id) => {
-    dispatch('route/next', {name: 'edit_card', id}, {root: true});
-    dispatch('cards/changeEditingCard', id, {root: true});
-    commit('changeEditCardStatus', true);
-};
-export const closeEditCard = ({dispatch, commit}) => {
-    dispatch('route/pop', null, {root: true});
-    dispatch('cards/changeEditingCard', null, {root: true});
-    commit('changeEditCardStatus', false);
-};
-
 export const openCardsEditor = ({commit, dispatch}, id) => {
     dispatch('route/next', {name: 'view_card', id}, {root: true});
     dispatch('editor/open', id, {root: true});
@@ -45,22 +18,6 @@ export const closeCardsEditor = ({dispatch, commit}) => {
     dispatch('editor/close', null, {root: true});
     commit('changeCardsEditorStatus', false);
 };
-
-
-export const openViewCard = ({commit, dispatch}, id) => {
-    dispatch('route/next', {name: 'view_card', id}, {root: true});
-    dispatch('cards/changeViewingCard', id, {root: true});
-    commit('changeViewCardStatus', true);
-};
-export const openPrevCard = ({commit}) => {
-    commit('changeViewCardStatus', true);
-};
-export const closeViewCard = ({dispatch, commit}) => {
-    commit('changeViewCardStatus', false);
-    dispatch('route/pop', null, {root: true});
-    dispatch('cards/changeViewingCard', null, {root: true});
-};
-
 
 export const openCreateTeam = ({dispatch, commit}) => {
     dispatch('route/next', {name: 'create_team'}, {root: true});

@@ -144,22 +144,3 @@ export const changeEditorCard = ({commit, dispatch, getters}, id) => {
     }
     dispatch('get', id).then(card => commit('changeEditorCard', card))
 };
-
-export const changeViewingCard = ({commit, dispatch, getters}, id) => {
-    if (id === null) {
-        commit('changeViewingCard', null);
-        const card = getters['getViewingCard'];
-        if (card !== null) {
-            dispatch('modals/openPrevCard', null, {root: true});
-        }
-        return;
-    }
-    dispatch('get', id).then(card => commit('changeViewingCard', card))
-};
-
-export const changeEditingCard = ({commit, dispatch}, id) => {
-    if (id === null) {
-        return commit('changeEditingCard', null);
-    }
-    dispatch('get', id).then(card => commit('changeEditingCard', card))
-};

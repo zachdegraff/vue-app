@@ -17,17 +17,17 @@
                     @click="select(item)"
             />
         </div>
-        <i class="reference-tools-dir"></i>
+        <i class="reference-tools-dir" :class="sideClass"></i>
     </div>
 </template>
 <script>
     import {mapGetters, mapActions} from 'vuex'
-    import {route, setCaretAtEnd} from '../../helpers'
+    import {route} from '../../helpers'
 
     const APP_HOST = process.env.APP_HOST;
 
     export default {
-        props: ['editor'],
+        props: ['editor', 'medium'],
         data: () => {
             return {
                 items: [],
@@ -36,11 +36,11 @@
                 query: '',
                 caret: 0,
                 target: null,
-                space: [10, 32],  // New Line, Space
+                space: [10, 32, 160],  // New Line, Space
                 controls: [62, 64], // >, @
                 isReferenceTools: false,
+                side: 'bottom',
                 position: {
-                    top: '0px',
                     left: '0px',
                 }
             }
@@ -66,6 +66,12 @@
                     type: 'collection'
                 }));
                 return items
+            },
+            sideClass() {
+                if (this.side === 'top') {
+                    return 'on-top'
+                }
+                return 'on-bottom'
             }
         },
         watch: {
@@ -122,13 +128,27 @@
                 }
             },
             select(item) {
-                const node = document.getSelection().focusNode,
-                    content = node.nodeValue.substring(this.start, document.getSelection().focusOffset),
-                    link = `<a href="${this.getLinkUrl(item)}" contenteditable="false" target="_blank">${item.name}</a> `;
+                const sel = document.getSelection(),
+                    range = sel.getRangeAt(0),
+                    node = sel.focusNode;
+                range.collapse(true);
 
-                node.parentNode.innerHTML = node.parentNode.innerHTML.replace(content, link);
+                const link = document.createElement('a');
+                link.setAttribute('href', this.getLinkUrl(item));
+                link.innerText = item.name;
 
-                this.isReferenceTools = false;
+                node.nodeValue = node.nodeValue.substring(0, this.start);
+
+                range.setStartAfter(node);
+
+                range.insertNode(link);
+                range.setStartAfter(link);
+                range.collapse(true);
+
+                sel.removeAllRanges();
+                sel.addRange(range);
+
+                this.isReferenceTools = false
             },
             isInChars(str, idx, chars = []) {
                 for (let i in chars) {
@@ -199,14 +219,20 @@
                 this.query = node.nodeValue.substring(this.start + 1, selection.focusOffset)
             },
             setToolsPosition() {
-                const container = this.editor.getBoundingClientRect(),
-                    range = document.getSelection().getRangeAt(0).cloneRange();
+                const parent = document.querySelector('.cards-editor').getBoundingClientRect(),
+                    container = document.querySelector('.content-editor-panel').getBoundingClientRect(),
+                    range = document.getSelection().getRangeAt(0).cloneRange(),
+                    max = parent.top + (parent.height / 2);
                 range.collapse(true);
 
                 const rect = range.getClientRects()[0];
-
-                this.position.top = (rect.top - container.top + rect.height + 5) + 'px';
                 this.position.left = (rect.left - container.left - 100) + 'px';
+                if (rect.top > max) {
+                    this.position.bottom = (container.bottom - rect.top + 5) + 'px';
+                    return this.side = 'top'
+                }
+                this.position.top = (rect.bottom - container.top + 5) + 'px';
+                this.side = 'bottom'
             },
             preventNavigation(e) {
                 if (this.isReferenceTools === true && this.isNavChars(e)) {
@@ -218,13 +244,16 @@
 </script>
 <style lang="scss">
     .reference-tools-tooltip {
-        background: #747474;
-        border-radius: 2px;
+        background-color: #242424;
+        background: -webkit-linear-gradient(top, #242424, rgba(36, 36, 36, 1));
+        background: linear-gradient(to bottom, #242424, rgba(36, 36, 36, 1));
+        border: 1px solid #000;
+        border-radius: 5px;
+        box-shadow: 0 0 3px #000;
         color: #fafafa;
         padding: 10px;
         position: absolute;
-        width: 200px;
-        -webkit-box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px rgba(0, 0, 0, 0.14), 0 1px 18px rgba(0, 0, 0, 0.12);
+        width: 250px;
         z-index: 9000;
         .q-btn {
             padding: 4px 11px;
@@ -234,7 +263,7 @@
             }
             .q-btn-inner {
                 div {
-                    width: 126px;
+                    width: 174px;
                     text-align: left;
                     white-space: nowrap;
                     overflow: hidden;
@@ -273,9 +302,18 @@
         height: 0;
         border-width: 5px;
         border-style: solid;
-        border-color: transparent transparent #747474 transparent;
-        top: -10px;
-        margin-left: -5px;
-        left: 100px;
+        &.on-top {
+            border-color: #242424 transparent transparent transparent;
+            bottom: -10px;
+            margin-left: -5px;
+            left: 100px;
+        }
+        &.on-bottom {
+            border-color: transparent transparent #242424 transparent;
+            top: -10px;
+            margin-left: -5px;
+            left: 100px;
+
+        }
     }
 </style>

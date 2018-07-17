@@ -30,9 +30,7 @@ export const getStatusFailure = state => state.actionGetStatus = 'Failure';
 export const updateStatusRequest = state => state.actionUpdateStatus = 'Request';
 export const updateStatusSuccess = (state, res) => {
     state.actionUpdateStatus = 'Success';
-    state.items = replace(state.items, res.data.card);
-    state.viewStack.pop();
-    state.viewStack.push(res.data.card)
+    state.items = replace(state.items, res.data.card)
 };
 export const updateStatusFailure = state => state.actionUpdateStatus = 'Failure';
 
@@ -50,15 +48,6 @@ export const createStatusSuccess = (state, res) => {
     state.items.push(res.data.card)
 };
 export const createStatusFailure = state => state.actionCreateStatus = 'Failure';
-
-export const changeViewingCard = (state, card) => {
-    if (card === null) {
-        return state.viewStack.pop()
-    }
-    state.viewStack.push(card)
-};
-export const changeEditingCard = (state, card) => state.editing = card;
-export const changeEditorCard = (state, card) => state.editorCard = card;
 
 export const cardsAmountStatusRequest = state => state.actionCardsAmount = 'Request';
 export const cardsAmountStatusSuccess = (state, res) => {

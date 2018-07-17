@@ -146,12 +146,13 @@ export const selectNode = (node) => {
     sel.addRange(range);
 };
 
-export const setCaretAtEnd = (node) => {
+export const setCaretPosition = (node, pos = null) => {
     const range = document.createRange(),
         sel = window.getSelection(),
-        text = node.firstChild;
+        text = node.firstChild || node,
+        position = pos || text.length;
 
-    range.setStart(text, text.length);
+    range.setStart(text, position);
     range.collapse(true);
 
     sel.removeAllRanges();

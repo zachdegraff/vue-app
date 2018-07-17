@@ -1,6 +1,13 @@
 import {replace, remove} from "../../helpers";
 
-export const update = (state, card) => state.cards = replace(state.cards, card);
+export const update = (state, card) => {
+    state.cards = replace(state.cards, card);
+    if (state.active !== null) {
+        if (state.active.id === card.id) {
+            state.active.lastChange = card.lastChange
+        }
+    }
+};
 
 export const setCards = (state, cards) => state.cards = cards;
 

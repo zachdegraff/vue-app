@@ -34,7 +34,7 @@
         computed: {
             ...mapGetters({
                 team: 'teams/current',
-                card: 'cards/getViewingCard',
+                card: 'editor/getActiveCard',
                 searchQuery: 'search/getQuery',
                 isProcessing: 'questions/isHelpAsking'
             })

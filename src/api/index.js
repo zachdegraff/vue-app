@@ -1,4 +1,3 @@
-import * as note from './methods/note'
 import * as auth from './methods/auth'
 import * as cards from './methods/cards'
 import * as teams from './methods/teams'
@@ -10,7 +9,6 @@ import * as collections from './methods/collections'
 
 
 const api = {
-    note,
     auth,
     cards,
     teams,

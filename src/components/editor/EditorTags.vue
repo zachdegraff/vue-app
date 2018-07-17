@@ -18,39 +18,13 @@
     </div>
 </template>
 <script>
-    import {setCaretAtEnd} from '../../helpers'
-
     export default {
         props: ['position', 'isVisible'],
         data: () => {
             return {
                 elements: [
                     {
-                        text: 'H1', label: 'Large heading', handler: function () {
-                            const el = document.createElement('h1');
-                            el.innerHTML = 'Large heading';
-
-                            this.replaceActiveElement(el)
-                        }
-                    },
-                    {
-                        text: 'H2', label: 'Medium heading', handler: function () {
-                            const el = document.createElement('h2');
-                            el.innerHTML = 'Medium heading';
-
-                            this.replaceActiveElement(el)
-                        }
-                    },
-                    {
-                        text: 'H3', label: 'Small heading', handler: function () {
-                            const el = document.createElement('h3');
-                            el.innerHTML = 'Small heading';
-
-                            this.replaceActiveElement(el)
-                        }
-                    },
-                    {
-                        icon: 'format_list_bulleted', label: 'Bulleted list', handler: function (content) {
+                        icon: 'format_list_bulleted', label: 'Bulleted list', handler: function () {
                             const ul = document.createElement('ul'),
                                 li = document.createElement('li');
                             li.innerHTML = '<br/>';
@@ -69,45 +43,12 @@
                             this.replaceActiveElement(ol)
                         }
                     },
-                    /*{
-                        icon: 'check_circle', label: 'Task list', handler: function (content) {
-
-                        }
-                    },*/
-                    {
-                        icon: 'link', label: 'Link', handler: function () {
-                            if (this.activeElement === null) return;
-
-                            this.activeElement.innerHTML = '@';
-                            setCaretAtEnd(this.activeElement);
-
-                            this.medium.trigger('editableInput', {}, this.editor)
-                        }
-                    },
-                    {
-                        icon: 'attach_file', label: 'Upload file', handler: function () {
-                            this.$refs.file.removeAttribute('accept');
-                            this.$refs.file.click()
-                        }
-                    },
                     {
                         icon: 'insert_photo', label: 'Upload image', handler: function () {
                             this.$refs.file.setAttribute('accept', 'image/*');
                             this.$refs.file.click()
                         }
-                    },
-                    {
-                        icon: 'remove', label: 'Horizontal line', handler: function () {
-                            if (this.activeElement === null) return;
-
-                            const node = document.createElement('p');
-                            node.innerHTML = '<hr/><br/>';
-
-                            this.activeElement.parentNode.insertBefore(node, this.activeElement);
-                            this.medium.selectElement(this.activeElement);
-                            this.medium.trigger('editableInput', {}, this.editor)
-                        }
-                    },
+                    }
                 ],
                 style: {top: '-3px'},
                 isListShown: false
@@ -150,8 +91,8 @@
 
     .cards-editor-content-tags {
         background-color: #242424;
-        background: -webkit-linear-gradient(top, #242424, rgba(36, 36, 36, 0.75));
-        background: linear-gradient(to bottom, #242424, rgba(36, 36, 36, 0.75));
+        background: -webkit-linear-gradient(top, #242424, rgba(36, 36, 36, 1));
+        background: linear-gradient(to bottom, #242424, rgba(36, 36, 36, 1));
         border: 1px solid #000;
         border-radius: 5px;
         box-shadow: 0 0 3px #000;

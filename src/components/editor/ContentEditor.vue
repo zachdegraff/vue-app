@@ -5,7 +5,7 @@
         <div id="contentEditor" class="content-editor-content" v-html="card.description"></div>
         <q-progress :percentage="files.uploading" v-show="files.isUploading" ref="progressBar" class="content-editor-progress-bar"/>
         <editor-tags :position="tags.position" :is-visible="tags.isVisible" @choose="handleTagChoosing"/>
-        <reference-tools :editor="editor"></reference-tools>
+        <reference-tools :editor="editor" :medium="medium"></reference-tools>
         <input type="file" class="content-editor-uploader" ref="file" @change="handleUploading"/>
     </div>
 </template>
@@ -36,9 +36,6 @@
             }
         },
         components: {ReferenceTools, EditorTags},
-        created() {
-
-        },
         mounted() {
             this.editor = document.getElementById('contentEditor');
             if (this.editor !== null) {
@@ -53,7 +50,10 @@
             });
             this.medium.subscribe('blur', (e, el) => this.$emit('blur', el));
 
-            this.checkTagsVisibility()
+            window.addEventListener('resize', this.calcEditorHeight);
+
+            this.checkTagsVisibility();
+            this.calcEditorHeight()
         },
         watch: {
             card: function (val) {
@@ -109,7 +109,7 @@
                 api.files.uploadEditorFile(this.card.id, form, config).then(res => {
                     let content = res.data.tag, isImg = res.data.tag.indexOf('<img') !== -1;
                     if (isImg) {
-                        content = `<div class="text-center">${res.data.tag}</div>`
+                        content = `${res.data.tag}`
                     }
                     this.activeElement.innerHTML = content;
                     if (isImg) {
@@ -167,9 +167,21 @@
                 }
                 this.tags.isVisible = this.activeElement.nodeName === 'P' && this.activeElement.innerHTML === '<br>'
             },
+            calcEditorHeight() {
+                if (this.editor === null) return;
+
+                const container = document.querySelector('.cards-editor-main'),
+                    top = document.querySelector('.cards-editor-top'),
+                    height = container.offsetHeight - top.offsetHeight - 20;
+
+                this.editor.style.height = `${height}px`
+            },
             isEmptyEditor() {
                 if (this.editor.childNodes[0] === undefined) {
                     return true
+                }
+                if (this.editor.childNodes.length > 1) {
+                    return false
                 }
                 const el = this.editor.childNodes[0];
                 return el.innerHTML === '' || el.innerHTML === '<br>'
@@ -183,7 +195,10 @@
     }
 
     .content-editor-content {
+        color: #424242;
+        font-size: 1.125rem;
         outline: none;
+        overflow: scroll;
         img {
             max-width: 100%;
             margin: 0 auto;

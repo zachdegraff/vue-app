@@ -10,12 +10,12 @@
         </div>
         <div class="cards-editor-sidebar-actions row" v-show="isSidebarVisible">
             <div class="cards-editor-sidebar-actions-search col-lg-6">
-                <q-search hide-underline v-model="query" placeholder="Add existing card to list">
+                <q-search hide-underline v-model="query" placeholder="Add card to list">
                     <q-autocomplete separator @search="search" @selected="selected" :min-characters="2"/>
                 </q-search>
             </div>
             <div class="cards-editor-sidebar-actions-create col-lg-6">
-                <q-btn no-caps flat label="Create new" icon="add" @click="add"/>
+                <q-btn no-caps flat label="Create new card" icon="add" @click="add"/>
             </div>
         </div>
         <app-modal-layout>
@@ -34,42 +34,40 @@
                         <q-icon :name="collapseIconName"/>
                         <i></i>
                     </button>
-                    <div class="cards-editor-status">
-                        <span>{{processStatus}}</span>
-                    </div>
-                    <div class="float-right" v-if="active">
-                        <q-btn icon="bookmark" flat dense @click="toggleFavorite(active.id)" v-show="isSaved(active.id)"/>
-                        <q-btn icon="bookmark_border" flat dense @click="toggleFavorite(active.id)" v-show="!isSaved(active.id)"/>
-                        <q-btn icon="help" flat dense @click="openAskHelp"/>
-                        <q-btn icon="delete" flat dense @click.prevent.stop="flush($event)" v-show="active.canRemove"/>
-                    </div>
-                    <div>
-                        <q-input
-                                dense
-                                hide-underline
-                                class="q-title"
-                                v-model="form.name"
-                                @blur="save"/>
-                    </div>
-                    <div style="clear:both"></div>
-                    <div class="cards-editor-shorthand">
-                        <q-input
-                                dense
-                                hide-underline
-                                v-model="form.shorthand"
-                                placeholder="Shorthand"
-                                :before="[{icon: 'style', handler () {}}]"
-                                @blur="save"/>
-                    </div>
-                    <div class="cards-editor-collections">
-                        <q-chips-input
-                                hide-underline
-                                v-model="form.collections"
-                                placeholder="Collections"
-                                :before="[{icon: 'folder_open', handler () {}}]"
-                                @blur="save">
-                            <q-autocomplete :static-data="suggests"/>
-                        </q-chips-input>
+                    <div class="cards-editor-top">
+                        <div class="cards-editor-status">
+                            <span>{{processStatus}}</span>
+                        </div>
+                        <div class="cards-editor-tools" v-if="active">
+                            <q-btn icon="bookmark" flat dense @click="toggleFavorite(active.id)" v-show="isSaved(active.id)"/>
+                            <q-btn icon="bookmark_border" flat dense @click="toggleFavorite(active.id)" v-show="!isSaved(active.id)"/>
+                            <q-btn icon="help" flat dense @click="openAskHelp"/>
+                            <q-btn icon="delete" flat dense @click.prevent.stop="flush($event)" v-show="active.canRemove"/>
+                        </div>
+                        <div>
+                            <div id="cardNameInput" class="cards-editor-name">{{form.name}}</div>
+                        </div>
+                        <div style="clear:both"></div>
+                        <div class="cards-editor-shorthand">
+                            <q-field icon="style">
+                                <q-input
+                                        dense
+                                        hide-underline
+                                        v-model="form.shorthand"
+                                        placeholder="Shorthand"
+                                        @blur="save"/>
+                            </q-field>
+                        </div>
+                        <div class="cards-editor-collections">
+                            <q-chips-input
+                                    hide-underline
+                                    v-model="form.collections"
+                                    placeholder="Collections"
+                                    :before="[{icon: 'folder_open', handler () {}}]"
+                                    @blur="save">
+                                <q-autocomplete :static-data="suggests"/>
+                            </q-chips-input>
+                        </div>
                     </div>
                     <content-editor :card="active" @input="changeContent" @blur="save" v-if="active"></content-editor>
                 </div>
@@ -82,6 +80,8 @@
     import ContentEditor from '../editor/ContentEditor.vue'
     import DateFormatter from '../../mixins/DateFormatter'
     import {mapGetters, mapActions} from 'vuex'
+    import MediumEditor from 'medium-editor'
+    import {strip_tags} from '../../helpers'
 
     export default {
         data: () => {
@@ -98,6 +98,7 @@
                 suggests: {field: 'label', list: []},
                 isSidebarVisible: true,
                 isFullScreen: false,
+                isNameChanged: false,
                 isOpen: true
             }
         },
@@ -116,11 +117,17 @@
                 if (this.isUpdating) {
                     return 'Saving...'
                 }
-                if (this.active && this.active.lastChange) {
-                    const name = this.active.lastChange.user.fullName,
-                        date = this.toLocaleString(this.active.lastChange.createdAt);
+                if (this.lastChange) {
+                    const name = this.lastChange.user.fullName,
+                        date = this.toLocaleString(this.lastChange.createdAt);
                     return `Last saved by ${name} at ${date}`
                 }
+            },
+            lastChange() {
+                if (!this.active) {
+                    return null
+                }
+                return this.active.lastChange
             },
             contentClasses() {
                 let list = ['app-modal-content'];
@@ -155,11 +162,29 @@
                 return {label: item.name}
             })
         },
+        mounted() {
+            const options = {
+                    toolbar: false,
+                    placeholder: false,
+                    disableReturn: false,
+                    disableDoubleReturn: false,
+                    disableExtraSpaces: false
+                },
+                editor = new MediumEditor('#cardNameInput', options);
+
+            editor.subscribe('editableInput', (e, el) => {
+                this.form.name = strip_tags(el.innerText.trim());
+                this.active.name = this.form.name;
+                this.isNameChanged = true
+            });
+            editor.subscribe('blur', this.save);
+        },
         methods: {
             ...mapActions({
                 hide: 'editor/hide',
                 create: 'cards/create',
                 update: 'cards/update',
+                remove: 'cards/remove',
                 hints: 'search/cardsHints',
                 toggleFavorite: 'users/favorite',
                 close: 'modals/closeCardsEditor',
@@ -177,6 +202,7 @@
             save() {
                 if (!this.isChanges()) return;
 
+                this.isNameChanged = false;
                 const data = {...this.form},
                     form = new FormData();
                 for (let i in data) {
@@ -188,7 +214,7 @@
             flush(e) {
                 e.target.closest('button').blur();
                 this.confirm().then(() => {
-                    this.remove(this.card.id).then(this.close)
+                    this.remove(this.form.id).then(() => this.hide(this.form.id))
                 }).catch(() => {
                 })
             },
@@ -227,12 +253,12 @@
             },
             isChanges() {
                 let hasChanges = false;
-                ['name', 'shorthand', 'description', 'collections'].forEach(col => {
+                ['shorthand', 'description', 'collections'].forEach(col => {
                     if (this.form[col].length !== this.active[col].length) {
                         hasChanges = true;
                     }
                 });
-                return hasChanges
+                return hasChanges || this.isNameChanged
             }
         }
     }
@@ -298,12 +324,13 @@
         background: #f4f4f4;
         color: #707070;
         list-style: none;
+        position: relative;
         padding: 0;
         margin: 0;
         li {
             border-left: solid 5px #f4f4f4;
             cursor: pointer;
-            padding: 20px 20px 20px 40px;
+            padding: 20px 30px 20px 20px;
             &.active, &:hover {
                 background: #e6f0ea;
                 border-left-color: #2eab64;
@@ -313,9 +340,11 @@
                 }
             }
             button {
-                float: right;
                 display: none;
-                margin-top: -3px;
+                position: absolute;
+                margin-top: -14px;
+                right: 10px;
+                top: 50%;
             }
         }
     }
@@ -412,10 +441,13 @@
         right: 0;
         bottom: 0;
         width: 70%;
-        overflow: scroll;
         input.q-input-target {
-            height: 25px;
+            height: auto;
         }
+    }
+
+    .cards-editor-top-container {
+        background: #fff;
     }
 
     .cards-editor-status {
@@ -424,13 +456,23 @@
         text-align: right;
     }
 
+    .cards-editor-tools {
+        float: right;
+    }
+
+    .cards-editor-name {
+        color: #424242;
+        font-size: 2rem;
+        outline: none;
+    }
+
     .cards-editor-shorthand {
         display: inline-block;
         font-size: .8rem;
         margin: 5px 10px 20px 0;
-        .q-icon {
+        .q-field-icon {
             font-size: 1rem;
-            padding: 5px 0;
+            margin: -1px 0 0;
         }
     }
 
@@ -468,4 +510,15 @@
             max-width: 100vw;
         }
     }
+
+    @media (max-width: 768px) {
+        .cards-editor-tools {
+            float: none;
+            text-align: right;
+        }
+        .cards-editor-name {
+            font-size: 1.3rem;
+        }
+    }
+
 </style>

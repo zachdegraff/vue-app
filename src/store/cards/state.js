@@ -2,10 +2,6 @@ export default {
     items: [],
     amount: 0,
 
-    viewStack: [],
-    editing: null,
-    editorCard: null,
-
     recentlyAdded: [],
     recentlyUpdated: [],
 

@@ -23,7 +23,6 @@
     </q-page>
 </template>
 <script>
-    import ViewCard from '../../components/card/ViewCard.vue'
     import SearchForm from '../../components/SearchForm.vue'
     import CardsList from '../../components/card/CardsList'
     import {mapActions, mapGetters} from 'vuex'
@@ -75,7 +74,7 @@
                 return true;
             }
         },
-        components: {CardsList, SearchForm, ViewCard},
+        components: {CardsList, SearchForm},
         methods: {
             ...mapActions({
                 search: 'search/search',
