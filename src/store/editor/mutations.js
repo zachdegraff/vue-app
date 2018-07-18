@@ -8,18 +8,9 @@ export const update = (state, card) => {
 };
 
 export const addCard = (state, card) => {
-    const item = {
-        id: '',
-        name: '',
-        teamId: '',
-        shorthand: '',
-        collections: [],
-        description: '',
-        lastChange: null,
-        isActive: false
-    };
+    const item = {};
 
-    Object.keys(item).forEach(key => {
+    Object.keys(card).forEach(key => {
         if (key === 'shorthand') {
             return item.shorthand = card.shorthand.join(', ');
         }
