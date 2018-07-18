@@ -3,7 +3,7 @@ const DateFormatter = {
         __time(date) {
             const meridiem = date.getHours() > 12 ? 'pm' : 'am',
                 hours = date.getHours() % 12 || 12,
-                minutes = date.getMinutes() > 10 ? date.getMinutes() : `0${date.getMinutes()}`;
+                minutes = date.getMinutes() >= 10 ? date.getMinutes() : `0${date.getMinutes()}`;
 
             return `${hours}:${minutes} ${meridiem}`
         },

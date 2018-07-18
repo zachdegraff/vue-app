@@ -1,4 +1,3 @@
 export default {
-    cards: [],
-    active: null
+    cards: []
 }

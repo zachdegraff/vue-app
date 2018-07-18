@@ -66,7 +66,7 @@
                     content: this.question,
                     searchQuery: this.searchQuery
                 };
-                if (this.card !== null) {
+                if (this.card !== undefined) {
                     params['cardId'] = this.card.id
                 }
                 this.askHelp(params).then(this.closeAskHelp);

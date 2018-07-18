@@ -32,8 +32,8 @@
                         <img src="statics/header-logo.png"/>
                     </router-link>
                 </div>
-                <q-btn color="white" class="text-black gt-xs" icon="add" label="Add Card" v-if="canAddCard" @click="addCard"/>
-                <q-btn color="white" class="short-add-button text-black lt-sm" icon="add" v-if="canAddCard" @click="addCard"/>
+                <q-btn color="white" class="text-black gt-xs" icon="add" label="Add Card" v-if="canAddCard" @click="addCard" :disabled="isCreating"/>
+                <q-btn color="white" class="short-add-button text-black lt-sm" icon="add" v-if="canAddCard" @click="addCard" :disabled="isCreating"/>
                 <div class="auth-user q-ml-md" v-if="user">
                     <img :src="avatar(user.photo)" class="header-icon vertical-middle"/>
                     <q-popover>
@@ -68,6 +68,7 @@
             ...mapGetters({
                 user: 'auth/user',
                 teams: 'teams/all',
+                isCreating: 'cards/isCreating',
                 current: 'teams/current'
             }),
             manage() {
@@ -86,7 +87,7 @@
         methods: {
             ...mapActions({
                 logout: 'auth/logout',
-                addCard: 'modals/openCreateCard',
+                addCard: 'editor/create',
                 changeTeam: 'teams/changeCurrentTeam'
             }),
             exit() {

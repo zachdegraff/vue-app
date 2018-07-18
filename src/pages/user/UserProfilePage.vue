@@ -45,6 +45,7 @@
                     password: '',
                     password_confirmation: '',
                     file: null,
+                    flushPhoto: false
                 },
                 isOpen: true
             }
@@ -118,6 +119,7 @@
                 return data
             },
             changeFile(file) {
+                this.form.flushPhoto = file === null;
                 this.form.file = file
             }
         }

@@ -27,6 +27,21 @@ export const next = ({commit}, {name, ...params}) => {
     commit('push', item)
 };
 
+export const replace = ({commit}, {name, ...params}) => {
+    if (routes[name] === undefined) return;
+
+    const item = {
+        name: name,
+        title: document.title,
+        url: window.location.href.toString(),
+        next: routes[name](params)
+    };
+
+    if (window.history !== undefined) {
+        window.history.replaceState(item, '', item.next)
+    }
+};
+
 export const pop = ({state}) => {
     const item = state.stack.length > 0 ? state.stack.pop() : null;
     if (item === null) return window.history.go(-1);

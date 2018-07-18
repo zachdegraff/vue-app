@@ -4,7 +4,7 @@
             <button class="cards-editor-actions-close" @click="isOpen=false">
                 <q-icon name="close"/>
             </button>
-            <button class="cards-editor-actions-fullscreen" @click="fullScreen">
+            <button class="cards-editor-actions-fullscreen" @click="isFullScreen=!isFullScreen">
                 <q-icon name="fullscreen"/>
             </button>
         </div>
@@ -15,21 +15,21 @@
                 </q-search>
             </div>
             <div class="cards-editor-sidebar-actions-create col-lg-6">
-                <q-btn no-caps flat label="Create new card" icon="add" @click="add"/>
+                <q-btn no-caps flat label="Create new card" icon="add" @click="create" :disabled="isCreating"/>
             </div>
         </div>
         <app-modal-layout>
             <div class="cards-editor">
                 <div class="cards-editor-sidebar" :class="{collapsed: !isSidebarVisible}" v-show="isSidebarVisible">
                     <ul class="cards-editor-cards">
-                        <li v-for="card in cards" :key="card.id" @click="changeActiveCard(card.id)" :class="{active: card.id === active.id}">
+                        <li v-for="card in cards" :key="card.id" @click="open(card.id)" :class="{active: card.id === active.id}">
                             {{card.name}}
                             <q-btn flat dense icon="close" @click.prevent.stop="hide(card.id)"/>
                         </li>
                     </ul>
                 </div>
                 <div class="cards-editor-main">
-                    <button class="cards-editor-sidebar-collapse" @click="collapse">
+                    <button class="cards-editor-sidebar-collapse" @click="isSidebarVisible=!isSidebarVisible">
                         <i></i>
                         <q-icon :name="collapseIconName"/>
                         <i></i>
@@ -45,31 +45,32 @@
                             <q-btn icon="delete" flat dense @click.prevent.stop="flush($event)" v-show="active.canRemove"/>
                         </div>
                         <div>
-                            <div id="cardNameInput" class="cards-editor-name">{{form.name}}</div>
+                            <div class="cards-editor-name"></div>
                         </div>
                         <div style="clear:both"></div>
-                        <div class="cards-editor-shorthand">
+                        <div class="cards-editor-shorthand" v-if="active">
                             <q-field icon="style">
                                 <q-input
                                         dense
                                         hide-underline
-                                        v-model="form.shorthand"
+                                        v-model="active.shorthand"
                                         placeholder="Shorthand"
                                         @blur="save"/>
                             </q-field>
                         </div>
-                        <div class="cards-editor-collections">
+                        <div class="cards-editor-collections" v-if="active">
                             <q-chips-input
                                     hide-underline
-                                    v-model="form.collections"
+                                    v-model="active.collections"
                                     placeholder="Collections"
                                     :before="[{icon: 'folder_open', handler () {}}]"
+                                    @input="filterCollectionName"
                                     @blur="save">
                                 <q-autocomplete :static-data="suggests"/>
                             </q-chips-input>
                         </div>
                     </div>
-                    <content-editor :card="active" @input="changeContent" @blur="save" v-if="active"></content-editor>
+                    <content-editor v-if="active"></content-editor>
                 </div>
             </div>
         </app-modal-layout>
@@ -86,20 +87,13 @@
     export default {
         data: () => {
             return {
-                form: {
-                    id: '',
-                    name: '',
-                    teamId: '',
-                    shorthand: '',
-                    collections: [],
-                    description: ''
-                },
                 query: '',
-                suggests: {field: 'label', list: []},
-                isSidebarVisible: true,
+                name: null,
+                isOpen: true,
                 isFullScreen: false,
                 isNameChanged: false,
-                isOpen: true
+                isSidebarVisible: true,
+                suggests: {field: 'label', list: []}
             }
         },
         mixins: [DateFormatter],
@@ -108,6 +102,7 @@
             ...mapGetters({
                 team: 'teams/current',
                 isSaved: 'users/isFavorite',
+                isCreating: 'cards/isCreating',
                 isUpdating: 'cards/isUpdating',
                 active: 'editor/getActiveCard',
                 cards: 'editor/getEditorCards',
@@ -122,6 +117,7 @@
                         date = this.toLocaleString(this.lastChange.createdAt);
                     return `Last saved by ${name} at ${date}`
                 }
+                return 'Saved'
             },
             lastChange() {
                 if (!this.active) {
@@ -141,19 +137,25 @@
                     return 'chevron_left'
                 }
                 return 'chevron_right'
+            },
+            title() {
+                const parts = [];
+                if (this.active) {
+                    parts.push(this.active.name)
+                }
+                if (this.team) {
+                    parts.push(this.team.name)
+                }
+                parts.push('Wonderus');
+                return parts.join(' - ')
             }
         },
         watch: {
             active: function (val) {
-                Object.keys(this.form).forEach(key => {
-                    if (key === 'shorthand') {
-                        return this.form.shorthand = val.shorthand.join(', ');
-                    }
-                    if (key === 'collections') {
-                        return this.form.collections = val.collections.map(item => item.name);
-                    }
-                    this.form[key] = val[key]
-                })
+                if (val === null) return;
+
+                document.title = this.title;
+                this.name.setContent(`<p>${val.name}</p>`, 0)
             }
         },
         created() {
@@ -170,51 +172,34 @@
                     disableDoubleReturn: false,
                     disableExtraSpaces: false
                 },
-                editor = new MediumEditor('#cardNameInput', options);
+                field = document.querySelector('.cards-editor-name');
 
-            editor.subscribe('editableInput', (e, el) => {
-                this.form.name = strip_tags(el.innerText.trim());
-                this.active.name = this.form.name;
-                this.isNameChanged = true
+            this.name = new MediumEditor(field, options);
+            if (this.active !== undefined) {
+                this.name.setContent(`<p>${this.active.name}</p>`, 0)
+            }
+            this.name.subscribe('editableInput', (e, el) => {
+                this.active.name = strip_tags(el.innerText.trim())
             });
-            editor.subscribe('blur', this.save);
+            this.name.subscribe('focus', this.selectDefaultText);
+            this.name.subscribe('blur', this.save)
         },
         methods: {
             ...mapActions({
                 hide: 'editor/hide',
-                create: 'cards/create',
-                update: 'cards/update',
+                save: 'editor/save',
+                open: 'editor/open',
+                create: 'editor/create',
                 remove: 'cards/remove',
                 hints: 'search/cardsHints',
                 toggleFavorite: 'users/favorite',
                 close: 'modals/closeCardsEditor',
                 openAskHelp: 'modals/openAskHelp',
-                changeActiveCard: 'editor/open',
             }),
-            add() {
-                const params = {
-                    name: 'Untitled card',
-                    teamId: this.team.id
-                };
-
-                this.create(params).then(res => this.changeActiveCard(res.card.id))
-            },
-            save() {
-                if (!this.isChanges()) return;
-
-                this.isNameChanged = false;
-                const data = {...this.form},
-                    form = new FormData();
-                for (let i in data) {
-                    form.append(i, data[i])
-                }
-                form.append('_method', 'PUT');
-                this.update({id: data.id, form});
-            },
             flush(e) {
                 e.target.closest('button').blur();
                 this.confirm().then(() => {
-                    this.remove(this.form.id).then(() => this.hide(this.form.id))
+                    this.remove(this.active.id).then(() => this.hide(this.active.id))
                 }).catch(() => {
                 })
             },
@@ -225,12 +210,6 @@
                     cancel: true,
                     color: 'secondary'
                 });
-            },
-            collapse() {
-                this.isSidebarVisible = !this.isSidebarVisible
-            },
-            fullScreen() {
-                this.isFullScreen = !this.isFullScreen
             },
             search(terms, done) {
                 this.hints({terms}).then(items => {
@@ -246,25 +225,30 @@
             },
             selected(item) {
                 this.query = '';
-                this.changeActiveCard(item.id)
+                this.open(item.id)
             },
-            changeContent(e) {
-                this.form.description = e
+            selectDefaultText() {
+                if (this.active.name !== 'Untitled card') return;
+
+                const el = this.name.getFocusedElement();
+                if (el.childNodes.length > 0) {
+                    this.name.selectElement(el.firstChild)
+                }
             },
-            isChanges() {
-                let hasChanges = false;
-                ['shorthand', 'description', 'collections'].forEach(col => {
-                    if (this.form[col].length !== this.active[col].length) {
-                        hasChanges = true;
-                    }
+            filterCollectionName() {
+                if (this.active === undefined) return;
+
+                let result = [];
+                if (this.active.collections.length === 0) return;
+                this.active.collections.forEach(item => {
+                    result.push(item.replace(/\s+/g, ''));
                 });
-                return hasChanges || this.isNameChanged
+                this.active.collections = result
             }
         }
     }
 </script>
 <style lang="scss">
-
     .cards-editor {
         position: absolute;
         top: 0;

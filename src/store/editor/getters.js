@@ -9,4 +9,4 @@ export const getById = state => {
 
 export const getEditorCards = state => state.cards;
 
-export const getActiveCard = state => state.active;
+export const getActiveCard = state => state.cards.find(card => card.isActive);

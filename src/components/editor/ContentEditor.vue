@@ -2,7 +2,7 @@
     <div class="content-editor-panel">
         <div class="content-editor-content-helper" @click="editor.focus()" v-show="isHelperVisible">What is your team wondering?<br/>
             <span class="q-caption">(Hint: Type @ to mention other cards.)</span></div>
-        <div id="contentEditor" class="content-editor-content" v-html="card.description"></div>
+        <div id="contentEditor" class="content-editor-content"></div>
         <q-progress :percentage="files.uploading" v-show="files.isUploading" ref="progressBar" class="content-editor-progress-bar"/>
         <editor-tags :position="tags.position" :is-visible="tags.isVisible" @choose="handleTagChoosing"/>
         <reference-tools :editor="editor" :medium="medium"></reference-tools>
@@ -16,11 +16,10 @@
     import MediumOptions from './MediumOptions'
     import EditorTags from './EditorTags.vue'
     import MediumEditor from 'medium-editor'
-    import {mapActions} from 'vuex'
+    import {mapGetters, mapActions} from 'vuex'
     import api from '../../api'
 
     export default {
-        props: ['card'],
         data: () => {
             return {
                 editor: null,
@@ -37,6 +36,11 @@
                 isHelperVisible: false
             }
         },
+        computed: {
+            ...mapGetters({
+                card: 'editor/getActiveCard'
+            })
+        },
         components: {ReferenceTools, EditorTags, AnchorHelper},
         mounted() {
             this.editor = document.getElementById('contentEditor');
@@ -46,11 +50,11 @@
                 this.editor.addEventListener('click', this.handleLinkClicks);
             }
             this.medium = new MediumEditor('#contentEditor', MediumOptions);
-            this.medium.subscribe('editableInput', (e, el) => {
-                this.handleKeyPress();
-                this.$emit('input', el.innerHTML)
-            });
-            this.medium.subscribe('blur', (e, el) => this.$emit('blur', el));
+            this.medium.setContent(this.card.description || '<p><br></p>', 0);
+
+            this.medium.subscribe('blur', this.save);
+            this.medium.subscribe('focus', this.handleKeyPress);
+            this.medium.subscribe('editableInput', this.handleKeyPress);
 
             window.addEventListener('resize', this.calcEditorHeight);
 
@@ -59,21 +63,23 @@
         },
         watch: {
             card: function (val) {
-                if (val === null) return;
-
-                this.tags.isVisible = false;
-                this.isHelperVisible = false;
+                if (val === undefined) return;
 
                 if (this.medium !== null) {
-                    this.medium.setContent(val.description)
+                    this.medium.setContent(val.description || '<p><br></p>', 0)
                 }
+                this.tags.isVisible = false;
+                this.isHelperVisible = this.isEmptyEditor()
             }
         },
         methods: {
             ...mapActions({
-                changeActiveCard: 'editor/open',
+                save: 'editor/save',
+                open: 'editor/open',
             }),
             handleKeyPress() {
+                this.card.description = this.editor.innerHTML;
+
                 this.setActiveElement();
                 this.setCaretPosition();
 
@@ -89,7 +95,7 @@
                 const matches = e.target.href.match(/\/cards\/([0-9]+)/);
                 if (matches !== null) {
                     e.preventDefault();
-                    this.changeActiveCard(parseInt(matches[1]))
+                    this.open(parseInt(matches[1]))
                 }
                 return true
             },
@@ -116,9 +122,12 @@
                     this.activeElement.innerHTML = content;
                     if (isImg) {
                         this.tags.isVisible = false;
-                        const p = this.createParagraph();
+                        const p = document.createElement('p');
+                        p.innerHTML = '<br/>';
+
                         this.activeElement.parentNode.insertBefore(p, this.activeElement.nextSibling)
                     }
+                    this.medium.trigger('editableInput', {}, this.editor);
                     this.$refs.file.value = ''
                 })
             },
@@ -128,12 +137,6 @@
                 this.activeElement.parentNode.replaceChild(el, this.activeElement);
                 this.medium.selectElement(el.firstChild);
                 this.medium.trigger('editableInput', {}, this.editor)
-            },
-            createParagraph() {
-                const el = document.createElement('p');
-                el.innerHTML = '<br/>';
-
-                return el
             },
             setCaretPosition() {
                 if (this.activeElement === null) return;
@@ -173,10 +176,10 @@
                 this.tags.isVisible = this.activeElement.nodeName === 'P' && this.activeElement.innerHTML === '<br>'
             },
             calcEditorHeight() {
-                if (this.editor === null) return;
+                const container = document.querySelector('.cards-editor-main');
+                if (this.editor === null || container === null) return;
 
-                const container = document.querySelector('.cards-editor-main'),
-                    top = document.querySelector('.cards-editor-top'),
+                const top = document.querySelector('.cards-editor-top'),
                     height = container.offsetHeight - top.offsetHeight - 20;
 
                 this.editor.style.height = `${height}px`
