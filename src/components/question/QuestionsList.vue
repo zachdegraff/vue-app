@@ -19,7 +19,7 @@
                         <div v-if="item.card" class="q-mb-sm">Submitted from Card:
                             <a href="#" @click.prevent.stop="showCard(item.card.id)">{{item.card.name}}</a></div>
                         <div v-if="item.searchQuery" class="q-mb-sm">Submitted from Search: {{item.searchQuery}}</div>
-                        <p>"{{item.content}}"</p>
+                        <p v-html="item.content"></p>
                     </q-item-main>
                 </q-item>
             </q-list>
@@ -51,7 +51,7 @@
                         </q-item>
                         <q-item>
                             <q-item-main>
-                                <p>{{comment.content}}</p>
+                                <p v-html="comment.content"></p>
                                 <div v-if="comment.cards.length > 0" class="questions-item-comments-item-cards q-mt-sm">
                                     Linked cards:
                                     <a v-for="card in comment.cards" :key="card.id" href="#" @click.prevent.stop="showCard(card.id)" class="q-ml-sm">{{card.name}}</a>
