@@ -20,7 +20,6 @@
     import api from '../../api'
 
     export default {
-        props: ['isFullScreen'],
         data: () => {
             return {
                 editor: null,
@@ -43,6 +42,9 @@
             })
         },
         components: {ReferenceTools, EditorTags, AnchorHelper},
+        created() {
+            document.addEventListener('keydown', this.handleArrowScroll)
+        },
         mounted() {
             this.editor = document.getElementById('contentEditor');
             if (this.editor !== null) {
@@ -51,29 +53,23 @@
                 this.editor.addEventListener('click', this.handleLinkClicks);
             }
             this.medium = new MediumEditor('#contentEditor', MediumOptions);
-            this.medium.setContent(this.card.description || '<p><br></p>', 0);
-
+            if (this.card) {
+                this.medium.setContent(this.card.description || '<p><br></p>', 0)
+            }
             this.medium.subscribe('blur', this.save);
             this.medium.subscribe('focus', this.handleKeyPress);
             this.medium.subscribe('editableInput', this.handleKeyPress);
 
-            window.addEventListener('resize', this.calcEditorHeight);
-
-            this.checkTagsVisibility();
-            this.calcEditorHeight()
+            this.checkTagsVisibility()
         },
         watch: {
             card: function (val) {
                 if (val === undefined) return;
-
                 if (this.medium !== null) {
                     this.medium.setContent(val.description || '<p><br></p>', 0)
                 }
                 this.tags.isVisible = false;
                 this.isHelperVisible = this.isEmptyEditor()
-            },
-            isFullScreen: function (val) {
-                setTimeout(this.calcEditorHeight, 100)
             }
         },
         methods: {
@@ -88,6 +84,26 @@
                 this.setCaretPosition();
 
                 this.checkTagsVisibility()
+            },
+            handleArrowScroll(e) {
+                if (this.editor === null) return;
+
+                const tool = document.querySelector('.reference-tools-tooltip');
+                if (tool !== null) {
+                    const style = window.getComputedStyle(tool);
+                    if (style.display !== 'none') return;
+                }
+
+                const arrows = [38, 40];
+                if (arrows.indexOf(e.keyCode) === -1) return;
+
+                e.preventDefault();
+                let offset = 50;
+                if (e.keyCode === 38) {
+                    offset *= -1;
+                }
+
+                this.editor.scrollTop += offset
             },
             handleTagChoosing(e) {
                 this.tags.isVisible = false;
@@ -181,22 +197,11 @@
                 }
                 this.tags.isVisible = this.activeElement.nodeName === 'P' && this.activeElement.innerHTML === '<br>'
             },
-            calcEditorHeight() {
-                const container = document.querySelector('.cards-editor-main');
-                if (this.editor === null || container === null) return;
-
-                const top = document.querySelector('.cards-editor-top'),
-                    height = container.offsetHeight - top.offsetHeight - 20;
-
-                this.editor.style.height = `${height}px`
-            },
             isEmptyEditor() {
-                if (this.editor.childNodes[0] === undefined) {
-                    return true
-                }
-                if (this.editor.childNodes.length > 1) {
-                    return false
-                }
+                if (this.editor === null) return false;
+                if (this.editor.childNodes[0] === undefined) return true;
+                if (this.editor.childNodes.length > 1) return false;
+
                 const el = this.editor.childNodes[0];
                 return el.innerHTML === '' || el.innerHTML === '<br>'
             }
@@ -206,14 +211,20 @@
 <style lang="scss">
     .content-editor-panel {
         position: relative;
+        height: 100%;
     }
 
     .content-editor-content {
+        bottom: 0;
         color: #424242;
         font-size: 1.125rem;
+        right: 0;
+        left: 0;
+        top: 0;
         line-height: 1.5em;
         outline: none;
         overflow: scroll;
+        position: absolute;
         img {
             max-width: 100%;
             margin: 0 auto;

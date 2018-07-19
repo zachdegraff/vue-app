@@ -70,7 +70,7 @@
                             </q-chips-input>
                         </div>
                     </div>
-                    <content-editor :isFullScreen="isFullScreen" v-if="active"></content-editor>
+                    <content-editor v-if="active"></content-editor>
                 </div>
             </div>
         </app-modal-layout>
@@ -162,7 +162,8 @@
             this.isSidebarVisible = !this.$q.platform.is.mobile;
             this.suggests.list = this.collections.map(item => {
                 return {label: item.name}
-            })
+            });
+            document.addEventListener('keydown', this.handleArrowScroll)
         },
         mounted() {
             const options = {
@@ -425,6 +426,8 @@
         right: 0;
         bottom: 0;
         width: 70%;
+        display: flex;
+        flex-direction: column;
         input.q-input-target {
             height: auto;
         }
