@@ -87,8 +87,11 @@
                 this.checkTagsVisibility()
             },
             handlePageWheel(e) {
-                const sidebar = document.querySelector('.cards-editor-sidebar');
+                if (this.editor === null) return;
+                const sidebar = document.querySelector('.cards-editor-sidebar'),
+                    styles = window.getComputedStyle(this.editor);
 
+                if (styles.display !== 'block') return;
                 if (e.target === sidebar) return;
                 if (e.target === this.editor) return;
 
