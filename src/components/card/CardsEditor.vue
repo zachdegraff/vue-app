@@ -162,8 +162,7 @@
             this.isSidebarVisible = !this.$q.platform.is.mobile;
             this.suggests.list = this.collections.map(item => {
                 return {label: item.name}
-            });
-            document.addEventListener('keydown', this.handleArrowScroll)
+            })
         },
         mounted() {
             const options = {

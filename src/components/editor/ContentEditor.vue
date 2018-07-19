@@ -43,7 +43,8 @@
         },
         components: {ReferenceTools, EditorTags, AnchorHelper},
         created() {
-            document.addEventListener('keydown', this.handleArrowScroll)
+            window.addEventListener('wheel', this.handlePageWheel);
+            document.addEventListener('keydown', this.handleArrowScroll);
         },
         mounted() {
             this.editor = document.getElementById('contentEditor');
@@ -84,6 +85,15 @@
                 this.setCaretPosition();
 
                 this.checkTagsVisibility()
+            },
+            handlePageWheel(e) {
+                const sidebar = document.querySelector('.cards-editor-sidebar');
+
+                if (e.target === sidebar) return;
+                if (e.target === this.editor) return;
+
+                e.preventDefault();
+                this.editor.scrollTop += e.deltaY
             },
             handleArrowScroll(e) {
                 if (this.editor === null) return;
