@@ -206,9 +206,10 @@
             },
             confirm() {
                 return this.$q.dialog({
-                    title: 'Confirm',
-                    message: 'Are you sure?',
+                    title: 'Are you sure you want to delete?',
+                    message: 'Deletion cannot be undone.',
                     cancel: true,
+                    ok: 'delete',
                     color: 'secondary'
                 });
             },
