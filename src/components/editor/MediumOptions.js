@@ -3,7 +3,8 @@ const MediumOptions = {
     toolbar: {
         buttons: ['bold', 'italic', 'anchor', 'quote']
     },
-    placeholder: false
+    placeholder: false,
+    anchorPreview: false
 };
 
 export default MediumOptions;
