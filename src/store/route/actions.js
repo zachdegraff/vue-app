@@ -47,10 +47,7 @@ export const pop = ({state}) => {
     if (item === null) return window.history.go(-1);
 
     if (window.history !== undefined) {
-        const path = window.location.pathname + window.location.search;
-        if (path === item.next) {
-            window.history.pushState(item, '', item.url)
-        }
+        window.history.pushState(item, '', item.url)
     }
     document.title = item.title
 };

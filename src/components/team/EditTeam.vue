@@ -16,9 +16,6 @@
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10" :error="$v.team.name.$error" :error-label="firstErrorFor($v.team.name)">
                     <q-input v-model="team.name" float-label="Name" @blur="$v.team.name.$touch"/>
                 </q-field>
-                <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <q-input v-model="team.organization" float-label="Organization"/>
-                </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10" label="Image" label-width="12">
                     <image-chooser :path="team.photo" @change="changeFile"></image-chooser>
                 </q-field>

@@ -9,9 +9,6 @@
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10" :error="$v.form.name.$error" :error-label="firstErrorFor($v.form.name)">
                     <q-input v-model="form.name" float-label="Name" @blur="$v.form.name.$touch"/>
                 </q-field>
-                <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <q-input v-model="form.organization" float-label="Organization"/>
-                </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10 text-left" label="Image" label-width="12">
                     <image-chooser @change="changeFile"></image-chooser>
                 </q-field>
@@ -38,8 +35,7 @@
         data: () => {
             return {
                 form: {
-                    name: '',
-                    organization: '',
+                    name: ''
                 },
                 members: [],
                 file: null,

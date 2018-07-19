@@ -12,7 +12,7 @@
         <div class="row flex-center q-mt-lg" v-show="suggestQuery">
             <q-spinner :size="36" color="red" v-show="isLoading"></q-spinner>
             <div class="col text-center q-mt-xl" v-show="isEmptyResult">There are no results.
-                <a href="javascript:void(0)" @click="createCard({cardName: suggestQuery})">Create a card for {{suggestQuery}}</a>?
+                <a href="javascript:void(0)" @click="createCard()">Create a card for {{suggestQuery}}</a>?
             </div>
         </div>
         <div class="row flex-center q-mt-lg" v-if="isAskHelpAvailable">
@@ -80,7 +80,7 @@
                 search: 'search/search',
                 changeQuery: 'search/changeQuery',
                 openAskHelp: 'modals/openAskHelp',
-                createCard: 'modals/openCreateCardWithName'
+                createCard: 'editor/create'
             }),
             result(items) {
                 this.isEmptyResult = items.length === 0

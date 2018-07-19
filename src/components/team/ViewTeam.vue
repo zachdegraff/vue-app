@@ -14,9 +14,6 @@
                     <q-field class="q-mt-md" :error="$v.form.name.$error" :error-label="firstErrorFor($v.form.name)">
                         <q-input v-model="form.name" float-label="Name" @blur="$v.form.name.$touch" :readonly="!isOwner"/>
                     </q-field>
-                    <q-field class="q-mt-lg">
-                        <q-input v-model="form.organization" float-label="Organization" :readonly="!isOwner"/>
-                    </q-field>
                     <q-field class="q-mt-lg" v-if="isOwner">
                         <image-chooser @change="changeFile"></image-chooser>
                     </q-field>
@@ -68,8 +65,7 @@
     export default {
         data: () => ({
             form: {
-                name: '',
-                organization: ''
+                name: ''
             },
             file: null,
             columns: [
