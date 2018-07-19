@@ -34,5 +34,8 @@ export const setActiveCard = (state, card) => {
     if (card === null) {
         return state.cards = []
     }
-    state.cards.forEach(item => item.isActive = item.id === card.id)
+    state.cards = state.cards.map(item => {
+        item.isActive = item.id === card.id;
+        return item
+    })
 };

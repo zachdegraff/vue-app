@@ -137,9 +137,12 @@
                 link.setAttribute('href', this.getLinkUrl(item));
                 link.innerText = item.name;
 
-                node.nodeValue = node.nodeValue.substring(0, this.start);
+                node.nodeValue = [
+                    node.nodeValue.substring(0, this.start),
+                    node.nodeValue.substring(sel.focusOffset)
+                ].join('');
 
-                range.setStartAfter(node);
+                range.setStart(node, this.start);
 
                 range.insertNode(link);
                 range.setStartAfter(link);

@@ -70,7 +70,7 @@
                             </q-chips-input>
                         </div>
                     </div>
-                    <content-editor v-if="active"></content-editor>
+                    <content-editor :isFullScreen="isFullScreen" v-if="active"></content-editor>
                 </div>
             </div>
         </app-modal-layout>

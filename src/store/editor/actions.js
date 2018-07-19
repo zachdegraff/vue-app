@@ -1,3 +1,15 @@
+import {strip_tags} from '../../helpers'
+
+const flushEmptyCard = (dispatch, card) => {
+    if (!card) return;
+    if (card.name !== 'Untitled card') return;
+
+    const content = strip_tags(card.description).trim();
+    if (content !== '') return;
+
+    dispatch('cards/remove', card.id, {root: true})
+};
+
 export const open = ({commit, dispatch, getters}, id) => {
     const card = getters['getById'](id);
     if (card !== undefined) {
@@ -13,7 +25,13 @@ export const open = ({commit, dispatch, getters}, id) => {
     })
 };
 
-export const close = ({commit}) => commit('setActiveCard', null);
+export const close = ({dispatch, commit, getters}) => {
+    const card = getters['getActiveCard'];
+    if (card !== undefined) {
+        flushEmptyCard(dispatch, card)
+    }
+    commit('setActiveCard', null)
+};
 
 export const create = ({dispatch, commit, rootGetters}) => {
     const team = rootGetters['teams/current'],
@@ -53,6 +71,7 @@ export const hide = ({commit, dispatch, getters}, id) => {
     const card = getters['getById'](id);
     if (card !== undefined) {
         commit('hideCard', card);
+        flushEmptyCard(dispatch, card);
         const active = getters['getActiveCard'];
         if (active !== undefined) {
             dispatch('route/replace', {name: 'view_card', id: active.id}, {root: true})

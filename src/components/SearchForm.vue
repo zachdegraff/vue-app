@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="search-form-container row justify-center">
-            <q-search v-model.lazy="query" @keyup.enter="submit" class="col-sx-12 col-md-8 bg-white q-pa-md">
+            <q-search v-model.lazy="query" @keyup.enter="submit" placeholder="Search for team knowledge" class="col-sx-12 col-md-8 bg-white q-pa-md">
                 <q-autocomplete separator @search="search" @selected="selected" :min-characters="2"/>
             </q-search>
         </div>

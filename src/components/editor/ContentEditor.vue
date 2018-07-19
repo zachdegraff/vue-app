@@ -20,6 +20,7 @@
     import api from '../../api'
 
     export default {
+        props: ['isFullScreen'],
         data: () => {
             return {
                 editor: null,
@@ -70,6 +71,9 @@
                 }
                 this.tags.isVisible = false;
                 this.isHelperVisible = this.isEmptyEditor()
+            },
+            isFullScreen: function (val) {
+                setTimeout(this.calcEditorHeight, 100)
             }
         },
         methods: {
@@ -154,6 +158,8 @@
 
                 const selection = document.getSelection();
 
+                if (selection.focusNode === null) return;
+
                 this.activeElement = selection.focusNode;
                 if (selection.focusNode.nodeName === 'BR') {
                     this.activeElement = selection.focusNode.parentNode
@@ -205,6 +211,7 @@
     .content-editor-content {
         color: #424242;
         font-size: 1.125rem;
+        line-height: 1.5em;
         outline: none;
         overflow: scroll;
         img {
