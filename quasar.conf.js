@@ -98,6 +98,7 @@ module.exports = function (ctx) {
                 'QTooltip',
                 'QTabs',
                 'QTab',
+                'QRouteTab',
                 'QTabPane',
                 'QInfiniteScroll',
                 'QProgress'

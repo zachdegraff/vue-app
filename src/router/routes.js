@@ -127,7 +127,9 @@ export default [
         component: () => import('layouts/DefaultLayout.vue'),
         beforeEnter: ifAuthenticated,
         children: [
-            {path: '', name: 'questions', component: () => import('pages/question/QuestionsPage.vue')}
+            {path: '', name: 'questions', component: () => import('pages/question/OpenQuestionsPage.vue')},
+            {path: 'answered', name: 'answered_questions', component: () => import('pages/question/AnsweredQuestionsPage.vue')},
+            {path: 'my', name: 'my_questions', component: () => import('pages/question/MyQuestionsPage.vue')}
         ]
     },
     { // Always leave this as last one
