@@ -100,6 +100,7 @@
             },
             handleArrowScroll(e) {
                 if (this.editor === null) return;
+                if (document.activeElement === this.editor) return;
 
                 const tool = document.querySelector('.reference-tools-tooltip');
                 if (tool !== null) {
