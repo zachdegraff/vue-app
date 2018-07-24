@@ -54,8 +54,8 @@
                 }).catch(() => done([]));
             },
             selected(item) {
-                if (item.type === 'collection') {
-                    return this.$router.push({name: 'collection_cards', params: {name: item.name}})
+                if (item.type === 'tag') {
+                    return this.$router.push({name: 'tag_cards', params: {name: item.name}})
                 }
                 this.showCard(item.id)
             },

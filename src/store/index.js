@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import auth from './auth'
+import tags from './tags'
 import route from './route'
 import cards from './cards'
 import teams from './teams'
@@ -11,13 +12,13 @@ import modals from './modals'
 import search from './search'
 import members from './members'
 import questions from './questions'
-import collections from './collections'
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
     modules: {
         auth,
+        tags,
         route,
         cards,
         teams,
@@ -26,8 +27,7 @@ const store = new Vuex.Store({
         modals,
         search,
         members,
-        questions,
-        collections
+        questions
     }
 });
 

@@ -5,7 +5,7 @@
             <div class="row flex-center">
                 <div class="col-xs-12 col-sm-8">
                     <div class="row q-my-lg" v-show="items.length > 0">
-                        <div class="col q-headline">#{{collection}} collection</div>
+                        <div class="col q-headline">#{{tag}} tag</div>
                     </div>
                     <cards-list :items="items"/>
                 </div>
@@ -19,9 +19,10 @@
 </template>
 <script>
     import SearchForm from '../../components/SearchForm.vue'
+    import CardsList from '../../components/card/CardsList'
     import {mapActions, mapGetters} from 'vuex'
-    import {prop} from "../../helpers";
-    import CardsList from "../../components/card/CardsList";
+    import {prop} from '../../helpers'
+
 
     export default {
         computed: {
@@ -30,11 +31,11 @@
                 items: 'cards/getItems',
                 isLoading: 'cards/isCardsLoading'
             }),
-            title() {
-                return `${this.collection} - ${prop(this.team, 'name')} - Wonderus`;
-            },
-            collection() {
+            tag() {
                 return this.$route.params.name
+            },
+            title() {
+                return `${this.tag} - ${prop(this.team, 'name')} - Wonderus`;
             }
         },
         components: {CardsList, SearchForm},
@@ -47,7 +48,7 @@
         created() {
             this.filter(this.params());
             document.title = this.title;
-            this.changeQuery('#' + this.collection)
+            this.changeQuery('#' + this.tag)
         },
         methods: {
             ...mapActions({
@@ -55,7 +56,7 @@
                 changeQuery: 'search/changeQuery'
             }),
             params() {
-                return {collection: this.collection};
+                return {tag: this.tag};
             }
         }
     }

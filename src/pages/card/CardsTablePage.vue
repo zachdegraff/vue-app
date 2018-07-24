@@ -27,8 +27,8 @@
                                 <q-th key="description" :props="props">
                                     <q-input v-model.lazy="filter.description" float-label="Description"/>
                                 </q-th>
-                                <q-th key="collections" :props="props">
-                                    <q-select v-model="filter.collection" :options="options" float-label=" "/>
+                                <q-th key="tags" :props="props">
+                                    <q-select v-model="filter.tag" :options="options" float-label=" "/>
                                 </q-th>
                                 <q-th key="updatedAt" :props="props">
                                     Last Updated
@@ -45,7 +45,7 @@
                             <q-td slot="body-cell-description" slot-scope="props" :props="props" style="max-width: 500px;white-space: normal">
                                 {{truncate(clearMarks(props.value))}}
                             </q-td>
-                            <q-td slot="body-cell-collections" slot-scope="props" :props="props" style="max-width: 300px;white-space: normal">
+                            <q-td slot="body-cell-tags" slot-scope="props" :props="props" style="max-width: 300px;white-space: normal">
                                 <q-chip v-for="(col, idx) in props.value" :key="idx" small color="primary" class="q-ma-xs">#{{col.name}}</q-chip>
                             </q-td>
                             <q-td slot="body-cell-updatedAt" slot-scope="props" :props="props">
@@ -72,12 +72,12 @@
                 name: '',
                 shorthand: '',
                 description: '',
-                collection: ''
+                tag: ''
             },
             options: [],
             table: {
                 visible: [
-                    'name', 'shorthand', 'description', 'collections', 'updatedAt'
+                    'name', 'shorthand', 'description', 'tags', 'updatedAt'
                 ],
                 columns: [
                     {
@@ -107,9 +107,9 @@
                         align: 'left'
                     },
                     {
-                        name: 'collections',
-                        label: 'Collections',
-                        field: 'collections',
+                        name: 'tags',
+                        label: 'Tags',
+                        field: 'tags',
                         align: 'left'
                     },
                     {
@@ -134,7 +134,7 @@
             ...mapGetters({
                 team: 'teams/current',
                 cards: 'cards/getItems',
-                collections: 'collections/all',
+                tags: 'tags/all',
                 isCardsLoading: 'cards/isCardsLoading',
                 getFilteredItems: 'cards/getFilteredItems'
             }),
@@ -155,7 +155,7 @@
             'filter.description': function (val) {
                 this.items = this.getFilteredItems(this.filter)
             },
-            'filter.collection': function (val) {
+            'filter.tag': function (val) {
                 this.items = this.getFilteredItems(this.filter)
             },
             cards: function (val) {
@@ -166,7 +166,7 @@
                     this.load();
                 }
             },
-            collections: function (val) {
+            tags: function (val) {
                 this.fillOptions(val)
             },
         },
@@ -174,7 +174,7 @@
         created() {
             this.load();
             document.title = this.title;
-            this.fillOptions(this.collections);
+            this.fillOptions(this.tags);
         },
         methods: {
             ...mapActions({
@@ -187,10 +187,10 @@
                     this.table.pagination.descending = !this.table.pagination.descending
                 }
             },
-            fillOptions(collections) {
-                this.options = [{value: '', label: 'Collections'}];
+            fillOptions(tags) {
+                this.options = [{value: '', label: 'Tags'}];
 
-                collections.forEach(item => {
+                tags.forEach(item => {
                     if (item.cards > 0) {
                         this.options.push({value: item.id, label: item.name})
                     }

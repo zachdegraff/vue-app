@@ -49,7 +49,7 @@ export const logout = ({commit, dispatch}) => {
             localStorage.removeItem('access-token');
             delete axios.defaults.headers.common['Authorization'];
             dispatch('cards/flush', null, {root: true});
-            dispatch('collections/flush', null, {root: true});
+            dispatch('tags/flush', null, {root: true});
 
             commit('logoutStatusSuccess', res);
             resolve(res.data)

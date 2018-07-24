@@ -18,17 +18,17 @@
                     <div class="col q-headline">Recently Updated</div>
                 </div>
                 <cards-list :items="recentlyUpdated"></cards-list>
-                <div class="row q-my-lg" v-if="collections.length > 0">
-                    <div class="col q-headline">Collections</div>
+                <div class="row q-my-lg" v-if="tags.length > 0">
+                    <div class="col q-headline">Tags</div>
                 </div>
-                <collections-grid-list :items="collections"></collections-grid-list>
+                <tags-grid-list :items="tags"></tags-grid-list>
             </div>
         </div>
     </q-page>
 </template>
 
 <script>
-    import CollectionsGridList from '../components/card/CollectionsGridList.vue'
+    import TagsGridList from '../components/card/TagsGridList.vue'
     import CardsList from '../components/card/CardsList.vue'
     import SearchForm from '../components/SearchForm.vue'
     import {mapActions, mapGetters} from 'vuex'
@@ -53,12 +53,12 @@
         computed: {
             ...mapGetters({
                 team: 'teams/current',
+                tags: 'tags/allNonEmpty',
                 cardsAmount: 'cards/getCardsAmount',
                 questionsAmount: 'questions/getCount',
                 savedCardsAmount: 'users/getFavoriteCardsCount',
                 recentlyAdded: 'cards/getRecentlyAdded',
                 recentlyUpdated: 'cards/getRecentlyUpdated',
-                collections: 'collections/allNonEmpty'
             }),
             title() {
                 if (this.team === null) {
@@ -77,7 +77,7 @@
             }
         },
         components: {
-            SearchForm, CollectionsGridList, CardsList
+            SearchForm, TagsGridList, CardsList
         },
         methods: {
             ...mapActions({

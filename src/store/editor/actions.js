@@ -44,7 +44,7 @@ export const create = ({dispatch, commit, rootGetters}) => {
         teamId: team.id,
         name: query !== '' ? query : 'Untitled card',
         description: '<p><br></p>',
-        collections: rootGetters['search/getQueryCollections']
+        tags: rootGetters['search/getQueryTags']
     };
 
     dispatch('cards/create', params, {root: true}).then(res => {

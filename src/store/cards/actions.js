@@ -4,7 +4,7 @@ const loadHomeItems = (dispatch) => {
     dispatch('cardsAmount');
     dispatch('recentlyAdded');
     dispatch('recentlyUpdated');
-    dispatch('collections/all', null, {root: true});
+    dispatch('tags/all', null, {root: true});
 };
 
 export const all = ({commit, rootGetters}, params = {}) => {

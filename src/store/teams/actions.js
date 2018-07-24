@@ -4,7 +4,7 @@ function loadDefaults(dispatch) {
     dispatch('cards/cardsAmount', {}, {root: true});
     dispatch('cards/recentlyAdded', {}, {root: true});
     dispatch('cards/recentlyUpdated', {}, {root: true});
-    dispatch('collections/all', {}, {root: true});
+    dispatch('tags/all', {}, {root: true});
     dispatch('questions/loadQuestionsCount', {}, {root: true});
 }
 

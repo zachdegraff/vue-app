@@ -59,13 +59,13 @@
                                         @blur="save"/>
                             </q-field>
                         </div>
-                        <div class="cards-editor-collections" v-if="active">
+                        <div class="cards-editor-tags" v-if="active">
                             <q-chips-input
                                     hide-underline
-                                    v-model="active.collections"
-                                    placeholder="Collections"
-                                    :before="[{icon: 'folder_open', handler () {}}]"
-                                    @input="filterCollectionName"
+                                    v-model="active.tags"
+                                    placeholder="Tags"
+                                    :before="[{icon: 'local_offer', handler () {}}]"
+                                    @input="filterTagName"
                                     @blur="save">
                                 <q-autocomplete :static-data="suggests"/>
                             </q-chips-input>
@@ -107,7 +107,7 @@
                 isUpdating: 'cards/isUpdating',
                 active: 'editor/getActiveCard',
                 cards: 'editor/getEditorCards',
-                collections: 'collections/all',
+                tags: 'tags/all',
             }),
             processStatus() {
                 if (this.isUpdating) {
@@ -161,7 +161,7 @@
         },
         created() {
             this.isSidebarVisible = !this.$q.platform.is.mobile;
-            this.suggests.list = this.collections.map(item => {
+            this.suggests.list = this.tags.map(item => {
                 return {label: item.name}
             })
         },
@@ -240,15 +240,15 @@
                     this.name.selectElement(el.firstChild)
                 }
             },
-            filterCollectionName() {
+            filterTagName() {
                 if (this.active === undefined) return;
 
                 let result = [];
-                if (this.active.collections.length === 0) return;
-                this.active.collections.forEach(item => {
+                if (this.active.tags.length === 0) return;
+                this.active.tags.forEach(item => {
                     result.push(item.replace(/\s+/g, ''));
                 });
-                this.active.collections = result
+                this.active.tags = result
             }
         }
     }
@@ -467,7 +467,7 @@
         }
     }
 
-    .cards-editor-collections {
+    .cards-editor-tags {
         display: inline-block;
         font-size: .8rem;
         margin: 5px 10px 20px 0;

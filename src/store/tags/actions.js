@@ -7,7 +7,7 @@ export const all = ({commit, rootGetters}) => {
             resolve([])
         }
         commit('allStatusRequest');
-        api.collections.forTeam(team.id).then(res => {
+        api.tags.forTeam(team.id).then(res => {
             commit('allStatusSuccess', res);
             resolve(res.data.data)
         }).catch(err => {
@@ -18,5 +18,5 @@ export const all = ({commit, rootGetters}) => {
 };
 
 export const flush = ({commit}) => {
-    commit('flushCollectionsState')
+    commit('flushTagsState')
 };

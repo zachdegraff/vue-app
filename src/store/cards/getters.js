@@ -43,17 +43,17 @@ export const getFilteredItems = state => {
                     return;
                 }
             }
-            if (filter.collection !== '') {
-                if (!item.collections || !item.collections.length) {
+            if (filter.tag !== '') {
+                if (!item.tags || !item.tags.length) {
                     return;
                 }
-                let isInCollection = false;
-                for (let i in item.collections) {
-                    if (item.collections[i].id === filter.collection) {
-                        isInCollection = true;
+                let isInTags = false;
+                for (let i in item.tags) {
+                    if (item.tags[i].id === filter.tag) {
+                        isInTags = true;
                     }
                 }
-                if (!isInCollection) {
+                if (!isInTags) {
                     return;
                 }
             }

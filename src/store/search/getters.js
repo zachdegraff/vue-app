@@ -6,7 +6,7 @@ export const getSuggestQuery = state => {
     }
     return state.query;
 };
-export const getQueryCollections = state => {
+export const getQueryTags = state => {
     if (state.query === '' || state.query.indexOf('#') === -1) return [];
 
     const matches = this.query.match(/#(.*?)($|\s+)/g), result = []

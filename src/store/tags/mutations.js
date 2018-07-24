@@ -1,4 +1,4 @@
-export const flushCollectionsState = state => {
+export const flushTagsState = state => {
     state.items = []
 };
 

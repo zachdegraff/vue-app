@@ -49,7 +49,7 @@
             ...mapGetters({
                 isProcessing: 'search/isHinting',
                 recentlyCards: 'cards/getRecentlyUpdated',
-                recentlyCollections: 'collections/getRecentlyUpdated'
+                recentlyTags: 'tags/getRecentlyUpdated'
             }),
             defaults() {
                 let items = [];
@@ -59,11 +59,11 @@
                     icon: 'note',
                     type: 'card'
                 }));
-                this.recentlyCollections.forEach(collection => items.push({
-                    id: collection.id,
-                    name: collection.name,
-                    icon: 'collections',
-                    type: 'collection'
+                this.recentlyTags.forEach(tag => items.push({
+                    id: tag.id,
+                    name: tag.name,
+                    icon: 'local_offer',
+                    type: 'tag'
                 }));
                 return items
             },
@@ -213,7 +213,7 @@
                 if (item.type === 'card') {
                     return APP_HOST + route('view_card', {id: item.id})
                 }
-                return APP_HOST + route('collection_cards', {name: item.name})
+                return APP_HOST + route('tag_cards', {name: item.name})
             },
             setQueryString() {
                 const selection = document.getSelection(),

@@ -14,8 +14,8 @@ export const addCard = (state, card) => {
         if (key === 'shorthand') {
             return item.shorthand = card.shorthand.join(', ');
         }
-        if (key === 'collections') {
-            return item.collections = card.collections.map(collection => collection.name);
+        if (key === 'tags') {
+            return item.tags = card.tags.map(tag => tag.name);
         }
         item[key] = card[key]
     });
