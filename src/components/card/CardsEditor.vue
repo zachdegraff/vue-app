@@ -55,6 +55,7 @@
                                         hide-underline
                                         v-model="active.shorthand"
                                         placeholder="Shorthand"
+                                        @keydown.enter="insertComma"
                                         @blur="save"/>
                             </q-field>
                         </div>
@@ -211,6 +212,9 @@
                     ok: 'delete',
                     color: 'secondary'
                 });
+            },
+            insertComma(e) {
+                e.target.value = e.target.value + ','
             },
             search(terms, done) {
                 this.hints({terms}).then(items => {
