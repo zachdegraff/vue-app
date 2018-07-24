@@ -270,4 +270,13 @@
     .medium-editor-toolbar {
         z-index: 6001;
     }
+
+    .medium-editor-anchor-preview {
+        z-index: 7000;
+        a {
+            text-decoration: none;
+            margin: 5px 10px;
+            font-size: .95rem;
+        }
+    }
 </style>
