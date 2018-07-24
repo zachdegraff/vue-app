@@ -5,7 +5,7 @@
                 <q-toolbar-title link v-if="teams.length > 0">
                     <div class="current-team-wrapper">
                         <img :src="photo(current.photo)" class="team-photo round-borders vertical-middle" v-if="current"/><span class="gt-xs" v-if="current">{{current.name}}</span>
-                        <q-popover max-height="1000px">
+                        <q-popover>
                             <q-list link>
                                 <q-item v-close-overlay v-for="team in teams" :key="team.id" @click.native="changeTeam(team.id)">
                                     <q-item-side>
