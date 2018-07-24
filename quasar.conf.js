@@ -34,7 +34,7 @@ module.exports = function (ctx) {
                 } : (process.env.APP_STAGE === 'test' ? {
                     API_HOST: JSON.stringify('https://devapi.wonderus.app'),
                     APP_HOST: JSON.stringify('https://dev.wonderus.app'),
-                    SLACK_CLIENT_ID: JSON.stringify('372369379348.372595746706')
+                    SLACK_CLIENT_ID: JSON.stringify('405045441623.403459552065')
                 } : {
                     API_HOST: JSON.stringify('https://api.wonderus.app'),
                     APP_HOST: JSON.stringify('https://i.wonderus.app'),
