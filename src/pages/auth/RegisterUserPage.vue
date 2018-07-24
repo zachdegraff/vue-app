@@ -45,8 +45,8 @@
                 </q-field>
                 <div class="q-my-md text-tertiary">
                     By creating an account and using Wonderus you agree to our
-                    <a href="https://wonderus.app/terms" class="text-primary">Terms of Service</a> and
-                    <a href="https://wonderus.app/privacy" class="text-primary">Privacy Policy</a>
+                    <a href="https://wonderus.app/terms" class="text-primary" target="_blank">Terms of Service</a> and
+                    <a href="https://wonderus.app/privacy" class="text-primary" target="_blank">Privacy Policy</a>
                 </div>
                 <q-btn color="primary" label="finish creating account" class="full-width q-my-md" @click="submit" :disabled="isDisabledSubmitBtn"/>
             </q-card-main>

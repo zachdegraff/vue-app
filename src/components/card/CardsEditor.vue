@@ -45,7 +45,7 @@
                             <q-btn icon="delete" flat dense @click.prevent.stop="flush($event)" v-show="active.canRemove"/>
                         </div>
                         <div>
-                            <div class="cards-editor-name"></div>
+                            <div class="cards-editor-name" data-disable-return="true"></div>
                         </div>
                         <div style="clear:both"></div>
                         <div class="cards-editor-shorthand" v-if="active">
