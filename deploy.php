@@ -1,34 +1,36 @@
 <?php
+
 namespace Deployer;
 
 require 'recipe/common.php';
 
-// Project name
-set('application', 'app');
-
-// Project repository
-set('repository', 'git@github.com:jeffstern/wonderus-app.git');
-
-// [Optional] Allocate tty for git clone. Default value is false.
-set('git_tty', true); 
-
-// Shared files/dirs between deploys 
-add('shared_files', ['dist/spa-mat/.htaccess']);
-add('shared_dirs', []);
-
-// Writable dirs by web server 
-add('writable_dirs', []);
-
-// Hosts
-set('deploy_path', '/var/www/wonderus/{{application}}');
-
-host('ec2-18-220-139-147.us-east-2.compute.amazonaws.com')
-    ->user('ubuntu')
-    ->identityFile('~/.ssh/WonderusAWS.pem');
-
-
+set('git_tty', true);
 set('ssh_type', 'native');
 set('ssh_multiplexing', true);
+
+set('application', 'app');
+set('repository', 'git@github.com:jeffstern/wonderus-app.git');
+
+add('shared_files', ['dist/spa-mat/.htaccess']);
+add('shared_dirs', []);
+add('writable_dirs', []);// Hosts
+
+set('default_stage', 'dev');
+
+host('dev')
+    ->hostname('ec2-18-220-139-147.us-east-2.compute.amazonaws.com')
+    ->identityFile('~/.ssh/WonderusAWS.pem')
+    ->user('ubuntu')
+    ->set('branch', 'dev')
+    ->set('deploy_path', '/var/www/development/{{application}}');
+
+host('prod')
+    ->hostname('ec2-18-220-139-147.us-east-2.compute.amazonaws.com')
+    ->identityFile('~/.ssh/WonderusAWS.pem')
+    ->user('ubuntu')
+    ->set('branch', 'master')
+    ->set('deploy_path', '/var/www/wonderus/{{application}}');
+
 
 // Tasks
 
