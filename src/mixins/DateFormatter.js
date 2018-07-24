@@ -16,7 +16,7 @@ const DateFormatter = {
         },
 
         toLocaleString(value) {
-            const date = new Date(value),
+            const date = new Date(value.replace(/-/g, '/')),
                 utc = new Date(Date.UTC(
                     date.getFullYear(),
                     date.getMonth(),
