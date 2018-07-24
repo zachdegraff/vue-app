@@ -31,11 +31,15 @@ module.exports = function (ctx) {
                     API_HOST: JSON.stringify('http://wonderus'),
                     APP_HOST: JSON.stringify('http://localhost:8080'),
                     SLACK_CLIENT_ID: JSON.stringify('371875442850.371336699377')
+                } : (process.env.APP_STAGE === 'test' ? {
+                    API_HOST: JSON.stringify('https://devapi.wonderus.app'),
+                    APP_HOST: JSON.stringify('https://dev.wonderus.app'),
+                    SLACK_CLIENT_ID: JSON.stringify('372369379348.372595746706')
                 } : {
                     API_HOST: JSON.stringify('https://api.wonderus.app'),
                     APP_HOST: JSON.stringify('https://i.wonderus.app'),
                     SLACK_CLIENT_ID: JSON.stringify('372369379348.372595746706')
-                },
+                }),
             // gzip: true,
             // analyze: true,
             // extractCSS: false,

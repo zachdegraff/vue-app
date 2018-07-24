@@ -22,18 +22,20 @@ host('dev')
     ->identityFile('~/.ssh/WonderusAWS.pem')
     ->user('ubuntu')
     ->set('branch', 'dev')
-    ->set('deploy_path', '/var/www/development/{{application}}');
+    ->set('deploy_path', '/var/www/development/{{application}}')
+    ->set('stage_var', 'APP_STAGE=test');
 
 host('prod')
     ->hostname('ec2-18-220-139-147.us-east-2.compute.amazonaws.com')
     ->identityFile('~/.ssh/WonderusAWS.pem')
     ->user('ubuntu')
     ->set('branch', 'master')
-    ->set('deploy_path', '/var/www/wonderus/{{application}}');
+    ->set('deploy_path', '/var/www/wonderus/{{application}}')
+    ->set('stage_var', 'APP_STAGE=prod');
 
 
 task('quasar:build', function () {
-    run('cd {{release_path}} && quasar build');
+    run('cd {{release_path}} && {{stage_var}} quasar build');
 });
 
 task('npm:install', function () {
