@@ -32,8 +32,6 @@ host('prod')
     ->set('deploy_path', '/var/www/wonderus/{{application}}');
 
 
-// Tasks
-
 task('quasar:build', function () {
     run('cd {{release_path}} && quasar build');
 });
