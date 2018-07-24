@@ -63,6 +63,10 @@
 
             this.checkTagsVisibility()
         },
+        destroyed() {
+            window.removeEventListener('wheel', this.handlePageWheel);
+            document.removeEventListener('keydown', this.handleArrowScroll);
+        },
         watch: {
             card: function (val) {
                 if (val === undefined) return;
