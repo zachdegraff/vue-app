@@ -60,16 +60,35 @@
                             </q-field>
                         </div>
                         <div class="cards-editor-tags" v-if="active">
-                            <q-chips-input
-                                    hide-underline
-                                    v-model="active.tags"
-                                    placeholder="Tags"
-                                    :before="[{icon: 'local_offer', handler () {}}]"
-                                    @input="filterTagName"
-                                    @blur="save">
-                                <q-autocomplete :static-data="suggests"/>
-                            </q-chips-input>
+                            <q-btn flat dense icon="local_offer" size="sm" :label="tagsCount">
+                                <q-popover>
+                                    <q-field>
+                                        <q-search hide-underline v-model="tagQuery" placeholder="Tag name" @keyup="addTag" class="q-my-md q-mx-md"/>
+                                    </q-field>
+                                    <q-list link separator v-show="suggests.length">
+                                        <q-item v-for="(tag, idx) in suggests" :key="idx" @click.native="selectTag(tag)">
+                                            <q-item-main>
+                                                <q-item-tile>{{tag}}</q-item-tile>
+                                            </q-item-main>
+                                            <q-item-side right>
+                                                <q-btn flat dense color="positive" icon="add"/>
+                                            </q-item-side>
+                                        </q-item>
+                                    </q-list>
+                                    <q-list separator v-show="active.tags.length">
+                                        <q-item v-for="(tag, idx) in active.tags" :key="idx">
+                                            <q-item-main>
+                                                <q-item-tile>{{tag}}</q-item-tile>
+                                            </q-item-main>
+                                            <q-item-side right>
+                                                <q-btn flat dense color="negative" icon="close" @click="removeTag(idx)"/>
+                                            </q-item-side>
+                                        </q-item>
+                                    </q-list>
+                                </q-popover>
+                            </q-btn>
                         </div>
+                        <div style="clear: both"></div>
                     </div>
                     <content-editor v-if="active"></content-editor>
                 </div>
@@ -89,12 +108,13 @@
         data: () => {
             return {
                 query: '',
+                tagQuery: '',
                 name: null,
                 isOpen: true,
                 isFullScreen: false,
                 isNameChanged: false,
                 isSidebarVisible: true,
-                suggests: {field: 'label', list: []}
+                suggests: []
             }
         },
         mixins: [DateFormatter],
@@ -139,6 +159,12 @@
                 }
                 return 'chevron_right'
             },
+            tagsCount() {
+                if (!this.active || this.active.tags.length === 0) {
+                    return ' ';
+                }
+                return this.active.tags.length
+            },
             title() {
                 const parts = [];
                 if (this.active) {
@@ -157,13 +183,20 @@
 
                 document.title = this.title;
                 this.name.setContent(`<p>${val.name}</p>`, 0)
+            },
+            tagQuery: function (val) {
+                this.suggests = [];
+                if (val.length < 2) return;
+
+                this.tags.forEach(tag => {
+                    if (tag.name.toLowerCase().indexOf(val.toLowerCase()) !== -1) {
+                        this.suggests.push(tag.name)
+                    }
+                })
             }
         },
         created() {
-            this.isSidebarVisible = !this.$q.platform.is.mobile;
-            this.suggests.list = this.tags.map(item => {
-                return {label: item.name}
-            })
+            this.isSidebarVisible = !this.$q.platform.is.mobile
         },
         mounted() {
             const options = {
@@ -240,15 +273,26 @@
                     this.name.selectElement(el.firstChild)
                 }
             },
-            filterTagName() {
-                if (this.active === undefined) return;
+            addTag(e) {
+                if (e.keyCode !== 13) return;
 
-                let result = [];
-                if (this.active.tags.length === 0) return;
-                this.active.tags.forEach(item => {
-                    result.push(item.replace(/\s+/g, ''));
-                });
-                this.active.tags = result
+                const val = this.tagQuery.replace(/\s+/g, '');
+                if (val === '') return;
+                if (this.active.tags.indexOf(val) === -1) {
+                    this.active.tags.push(val)
+                }
+                this.tagQuery = '';
+                this.save()
+            },
+            selectTag(tag) {
+                if (this.active.tags.indexOf(tag) === -1) {
+                    this.active.tags.push(tag);
+                    this.save()
+                }
+            },
+            removeTag(idx) {
+                this.active.tags.splice(idx, 1);
+                this.save()
             }
         }
     }
@@ -458,7 +502,7 @@
     }
 
     .cards-editor-shorthand {
-        display: inline-block;
+        float: left;
         font-size: .8rem;
         margin: 5px 10px 20px 0;
         .q-field-icon {
@@ -468,17 +512,8 @@
     }
 
     .cards-editor-tags {
-        display: inline-block;
-        font-size: .8rem;
+        float: left;
         margin: 5px 10px 20px 0;
-        .q-icon {
-            font-size: 15px;
-        }
-        .q-chips-input {
-            & > .q-icon {
-                padding: 5px 0;
-            }
-        }
     }
 
     .cards-editor-stamp {
