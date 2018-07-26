@@ -22,7 +22,7 @@
                     </div>
                 </div>
             </div>
-            <q-table title="Team Members" class="q-mt-xl" :data="members" :columns="columns" :pagination="{rowsPerPage: 20}" row-key="name" :loading="isMembersLoading">
+            <q-table title="Team Members" class="bg-white q-mt-xl" :data="members" :columns="columns" :pagination="{rowsPerPage: 20}" row-key="name" :loading="isMembersLoading">
                 <q-td slot="body-cell-actions" slot-scope="props" class="text-right">
                     <q-btn flat round dense icon="more_vert" v-if="props.row.isEditable">
                         <q-popover>

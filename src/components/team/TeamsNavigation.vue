@@ -1,6 +1,6 @@
 <template>
     <div>
-        <q-list highlight inset-separator link class="q-mt-md" v-if="teams.length>0">
+        <q-list highlight inset-separator link class="bg-white q-mt-md" v-if="teams.length>0">
             <q-item v-for="team in teams" :key="team.id" :active="isActive(team)" :to="{name: 'view_team', params: {id: team.id}}">
                 <q-item-side>
                     <img :src="photo(team.photo)" class="round-borders" width="50px"/>

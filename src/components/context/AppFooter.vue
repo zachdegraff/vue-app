@@ -8,10 +8,10 @@
 </script>
 <style lang="scss">
     .app-footer {
-        margin: 40px 0 20px;
-        text-align: center;
         border-top: solid 1px #eee;
-        padding: 10px 0;
         font-size: .9rem;
+        margin: 40px 0 20px;
+        padding: 10px 0;
+        text-align: center;
     }
 </style>

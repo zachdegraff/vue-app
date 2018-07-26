@@ -1,23 +1,22 @@
 <template>
-    <div>
-        <q-page>
-            <search-form></search-form>
-            <div class="row flex-center">
-                <div class="col-xs-12 col-sm-8">
-                    <div class="row q-my-lg" v-show="items.length > 0">
-                        <div class="col q-headline">#{{tag}} tag</div>
-                    </div>
-                    <cards-list :items="items"/>
+    <div class="content-container">
+        <div class="row gutter-x-lg">
+            <site-navigation class="col-lg-2 gt-md"/>
+            <div class="col-md-12 col-lg-7">
+                <div class="row q-mb-lg">
+                    <div class="col q-headline">#{{tag}} tag</div>
                 </div>
-            </div>
-            <div class="row flex-center q-mt-lg">
                 <q-spinner :size="36" color="red" v-show="isLoading"></q-spinner>
+                <cards-list :items="items"/>
             </div>
-        </q-page>
+            <div class="col-lg-3 q-pa-xl gt-md">
 
+            </div>
+        </div>
     </div>
 </template>
 <script>
+    import SiteNavigation from '../../components/context/SiteNavigation.vue'
     import SearchForm from '../../components/SearchForm.vue'
     import CardsList from '../../components/card/CardsList'
     import {mapActions, mapGetters} from 'vuex'
@@ -38,7 +37,7 @@
                 return `${this.tag} - ${prop(this.team, 'name')} - Wonderus`;
             }
         },
-        components: {CardsList, SearchForm},
+        components: {CardsList, SearchForm, SiteNavigation},
         watch: {
             team: function (val) {
                 this.filter(this.params());

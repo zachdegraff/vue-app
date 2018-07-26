@@ -1,13 +1,16 @@
 <template>
-    <q-page>
-        <search-form></search-form>
-        <div class="row flex-center">
-            <div class="col-xs-12 col-sm-8">
-                <div class="row q-my-lg">
+    <div class="content-container">
+        <div class="row gutter-x-lg">
+            <site-navigation class="col-lg-2 gt-md"/>
+            <div class="col-md-12 col-lg-7">
+                <div class="row lt-lg">
+                    <q-btn no-caps color="primary" label="Ask a question" class="q-mb-md"/>
+                </div>
+                <div class="row q-mb-lg">
                     <div class="col q-headline">Questions</div>
                 </div>
                 <div class="row q-my-lg questions-container">
-                    <q-tabs inverted no-pane-border class="col">
+                    <q-tabs no-pane-border color="#f7f7f7" class="col">
                         <!-- Tabs - notice slot="title" -->
                         <q-route-tab label="Open" to="/questions" slot="title" name="open"/>
                         <q-route-tab label="Answered" to="/questions/answered" slot="title" name="answered"/>
@@ -17,16 +20,20 @@
                         <q-tab-pane name="user">
                             <q-infinite-scroll :handler="loadMoreQuestions">
                                 <questions-list :items="questions"></questions-list>
-                                <q-spinner-circles slot="message" :size="40"></q-spinner-circles>
+                                <q-spinner slot="message" :size="40" color="red" />
                             </q-infinite-scroll>
                         </q-tab-pane>
                     </q-tabs>
                 </div>
             </div>
+            <div class="col-lg-3 q-pa-xl gt-md">
+                <q-btn no-caps color="primary" label="Ask a question" class="full-width q-mb-lg" @click="openAskHelp"/>
+            </div>
         </div>
-    </q-page>
+    </div>
 </template>
 <script>
+    import SiteNavigation from '../../components/context/SiteNavigation.vue'
     import QuestionsList from '../../components/question/QuestionsList.vue'
     import SearchForm from '../../components/SearchForm.vue'
     import {mapActions, mapGetters} from 'vuex'
@@ -46,11 +53,12 @@
             }
         },
         components: {
-            SearchForm, QuestionsList
+            SearchForm, QuestionsList, SiteNavigation
         },
 
         methods: {
             ...mapActions({
+                openAskHelp: 'modals/openAskHelp',
                 loadQuestions: 'questions/loadUserQuestions'
             }),
             loadMoreQuestions(idx, done) {

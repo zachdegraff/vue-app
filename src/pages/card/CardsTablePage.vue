@@ -1,65 +1,61 @@
 <template>
-    <q-page>
-        <search-form></search-form>
-        <div class="row flex-center">
-            <div class="col-xs-12 col-sm-11">
-                <div class="row gutter-sm">
-                    <div class="col">
-                        <q-table
-                                :title="title"
-                                :data="items"
-                                :columns="table.columns"
-                                :visible-columns="table.visible"
-                                :pagination.sync="table.pagination"
-                                :filter="filter.name"
-                                row-key="id"
-                                :loading="isCardsLoading"
-                                @update:pagination="fixSorting"
-                                class="q-mt-xl">
+    <div class="content-container">
+        <div class="row">
+            <site-navigation class="col-lg-2 gt-md"/>
+            <div class="col-md-12 col-lg-10 q-pr-md">
+                <q-table
+                        :title="title"
+                        :data="items"
+                        :columns="table.columns"
+                        :visible-columns="table.visible"
+                        :pagination.sync="table.pagination"
+                        :filter="filter.name"
+                        row-key="id"
+                        :loading="isCardsLoading"
+                        @update:pagination="fixSorting"
+                        class="bg-white">
 
-                            <tr slot="header" slot-scope="props">
-                                <q-th key="name" :props="props">
-                                    <q-input v-model.lazy="filter.name" float-label="Card Name" style="display: inline-block"/>
-                                </q-th>
-                                <q-th key="shorthand" :props="props">
-                                    <q-input v-model.lazy="filter.shorthand" float-label="Shorthand" style="display: inline-block"/>
-                                </q-th>
-                                <q-th key="description" :props="props">
-                                    <q-input v-model.lazy="filter.description" float-label="Description"/>
-                                </q-th>
-                                <q-th key="tags" :props="props">
-                                    <q-select v-model="filter.tag" :options="options" float-label=" "/>
-                                </q-th>
-                                <q-th key="updatedAt" :props="props">
-                                    Last Updated
-                                </q-th>
-                            </tr>
+                    <tr slot="header" slot-scope="props">
+                        <q-th key="name" :props="props">
+                            <q-input v-model.lazy="filter.name" float-label="Card Name" style="display: inline-block"/>
+                        </q-th>
+                        <q-th key="shorthand" :props="props">
+                            <q-input v-model.lazy="filter.shorthand" float-label="Shorthand" style="display: inline-block"/>
+                        </q-th>
+                        <q-th key="description" :props="props">
+                            <q-input v-model.lazy="filter.description" float-label="Description"/>
+                        </q-th>
+                        <q-th key="tags" :props="props">
+                            <q-select v-model="filter.tag" :options="options" float-label=" "/>
+                        </q-th>
+                        <q-th key="updatedAt" :props="props">
+                            Last Updated
+                        </q-th>
+                    </tr>
 
 
-                            <q-td slot="body-cell-name" slot-scope="props" :props="props">
-                                <a :href="createViewUrl(props.row)" @click.prevent.stop="showCard(props.row.id)">{{props.value}}</a>
-                            </q-td>
-                            <q-td slot="body-cell-shorthand" slot-scope="props" :props="props" style="max-width: 200px;white-space: normal">
-                                <em>{{props.value.join(', ')}}</em>
-                            </q-td>
-                            <q-td slot="body-cell-description" slot-scope="props" :props="props" style="max-width: 500px;white-space: normal">
-                                {{truncate(clearMarks(props.value))}}
-                            </q-td>
-                            <q-td slot="body-cell-tags" slot-scope="props" :props="props" style="max-width: 300px;white-space: normal">
-                                <q-chip v-for="(col, idx) in props.value" :key="idx" small color="primary" class="q-ma-xs">#{{col.name}}</q-chip>
-                            </q-td>
-                            <q-td slot="body-cell-updatedAt" slot-scope="props" :props="props">
-                                <em>{{toLocaleString(props.value)}}</em>
-                            </q-td>
-                        </q-table>
-                    </div>
-                </div>
+                    <q-td slot="body-cell-name" slot-scope="props" :props="props">
+                        <a :href="createViewUrl(props.row)" @click.prevent.stop="showCard(props.row.id)">{{props.value}}</a>
+                    </q-td>
+                    <q-td slot="body-cell-shorthand" slot-scope="props" :props="props" style="max-width: 200px;white-space: normal">
+                        <em>{{props.value.join(', ')}}</em>
+                    </q-td>
+                    <q-td slot="body-cell-description" slot-scope="props" :props="props" style="max-width: 500px;white-space: normal">
+                        {{truncate(clearMarks(props.value))}}
+                    </q-td>
+                    <q-td slot="body-cell-tags" slot-scope="props" :props="props" style="max-width: 300px;white-space: normal">
+                        <q-chip v-for="(col, idx) in props.value" :key="idx" small color="primary" class="q-ma-xs">#{{col.name}}</q-chip>
+                    </q-td>
+                    <q-td slot="body-cell-updatedAt" slot-scope="props" :props="props">
+                        <em>{{toLocaleString(props.value)}}</em>
+                    </q-td>
+                </q-table>
             </div>
         </div>
-    </q-page>
+    </div>
 </template>
 <script>
-    import SearchForm from '../../components/SearchForm.vue'
+    import SiteNavigation from '../../components/context/SiteNavigation.vue'
     import DateFormatter from '../../mixins/DateFormatter'
     import Markdown from '../../mixins/Markdown'
     import {mapActions, mapGetters} from 'vuex'
@@ -170,7 +166,7 @@
                 this.fillOptions(val)
             },
         },
-        components: {SearchForm},
+        components: {SiteNavigation},
         created() {
             this.load();
             document.title = this.title;

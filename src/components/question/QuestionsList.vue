@@ -3,7 +3,7 @@
         <q-card
                 v-for="item in questions"
                 :key="item.id"
-                class="questions-item self-center q-mb-md">
+                class="questions-item self-center q-mb-md bg-white">
             <q-list no-border>
                 <q-item>
                     <q-item-side>

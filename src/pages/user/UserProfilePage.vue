@@ -1,5 +1,5 @@
 <template>
-    <q-page>
+    <div class="content-container">
         <div class="row flex-center">
             <div class="col-xs-12 col-sm-8">
                 <h5>My Profile</h5>
@@ -26,7 +26,7 @@
                 </div>
             </div>
         </div>
-    </q-page>
+    </div>
 </template>
 <script>
     import {required, email, sameAs, minLength} from 'vuelidate/lib/validators'

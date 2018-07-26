@@ -1,6 +1,6 @@
 <template>
-    <div class="row gutter-sm" v-if="items" v-show="items.length > 0">
-        <div class="col-xs-6 col-sm-6 col-md-3" v-for="tag in items" :key="tag.id">
+    <div class="row flex-center gutter-sm" v-if="items" v-show="items.length > 0">
+        <div class="col-xs-9 col-sm-6 col-md-3" v-for="tag in items" :key="tag.id">
             <q-card
                     class="cursor-pointer q-mb-md"
                     @click.native="$router.push({name: 'tag_cards', params: {name: tag.name}})">

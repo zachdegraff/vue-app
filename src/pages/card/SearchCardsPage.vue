@@ -1,29 +1,46 @@
 <template>
-    <q-page>
-        <search-form></search-form>
-        <div class="row flex-center">
-            <div class="col-xs-12 col-sm-8">
-                <div class="row q-my-lg" v-show="items.length > 0">
+    <div class="content-container">
+        <div class="row gutter-x-lg">
+            <site-navigation class="col-lg-2 gt-md"/>
+            <div class="col-md-12 col-lg-7">
+                <div class="row lt-lg">
+                    <q-btn no-caps color="primary" label="Create a card" @click="createCard" class="q-mr-md q-mb-md"/>
+                </div>
+                <div class="row q-mb-lg">
                     <div class="col q-headline">Search results</div>
                 </div>
                 <cards-list :items="items"/>
+                <div class="row flex-center q-mt-lg" v-show="suggestQuery">
+                    <q-spinner :size="36" color="red" v-show="isLoading"></q-spinner>
+                    <div class="col text-center q-mt-xl" v-show="isEmptyResult">There are no results.
+                        <a href="javascript:void(0)" @click="createCard">Create a card for {{suggestQuery}}</a>?
+                    </div>
+                </div>
+                <div class="row flex-center q-mt-lg" v-if="isAskHelpAvailable">
+                    <div class="col text-center q-mt-xl">
+                        Not finding what you need? <a href="javascript:void(0)" @click="openAskHelp">Ask for help</a>.
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 q-pa-xl gt-md">
+                <q-btn no-caps color="primary" label="Create a card" @click="createCard" class="full-width q-mb-md" />
+                <q-card inline class="full-width">
+                    <q-card-title>
+                        Set up Slack Integration
+                    </q-card-title>
+                    <q-card-main>
+                        <img src="http://via.placeholder.com/100x100" class="float-right q-ml-md"/>
+                        Ask questions directly from Slack. (Message should be informing about the benefints and utility of Slack Integration)
+                        <br/>
+                        <q-btn color="primary" outline label="Learn more" class="q-mt-lg"/>
+                    </q-card-main>
+                </q-card>
             </div>
         </div>
-        <div class="row flex-center q-mt-lg" v-show="suggestQuery">
-            <q-spinner :size="36" color="red" v-show="isLoading"></q-spinner>
-            <div class="col text-center q-mt-xl" v-show="isEmptyResult">There are no results.
-                <a href="javascript:void(0)" @click="createCard()">Create a card for {{suggestQuery}}</a>?
-            </div>
-        </div>
-        <div class="row flex-center q-mt-lg" v-if="isAskHelpAvailable">
-            <div class="col text-center q-mt-xl">
-                Not finding what you need? <a href="javascript:void(0)" @click="openAskHelp">Ask for help</a>.
-            </div>
-        </div>
-    </q-page>
+    </div>
 </template>
 <script>
-    import SearchForm from '../../components/SearchForm.vue'
+    import SiteNavigation from '../../components/context/SiteNavigation.vue'
     import CardsList from '../../components/card/CardsList'
     import {mapActions, mapGetters} from 'vuex'
     import {route} from '../../helpers'
@@ -74,7 +91,7 @@
                 return true;
             }
         },
-        components: {CardsList, SearchForm},
+        components: {CardsList, SiteNavigation},
         methods: {
             ...mapActions({
                 search: 'search/search',

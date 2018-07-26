@@ -1,10 +1,8 @@
 <template>
-    <div>
-        <div class="search-form-container row justify-center">
-            <q-search v-model.lazy="query" @keyup.enter="submit" placeholder="Search for team knowledge" class="col-sx-12 col-md-8 bg-white q-pa-md">
-                <q-autocomplete separator @search="search" @selected="selected" :min-characters="2"/>
-            </q-search>
-        </div>
+    <div class="search-form">
+        <q-search v-model.lazy="query" @keyup.enter="submit" :placeholder="placeholder" class="q-pa-sm">
+            <q-autocomplete separator @search="search" @selected="selected" :min-characters="2"/>
+        </q-search>
     </div>
 </template>
 <script>
@@ -18,8 +16,15 @@
         },
         computed: {
             ...mapGetters({
+                team: 'teams/current',
                 searchQuery: 'search/getQuery'
             }),
+            placeholder() {
+                if (this.team) {
+                    return `Search ${this.team.name}`
+                }
+                return 'Search'
+            }
         },
         created() {
             this.query = this.searchQuery;
@@ -63,9 +68,13 @@
     }
 </script>
 <style lang="scss">
-    .search-form-container {
-        background: #36cb77;
-        padding: 100px 0;
+    .search-form {
+        float: left;
         position: relative;
+        z-index: 101;
+        .q-input-target {
+            font-size: .9rem;
+            min-width: 250px;
+        }
     }
 </style>
