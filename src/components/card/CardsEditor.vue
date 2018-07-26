@@ -39,29 +39,8 @@
                             <span>{{processStatus}}</span>
                         </div>
                         <div class="cards-editor-tools" v-if="active">
-                            <q-btn icon="bookmark" flat dense @click="toggleFavorite(active.id)" v-show="isSaved(active.id)"/>
-                            <q-btn icon="bookmark_border" flat dense @click="toggleFavorite(active.id)" v-show="!isSaved(active.id)"/>
-                            <q-btn icon="help" flat dense @click="openAskHelp"/>
-                            <q-btn icon="delete" flat dense @click.prevent.stop="flush($event)" v-show="active.canRemove"/>
-                        </div>
-                        <div>
-                            <div class="cards-editor-name" data-disable-return="true"></div>
-                        </div>
-                        <div style="clear:both"></div>
-                        <div class="cards-editor-shorthand" v-if="active">
-                            <q-field icon="style">
-                                <q-input
-                                        dense
-                                        hide-underline
-                                        v-model="active.shorthand"
-                                        placeholder="Shorthand"
-                                        @keydown.enter="insertComma"
-                                        @blur="save"/>
-                            </q-field>
-                        </div>
-                        <div class="cards-editor-tags" v-if="active">
-                            <q-btn flat dense icon="local_offer" size="sm" :label="tagsCount">
-                                <q-popover>
+                            <q-btn icon="local_offer" flat dense :label="tagsCount">
+                                <q-popover anchor="bottom right" self="top right" >
                                     <q-field>
                                         <q-search hide-underline v-model="tagQuery" placeholder="Tag name" @keyup="addTag" class="q-my-md q-mx-md"/>
                                     </q-field>
@@ -87,8 +66,26 @@
                                     </q-list>
                                 </q-popover>
                             </q-btn>
+                            <q-btn icon="bookmark" flat dense @click="toggleFavorite(active.id)" v-show="isSaved(active.id)"/>
+                            <q-btn icon="bookmark_border" flat dense @click="toggleFavorite(active.id)" v-show="!isSaved(active.id)"/>
+                            <q-btn icon="help" flat dense @click="openAskHelp"/>
+                            <q-btn icon="delete" flat dense @click.prevent.stop="flush($event)" v-show="active.canRemove"/>
                         </div>
-                        <div style="clear: both"></div>
+                        <div>
+                            <div class="cards-editor-name" data-disable-return="true"></div>
+                        </div>
+                        <div style="clear:both"></div>
+                        <div class="cards-editor-shorthand" v-if="active">
+                            <q-field icon="style">
+                                <q-input
+                                        dense
+                                        hide-underline
+                                        v-model="active.shorthand"
+                                        placeholder="Shorthand"
+                                        @keydown.enter="insertComma"
+                                        @blur="save"/>
+                            </q-field>
+                        </div>
                     </div>
                     <content-editor v-if="active"></content-editor>
                 </div>
@@ -287,6 +284,7 @@
             selectTag(tag) {
                 if (this.active.tags.indexOf(tag) === -1) {
                     this.active.tags.push(tag);
+                    this.tagQuery = '';
                     this.save()
                 }
             },
@@ -502,18 +500,12 @@
     }
 
     .cards-editor-shorthand {
-        float: left;
         font-size: .8rem;
         margin: 5px 10px 20px 0;
         .q-field-icon {
             font-size: 1rem;
             margin: -1px 0 0;
         }
-    }
-
-    .cards-editor-tags {
-        float: left;
-        margin: 5px 10px 20px 0;
     }
 
     .cards-editor-stamp {
