@@ -25,6 +25,16 @@ export const open = ({commit, dispatch, getters}, id) => {
     })
 };
 
+export const batch = ({commit, getters}, cards) => {
+    if (!cards || cards.length === 0) return;
+    cards.forEach(card => {
+        const item = getters['getById'](card.id);
+        if (item === undefined) {
+            commit('addCard', card)
+        }
+    })
+};
+
 export const close = ({dispatch, commit, getters}) => {
     const card = getters['getActiveCard'];
     if (card !== undefined) {

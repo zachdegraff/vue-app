@@ -40,7 +40,7 @@
                         </div>
                         <div class="cards-editor-tools" v-if="active">
                             <q-btn icon="local_offer" flat dense :label="tagsCount">
-                                <q-popover anchor="bottom right" self="top right" >
+                                <q-popover anchor="bottom right" self="top right">
                                     <q-field>
                                         <q-search hide-underline v-model="tagQuery" placeholder="Tag name" @keyup="addTag" class="q-my-md q-mx-md"/>
                                     </q-field>
@@ -220,9 +220,11 @@
                 hide: 'editor/hide',
                 save: 'editor/save',
                 open: 'editor/open',
-                create: 'editor/create',
+                filter: 'cards/all',
+                hints: 'search/hints',
+                batch: 'editor/batch',
                 remove: 'cards/remove',
-                hints: 'search/cardsHints',
+                create: 'editor/create',
                 toggleFavorite: 'users/favorite',
                 close: 'modals/closeCardsEditor',
                 openAskHelp: 'modals/openAskHelp',
@@ -260,7 +262,10 @@
             },
             selected(item) {
                 this.query = '';
-                this.open(item.id)
+                if (item.type === 'card') {
+                    return this.open(item.id)
+                }
+                this.filter({tag: item.name}).then(cards => this.batch(cards))
             },
             selectDefaultText() {
                 if (this.active.name !== 'Untitled card') return;
