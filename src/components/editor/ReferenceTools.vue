@@ -36,7 +36,7 @@
                 query: '',
                 caret: 0,
                 target: null,
-                space: [10, 32, 160],  // New Line, Space
+                space: [32, 160],  // New Line, Space
                 controls: [62, 64], // >, @
                 isReferenceTools: false,
                 side: 'bottom',
@@ -198,8 +198,15 @@
                 }
                 const str = sel.focusNode.nodeValue;
                 for (let i = sel.focusOffset - 1; i >= 0; --i) {
+                    if (str.charCodeAt(i) === 10) {
+                        return -1;
+                    }
                     if (this.isInChars(str, i, this.space)) {
-                        return -1
+                        if (i > 0) {
+                            if (this.isInChars(str, i - 1, this.space)) {
+                                return -1
+                            }
+                        }
                     }
                     if (this.isInChars(str, i, this.controls)) {
                         if (i === 0 || this.isInChars(str, i - 1, this.space)) {
