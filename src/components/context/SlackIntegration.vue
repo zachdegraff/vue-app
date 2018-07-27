@@ -1,5 +1,5 @@
 <template>
-    <q-card inline v-show="!isIntegration">
+    <q-card inline v-if="noIntegration">
         <q-card-title>
             Add Wonderus to Slack
         </q-card-title>
@@ -21,7 +21,7 @@
             ...mapGetters({
                 team: 'teams/current'
             }),
-            isIntegration() {
+            noIntegration() {
                 if (!this.team || !this.team.integrations) {
                     return false;
                 }
