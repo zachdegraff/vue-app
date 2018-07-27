@@ -9,7 +9,7 @@ export const getSuggestQuery = state => {
 export const getQueryTags = state => {
     if (state.query === '' || state.query.indexOf('#') === -1) return [];
 
-    const matches = this.query.match(/#(.*?)($|\s+)/g), result = []
+    const matches = state.query.match(/#(.*?)($|\s+)/g), result = [];
     if (matches !== null) {
         matches.forEach(item => {
             result.push(item.substring(1));
