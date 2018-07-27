@@ -14,7 +14,10 @@ export const flushState = state => {
 };
 
 export const storeStatusRequest = state => state.actionStoreStatus = 'Request';
-export const storeStatusSuccess = state => state.actionStoreStatus = 'Success';
+export const storeStatusSuccess = (state, res) => {
+    state.actionStoreStatus = 'Success';
+    state.openQuestions.unshift(res.data.question)
+};
 export const storeStatusFailure = state => state.actionStoreStatus = 'Failure';
 
 export const commentStatusRequest = state => state.actionCommentStatus = 'Request';

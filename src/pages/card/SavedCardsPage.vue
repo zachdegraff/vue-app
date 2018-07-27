@@ -17,22 +17,13 @@
                 <q-btn no-caps color="primary" label="Create a card" @click="createCard" class="full-width q-mb-md" />
                 <q-btn outline no-caps color="primary" label="All cards" to="/cards/table" class="full-width q-mb-md"/>
                 <q-btn outline no-caps color="primary" label="Saved cards" to="/cards/saved" class="full-width q-mb-md"/>
-                <q-card inline class="full-width">
-                    <q-card-title>
-                        Set up Slack Integration
-                    </q-card-title>
-                    <q-card-main>
-                        <img src="http://via.placeholder.com/100x100" class="float-right q-ml-md"/>
-                        Ask questions directly from Slack. (Message should be informing about the benefints and utility of Slack Integration)
-                        <br/>
-                        <q-btn color="primary" outline label="Learn more" class="q-mt-lg"/>
-                    </q-card-main>
-                </q-card>
+                <slack-integration class="full-width"/>
             </div>
         </div>
     </div>
 </template>
 <script>
+    import SlackIntegration from '../../components/context/SlackIntegration.vue'
     import SiteNavigation from '../../components/context/SiteNavigation.vue'
     import SearchForm from '../../components/SearchForm.vue'
     import CardsList from "../../components/card/CardsList";
@@ -44,7 +35,7 @@
                 items: 'users/getFavoriteCards'
             })
         },
-        components: {CardsList, SearchForm, SiteNavigation},
+        components: {CardsList, SearchForm, SiteNavigation, SlackIntegration},
         created() {
             document.title = 'Saved cards - Wonderus';
         },

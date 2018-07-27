@@ -21,7 +21,7 @@
                         </q-list>
                     </q-popover>
                 </div>
-                <search-form class="bg-white round-borders q-ma-md gt-md"/>
+                <search-form class="bg-white round-borders gt-md"/>
             </q-toolbar-title>
             <q-toolbar-title v-if="teams.length === 0">
                 <q-btn color="white" class="text-black gt-xs" icon="add" label="Create Team" @click="$router.push({name:'create_team'})"/>
@@ -32,6 +32,8 @@
                     <img src="statics/header-logo.png"/>
                 </router-link>
             </div>
+            <q-btn color="white" class="text-black gt-xs" icon="add" label="Add Card" v-if="canAddCard" @click="addCard" :disabled="isCreating"/>
+            <q-btn color="white" class="short-add-button text-black lt-sm" icon="add" v-if="canAddCard" @click="addCard" :disabled="isCreating"/>
             <div class="auth-user q-ml-md" v-if="user">
                 <img :src="avatar(user.photo)" class="header-icon vertical-middle"/>
                 <q-popover>
@@ -61,6 +63,7 @@
             ...mapGetters({
                 user: 'auth/user',
                 teams: 'teams/all',
+                isCreating: 'cards/isCreating',
                 current: 'teams/current'
             }),
             manage() {
@@ -68,6 +71,12 @@
                     return {name: 'view_team', params: {id: this.current.id}}
                 }
                 return {name: 'teams'}
+            },
+            canAddCard() {
+                if (this.current === null) {
+                    return false
+                }
+                return this.current.isEditable
             }
         },
         components: {
@@ -76,6 +85,7 @@
         methods: {
             ...mapActions({
                 logout: 'auth/logout',
+                addCard: 'editor/create',
                 changeTeam: 'teams/changeCurrentTeam'
             }),
             exit() {
@@ -104,7 +114,7 @@
 
     .header-logo {
         position: absolute;
-        top: 28px;
+        top: 13px;
         left: 50%;
         margin-left: -68px;
         z-index: 100;
@@ -122,7 +132,7 @@
     .team-photo {
         cursor: pointer;
         width: 40px;
-        margin: 16px 30px 16px -10px
+        margin: 0 45px 0 -10px
     }
 
     .short-add-button {

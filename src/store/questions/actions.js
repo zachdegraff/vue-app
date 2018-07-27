@@ -4,7 +4,7 @@ export const store = ({commit}, {id, ...params}) => {
     return new Promise((resolve, reject) => {
         commit('storeStatusRequest');
         api.questions.store(id, params).then(res => {
-            commit('storeStatusSuccess');
+            commit('storeStatusSuccess', res);
             resolve(res.data)
         }).catch(err => {
             commit('storeStatusFailure');
