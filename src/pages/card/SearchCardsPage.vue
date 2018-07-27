@@ -24,17 +24,6 @@
             </div>
             <div class="col-lg-3 q-pa-xl gt-md">
                 <q-btn no-caps color="primary" label="Create a card" @click="createCard" class="full-width q-mb-md" />
-                <q-card inline class="full-width">
-                    <q-card-title>
-                        Set up Slack Integration
-                    </q-card-title>
-                    <q-card-main>
-                        <img src="http://via.placeholder.com/100x100" class="float-right q-ml-md"/>
-                        Ask questions directly from Slack. (Message should be informing about the benefints and utility of Slack Integration)
-                        <br/>
-                        <q-btn color="primary" outline label="Learn more" class="q-mt-lg"/>
-                    </q-card-main>
-                </q-card>
             </div>
         </div>
     </div>
