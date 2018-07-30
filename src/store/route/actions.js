@@ -51,3 +51,5 @@ export const pop = ({state}) => {
     }
     document.title = item.title
 };
+
+export const referer = ({state}, path) => state.referer = path;

@@ -5,8 +5,13 @@
                 <router-view></router-view>
             </q-page>
         </q-page-container>
+        <dialogs-store></dialogs-store>
     </q-layout>
 </template>
 <script>
-    export default {}
+    import DialogsStore from '../components/DialogsStore.vue'
+
+    export default {
+        components: {DialogsStore}
+    }
 </script>

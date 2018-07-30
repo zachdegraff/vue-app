@@ -101,6 +101,7 @@
         },
         computed: {
             ...mapGetters({
+                referer: 'route/getReferer',
                 isCounting: 'users/isCounting',
                 isProcessing: 'auth/isRegistering',
                 invitation: 'members/getInvitation'
@@ -162,7 +163,12 @@
                     return
                 }
 
-                this.register(this.prepare()).then(() => this.$router.push({name: 'home'}))
+                this.register(this.prepare()).then(() => {
+                    if (this.referer) {
+                        return this.$router.push(this.referer)
+                    }
+                    this.$router.push({name: 'home'})
+                })
             },
             close() {
                 this.$router.push({name: 'login_user'})

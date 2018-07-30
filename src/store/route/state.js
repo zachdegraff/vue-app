@@ -1,3 +1,4 @@
 export default {
-    stack: []
+    stack: [],
+    referer: null,
 }

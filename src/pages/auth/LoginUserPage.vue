@@ -2,7 +2,9 @@
     <q-card class="q-pa-md">
         <q-card-main>
             <strong class="q-headline">Login to your Wonderus account</strong>
-            <div class="q-mt-xs">or <router-link :to="{name:'register_user'}" class="text-primary">create a new account</router-link></div>
+            <div class="q-mt-xs">or
+                <router-link :to="{name:'register_user'}" class="text-primary">create a new account</router-link>
+            </div>
 
             <q-field class="q-py-md" :error="$v.form.email.$error" :error-label="firstErrorFor($v.form.email)">
                 <q-input type="text" float-label="Email" v-model="form.email" @blur="$v.form.email.$touch" @keyup.enter="submit"/>
@@ -45,6 +47,7 @@
         },
         computed: {
             ...mapGetters({
+                referer: 'route/getReferer',
                 isProcessing: 'auth/isLogging'
             }),
             isDisabledSubmitBtn() {
@@ -64,7 +67,12 @@
                     return
                 }
 
-                this.login(this.form).then(() => this.$router.push({name: 'home'}))
+                this.login(this.form).then(() => {
+                    if (this.referer) {
+                        return this.$router.push(this.referer)
+                    }
+                    this.$router.push({name: 'home'})
+                })
             }
         }
     }

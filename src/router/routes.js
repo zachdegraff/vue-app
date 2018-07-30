@@ -10,9 +10,14 @@ const ifNotAuthenticated = (to, from, next) => {
 
 const ifAuthenticated = (to, from, next) => {
     if (store.getters['auth/isAuthenticated']) {
+        if (!store.getters['teams/current'] && to.name !== 'welcome') {
+            next('/welcome');
+            return
+        }
         next();
         return
     }
+    store.dispatch('route/referer', to.path, {root: true});
     next('/auth/login')
 };
 
@@ -23,6 +28,14 @@ export default [
         beforeEnter: ifAuthenticated,
         children: [
             {path: '', name: 'home', component: () => import('pages/HomePage.vue')}
+        ]
+    },
+    {
+        path: '/welcome',
+        component: () => import('layouts/ClearLayout.vue'),
+        beforeEnter: ifAuthenticated,
+        children: [
+            {path: '', name: 'welcome', component: () => import('pages/WelcomePage.vue'), props: true}
         ]
     },
     {
@@ -129,7 +142,11 @@ export default [
         beforeEnter: ifAuthenticated,
         children: [
             {path: '', name: 'questions', component: () => import('pages/question/OpenQuestionsPage.vue')},
-            {path: 'answered', name: 'answered_questions', component: () => import('pages/question/AnsweredQuestionsPage.vue')},
+            {
+                path: 'answered',
+                name: 'answered_questions',
+                component: () => import('pages/question/AnsweredQuestionsPage.vue')
+            },
             {path: 'my', name: 'my_questions', component: () => import('pages/question/MyQuestionsPage.vue')}
         ]
     },
