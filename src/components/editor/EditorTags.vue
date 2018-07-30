@@ -50,7 +50,7 @@
                         }
                     }
                 ],
-                style: {top: '-3px'},
+                style: {top: '1px'},
                 isListShown: false
             }
         },
@@ -86,7 +86,7 @@
     .cards-editor-content-add {
         position: absolute;
         left: -25px;
-        top: -3px;
+        top: 1px;
     }
 
     .cards-editor-content-tags {

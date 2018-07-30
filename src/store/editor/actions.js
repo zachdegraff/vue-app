@@ -43,19 +43,19 @@ export const close = ({dispatch, commit, getters}) => {
     commit('setActiveCard', null)
 };
 
-export const create = ({dispatch, commit, rootGetters}) => {
+export const create = ({dispatch, commit, rootGetters}, options = {}) => {
     const team = rootGetters['teams/current'],
         query = rootGetters['search/getSuggestQuery'];
     if (!team) {
         return alert('Please choose the team')
     }
 
-    const params = {
+    const params = Object.assign({
         teamId: team.id,
         name: query !== '' ? query : 'Untitled card',
         description: '<p><br></p>',
         tags: rootGetters['search/getQueryTags']
-    };
+    }, options);
 
     dispatch('cards/create', params, {root: true}).then(res => {
         commit('addCard', res.card);

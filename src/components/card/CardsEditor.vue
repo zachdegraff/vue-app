@@ -118,13 +118,13 @@
         components: {AppModalLayout, ContentEditor},
         computed: {
             ...mapGetters({
+                tags: 'tags/all',
                 team: 'teams/current',
                 isSaved: 'users/isFavorite',
                 isCreating: 'cards/isCreating',
                 isUpdating: 'cards/isUpdating',
                 active: 'editor/getActiveCard',
                 cards: 'editor/getEditorCards',
-                tags: 'tags/all',
             }),
             processStatus() {
                 if (this.isUpdating) {

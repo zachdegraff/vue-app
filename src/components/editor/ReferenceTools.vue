@@ -1,5 +1,5 @@
 <template>
-    <div class="reference-tools-tooltip animate-popup" ref="container" v-show="isReferenceTools" :style="position">
+    <div class="reference-tools-tooltip animate-popup" v-show="isReferenceTools" :style="position">
         <div class="reference-tools-hint">Type to filter ...</div>
         <div class="row text-center" v-show="isProcessing">
             <div class="col">
@@ -10,19 +10,21 @@
             <q-btn
                     flat
                     v-for="(item, idx) in items"
-                    :key="item.id"
+                    :key="idx"
                     :icon="item.icon"
                     :label="item.name"
                     :class="{active: idx === caret}"
                     @click="select(item)"
             />
+            <hr v-show="query.length > 1"/>
+            <q-btn flat icon="add" label="Create card" @click="create" :disabled="isCreating" v-show="query.length > 1"/>
         </div>
         <i class="reference-tools-dir" :class="sideClass"></i>
     </div>
 </template>
 <script>
     import {mapGetters, mapActions} from 'vuex'
-    import {route} from '../../helpers'
+    import {route, guid} from '../../helpers'
 
     const APP_HOST = process.env.APP_HOST;
 
@@ -35,7 +37,6 @@
                 start: -1,
                 query: '',
                 caret: 0,
-                target: null,
                 space: [32, 160],  // New Line, Space
                 controls: [62, 64], // >, @
                 isReferenceTools: false,
@@ -47,6 +48,9 @@
         },
         computed: {
             ...mapGetters({
+                team: 'teams/current',
+                tags: 'search/getQueryTags',
+                isCreating: 'cards/isCreating',
                 isProcessing: 'search/isHinting',
                 recentlyCards: 'cards/getRecentlyUpdated',
                 recentlyTags: 'tags/getRecentlyUpdated'
@@ -111,13 +115,37 @@
         methods: {
             ...mapActions({
                 url: 'route/url',
-                hints: 'search/hints'
+                hints: 'search/hints',
+                addCards: 'editor/batch',
+                createCard: 'cards/create'
             }),
+            create() {
+                const params = {
+                    name: this.query,
+                    teamId: this.team.id,
+                    description: '<p><br></p>',
+                    tags: this.tags
+                };
+                this.createCard(params).then(res => {
+                    const card = res.card,
+                        url = APP_HOST + route('view_card', {id: card.id});
+
+                    const link = document.createElement('a');
+                    link.setAttribute('href', url);
+                    link.setAttribute('id', guid());
+                    link.innerText = card.name;
+
+                    this.insert(link);
+
+                    this.addCards([card]).then(() => this.focusOnLink(link))
+                })
+            },
             handle(e) {
-                const node = document.getSelection().focusNode;
+                const sel = document.getSelection(), node = sel.focusNode;
                 if (node === null || node.nodeName !== '#text') {
                     return this.isReferenceTools = false
                 }
+                this.range = sel.getRangeAt(0);
                 this.start = this.getStartPos();
                 this.isReferenceTools = this.start !== -1;
 
@@ -128,14 +156,16 @@
                 }
             },
             select(item) {
-                const sel = document.getSelection(),
-                    range = sel.getRangeAt(0),
-                    node = sel.focusNode;
-                range.collapse(true);
-
                 const link = document.createElement('a');
                 link.setAttribute('href', this.getLinkUrl(item));
                 link.innerText = item.name;
+
+                this.insert(link)
+            },
+            insert(link) {
+                const sel = document.getSelection(),
+                    range = document.createRange(),
+                    node = sel.focusNode;
 
                 node.nodeValue = [
                     node.nodeValue.substring(0, this.start),
@@ -143,7 +173,6 @@
                 ].join('');
 
                 range.setStart(node, this.start);
-
                 range.insertNode(link);
                 range.setStartAfter(link);
                 range.collapse(true);
@@ -152,6 +181,18 @@
                 sel.addRange(range);
 
                 this.isReferenceTools = false
+            },
+            focusOnLink(link) {
+                const el = document.getElementById(link.getAttribute('id')),
+                    sel = document.getSelection(),
+                    range = document.createRange();
+
+                range.setStart(el.parentElement, 0);
+                range.setStartAfter(el);
+                range.collapse(true);
+
+                sel.removeAllRanges();
+                sel.addRange(range)
             },
             isInChars(str, idx, chars = []) {
                 for (let i in chars) {
@@ -185,15 +226,12 @@
                 }
                 if (e.keyCode === 13) { // enter
                     this.select(this.items[this.caret]);
-                    this.$refs.container.style.display = 'none';
+                    this.isReferenceTools = false
                 }
             },
             getStartPos() {
                 const sel = document.getSelection();
-                if (sel.anchorNode !== sel.focusNode) {
-                    return -1;
-                }
-                if (sel.focusOffset === 0 || sel.anchorOffset !== sel.focusOffset) {
+                if (sel.isCollapsed === false) {
                     return -1;
                 }
                 const str = sel.focusNode.nodeValue;

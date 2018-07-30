@@ -49,7 +49,7 @@
         mounted() {
             this.editor = document.getElementById('contentEditor');
             if (this.editor !== null) {
-                this.editor.addEventListener('keyup', this.handleKeyPress);
+                this.editor.addEventListener('keydown', this.handleKeyPress);
                 this.editor.addEventListener('mouseup', this.handleKeyPress);
                 this.editor.addEventListener('click', this.handleLinkClicks);
             }
@@ -82,7 +82,12 @@
                 save: 'editor/save',
                 open: 'editor/open',
             }),
-            handleKeyPress() {
+            handleKeyPress(e) {
+                if (e instanceof KeyboardEvent) {
+                    if (e.keyCode === 8 && this.isEmptyEditor()) {
+                        e.preventDefault();
+                    }
+                }
                 this.card.description = this.editor.innerHTML;
 
                 this.setActiveElement();
@@ -251,7 +256,7 @@
 
     .content-editor-content-helper {
         position: absolute;
-        top: 0;
+        top: 3px;
         left: 0;
     }
 
