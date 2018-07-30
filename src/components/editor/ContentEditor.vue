@@ -97,12 +97,9 @@
             },
             handlePageWheel(e) {
                 if (this.editor === null) return;
-                const sidebar = document.querySelector('.cards-editor-sidebar'),
-                    styles = window.getComputedStyle(this.editor);
+                const modal = document.querySelector('.app-modal');
 
-                if (styles.display !== 'block') return;
-                if (e.target === sidebar) return;
-                if (e.target === this.editor) return;
+                if (e.target !== modal) return;
 
                 e.preventDefault();
                 this.editor.scrollTop += e.deltaY
