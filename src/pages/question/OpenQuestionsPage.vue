@@ -57,6 +57,7 @@
             team: function (val) {
                 if (val === null) return;
 
+                this.flushQuestions();
                 this.loadQuestions()
             }
         },
@@ -66,6 +67,7 @@
         methods: {
             ...mapActions({
                 openAskHelp: 'modals/openAskHelp',
+                flushQuestions: 'questions/flushToDefaults',
                 loadQuestions: 'questions/loadOpenQuestions'
             }),
             loadMoreQuestions(idx, done) {
