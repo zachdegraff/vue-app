@@ -19,7 +19,7 @@
                         <!-- Targets -->
                         <q-tab-pane name="answered">
                             <q-infinite-scroll :handler="loadMoreQuestions">
-                                <div class="q-mt-md" v-show="questions.length === 0">No questions have been answered yet.</div>
+                                <div class="q-mt-md" v-show="ifEmpty">No questions have been answered yet.</div>
                                 <questions-list :items="questions"></questions-list>
                                 <q-spinner slot="message" :size="40" color="red"/>
                             </q-infinite-scroll>
@@ -43,8 +43,15 @@
         computed: {
             ...mapGetters({
                 team: 'teams/current',
-                questions: 'questions/getAnsweredQuestions'
-            })
+                questions: 'questions/getAnsweredQuestions',
+                isLoadQuestions: 'questions/isLoadAnsweredQuestions'
+            }),
+            ifEmpty() {
+                if (this.isLoadQuestions) {
+                    return false
+                }
+                return this.questions.length === 0
+            }
         },
         watch: {
             team: function (val) {

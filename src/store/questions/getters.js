@@ -6,5 +6,7 @@ export const getUserQuestions = state => state.userQuestions;
 export const getAnsweredQuestions = state => state.answeredQuestions;
 
 
-
+export const isLoadOpenQuestions = state => state.actionLoadOpenQuestionsStatus === 'Request';
+export const isLoadUserQuestions = state => state.actionLoadUserQuestionsStatus === 'Request';
+export const isLoadAnsweredQuestions = state => state.actionLoadAnsweredQuestionsStatus === 'Request';
 export const isHelpAsking = state => state.actionStoreStatus === 'Request';

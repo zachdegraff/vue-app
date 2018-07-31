@@ -19,7 +19,7 @@
                         <!-- Targets -->
                         <q-tab-pane name="open">
                             <q-infinite-scroll :handler="loadMoreQuestions">
-                                <div class="q-mt-md" v-show="questions.length === 0">There are no questions that need to be answered. Ask one!</div>
+                                <div class="q-mt-md" v-show="ifEmpty">There are no questions that need to be answered. Ask one!</div>
                                 <questions-list :items="questions"></questions-list>
                                 <q-spinner slot="message" :size="40" color="red"/>
                             </q-infinite-scroll>
@@ -43,8 +43,15 @@
         computed: {
             ...mapGetters({
                 team: 'teams/current',
-                questions: 'questions/getOpenQuestions'
-            })
+                questions: 'questions/getOpenQuestions',
+                isLoadQuestions: 'questions/isLoadOpenQuestions'
+            }),
+            ifEmpty() {
+                if (this.isLoadQuestions) {
+                    return false
+                }
+                return this.questions.length === 0
+            }
         },
         watch: {
             team: function (val) {
@@ -55,9 +62,6 @@
         },
         components: {
             SearchForm, QuestionsList, SiteNavigation
-        },
-        mounted() {
-
         },
         methods: {
             ...mapActions({

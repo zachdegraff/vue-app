@@ -69,9 +69,6 @@
                 }
 
                 this.login(this.form).then(() => {
-                    if (this.team === null) {
-                        return this.$router.push('/welcome')
-                    }
                     if (this.referer) {
                         return this.$router.push(this.referer)
                     }

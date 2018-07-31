@@ -143,7 +143,7 @@ export default [
                 name: 'answered_questions',
                 component: () => import('pages/question/AnsweredQuestionsPage.vue')
             },
-            {path: 'my', name: 'my_questions', component: () => import('pages/question/MyQuestionsPage.vue')}
+            {path: 'my', name: 'my_questions', component: () => import('pages/question/UserQuestionsPage.vue')}
         ]
     },
     { // Always leave this as last one

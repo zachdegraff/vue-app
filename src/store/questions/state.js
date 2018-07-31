@@ -19,5 +19,5 @@ export default {
     actionLoadOpenQuestionsStatus: '',
     actionLoadUserQuestionsStatus: '',
     actionLoadAnsweredQuestionsStatus: '',
-    actionLoadQuestionsCount: ''
+    actionLoadQuestionsCountStatus: ''
 }
