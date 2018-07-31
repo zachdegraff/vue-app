@@ -94,6 +94,7 @@
         },
         created() {
             document.title = 'Register a new account - Wonderus';
+            this.form.email = this.invitation ? this.invitation.email : '';
 
             if (this.invitation === null) {
                 this.loadInvitation()
@@ -143,6 +144,11 @@
         components: {
             ImageChooser,
             AppModalLayout
+        },
+        watch: {
+            invitation: function (val) {
+                this.form.email = val.email
+            }
         },
         methods: {
             ...mapActions({
