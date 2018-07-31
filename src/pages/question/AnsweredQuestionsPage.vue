@@ -19,8 +19,9 @@
                         <!-- Targets -->
                         <q-tab-pane name="answered">
                             <q-infinite-scroll :handler="loadMoreQuestions">
+                                <div class="q-mt-md" v-show="questions.length === 0">No questions have been answered yet.</div>
                                 <questions-list :items="questions"></questions-list>
-                                <q-spinner slot="message" :size="40" color="red" />
+                                <q-spinner slot="message" :size="40" color="red"/>
                             </q-infinite-scroll>
                         </q-tab-pane>
                     </q-tabs>
@@ -71,6 +72,9 @@
 </script>
 <style lang="scss">
     .questions-container {
+        .q-tabs-bar {
+            border-color: #2fab65
+        }
         .q-tab-label {
             color: #555;
             text-transform: none;

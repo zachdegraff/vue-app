@@ -7,6 +7,9 @@
                     <q-btn no-caps color="primary" label="Create a card" class="q-mr-md q-mb-md" @click="createCard"/>
                     <q-btn outline no-caps color="primary" label="Ask a question" class="q-mb-md" @click="openAskHelp"/>
                 </div>
+                <div class="row" v-show="isEmptyTeam">
+                    There's nothing here yet. Create a knowledge card for a team concept.
+                </div>
                 <div class="row q-mb-lg" v-show="recentlyAdded.length > 0">
                     <div class="col q-headline">Recently Added</div>
                 </div>
@@ -64,6 +67,11 @@
                     return 'Wonderus'
                 }
                 return `${this.team.name} - Wonderus`
+            },
+            isEmptyTeam() {
+                if (this.cardsAmount > 0) return false;
+
+                return !(this.questionsAmount > 0)
             }
         },
         components: {

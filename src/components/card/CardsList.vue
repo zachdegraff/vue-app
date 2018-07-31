@@ -10,7 +10,7 @@
                             {{card.name}}
                             <span slot="subtitle" v-if="card.shorthand.length"><q-icon name="style" class="q-mr-sm"/><span v-html="shorthand(card.shorthand)"></span></span>
                         </q-card-title>
-                        <div class="cards-list-item-title q-title" v-if="!card.thumb">
+                        <div class="cards-list-item-title" v-if="!card.thumb">
                             {{card.name}}
                             <div v-if="card.shorthand.length">
                                 <q-icon name="style"/>
@@ -62,12 +62,13 @@
         position: absolute;
         left: 0;
         line-height: 1.5;
+        font-size: 16px;
         transform: translateY(-50%);
         text-align: center;
         top: 50%;
         width: 100%;
         div {
-            font-size: 16px;
+            font-size: 14px;
         }
     }
 

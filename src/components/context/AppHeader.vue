@@ -132,7 +132,7 @@
     .team-photo {
         cursor: pointer;
         width: 40px;
-        margin: 0 45px 0 -10px
+        margin: 0 15px 0 -10px
     }
 
     .short-add-button {
