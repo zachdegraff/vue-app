@@ -5,6 +5,14 @@ const MediumOptions = {
     toolbar: {
         buttons: ['bold', 'italic', 'anchor', 'quote']
     },
+    paste: {
+        forcePlainText: false,
+        cleanPastedHTML: false,
+        cleanReplacements: [],
+        cleanAttrs: ['class', 'style', 'dir'],
+        cleanTags: ['meta'],
+        unwrapTags: []
+    },
     placeholder: false,
     extensions: {
         'anchorPreview': new AnchorPreview()
