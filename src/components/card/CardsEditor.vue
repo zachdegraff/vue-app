@@ -39,7 +39,7 @@
                             <span>{{processStatus}}</span>
                         </div>
                         <div class="cards-editor-tools" v-if="active">
-                            <q-btn icon="local_offer" flat dense :label="tagsCount">
+                            <q-btn icon="local_offer" flat dense>
                                 <q-popover anchor="bottom right" self="top right">
                                     <q-field>
                                         <q-search hide-underline v-model="tagQuery" placeholder="Tag name" @keyup="addTag" class="q-my-md q-mx-md"/>
@@ -65,6 +65,7 @@
                                         </q-item>
                                     </q-list>
                                 </q-popover>
+                                <span class="q-ml-xs" v-show="tagsCount > 0">{{tagsCount}}</span>
                             </q-btn>
                             <q-btn icon="bookmark" flat dense @click="toggleFavorite(active.id)" v-show="isSaved(active.id)"/>
                             <q-btn icon="bookmark_border" flat dense @click="toggleFavorite(active.id)" v-show="!isSaved(active.id)"/>
@@ -157,8 +158,8 @@
                 return 'chevron_right'
             },
             tagsCount() {
-                if (!this.active || this.active.tags.length === 0) {
-                    return ' ';
+                if (!this.active) {
+                    return 0;
                 }
                 return this.active.tags.length
             },
