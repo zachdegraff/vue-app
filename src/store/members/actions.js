@@ -13,6 +13,11 @@ export const loadMember = ({commit}, id) => {
     });
 };
 
+export const flushInvitation = ({commit}) => {
+    localStorage.removeItem('join-token');
+    commit('flushInvitation')
+};
+
 export const loadTeamMembers = ({commit}, id) => {
     return new Promise((resolve, reject) => {
         commit('loadTeamMembersStatusRequest');

@@ -1,5 +1,7 @@
 import {replace, remove} from "../../helpers";
 
+export const flushInvitation = state => state.invitation = null;
+
 export const loadMemberStatusRequest = state => state.loadMemberStatus = 'Request';
 export const loadMemberStatusSuccess = state => state.loadMemberStatus = 'Success';
 export const loadMemberStatusFailure = state => state.loadMemberStatus = 'Failure';

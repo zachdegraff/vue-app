@@ -37,7 +37,7 @@
                         </q-field>
                     </div>
                 </div>
-                <q-field class="q-py-sm" :error="$v.form.password.$error" :error-label="firstErrorFor($v.form.password)" helper="Use 8 or more characters with a mix of letters, numbers and symbols">
+                <q-field class="q-py-sm" :error="$v.form.password.$error" :error-label="passwordErrorMessage" helper="Use 8 or more characters with a mix of letters, numbers and symbols">
                     <q-input type="password" float-label="Password" v-model="form.password" @blur="$v.form.password.$touch"/>
                 </q-field>
                 <q-field class="q-py-sm" label="Profile Picture" label-width="12">
@@ -72,6 +72,7 @@
                     file: null,
                 },
                 isUnique: true,
+                symbols: ['>', '<', ')', '('],
                 step: 1
             }
         },
@@ -88,7 +89,7 @@
                 password: {
                     required,
                     minLength: minLength(8),
-                    exactPattern: (value) => value.match(/^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/) !== null
+                    exactPattern: (value) => value.match(/^(?=.*[0-9!@#$%^&*])(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%^&*]{8,}$/) !== null
                 }
             }
         },
@@ -134,6 +135,12 @@
                 }
                 return this.firstErrorFor(this.$v.form.email)
             },
+            passwordErrorMessage() {
+                if (this.isSymbolsInPassword()) {
+                    return `Password cannot contain the ${this.symbols.join(' or ')} symbols.`
+                }
+                return this.firstErrorFor(this.$v.form.password)
+            },
             isDisabledNextBtn() {
                 return this.$v.form.email.$invalid || this.isCounting
             },
@@ -154,7 +161,8 @@
             ...mapActions({
                 usersCount: 'users/count',
                 register: 'auth/register',
-                loadInvitation: 'members/loadInvitation'
+                loadInvitation: 'members/loadInvitation',
+                flushInvitation: 'members/flushInvitation'
             }),
             next() {
                 this.usersCount({email: this.form.email}).then(count => {
@@ -171,6 +179,7 @@
                 }
 
                 this.register(this.prepare()).then(() => {
+                    this.flushInvitation();
                     if (this.team === null) {
                         return this.$router.push('/welcome')
                     }
@@ -192,6 +201,14 @@
             },
             changeUserPhoto(file) {
                 this.form.file = file
+            },
+            isSymbolsInPassword() {
+                for (let i in this.symbols) {
+                    if (this.form.password.indexOf(this.symbols[i]) !== -1) {
+                        return true
+                    }
+                }
+                return false
             }
         }
     }
