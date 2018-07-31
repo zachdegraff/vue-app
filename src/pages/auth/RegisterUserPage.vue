@@ -101,6 +101,7 @@
         },
         computed: {
             ...mapGetters({
+                team: 'teams/current',
                 referer: 'route/getReferer',
                 isCounting: 'users/isCounting',
                 isProcessing: 'auth/isRegistering',
@@ -164,6 +165,9 @@
                 }
 
                 this.register(this.prepare()).then(() => {
+                    if (this.team === null) {
+                        return this.$router.push('/welcome')
+                    }
                     if (this.referer) {
                         return this.$router.push(this.referer)
                     }

@@ -10,10 +10,6 @@ const ifNotAuthenticated = (to, from, next) => {
 
 const ifAuthenticated = (to, from, next) => {
     if (store.getters['auth/isAuthenticated']) {
-        if (!store.getters['teams/current'] && to.name !== 'welcome') {
-            next('/welcome');
-            return
-        }
         next();
         return
     }

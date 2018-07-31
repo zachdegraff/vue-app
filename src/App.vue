@@ -13,8 +13,12 @@
         created() {
             if (localStorage.getItem('access-token') !== null) {
                 this.loadAuthUser();
-                this.loadUserTeams();
-                this.loadFavorite()
+                this.loadFavorite();
+                this.loadUserTeams().then(teams => {
+                    if (teams.length === 0) {
+                        this.$router.push('/welcome')
+                    }
+                });
             }
         },
         methods: {

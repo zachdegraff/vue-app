@@ -17,7 +17,7 @@
                     @click="select(item)"
             />
             <hr v-show="query.length > 1"/>
-            <q-btn flat icon="add" label="Create card" @click="create" :disabled="isCreating" v-show="query.length > 1"/>
+            <q-btn flat icon="add" label="Create card" @click="create" :disabled="isCreating" v-show="query.length > 1" :class="{active: caret === items.length}"/>
         </div>
         <i class="reference-tools-dir" :class="sideClass"></i>
     </div>
@@ -158,9 +158,11 @@
             select(item) {
                 const link = document.createElement('a');
                 link.setAttribute('href', this.getLinkUrl(item));
+                link.setAttribute('id', guid());
                 link.innerText = item.name;
 
-                this.insert(link)
+                this.insert(link);
+                this.focusOnLink(link)
             },
             insert(link) {
                 const sel = document.getSelection(),
@@ -180,12 +182,16 @@
                 sel.removeAllRanges();
                 sel.addRange(range);
 
+                this.medium.setContent(this.editor.innerHTML);
+
                 this.isReferenceTools = false
             },
             focusOnLink(link) {
                 const el = document.getElementById(link.getAttribute('id')),
                     sel = document.getSelection(),
-                    range = document.createRange();
+                    range = sel.getRangeAt(0);
+
+                if (el === null) return;
 
                 range.setStart(el.parentElement, 0);
                 range.setStartAfter(el);
@@ -215,18 +221,29 @@
                 return false;
             },
             handleNavigation(e) {
-                if (this.isReferenceTools === false || this.items.length === 0) return;
+                if (this.isReferenceTools === false) return;
 
                 e.preventDefault();
                 if (e.keyCode === 38) { // up
-                    this.caret = this.caret === 0 ? this.items.length - 1 : this.caret - 1
+                    this.caret = this.caret === 0 ?
+                        (this.query.length > 1 ? this.items.length : this.items.length - 1) :
+                        this.caret - 1
                 }
                 if (e.keyCode === 40) { // down
-                    this.caret = this.caret === this.items.length - 1 ? 0 : this.caret + 1
+                    if (this.caret === this.items.length) {
+                        return this.caret = 0
+                    }
+                    this.caret = this.caret === this.items.length - 1 ?
+                        (this.query.length > 1 ? this.items.length : 0) :
+                        this.caret + 1
                 }
                 if (e.keyCode === 13) { // enter
+                    if (this.items.length === 0 || this.caret === this.items.length) {
+                        if (this.query.length > 1) {
+                            return this.create()
+                        }
+                    }
                     this.select(this.items[this.caret]);
-                    this.isReferenceTools = false
                 }
             },
             getStartPos() {
