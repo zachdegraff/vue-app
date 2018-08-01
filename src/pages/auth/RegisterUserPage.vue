@@ -154,6 +154,8 @@
         },
         watch: {
             invitation: function (val) {
+                if (!val) return;
+
                 this.form.email = val.email
             }
         },

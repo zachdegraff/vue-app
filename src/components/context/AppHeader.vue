@@ -28,9 +28,9 @@
                 <q-btn color="white" class="short-add-button text-black lt-sm" icon="add" @click="$router.push({name:'create_team'})"/>
             </q-toolbar-title>
             <div class="header-logo">
-                <a href="https://wonderus.app">
+                <router-link :to="{name: 'home'}">
                     <img src="statics/header-logo.png"/>
-                </a>
+                </router-link>
             </div>
             <q-btn color="white" class="text-black gt-xs" icon="add" label="Add Card" v-if="canAddCard" @click="addCard" :disabled="isCreating"/>
             <q-btn color="white" class="short-add-button text-black lt-sm" icon="add" v-if="canAddCard" @click="addCard" :disabled="isCreating"/>
