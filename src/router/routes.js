@@ -28,7 +28,7 @@ export default [
     },
     {
         path: '/welcome',
-        component: () => import('layouts/ClearLayout.vue'),
+        component: () => import('layouts/DefaultLayout.vue'),
         beforeEnter: ifAuthenticated,
         children: [
             {path: '', name: 'welcome', component: () => import('pages/WelcomePage.vue'), props: true}

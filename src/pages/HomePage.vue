@@ -43,6 +43,11 @@
                     this.$router.push({name: 'view_team', params: {id: data.member.teamId}})
                 })
             }
+            if (this.isTeamsLoaded) {
+                if (!this.team) {
+                    this.$router.push({name: 'welcome'})
+                }
+            }
             document.title = this.title;
             this.changeQuery('');
             this.loadQuestionsCount();
@@ -50,6 +55,13 @@
         watch: {
             team: function (val) {
                 document.title = this.title
+            },
+            isTeamsLoaded: function (val) {
+                if (val) {
+                    if (!this.team) {
+                        this.$router.push({name: 'welcome'})
+                    }
+                }
             }
         },
         computed: {
@@ -58,9 +70,11 @@
                 tags: 'tags/allNonEmpty',
                 cardsAmount: 'cards/getCardsAmount',
                 questionsAmount: 'questions/getCount',
+                isCardsAmountLoaded: 'cards/isCardsAmountLoaded',
                 savedCardsAmount: 'users/getFavoriteCardsCount',
                 recentlyAdded: 'cards/getRecentlyAdded',
                 recentlyUpdated: 'cards/getRecentlyUpdated',
+                isTeamsLoaded: 'teams/isTeamsLoaded',
             }),
             title() {
                 if (this.team === null) {
@@ -69,6 +83,7 @@
                 return `${this.team.name} - Wonderus`
             },
             isEmptyTeam() {
+                if (!this.isCardsAmountLoaded) return false;
                 if (this.cardsAmount > 0) return false;
 
                 return !(this.questionsAmount > 0)

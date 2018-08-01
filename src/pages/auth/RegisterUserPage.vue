@@ -180,9 +180,6 @@
 
                 this.register(this.prepare()).then(() => {
                     this.flushInvitation();
-                    if (this.team === null) {
-                        return this.$router.push('/welcome')
-                    }
                     if (this.referer) {
                         return this.$router.push(this.referer)
                     }
