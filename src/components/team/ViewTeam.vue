@@ -144,7 +144,7 @@
                 disableSlackIntegration: 'teams/disableSlack'
             }),
             slack() {
-                window.location = `https://slack.com/oauth/authorize?client_id=${SLACK_CLIENT_ID}&scope=commands,bot,users:read,users:read.email&state=${this.team.id}`;
+                window.location = `https://slack.com/oauth/authorize?client_id=${SLACK_CLIENT_ID}&scope=commands,bot,users:read,users:read.email,im:history&state=${this.team.id}`;
             },
             save() {
                 this.$v.form.$touch();
