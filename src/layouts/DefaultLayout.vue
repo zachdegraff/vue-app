@@ -3,7 +3,7 @@
         <app-header></app-header>
         <q-page-container>
             <q-page>
-                <div class="row q-ma-sm lt-lg">
+                <div class="row q-ma-sm lt-lg" v-show="team">
                     <div class="col-xs-2 col-sm-1">
                         <q-btn flat icon="menu" class="q-mt-xs">
                             <q-popover>
@@ -52,9 +52,15 @@
     import AppHeader from '../components/context/AppHeader.vue'
     import AppFooter from '../components/context/AppFooter.vue'
     import DialogsStore from '../components/DialogsStore.vue'
-    import SearchForm from "../components/SearchForm";
+    import SearchForm from '../components/SearchForm'
+    import {mapGetters} from 'vuex'
 
     export default {
+        computed: {
+            ...mapGetters({
+                team: 'teams/current'
+            })
+        },
         components: {
             SearchForm,
             AppHeader,
