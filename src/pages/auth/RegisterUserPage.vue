@@ -40,7 +40,7 @@
                 <q-field class="q-py-sm" :error="$v.form.password.$error" :error-label="passwordErrorMessage" helper="Use 8 or more characters with a mix of letters, numbers and symbols">
                     <q-input type="password" float-label="Password" v-model="form.password" @blur="$v.form.password.$touch"/>
                 </q-field>
-                <q-field class="q-py-sm" label="Profile Picture" label-width="12">
+                <q-field class="q-py-sm" label="Profile Picture (optional)" label-width="12">
                     <image-chooser @change="changeUserPhoto"></image-chooser>
                 </q-field>
                 <div class="q-my-md text-tertiary">
