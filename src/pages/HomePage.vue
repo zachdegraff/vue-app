@@ -91,7 +91,7 @@
                 cardsAmount: 'cards/getCardsAmount',
                 isTeamsLoaded: 'teams/isTeamsLoaded',
                 questionsAmount: 'questions/getCount',
-                isCardsAmountLoaded: 'cards/isCardsAmountLoaded',
+                isFeedLoaded: 'feed/isFreshFeedLoaded',
                 savedCardsAmount: 'users/getFavoriteCardsCount',
             }),
             title() {
@@ -101,10 +101,9 @@
                 return `${this.team.name} - Wonderus`
             },
             isEmptyTeam() {
-                if (!this.isCardsAmountLoaded) return false;
-                if (this.cardsAmount > 0) return false;
+                if (!this.isFeedLoaded) return false;
 
-                return !(this.questionsAmount > 0)
+                return this.feed.length === 0
             }
         },
         components: {
