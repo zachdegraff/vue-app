@@ -1,9 +1,10 @@
 import api from '../../api'
 
-export const store = ({commit}, {id, ...params}) => {
+export const store = ({commit, dispatch}, {id, ...params}) => {
     return new Promise((resolve, reject) => {
         commit('storeStatusRequest');
         api.questions.store(id, params).then(res => {
+            dispatch('feed/fresh', null, {root: true});
             commit('storeStatusSuccess', res);
             resolve(res.data)
         }).catch(err => {
@@ -13,10 +14,11 @@ export const store = ({commit}, {id, ...params}) => {
     })
 };
 
-export const comment = ({commit}, {id, ...params}) => {
+export const comment = ({commit, dispatch}, {id, ...params}) => {
     return new Promise((resolve, reject) => {
         commit('commentStatusRequest');
         api.questions.comment(id, params).then(res => {
+            dispatch('feed/fresh', null, {root: true});
             commit('commentStatusSuccess');
             resolve(res.data)
         }).catch(err => {

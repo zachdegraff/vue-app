@@ -40,10 +40,6 @@ export const cardsHints = (params) => {
     return request.get('/cards/cards-hints', {params})
 };
 
-export const recentlyAdded = (id) => {
-    return request.get(`/cards/${id}/recently-added`)
-};
-
-export const recentlyUpdated = (id) => {
-    return request.get(`/cards/${id}/recently-updated`)
+export const recently = (id) => {
+    return request.get(`/cards/${id}/recently`)
 };

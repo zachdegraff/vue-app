@@ -63,8 +63,7 @@ export const getFilteredItems = state => {
     }
 };
 
-export const getRecentlyAdded = state => state.recentlyAdded;
-export const getRecentlyUpdated = state => state.recentlyUpdated;
+export const getRecentlyUpdated = state => state.recently;
 
 export const isCreating = state => state.actionCreateStatus === 'Request';
 export const isUpdating = state => state.actionUpdateStatus === 'Request';

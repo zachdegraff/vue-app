@@ -1,10 +1,10 @@
 import api from '../../api'
 
 function loadDefaults(dispatch) {
-    dispatch('cards/cardsAmount', {}, {root: true});
-    dispatch('cards/recentlyAdded', {}, {root: true});
-    dispatch('cards/recentlyUpdated', {}, {root: true});
     dispatch('tags/all', {}, {root: true});
+    dispatch('feed/fresh', {}, {root: true});
+    dispatch('cards/cardsAmount', {}, {root: true});
+    dispatch('cards/recently', {}, {root: true});
     dispatch('questions/loadQuestionsCount', {}, {root: true});
 }
 

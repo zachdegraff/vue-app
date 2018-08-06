@@ -2,8 +2,7 @@ export default {
     items: [],
     amount: 0,
 
-    recentlyAdded: [],
-    recentlyUpdated: [],
+    recently: [],
 
     actionAllStatus: '',
     actionGetStatus: '',
@@ -11,6 +10,5 @@ export default {
     actionRemoveStatus: '',
     actionCreateStatus: '',
     actionCardsAmount: '',
-    actionRecentlyAddedStatus: '',
-    actionRecentlyUpdatedStatus: '',
+    actionRecentlyStatus: '',
 }

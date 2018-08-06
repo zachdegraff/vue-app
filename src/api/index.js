@@ -1,4 +1,5 @@
 import * as auth from './methods/auth'
+import * as feed from './methods/feed'
 import * as cards from './methods/cards'
 import * as teams from './methods/teams'
 import * as users from './methods/users'
@@ -10,6 +11,7 @@ import * as tags from './methods/tags'
 
 const api = {
     auth,
+    feed,
     tags,
     cards,
     teams,

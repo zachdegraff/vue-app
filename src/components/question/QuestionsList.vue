@@ -102,7 +102,12 @@
             }
         },
         created() {
-            this.flushToDefaults()
+            this.flushToDefaults();
+            if (this.items.length) {
+                this.questions = this.items.map(i => {
+                    return {...i, showComments: false, showReplyForm: false}
+                })
+            }
         },
         methods: {
             ...mapActions({

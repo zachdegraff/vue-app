@@ -4,8 +4,7 @@ export const flushCardsState = state => {
     state.items = [];
     state.amount = 0;
 
-    state.recentlyAdded = [];
-    state.recentlyUpdated = []
+    state.recently = []
 };
 
 export const allStatusRequest = state => {
@@ -56,17 +55,9 @@ export const cardsAmountStatusSuccess = (state, res) => {
 };
 export const cardsAmountStatusFailure = state => state.actionCardsAmount = 'Failure';
 
-export const recentlyAddedStatusRequest = state => state.actionRecentlyAddedStatus = 'Request';
-export const recentlyAddedStatusSuccess = (state, res) => {
-    state.actionRecentlyAddedStatus = 'Success';
-    state.recentlyAdded = res.data.data
-};
-export const recentlyAddedStatusFailure = state => state.actionRecentlyAddedStatus = 'Failure';
-
-
-export const recentlyUpdatedStatusRequest = state => state.actionRecentlyUpdatedStatus = 'Request';
+export const recentlyUpdatedStatusRequest = state => state.actionRecentlyStatus = 'Request';
 export const recentlyUpdatedStatusSuccess = (state, res) => {
-    state.actionRecentlyUpdatedStatus = 'Success';
-    state.recentlyUpdated = res.data.data
+    state.actionRecentlyStatus = 'Success';
+    state.recently = res.data.data
 };
-export const recentlyUpdatedStatusFailure = state => state.actionRecentlyUpdatedStatus = 'Failure';
+export const recentlyUpdatedStatusFailure = state => state.actionRecentlyStatus = 'Failure';

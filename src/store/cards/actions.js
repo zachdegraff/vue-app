@@ -1,10 +1,10 @@
 import api from '../../api'
 
 const loadHomeItems = (dispatch) => {
-    dispatch('cardsAmount');
-    dispatch('recentlyAdded');
-    dispatch('recentlyUpdated');
     dispatch('tags/all', null, {root: true});
+    dispatch('feed/fresh', null, {root: true});
+    dispatch('cardsAmount');
+    dispatch('recently');
 };
 
 export const all = ({commit, rootGetters}, params = {}) => {
@@ -103,32 +103,14 @@ export const cardsAmount = ({commit, rootGetters}) => {
     })
 };
 
-
-export const recentlyAdded = ({commit, rootGetters}) => {
-    return new Promise((resolve, reject) => {
-        const team = rootGetters['teams/current'];
-        if (team === null) {
-            resolve([])
-        }
-        commit('recentlyAddedStatusRequest');
-        api.cards.recentlyAdded(team.id).then(res => {
-            commit('recentlyAddedStatusSuccess', res);
-            resolve(res.data.data)
-        }).catch(err => {
-            commit('recentlyAddedStatusFailure', err);
-            reject(err)
-        })
-    })
-};
-
-export const recentlyUpdated = ({commit, rootGetters}) => {
+export const recently = ({commit, rootGetters}) => {
     return new Promise((resolve, reject) => {
         const team = rootGetters['teams/current'];
         if (team === null) {
             resolve([])
         }
         commit('recentlyUpdatedStatusRequest');
-        api.cards.recentlyUpdated(team.id).then(res => {
+        api.cards.recently(team.id).then(res => {
             commit('recentlyUpdatedStatusSuccess', res);
             resolve(res.data.data)
         }).catch(err => {

@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 import auth from './auth'
 import tags from './tags'
+import feed from './feed'
 import route from './route'
 import cards from './cards'
 import teams from './teams'
@@ -19,6 +20,7 @@ const store = new Vuex.Store({
     modules: {
         auth,
         tags,
+        feed,
         route,
         cards,
         teams,
