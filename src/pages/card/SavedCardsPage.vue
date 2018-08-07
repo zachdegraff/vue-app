@@ -5,7 +5,7 @@
             <div class="col-md-12 col-lg-7">
                 <div class="row lt-lg">
                     <q-btn no-caps color="primary" label="Create a card" @click="createCard" class="q-mr-md q-mb-md"/>
-                    <q-btn outline no-caps color="primary" label="All cards" to="/cards/table" class="q-mr-md q-mb-md"/>
+                    <q-btn outline no-caps color="primary" label="Filter cards" to="/cards/table" class="q-mr-md q-mb-md"/>
                     <q-btn outline no-caps color="primary" label="Saved cards" to="/cards/saved" class="q-mr-md q-mb-md"/>
                 </div>
                 <div class="row q-mb-lg">
@@ -13,9 +13,9 @@
                 </div>
                 <cards-list :items="items"/>
             </div>
-            <div class="col-lg-3 q-pa-xl gt-md">
+            <div class="col-lg-3 q-px-xl gt-md">
                 <q-btn no-caps color="primary" label="Create a card" @click="createCard" class="full-width q-mb-md" />
-                <q-btn outline no-caps color="primary" label="All cards" to="/cards/table" class="full-width q-mb-md"/>
+                <q-btn outline no-caps color="primary" label="Filter cards" to="/cards/table" class="full-width q-mb-md"/>
                 <q-btn outline no-caps color="primary" label="Saved cards" to="/cards/saved" class="full-width q-mb-md"/>
                 <slack-integration class="full-width"/>
             </div>

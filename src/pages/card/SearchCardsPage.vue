@@ -22,7 +22,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 q-pa-xl gt-md">
+            <div class="col-lg-3 q-px-xl gt-md">
                 <q-btn no-caps color="primary" label="Create a card" @click="createCard" class="full-width q-mb-md" />
             </div>
         </div>

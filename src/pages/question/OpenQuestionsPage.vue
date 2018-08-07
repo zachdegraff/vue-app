@@ -27,7 +27,7 @@
                     </q-tabs>
                 </div>
             </div>
-            <div class="col-lg-3 q-pa-xl gt-md">
+            <div class="col-lg-3 q-px-xl gt-md">
                 <q-btn no-caps color="primary" label="Ask a question" @click="openAskHelp" class="full-width q-mb-lg"/>
             </div>
         </div>

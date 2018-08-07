@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="q-caption uppercase text-weight-bold q-pl-xl q-pt-md">explore</div>
+        <div class="q-caption uppercase text-weight-bold q-pl-xl">explore</div>
         <q-list link no-border class="site-navigation q-mt-sm">
             <q-item to="/" :class="{active:isActive('home')}">
                 <q-icon name="home" size="1.4rem" class="q-mr-sm"/>

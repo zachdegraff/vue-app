@@ -9,7 +9,7 @@
                 <q-spinner :size="36" color="red" v-show="isLoading"></q-spinner>
                 <cards-list :items="items"/>
             </div>
-            <div class="col-lg-3 q-pa-xl gt-md">
+            <div class="col-lg-3 q-px-xl gt-md">
 
             </div>
         </div>

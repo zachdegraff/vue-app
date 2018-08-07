@@ -8,7 +8,7 @@
                 </div>
                 <tags-grid-list :items="tags"></tags-grid-list>
             </div>
-            <div class="col-lg-3 q-pa-xl gt-md">
+            <div class="col-lg-3 q-px-xl gt-md">
 
             </div>
         </div>

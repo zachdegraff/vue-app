@@ -247,6 +247,7 @@
         position: absolute;
         img {
             max-width: 100%;
+            max-height: 250px;
             margin: 0 auto;
         }
     }

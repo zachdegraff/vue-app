@@ -1,5 +1,5 @@
 <template>
-    <q-modal v-model="isOpen" @hide="close" class="app-modal" :content-classes="contentClasses" :content-css="{minWidth: '80vw', minHeight: '80vh'}">
+    <q-modal v-model="isOpen" @hide="close" class="app-modal" :content-classes="contentClasses" :content-css="{minWidth: '80vw', minHeight: '88vh'}">
         <div class="cards-editor-actions" :class="{'in-sidebar': isSidebarVisible}">
             <button class="cards-editor-actions-close" @click="isOpen=false">
                 <q-icon name="close"/>
