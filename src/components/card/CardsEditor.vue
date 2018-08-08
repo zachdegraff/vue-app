@@ -8,13 +8,18 @@
                 <q-icon name="fullscreen"/>
             </button>
         </div>
+        <button class="cards-editor-sidebar-collapse" :class="{collapsed:!isSidebarVisible}" @click="isSidebarVisible=!isSidebarVisible">
+            <i></i>
+            <q-icon :name="collapseIconName"/>
+            <i></i>
+        </button>
         <div class="cards-editor-sidebar-actions row" v-show="isSidebarVisible">
             <div class="cards-editor-sidebar-actions-search col-lg-6">
                 <q-search hide-underline v-model="query" placeholder="Add card to list">
                     <q-autocomplete separator @search="search" @selected="selected" :min-characters="2"/>
                 </q-search>
             </div>
-            <div class="cards-editor-sidebar-actions-create col-lg-6">
+            <div class="col-lg-6">
                 <q-btn no-caps flat label="Create new card" icon="add" @click="create" :disabled="isCreating"/>
             </div>
         </div>
@@ -29,11 +34,6 @@
                     </ul>
                 </div>
                 <div class="cards-editor-main">
-                    <button class="cards-editor-sidebar-collapse" @click="isSidebarVisible=!isSidebarVisible">
-                        <i></i>
-                        <q-icon :name="collapseIconName"/>
-                        <i></i>
-                    </button>
                     <div class="cards-editor-top">
                         <div class="cards-editor-status">
                             <span>{{processStatus}}</span>
@@ -414,13 +414,16 @@
         cursor: pointer;
         padding: 0;
         position: absolute;
-        left: 0;
+        left: 30%;
         top: 50px;
         line-height: 1;
         width: 20px;
         z-index: 100;
         .q-icon {
             font-size: 20px;
+        }
+        &.collapsed {
+            left: 0;
         }
         i:first-child {
             border-style: solid;
@@ -466,10 +469,6 @@
         }
     }
 
-    .cards-editor-sidebar-actions-create {
-
-    }
-
     .cards-editor-main {
         color: #8b8b8b;
         padding: 0 20px 15px 60px;
@@ -479,14 +478,11 @@
         bottom: 0;
         width: 70%;
         display: flex;
+        overflow: scroll;
         flex-direction: column;
         input.q-input-target {
             height: auto;
         }
-    }
-
-    .cards-editor-top-container {
-        background: #fff;
     }
 
     .cards-editor-status {

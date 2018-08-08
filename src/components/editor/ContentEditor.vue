@@ -1,7 +1,7 @@
 <template>
     <div class="content-editor-panel">
         <div class="content-editor-content-helper" @click="editor.focus()" v-show="isHelperVisible">What is your team wondering?<br/>
-            <span class="q-caption">(Hint: Type @ to mention other cards.)</span></div>
+            <span class="q-caption">(Hint: Type @ to create and mention other cards.)</span></div>
         <div id="contentEditor" class="content-editor-content"></div>
         <q-progress :percentage="files.uploading" v-show="files.isUploading" ref="progressBar" class="content-editor-progress-bar"/>
         <editor-tags :position="tags.position" :is-visible="tags.isVisible" @choose="handleTagChoosing"/>
@@ -235,16 +235,10 @@
     }
 
     .content-editor-content {
-        bottom: 0;
         color: #424242;
         font-size: 1.125rem;
-        right: 0;
-        left: 0;
-        top: 0;
         line-height: 1.5em;
         outline: none;
-        overflow: scroll;
-        position: absolute;
         img {
             max-width: 100%;
             max-height: 250px;

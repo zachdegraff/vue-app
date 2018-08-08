@@ -1,12 +1,14 @@
 <template>
     <div class="search-form">
-        <q-search v-model.lazy="query" @keyup.enter="submit" :placeholder="placeholder" class="q-pa-sm">
+        <q-search no-icon v-model.lazy="query" @keyup.enter="submit" :placeholder="placeholder" class="q-pa-sm">
             <q-autocomplete separator @search="search" @selected="selected" :min-characters="2"/>
+            <i aria-hidden="true" class="q-icon q-if-control material-icons" @click="submit">search</i>
         </q-search>
     </div>
 </template>
 <script>
     import {mapActions, mapGetters} from 'vuex'
+    import {router} from 'vue-router'
 
     export default {
         data: () => {
