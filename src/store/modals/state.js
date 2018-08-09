@@ -16,6 +16,14 @@ export default {
         status: false
     },
 
+    createCardTag: {
+        status: false
+    },
+
+    editCardTag: {
+        status: false
+    },
+
     inviteMember: {
         team: null,
         status: false

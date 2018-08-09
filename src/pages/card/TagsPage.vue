@@ -9,7 +9,7 @@
                 <tags-grid-list :items="tags"></tags-grid-list>
             </div>
             <div class="col-lg-3 q-px-xl gt-md">
-
+                <q-btn no-caps color="primary" label="Create a tag" @click="createCardTag" class="full-width q-mb-md"/>
             </div>
         </div>
     </div>
@@ -31,8 +31,8 @@
         },
         computed: {
             ...mapGetters({
+                tags: 'tags/all',
                 team: 'teams/current',
-                tags: 'tags/allNonEmpty'
             }),
             title() {
                 if (this.team === null) {
@@ -43,6 +43,11 @@
         },
         components: {
             TagsGridList, SiteNavigation
+        },
+        methods: {
+            ...mapActions({
+                createCardTag: 'modals/openCreateCardTag',
+            })
         }
     }
 </script>

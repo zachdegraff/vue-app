@@ -39,6 +39,24 @@ export const closeEditTeam = ({dispatch, commit}) => {
     commit('changeEditTeamStatus', false);
 };
 
+export const openCreateCardTag = ({commit, dispatch}, id) => {
+    dispatch('route/next', {name: 'create_card_tag', id}, {root: true});
+    commit('changeCreateCardTagStatus', true);
+};
+export const closeCreateCardTag = ({dispatch, commit}) => {
+    dispatch('route/pop', null, {root: true});
+    commit('changeCreateCardTagStatus', false);
+};
+
+export const openEditCardTag = ({commit, dispatch}, slug) => {
+    dispatch('route/next', {name: 'edit_card_tag', slug}, {root: true});
+    commit('changeEditCardTagStatus', true);
+};
+export const closeEditCardTag = ({dispatch, commit}) => {
+    dispatch('route/pop', null, {root: true});
+    commit('changeEditCardTagStatus', false);
+};
+
 
 export const openInviteMember = ({commit, dispatch, rootGetters}, id) => {
     dispatch('route/next', {name: 'invite_member', id}, {root: true});

@@ -1,7 +1,9 @@
 <template>
     <div>
         <ask-help v-if="isAskHelpOpen"/>
-        <cards-editor v-if="isCardsEditorOpen"></cards-editor>
+        <cards-editor v-if="isCardsEditorOpen"/>
+        <create-card-tag v-if="isCreateCardTagOpen"/>
+        <edit-card-tag v-if="isEditCardTagOpen"/>
     </div>
 </template>
 <script>
@@ -9,6 +11,8 @@
     import CardsEditor from "./card/CardsEditor";
 
     import {mapGetters} from 'vuex'
+    import CreateCardTag from "./card/CreateCardTag";
+    import EditCardTag from "./card/EditCardTag";
 
     export default {
         data: () => {
@@ -17,9 +21,11 @@
         computed: {
             ...mapGetters({
                 isAskHelpOpen: 'modals/isAskHelpOpen',
-                isCardsEditorOpen: 'modals/isCardsEditorOpen'
+                isCardsEditorOpen: 'modals/isCardsEditorOpen',
+                isCreateCardTagOpen: 'modals/isCreateCardTagOpen',
+                isEditCardTagOpen: 'modals/isEditCardTagOpen'
             })
         },
-        components: {AskHelp, CardsEditor}
+        components: {EditCardTag, CreateCardTag, AskHelp, CardsEditor}
     }
 </script>

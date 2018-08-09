@@ -95,6 +95,16 @@ export default [
             {path: ':id', name: 'view_card', component: () => import('pages/card/ViewCardPage.vue'), props: true},
             {path: ':id/edit', name: 'edit_card', component: () => import('pages/card/EditCardPage.vue'), props: true},
             {
+                path: 'tag/create',
+                name: 'create_card_tag',
+                component: () => import('pages/card/CreateCardTagPage.vue')
+            },
+            {
+                path: 'tag/:name/edit',
+                name: 'edit_card_tag',
+                component: () => import('pages/card/EditCardTagPage.vue')
+            },
+            {
                 path: 'tag/:name',
                 name: 'tag_cards',
                 component: () => import('pages/card/TagCardsPage.vue')

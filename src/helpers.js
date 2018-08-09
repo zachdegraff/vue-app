@@ -28,7 +28,7 @@ export const replace = (arr, item) => {
     const idx = arr.findIndex(el => el.id === item.id);
 
     idx === -1 ? arr.push(item) : arr[idx] = item;
-    return arr
+    return arr.slice(0)
 };
 
 export const remove = (arr, item) => {

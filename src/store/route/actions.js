@@ -1,6 +1,8 @@
 const routes = {
     'create_card': () => `/cards/create`,
     'create_card_name': ({cardName}) => `/cards/create?name=${cardName}`,
+    'create_card_tag': () => `/cards/tag/create`,
+    'edit_card_tag': ({slug}) => `/cards/tag/${slug}/edit`,
     'view_card': ({id}) => `/cards/${id}`,
     'edit_card': ({id}) => `/cards/${id}/edit`,
     'create_team': () => `/teams/create`,
