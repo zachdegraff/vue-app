@@ -1,5 +1,22 @@
 import api from '../../api'
 
+export const all = ({commit, rootGetters}, params) => {
+    return new Promise((resolve, reject) => {
+        const team = rootGetters['teams/current'];
+        if (team === null) {
+            resolve([])
+        }
+        commit('allStatusRequest');
+        api.questions.all(team.id, params).then(res => {
+            commit('allStatusSuccess', res);
+            resolve(res.data)
+        }).catch(err => {
+            commit('allStatusFailure');
+            reject(err)
+        })
+    })
+};
+
 export const store = ({commit, dispatch}, {id, ...params}) => {
     return new Promise((resolve, reject) => {
         commit('storeStatusRequest');

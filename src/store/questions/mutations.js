@@ -13,10 +13,19 @@ export const flushState = state => {
     state.answeredQuestionsLastPage = null;
 };
 
+export const allStatusRequest = state => state.actionAllStatus = 'Request';
+export const allStatusSuccess = state => state.actionAllStatus = 'Success';
+export const allStatusFailure = state => state.actionAllStatus = 'Failure';
+
 export const storeStatusRequest = state => state.actionStoreStatus = 'Request';
 export const storeStatusSuccess = (state, res) => {
     state.actionStoreStatus = 'Success';
-    state.openQuestions.unshift(res.data.question)
+    state.openQuestions.unshift(res.data.question);
+
+    const items = state.cardsQuestions[res.data.question.cardId] || [];
+    items.push(res.data.question);
+
+    state.cardsQuestions[res.data.question.cardId] = items
 };
 export const storeStatusFailure = state => state.actionStoreStatus = 'Failure';
 
