@@ -21,11 +21,6 @@ export const storeStatusRequest = state => state.actionStoreStatus = 'Request';
 export const storeStatusSuccess = (state, res) => {
     state.actionStoreStatus = 'Success';
     state.openQuestions.unshift(res.data.question);
-
-    const items = state.cardsQuestions[res.data.question.cardId] || [];
-    items.push(res.data.question);
-
-    state.cardsQuestions[res.data.question.cardId] = items
 };
 export const storeStatusFailure = state => state.actionStoreStatus = 'Failure';
 
