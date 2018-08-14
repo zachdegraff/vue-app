@@ -88,7 +88,7 @@
                             </q-field>
                         </div>
                     </div>
-                    <content-editor v-if="active"></content-editor>
+                    <content-editor v-if="active"/>
                 </div>
             </div>
         </app-modal-layout>

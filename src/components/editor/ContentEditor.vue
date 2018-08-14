@@ -47,21 +47,7 @@
             document.addEventListener('keydown', this.handleArrowScroll);
         },
         mounted() {
-            this.editor = document.getElementById('contentEditor');
-            if (this.editor !== null) {
-                this.editor.addEventListener('keydown', this.handleKeyPress);
-                this.editor.addEventListener('mouseup', this.handleKeyPress);
-                this.editor.addEventListener('click', this.handleLinkClicks);
-            }
-            this.medium = new MediumEditor('#contentEditor', MediumOptions);
-            if (this.card) {
-                this.medium.setContent(this.card.description || '<p><br></p>', 0)
-            }
-            this.medium.subscribe('blur', this.save);
-            this.medium.subscribe('focus', this.handleKeyPress);
-            this.medium.subscribe('editableInput', this.handleKeyPress);
-
-            this.checkTagsVisibility()
+            setTimeout(this.initialize, 100)
         },
         destroyed() {
             window.removeEventListener('wheel', this.handlePageWheel);
@@ -82,6 +68,23 @@
                 save: 'editor/save',
                 open: 'editor/open',
             }),
+            initialize() {
+                this.editor = document.getElementById('contentEditor');
+                if (this.editor !== null) {
+                    this.editor.addEventListener('keydown', this.handleKeyPress);
+                    this.editor.addEventListener('mouseup', this.handleKeyPress);
+                    this.editor.addEventListener('click', this.handleLinkClicks);
+                }
+                this.medium = new MediumEditor('#contentEditor', MediumOptions);
+                if (this.card) {
+                    this.medium.setContent(this.card.description || '<p><br></p>', 0)
+                }
+                this.medium.subscribe('blur', this.save);
+                this.medium.subscribe('focus', this.handleKeyPress);
+                this.medium.subscribe('editableInput', this.handleKeyPress);
+
+                this.checkTagsVisibility()
+            },
             handleKeyPress(e) {
                 if (e instanceof KeyboardEvent) {
                     if (e.keyCode === 8 && this.isEmptyEditor()) {
