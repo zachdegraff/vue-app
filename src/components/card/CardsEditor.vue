@@ -69,7 +69,6 @@
                             </q-btn>
                             <q-btn icon="bookmark" flat dense @click="toggleFavorite(active.id)" v-show="isSaved(active.id)"/>
                             <q-btn icon="bookmark_border" flat dense @click="toggleFavorite(active.id)" v-show="!isSaved(active.id)"/>
-                            <q-btn icon="help" flat dense @click="openAskHelp"/>
                             <q-btn icon="delete" flat dense @click.prevent.stop="flush($event)" v-show="active.canRemove"/>
                         </div>
                         <div>
@@ -90,12 +89,26 @@
                     </div>
                     <content-editor v-if="active"></content-editor>
                 </div>
+                <div class="cards-editor-questions" :style="{left: questionsLeftOffset}">
+                    <div class="cards-editor-questions-label">
+                        <div class="float-left q-mt-xs" @click="isQuestionsVisible=!isQuestionsVisible">
+                            {{questionsLabel}}
+                            <q-icon :name="questionIconName"/>
+                        </div>
+                        <q-btn icon="help" label="ask question" dense @click="openAskHelp" class="float-right"/>
+                        <div style="clear:both"></div>
+                    </div>
+                    <div class="q-mt-md" v-show="isQuestionsVisible">
+                        <questions-list :items="questions"/>
+                    </div>
+                </div>
             </div>
         </app-modal-layout>
     </q-modal>
 </template>
 <script>
     import AppModalLayout from '../context/modal/AppModalLayout'
+    import QuestionsList from '../question/QuestionsList.vue'
     import ContentEditor from '../editor/ContentEditor.vue'
     import DateFormatter from '../../mixins/DateFormatter'
     import {mapGetters, mapActions} from 'vuex'
@@ -112,11 +125,13 @@
                 isFullScreen: false,
                 isNameChanged: false,
                 isSidebarVisible: true,
-                suggests: []
+                isQuestionsVisible: false,
+                suggests: [],
+                questions: []
             }
         },
         mixins: [DateFormatter],
-        components: {AppModalLayout, ContentEditor},
+        components: {QuestionsList, AppModalLayout, ContentEditor},
         computed: {
             ...mapGetters({
                 tags: 'tags/all',
@@ -157,6 +172,24 @@
                 }
                 return 'chevron_right'
             },
+            questionsLabel() {
+                if (this.questions.length > 0) {
+                    return `Questions (${this.questions.length})`;
+                }
+                return 'Questions'
+            },
+            questionIconName() {
+                if (this.isQuestionsVisible) {
+                    return 'expand_less'
+                }
+                return 'expand_more'
+            },
+            questionsLeftOffset() {
+                if (this.isSidebarVisible) {
+                    return '30%';
+                }
+                return '0'
+            },
             tagsCount() {
                 if (!this.active) {
                     return 0;
@@ -177,10 +210,12 @@
         },
         watch: {
             active: function (val) {
+                this.questions = [];
                 if (val === null) return;
 
                 document.title = this.title;
-                this.name.setContent(`<p>${val.name}</p>`, 0)
+                this.name.setContent(`<p>${val.name}</p>`, 0);
+                this.loadQuestions({card: val.id}).then(res => this.questions = res.data)
             },
             tagQuery: function (val) {
                 this.suggests = [];
@@ -228,6 +263,7 @@
                 create: 'editor/create',
                 toggleFavorite: 'users/favorite',
                 close: 'modals/closeCardsEditor',
+                loadQuestions: 'questions/all',
                 openAskHelp: 'modals/openAskHelp',
             }),
             flush(e) {
@@ -475,7 +511,7 @@
         position: absolute;
         top: 0;
         right: 0;
-        bottom: 0;
+        bottom: 40px;
         width: 70%;
         display: flex;
         overflow: scroll;
@@ -523,6 +559,24 @@
         color: #0c0c0c;
         font-size: 1.2rem;
         margin: 30px 0 10px;
+    }
+
+    .cards-editor-questions {
+        background: #f9f9f9;
+        position: absolute;
+        bottom: 0;
+        padding: 10px 20px 10px 60px;
+        left: 30%;
+        max-height: 100%;
+        overflow: scroll;
+        right: 0;
+    }
+
+    .cards-editor-questions-label {
+        color: #424242;
+        > div:first-child {
+            cursor: pointer;
+        }
     }
 
     @media (max-width: 1024px) {

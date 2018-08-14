@@ -14,6 +14,7 @@ export default {
     answeredQuestionsPage: 0,
     answeredQuestionsLastPage: null,
 
+    actionAllStatus: '',
     actionStoreStatus: '',
     actionCommentStatus: '',
     actionLoadOpenQuestionsStatus: '',
