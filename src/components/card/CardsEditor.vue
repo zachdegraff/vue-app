@@ -538,7 +538,7 @@
     }
 
     .cards-editor-shorthand {
-        font-size: .8rem;
+        font-size: 16px;
         margin: 5px 10px 20px 0;
         .q-field-icon {
             font-size: 1rem;

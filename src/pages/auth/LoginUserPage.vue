@@ -68,7 +68,8 @@
                     return
                 }
 
-                this.login(this.form).then(() => {
+                this.login(this.form).then((res) => {
+                    localStorage.setItem('user', JSON.stringify(res.user));
                     if (this.referer) {
                         return this.$router.push(this.referer)
                     }

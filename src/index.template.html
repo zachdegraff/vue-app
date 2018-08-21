@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="utf-8">
-    <meta name="description" content="Wonderus helps teams work smarter with a knowledge base available online or in Slack.">
+    <meta name="description"
+          content="Wonderus helps teams work smarter with a knowledge base available online or in Slack.">
     <meta name="slack-app-id" content="AAYHHMYLS">
     <meta name="format-detection" content="telephone=no">
     <meta name="msapplication-tap-highlight" content="no">
-    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width<% if (htmlWebpackPlugin.options.ctx.mode.cordova) { %>, viewport-fit=cover<% } %>">
+    <meta name="viewport"
+          content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width<% if (htmlWebpackPlugin.options.ctx.mode.cordova) { %>, viewport-fit=cover<% } %>">
     <title><%= htmlWebpackPlugin.options.productName %></title>
 
     <link rel="apple-touch-icon" sizes="57x57" href="statics/favicon/apple-icon-57x57.png">
@@ -18,7 +20,7 @@
     <link rel="apple-touch-icon" sizes="144x144" href="statics/favicon/apple-icon-144x144.png">
     <link rel="apple-touch-icon" sizes="152x152" href="statics/favicon/apple-icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="statics/favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="statics/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="statics/favicon/android-icon-192x192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="statics/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="statics/favicon/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="statics/favicon/favicon-16x16.png">
@@ -35,7 +37,8 @@
     <meta name="theme-color" content="<%= htmlWebpackPlugin.options.pwaManifest.theme_color %>">
     <!-- Add to home screen for Safari on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="<%= htmlWebpackPlugin.options.pwaManifest.background_color %>">
+    <meta name="apple-mobile-web-app-status-bar-style"
+          content="<%= htmlWebpackPlugin.options.pwaManifest.background_color %>">
     <meta name="apple-mobile-web-app-title" content="<%= htmlWebpackPlugin.options.pwaManifest.name %>">
     <link rel="apple-touch-icon" href="statics/icons/apple-icon-152x152.png">
     <!-- Add to home screen for Windows -->
@@ -47,11 +50,35 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118989121-2"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
         gtag('js', new Date());
 
         gtag('config', 'UA-118989121-2');
     </script>
+
+    <!-- Download Canny SDK -->
+    <script>!function (w, d, i, s) {
+        function l() {
+            if (!d.getElementById(i)) {
+                var f = d.getElementsByTagName(s)[0], e = d.createElement(s);
+                e.type = "text/javascript", e.async = !0, e.src = "https://canny.io/sdk.js", f.parentNode.insertBefore(e, f)
+            }
+        }
+
+        if ("function" != typeof w.Canny) {
+            var c = function () {
+                c.q.push(arguments)
+            };
+            c.q = [], w.Canny = c, "complete" === d.readyState ? l() : w.attachEvent ? w.attachEvent("onload", l) : w.addEventListener("load", l, !1)
+        }
+    }(window, document, "canny-jssdk", "script");</script>
+
+    <!-- Use the Canny SDK to identify the current user of your website -->
+
 
     <%= htmlWebpackPlugin.options.headScripts %>
 
@@ -59,26 +86,61 @@
       The following is optional if you DON'T build for PWA.
       Preloads/prefetches chunks/assets.
     -->
-    <% if (!['cordova', 'electron'].includes(htmlWebpackPlugin.options.ctx.modeName) && htmlWebpackPlugin.options.ctx.prod) {
-        for (var chunk of webpack.chunks) {
-          for (var file of chunk.files) {
-            if (file.match(/\.(js|css)$/)) { %>
-      <link rel="<%= chunk.initial ? 'preload' : 'prefetch' %>" href="<%= file %>" as="<%= file.match(/\.css$/)? 'style' : 'script' %>">
+    <% if (!['cordova', 'electron'].includes(htmlWebpackPlugin.options.ctx.modeName) &&
+    htmlWebpackPlugin.options.ctx.prod) {
+    for (var chunk of webpack.chunks) {
+    for (var file of chunk.files) {
+    if (file.match(/\.(js|css)$/)) { %>
+
+    <!-- Download Canny SDK -->
+
+    <link rel="<%= chunk.initial ? 'preload' : 'prefetch' %>" href="<%= file %>"
+          as="<%= file.match(/\.css$/)? 'style' : 'script' %>">
     <% }}}} %>
-  </head>
-  <body>
-    <% if (!htmlWebpackPlugin.options.ctx.mode.electron) { %>
-      <noscript>
-        This is your fallback content in case JavaScript fails to load.
-      </noscript>
-    <% } %>
+    <script>!function (w, d, i, s) {
+        function l() {
+            if (!d.getElementById(i)) {
+                var f = d.getElementsByTagName(s)[0], e = d.createElement(s);
+                e.type = "text/javascript", e.async = !0, e.src = "https://canny.io/sdk.js", f.parentNode.insertBefore(e, f)
+            }
+        }
 
-    <!-- DO NOT touch the following <div> -->
-    <div id="q-app"></div>
+        if ("function" != typeof w.Canny) {
+            var c = function () {
+                c.q.push(arguments)
+            };
+            c.q = [], w.Canny = c, "complete" === d.readyState ? l() : w.attachEvent ? w.attachEvent("onload", l) : w.addEventListener("load", l, !1)
+        }
+    }(window, document, "canny-jssdk", "script");</script>
+    <!-- Use the Canny SDK to identify the current user of your website -->
+    <script>
+        let user = JSON.parse(localStorage.getItem('user'));
+        Canny('identify', {
+            appID: '5b6c996d366d036c04d07a62',
+            user: {
+                // Replace these values with the current user's data
+                email: user.email,
+                name: user.name,
+                id: user.id,
+                avatarURL: user.photo,
+                created: new Date(user.created.date).toISOString(),
+            },
+        });
+    </script>
+</head>
+<body>
+<% if (!htmlWebpackPlugin.options.ctx.mode.electron) { %>
+<noscript>
+    This is your fallback content in case JavaScript fails to load.
+</noscript>
+<% } %>
 
-    <!-- DO NOT touch the following -->
-    <%= htmlWebpackPlugin.options.bodyScripts %>
+<!-- DO NOT touch the following <div> -->
+<div id="q-app"></div>
 
-    <!-- built files will be auto injected here -->
-  </body>
+<!-- DO NOT touch the following -->
+<%= htmlWebpackPlugin.options.bodyScripts %>
+
+<!-- built files will be auto injected here -->
+</body>
 </html>
