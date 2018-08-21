@@ -126,8 +126,7 @@
                 isNameChanged: false,
                 isSidebarVisible: true,
                 isQuestionsVisible: false,
-                suggests: [],
-                questions: []
+                suggests: []
             }
         },
         mixins: [DateFormatter],
@@ -141,6 +140,7 @@
                 isUpdating: 'cards/isUpdating',
                 active: 'editor/getActiveCard',
                 cards: 'editor/getEditorCards',
+                questions: 'questions/getCardQuestions'
             }),
             processStatus() {
                 if (this.isUpdating) {
@@ -210,12 +210,11 @@
         },
         watch: {
             active: function (val) {
-                this.questions = [];
                 if (val === null) return;
 
                 document.title = this.title;
                 this.name.setContent(`<p>${val.name}</p>`, 0);
-                this.loadQuestions({card: val.id}).then(res => this.questions = res.data)
+                this.loadQuestions(val)
             },
             tagQuery: function (val) {
                 this.suggests = [];
@@ -263,7 +262,7 @@
                 create: 'editor/create',
                 toggleFavorite: 'users/favorite',
                 close: 'modals/closeCardsEditor',
-                loadQuestions: 'questions/all',
+                loadQuestions: 'questions/loadCardQuestions',
                 openAskHelp: 'modals/openAskHelp',
             }),
             flush(e) {

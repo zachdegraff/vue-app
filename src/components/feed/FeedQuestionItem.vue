@@ -9,6 +9,17 @@
                     <q-item-tile label>{{item.user.fullName}} {{actionTypeLabel}}</q-item-tile>
                     <q-item-tile sublabel>{{toLocaleString(item.createdAt)}}</q-item-tile>
                 </q-item-main>
+                <q-item-side right v-if="question.canRemove">
+                    <q-btn round flat icon="more_vert">
+                        <q-popover>
+                            <q-list link class="no-border">
+                                <q-item @click.native="destroyQuestion(question)" v-close-overlay>
+                                    <q-item-main label="Remove Question"/>
+                                </q-item>
+                            </q-list>
+                        </q-popover>
+                    </q-btn>
+                </q-item-side>
             </q-item>
             <q-item>
                 <q-item-main>
@@ -115,6 +126,7 @@
             ...mapActions({
                 hints: 'search/cardsHints',
                 reply: 'questions/comment',
+                remove: 'questions/remove',
                 showCard: 'modals/openCardsEditor',
             }),
             submit() {
@@ -148,6 +160,14 @@
                     done(result);
                 }).catch(() => done([]));
             },
+            confirm() {
+                return this.$q.dialog({
+                    title: 'Confirm',
+                    message: 'Are you sure?',
+                    cancel: true,
+                    color: 'secondary'
+                });
+            },
             repliesTitle(amount) {
                 if (amount === 1) {
                     return '1 reply'
@@ -166,6 +186,12 @@
                 }
                 this.showReplyForm = !this.showReplyForm
             },
+            destroyQuestion(item) {
+                this.confirm().then(() => {
+                    this.remove(item.id)
+                }).catch(() => {
+                })
+            }
         }
     }
 </script>

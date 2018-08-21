@@ -13,6 +13,17 @@
                         <q-item-tile label>{{item.user.fullName}}</q-item-tile>
                         <q-item-tile sublabel>Asked at {{toLocaleString(item.createdAt)}}</q-item-tile>
                     </q-item-main>
+                    <q-item-side right v-if="item.canRemove">
+                        <q-btn round flat icon="more_vert">
+                            <q-popover>
+                                <q-list link class="no-border">
+                                    <q-item @click.native="destroyQuestion(item)" v-close-overlay>
+                                        <q-item-main label="Remove Question"/>
+                                    </q-item>
+                                </q-list>
+                            </q-popover>
+                        </q-btn>
+                    </q-item-side>
                 </q-item>
                 <q-item>
                     <q-item-main>
@@ -113,6 +124,7 @@
             ...mapActions({
                 hints: 'search/cardsHints',
                 reply: 'questions/comment',
+                remove: 'questions/remove',
                 showCard: 'modals/openCardsEditor',
                 flushToDefaults: 'questions/flushToDefaults'
             }),
@@ -147,6 +159,14 @@
                     done(result);
                 }).catch(() => done([]));
             },
+            confirm() {
+                return this.$q.dialog({
+                    title: 'Confirm',
+                    message: 'Are you sure?',
+                    cancel: true,
+                    color: 'secondary'
+                });
+            },
             repliesTitle(amount) {
                 if (amount === 1) {
                     return '1 reply'
@@ -165,6 +185,12 @@
                 }
                 item.showReplyForm = !item.showReplyForm
             },
+            destroyQuestion(item) {
+                this.confirm().then(() => {
+                    this.remove(item.id)
+                }).catch(() => {
+                })
+            }
         }
     }
 </script>

@@ -45,6 +45,20 @@ export const comment = ({commit, dispatch}, {id, ...params}) => {
     })
 };
 
+export const remove = ({commit, dispatch}, id) => {
+    return new Promise((resolve, reject) => {
+        commit('removeStatusRequest');
+        api.questions.remove(id).then(res => {
+            commit('removeStatusSuccess', res);
+            dispatch('feed/fresh', null, {root: true});
+            resolve(res.data)
+        }).catch(err => {
+            commit('removeStatusFailure', err);
+            reject(err)
+        })
+    })
+};
+
 export const flushToDefaults = ({commit}) => {
     commit('flushState')
 };
@@ -61,6 +75,24 @@ export const loadQuestionsCount = ({commit, rootGetters}) => {
             resolve(res.data)
         }).catch(err => {
             commit('loadQuestionsCountFailure', err);
+            reject(err)
+        })
+    })
+};
+
+export const loadCardQuestions = ({commit, state, rootGetters}, card) => {
+    const team = rootGetters['teams/current'];
+    if (team === null) {
+        return []
+    }
+
+    return new Promise((resolve, reject) => {
+        commit('loadCardQuestionsStatusRequest');
+        api.questions.all(team.id, {card: card.id}).then(res => {
+            commit('loadCardQuestionsStatusSuccess', res);
+            resolve(res.data.data)
+        }).catch(err => {
+            commit('loadCardQuestionsStatusFailure', err);
             reject(err)
         })
     })
