@@ -104,6 +104,7 @@
     <script>
         let user = JSON.parse(localStorage.getItem('user'));
         if (user) {
+            console.log('user',user);
             Canny('identify', {
                 appID: '5b7c31a5777abf20907ca8a6',
                 user: {
