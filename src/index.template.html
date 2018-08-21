@@ -2,11 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="description" content="Wonderus helps teams work smarter with a knowledge base available online or in Slack.">
+    <meta name="description"
+          content="Wonderus helps teams work smarter with a knowledge base available online or in Slack.">
     <meta name="slack-app-id" content="AAYHHMYLS">
     <meta name="format-detection" content="telephone=no">
     <meta name="msapplication-tap-highlight" content="no">
-    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width<% if (htmlWebpackPlugin.options.ctx.mode.cordova) { %>, viewport-fit=cover<% } %>">
+    <meta name="viewport"
+          content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width<% if (htmlWebpackPlugin.options.ctx.mode.cordova) { %>, viewport-fit=cover<% } %>">
     <title><%= htmlWebpackPlugin.options.productName %></title>
 
     <link rel="apple-touch-icon" sizes="57x57" href="statics/favicon/apple-icon-57x57.png">
@@ -95,35 +97,23 @@
     <link rel="<%= chunk.initial ? 'preload' : 'prefetch' %>" href="<%= file %>"
           as="<%= file.match(/\.css$/)? 'style' : 'script' %>">
     <% }}}} %>
-    <script>!function (w, d, i, s) {
-        function l() {
-            if (!d.getElementById(i)) {
-                var f = d.getElementsByTagName(s)[0], e = d.createElement(s);
-                e.type = "text/javascript", e.async = !0, e.src = "https://canny.io/sdk.js", f.parentNode.insertBefore(e, f)
-            }
-        }
 
-        if ("function" != typeof w.Canny) {
-            var c = function () {
-                c.q.push(arguments)
-            };
-            c.q = [], w.Canny = c, "complete" === d.readyState ? l() : w.attachEvent ? w.attachEvent("onload", l) : w.addEventListener("load", l, !1)
-        }
-    }(window, document, "canny-jssdk", "script");</script>
+    <script>!function(w,d,i,s){function l(){if(!d.getElementById(i)){var f=d.getElementsByTagName(s)[0],e=d.createElement(s);e.type="text/javascript",e.async=!0,e.src="https://canny.io/sdk.js",f.parentNode.insertBefore(e,f)}}if("function"!=typeof w.Canny){var c=function(){c.q.push(arguments)};c.q=[],w.Canny=c,"complete"===d.readyState?l():w.attachEvent?w.attachEvent("onload",l):w.addEventListener("load",l,!1)}}(window,document,"canny-jssdk","script");</script>
 
     <!-- Use the Canny SDK to identify the current user of your website -->
     <script>
         let user = JSON.parse(localStorage.getItem('user'));
-        if(user){
+        if (user) {
             Canny('identify', {
-                appID: '5b6c996d366d036c04d07a62',
+                appID: '5b7c31a5777abf20907ca8a6',
                 user: {
                     // Replace these values with the current user's data
                     email: user.email,
                     name: user.name,
                     id: user.id,
+                    // These fields are optional, but recommended:
                     avatarURL: user.photo,
-                    created: new Date(user.created.date).toISOString(),
+                    created: new Date(user.created).toISOString(),
                 },
             });
         }
