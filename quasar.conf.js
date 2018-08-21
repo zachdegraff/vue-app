@@ -28,7 +28,7 @@ module.exports = function (ctx) {
             publicPath: '/',
             env: ctx.dev
                 ? {
-                    API_HOST: JSON.stringify('http://wonderus-api.ec'),
+                    API_HOST: JSON.stringify('http://wonderus'),
                     APP_HOST: JSON.stringify('http://localhost:8080'),
                     SLACK_CLIENT_ID: JSON.stringify('371875442850.371336699377')
                 } : (process.env.APP_STAGE === 'test' ? {
