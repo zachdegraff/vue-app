@@ -1,10 +1,10 @@
-
 export const getCount = state => state.count;
 
 export const getOpenQuestions = state => state.openQuestions;
 export const getUserQuestions = state => state.userQuestions;
 export const getAnsweredQuestions = state => state.answeredQuestions;
 
+export const getCardQuestions = state => state.cardQuestions;
 
 export const isLoadOpenQuestions = state => state.actionLoadOpenQuestionsStatus === 'Request';
 export const isLoadUserQuestions = state => state.actionLoadUserQuestionsStatus === 'Request';

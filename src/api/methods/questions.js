@@ -15,3 +15,7 @@ export const store = (team, attr) => {
 export const comment = (id, attr) => {
     return request.post(`/questions/${id}/comment`, attr)
 };
+
+export const remove = (id) => {
+    return request.delete(`/questions/${id}`);
+};

@@ -1,3 +1,5 @@
+import {remove, replace} from "../../helpers";
+
 export const flushState = state => {
     state.openQuestions = [];
     state.userQuestions = [];
@@ -20,9 +22,26 @@ export const allStatusFailure = state => state.actionAllStatus = 'Failure';
 export const storeStatusRequest = state => state.actionStoreStatus = 'Request';
 export const storeStatusSuccess = (state, res) => {
     state.actionStoreStatus = 'Success';
-    state.openQuestions.unshift(res.data.question);
+
+    const question = res.data.question;
+    state.openQuestions.unshift(question);
+    if (question.card) {
+        state.cardQuestions.push(question)
+    }
 };
 export const storeStatusFailure = state => state.actionStoreStatus = 'Failure';
+
+export const removeStatusRequest = state => state.actionRemoveStatus = 'Request';
+export const removeStatusSuccess = (state, res) => {
+    state.actionRemoveStatus = 'Success';
+
+    const question = res.data.question;
+    state.openQuestions = remove(state.openQuestions, question);
+    state.userQuestions = remove(state.userQuestions, question);
+    state.cardQuestions = remove(state.cardQuestions, question);
+    state.answeredQuestions = remove(state.answeredQuestions, question)
+};
+export const removeStatusFailure = state => state.actionRemoveStatus = 'Failure';
 
 export const commentStatusRequest = state => state.actionCommentStatus = 'Request';
 export const commentStatusSuccess = state => state.actionCommentStatus = 'Success';
@@ -52,6 +71,16 @@ export const loadUserQuestionsStatusSuccess = (state, res) => {
     state.userQuestionsLastPage = res.data.meta.last_page
 };
 export const loadUserQuestionsStatusFailure = state => state.actionLoadUserQuestionsStatus = 'Failure';
+
+export const loadCardQuestionsStatusRequest = state => {
+    state.actionLoadCardQuestionsStatus = 'Request';
+    state.cardQuestions = []
+};
+export const loadCardQuestionsStatusSuccess = (state, res) => {
+    state.actionLoadCardQuestionsStatus = 'Success';
+    state.cardQuestions = res.data.data
+};
+export const loadCardQuestionsStatusFailure = state => state.actionLoadCardQuestionsStatus = 'Failure';
 
 export const loadAnsweredQuestionsStatusRequest = state => state.actionLoadAnsweredQuestionsStatus = 'Request';
 export const loadAnsweredQuestionsStatusSuccess = (state, res) => {

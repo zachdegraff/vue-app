@@ -3,6 +3,7 @@ export default {
 
     openQuestions: [],
     userQuestions: [],
+    cardQuestions: [],
     answeredQuestions: [],
 
     openQuestionsPage: 0,
@@ -17,8 +18,10 @@ export default {
     actionAllStatus: '',
     actionStoreStatus: '',
     actionCommentStatus: '',
+    actionRemoveStatus: '',
     actionLoadOpenQuestionsStatus: '',
     actionLoadUserQuestionsStatus: '',
+    actionLoadCardQuestionsStatus: '',
     actionLoadAnsweredQuestionsStatus: '',
     actionLoadQuestionsCountStatus: ''
 }
