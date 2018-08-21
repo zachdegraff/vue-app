@@ -113,7 +113,7 @@
                     id: user.id,
                     // These fields are optional, but recommended:
                     avatarURL: user.photo,
-                    created: new Date(user.created).toISOString(),
+                    created: new Date(user.created.date).toISOString(),
                 },
             });
         }
