@@ -112,20 +112,23 @@
             c.q = [], w.Canny = c, "complete" === d.readyState ? l() : w.attachEvent ? w.attachEvent("onload", l) : w.addEventListener("load", l, !1)
         }
     }(window, document, "canny-jssdk", "script");</script>
+
     <!-- Use the Canny SDK to identify the current user of your website -->
     <script>
         let user = JSON.parse(localStorage.getItem('user'));
-        Canny('identify', {
-            appID: '5b6c996d366d036c04d07a62',
-            user: {
-                // Replace these values with the current user's data
-                email: user.email,
-                name: user.name,
-                id: user.id,
-                avatarURL: user.photo,
-                created: new Date(user.created.date).toISOString(),
-            },
-        });
+        if(user){
+            Canny('identify', {
+                appID: '5b6c996d366d036c04d07a62',
+                user: {
+                    // Replace these values with the current user's data
+                    email: user.email,
+                    name: user.name,
+                    id: user.id,
+                    avatarURL: user.photo,
+                    created: new Date(user.created.date).toISOString(),
+                },
+            });
+        }
     </script>
 </head>
 <body>
