@@ -225,6 +225,9 @@
                         this.suggests.push(tag.name)
                     }
                 })
+            },
+            'active.name': function () {
+                document.title = this.title
             }
         },
         created() {
