@@ -13,7 +13,7 @@ export const notify = (message) => {
         timeout: 3000,
         type: 'positive',
         color: 'positive',
-        position: 'top-left'
+        position: 'bottom-left'
     })
 };
 
