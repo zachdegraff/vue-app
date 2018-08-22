@@ -10,7 +10,7 @@ const MediumOptions = {
         cleanPastedHTML: false,
         cleanReplacements: [],
         cleanAttrs: ['class', 'style', 'dir'],
-        cleanTags: ['meta'],
+        cleanTags: ['meta', 'table', 'tbody', 'thead', 'tr', 'td', 'th'],
         unwrapTags: []
     },
     placeholder: false,
