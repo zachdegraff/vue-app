@@ -6,10 +6,15 @@
 </template>
 
 <script>
-    import {mapActions} from 'vuex'
+    import {mapActions, mapGetters} from 'vuex'
 
     export default {
         name: 'App',
+        computed: {
+            ...mapGetters({
+                user: 'auth/user'
+            })
+        },
         created() {
             if (localStorage.getItem('access-token') !== null) {
                 this.loadAuthUser();
@@ -21,12 +26,30 @@
                 });
             }
         },
+        watch: {
+            user: function (val) {
+                if (val !== null) {
+                    this.logCanny(val)
+                }
+            }
+        },
         methods: {
             ...mapActions({
                 loadAuthUser: 'auth/user',
                 loadUserTeams: 'teams/all',
                 loadFavorite: 'users/loadFavorite'
-            })
+            }),
+            logCanny(user) {
+                Canny('identify', {
+                    appID: '5b6c996d366d036c04d07a62',
+                    user: {
+                        id: user.id,
+                        email: user.email,
+                        name: user.firstName,
+                        avatarURL: user.photo
+                    }
+                })
+            }
         },
     }
 </script>

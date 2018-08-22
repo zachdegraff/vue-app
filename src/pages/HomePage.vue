@@ -14,7 +14,7 @@
                     <div class="col q-headline">Recent Activity</div>
                 </div>
                 <div v-show="feed.length > 0">
-                    <div v-for="item in feed" :key="item.id" class="q-mb-md">
+                    <div v-for="item in feed" :key="item.id" class="q-mb-md" v-if="item.source">
                         <feed-card-item :item="item" v-if="item.sourceType === 'card'"/>
                         <feed-question-item :item="item" v-if="item.sourceType === 'question'"/>
                     </div>
