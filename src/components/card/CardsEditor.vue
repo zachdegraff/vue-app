@@ -14,12 +14,12 @@
             <i></i>
         </button>
         <div class="cards-editor-sidebar-actions row" v-show="isSidebarVisible">
-            <div class="cards-editor-sidebar-actions-search col-lg-6">
+            <div class="cards-editor-sidebar-actions-search col-lg-12 ">
                 <q-search hide-underline v-model="query" placeholder="Add card to list">
                     <q-autocomplete separator @search="search" @selected="selected" :min-characters="2"/>
                 </q-search>
             </div>
-            <div class="col-lg-6">
+            <div class="create-new-card  col-lg-12">
                 <q-btn no-caps flat label="Create new card" icon="add" @click="create" :disabled="isCreating"/>
             </div>
         </div>
@@ -29,7 +29,7 @@
                     <ul class="cards-editor-cards">
                         <li v-for="card in cards" :key="card.id" @click="open(card.id)" :class="{active: card.id === active.id}">
                             {{card.name}}
-                            <q-btn flat dense icon="close" @click.prevent.stop="hide(card.id)"/>
+                            <q-btn flat dense icon="close" @click.prevent.stop="hide({id: card.id})"/>
                         </li>
                     </ul>
                 </div>
@@ -271,7 +271,9 @@
             flush(e) {
                 e.target.closest('button').blur();
                 this.confirm().then(() => {
-                    this.remove(this.active.id).then(() => this.hide(this.active.id))
+                    this.remove(this.active.id).then(() => {
+                        this.hide({id: this.active.id, removed: true});
+                    })
                 }).catch(() => {
                 })
             },
@@ -509,7 +511,7 @@
 
     .cards-editor-main {
         color: #8b8b8b;
-        padding: 0 20px 15px 60px;
+        padding: 0 20px 15px 75px;
         position: absolute;
         top: 0;
         right: 0;
@@ -579,6 +581,22 @@
         > div:first-child {
             cursor: pointer;
         }
+    }
+
+    .cards-editor-sidebar-actions{
+        border-top: 1px solid #ccc;
+    }
+    .create-new-card{
+        border: 1px solid #e0e0e0;
+        margin-top: 6px;
+    }
+
+    .create-new-card button {
+        padding-left: 0px;
+        width: 100%;
+    }
+    .cards-editor-sidebar{
+        padding: 60px 0 117px;
     }
 
     @media (max-width: 1024px) {

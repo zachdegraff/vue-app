@@ -77,11 +77,13 @@ export const save = ({dispatch, getters}) => {
     return dispatch('cards/update', {id: data.id, form}, {root: true})
 };
 
-export const hide = ({commit, dispatch, getters}, id) => {
-    const card = getters['getById'](id);
+export const hide = ({commit, dispatch, getters}, payload) => {
+    const card = getters['getById'](payload.id);
     if (card !== undefined) {
         commit('hideCard', card);
-        flushEmptyCard(dispatch, card);
+        if (!payload.removed) {
+            flushEmptyCard(dispatch, card);
+        }
         const active = getters['getActiveCard'];
         if (active !== undefined) {
             dispatch('route/replace', {name: 'view_card', id: active.id}, {root: true})
