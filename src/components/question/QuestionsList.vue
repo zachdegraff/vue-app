@@ -18,7 +18,7 @@
                             <q-popover>
                                 <q-list link class="no-border">
                                     <q-item @click.native="destroyQuestion(item)" v-close-overlay>
-                                        <q-item-main label="Remove Question"/>
+                                        <q-item-main label="Delete"/>
                                     </q-item>
                                 </q-list>
                             </q-popover>
@@ -161,8 +161,9 @@
             },
             confirm() {
                 return this.$q.dialog({
-                    title: 'Confirm',
-                    message: 'Are you sure?',
+                    title: 'Delete question?',
+                    message: 'This cannot be undone.',
+                    ok: 'Yes, delete',
                     cancel: true,
                     color: 'secondary'
                 });
