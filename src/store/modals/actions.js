@@ -1,5 +1,5 @@
-export const openAskHelp = ({dispatch, commit}) => {
-    dispatch('route/next', {name: 'ask_help'}, {root: true});
+export const openAskHelp = ({dispatch, commit}, params) => {
+    dispatch('route/next', {name: 'ask_help', params}, {root: true});
     commit('changeAskHelpStatus', true);
 };
 

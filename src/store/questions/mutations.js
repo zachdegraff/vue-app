@@ -1,6 +1,8 @@
 import {remove, replace} from "../../helpers";
 
 export const flushState = state => {
+    state.openUpdateQuestions = [];
+
     state.openQuestions = [];
     state.userQuestions = [];
     state.answeredQuestions = [];
@@ -29,6 +31,19 @@ export const storeStatusSuccess = (state, res) => {
         state.cardQuestions.push(question)
     }
 };
+export const storeUpdateStatusRequest = state => state.actionStoreUpdateStatus = 'Request';
+
+export const storeUpdateStatusSuccess = (state, res) => {
+    state.actionStoreUpdateStatus = 'Success';
+    state.cardUpdateQuestions = [];
+    const question = res.data.question;
+    state.openUpdateQuestions.unshift(question);
+    if (question.card) {
+        state.cardUpdateQuestions.push(question)
+    }
+};
+export const storeUpdateStatusFailure = state => state.storeUpdateStatusSuccess = 'Failure'
+
 export const storeStatusFailure = state => state.actionStoreStatus = 'Failure';
 
 export const removeStatusRequest = state => state.actionRemoveStatus = 'Request';

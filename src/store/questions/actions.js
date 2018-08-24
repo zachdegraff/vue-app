@@ -59,6 +59,34 @@ export const remove = ({commit, dispatch}, id) => {
     })
 };
 
+export const show = ({commit, dispatch}, id) => {
+    return new Promise((resolve, reject) => {
+        // commit('removeStatusRequest');
+        api.questions.show(id).then(res => {
+            // commit('storeStatusSuccess', res);
+            dispatch('feed/fresh', null, {root: true});
+            resolve(res.data)
+        }).catch(err => {
+            // commit('storeStatusFailure');
+            reject(err)
+        })
+    })
+};
+
+export const update = ({commit, dispatch}, {id, ...params}) => {
+    return new Promise((resolve, reject) => {
+        commit('storeUpdateStatusRequest');
+        api.questions.update(id, params).then(res => {
+            commit('storeUpdateStatusSuccess', res);
+            dispatch('feed/fresh', null, {root: true});
+            resolve(res.data)
+        }).catch(err => {
+            commit('storeUpdateStatusFailure');
+            reject(err)
+        })
+    })
+};
+
 export const flushToDefaults = ({commit}) => {
     commit('flushState')
 };

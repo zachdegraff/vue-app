@@ -16,6 +16,14 @@ export const comment = (id, attr) => {
     return request.post(`/questions/${id}/comment`, attr)
 };
 
+export const show = (id) => {
+    return request.get(`/questions/${id}/show`);
+};
+
+export const update = (id, attr) => {
+    return request.post(`/questions/${id}`, attr);
+};
+
 export const remove = (id) => {
     return request.delete(`/questions/${id}`);
 };

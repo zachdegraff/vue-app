@@ -1,5 +1,5 @@
 <template>
-    <q-modal v-model="isOpen" @hide="closeAskHelp" class="app-modal" :content-classes="['app-ask-help-content']">
+    <q-modal v-model="isOpen"  @hide="closeAskHelp" class="app-modal" :content-classes="['app-ask-help-content']">
         <app-modal-layout>
             <q-toolbar slot="header">
                 <q-toolbar-title>What are you wondering?</q-toolbar-title>
@@ -9,6 +9,8 @@
                 <q-field class="col-xs-12" :error="$v.question.$error" :error-label="firstErrorFor($v.question)">
                     <q-input ref="field" type="textarea" v-model="question" @blur="$v.question.$touch" float-label="Type your question"></q-input>
                 </q-field>
+                <br>
+                <p class="text-card-name">Your question will be linked to {card-name} and shared with the team</p>
                 <q-field class="col-xs-12 q-mt-xl">
                     <q-btn color="primary" label="Submit" @click="submit" :disable="isProcessing"></q-btn>
                 </q-field>
@@ -25,9 +27,17 @@
 
     export default {
         components: {AppModalLayout},
+        props: {
+          isEdit: {
+              type: Boolean,
+              default: () => false,
+          }
+        },
         data: () => {
             return {
                 question: '',
+                id: null,
+                index: Number,
                 isOpen: true
             }
         },
@@ -51,26 +61,57 @@
         methods: {
             ...mapActions({
                 askHelp: 'questions/store',
-                closeAskHelp: 'modals/closeAskHelp'
+                closeAskCreateHelp: 'modals/closeAskHelp',
+                update: 'questions/update',
             }),
+            closeAskHelp(){
+                console.log(this.isEdit);
+                if (this.isEdit) {
+                    this.$emit('modalClosed');
+                } else {
+                    this.closeAskCreateHelp();
+                }
+
+            },
             submit() {
-                this.$v.question.$touch();
-                if (this.$v.question.$error) {
-                    return
+
+                if (this.id){
+                    const params = {
+                        id: this.id,
+                        content: this.question,
+                    };
+
+                    this.update(params);
+                    this.$parent.questions[this.index].content = this.question;
+                    this.$emit('modalClosed');
+                } else {
+                    this.$v.question.$touch();
+                    if (this.$v.question.$error) {
+                        return
+                    }
+                    if (this.team === null) {
+                        return this.$q.notify('Please, choose team.')
+                    }
+                    const params = {
+                        id: this.team.id,
+                        content: this.question,
+                        searchQuery: this.searchQuery
+                    };
+                    if (this.card !== undefined) {
+                        params['cardId'] = this.card.id
+                    }
+                    this.askHelp(params).then(this.closeAskHelp);
                 }
-                if (this.team === null) {
-                    return this.$q.notify('Please, choose team.')
-                }
-                const params = {
-                    id: this.team.id,
-                    content: this.question,
-                    searchQuery: this.searchQuery
-                };
-                if (this.card !== undefined) {
-                    params['cardId'] = this.card.id
-                }
-                this.askHelp(params).then(this.closeAskHelp);
-            }
+            },
+
+            setId(id) {
+              this.id = id;
+            },
+
+            setQuestion(index,question) {
+              this.index = index;
+              this.question = question;
+            },
         }
     }
 </script>
@@ -83,8 +124,14 @@
             margin: 0 0 100px -300px;
             overflow: visible;
             max-height: none;
+
+                .text-card-name{
+                    margin-top: 15px;
+                    margin-left: -24px
+                }
         }
     }
+
 
     @media (max-width: 767px) {
         .app-modal {

@@ -1,8 +1,8 @@
 <template>
     <div>
         <q-card
-                v-for="item in questions"
-                :key="item.id"
+                v-for="(item, index) in questions"
+                :key="`question_${item.id}`"
                 class="questions-item self-center q-mb-md bg-white">
             <q-list no-border>
                 <q-item>
@@ -19,6 +19,9 @@
                                 <q-list link class="no-border">
                                     <q-item @click.native="destroyQuestion(item)" v-close-overlay>
                                         <q-item-main label="Delete"/>
+                                    </q-item>
+                                    <q-item @click.native="editQuestion(index,item)" v-close-overlay>
+                                        <q-item-main label="Edit Question"/>
                                     </q-item>
                                 </q-list>
                             </q-popover>
@@ -48,7 +51,7 @@
             <div class="questions-item-comments" v-show="item.showComments">
                 <div
                         v-for="comment in item.comments"
-                        :key="comment.id"
+                        :key="`comment_${comment.id}`"
                         class="questions-item-comments-item">
                     <q-list no-border>
                         <q-item>
@@ -65,7 +68,7 @@
                                 <p v-html="comment.content"></p>
                                 <div v-if="comment.cards.length > 0" class="questions-item-comments-item-cards q-mt-sm">
                                     Linked cards:
-                                    <a v-for="card in comment.cards" :key="card.id" href="#" @click.prevent.stop="showCard(card.id)" class="q-ml-sm">{{card.name}}</a>
+                                    <a v-for="card in comment.cards" :key="`card_${card.id}`" href="#" @click.prevent.stop="showCard(card.id)" class="q-ml-sm">{{card.name}}</a>
                                 </div>
                             </q-item-main>
                         </q-item>
@@ -86,13 +89,16 @@
                 </div>
             </div>
         </q-card>
+        <ask-help v-if="isAskEditHelpOpen" ref="askHelp" @modalClosed="onModalClosed" :is-edit="true"></ask-help>
     </div>
 </template>
 <script>
     import DateFormatter from '../../mixins/DateFormatter'
-    import {mapActions} from 'vuex'
+    import {mapActions, mapGetters} from 'vuex'
+    import AskHelp from '../team/AskHelp.vue'
 
     export default {
+        name: "QuestionList",
         props: ['items'],
         data: () => {
             return {
@@ -101,9 +107,12 @@
                     cards: [],
                     content: ''
                 },
-                questions: []
+                questions: [],
+                isAskEditHelpOpen: false,
             }
         },
+        components: {AskHelp},
+
         mixins: [DateFormatter],
         watch: {
             items: function (val) {
@@ -125,9 +134,15 @@
                 hints: 'search/cardsHints',
                 reply: 'questions/comment',
                 remove: 'questions/remove',
+                show: 'questions/show',
                 showCard: 'modals/openCardsEditor',
-                flushToDefaults: 'questions/flushToDefaults'
+                flushToDefaults: 'questions/flushToDefaults',
+                askHelp: 'questions/store',
+                closeAskHelp: 'modals/closeAskHelp'
             }),
+            onModalClosed() {
+                this.isAskEditHelpOpen = false;
+            },
             submit(item) {
                 const params = {
                     id: item.id,
@@ -191,7 +206,17 @@
                     this.remove(item.id)
                 }).catch(() => {
                 })
-            }
+            },
+            editQuestion(index, item) {
+                this.show(item.id).then(res => {
+                    this.isAskEditHelpOpen = true;
+                    this.$nextTick(() => {
+                        this.$refs.askHelp.setId(res.data.id);
+                        this.$refs.askHelp.setQuestion(index, res.data.content);
+                    });
+                })
+            },
+
         }
     }
 </script>
