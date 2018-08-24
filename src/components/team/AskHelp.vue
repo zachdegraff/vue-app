@@ -10,7 +10,7 @@
                     <q-input ref="field" type="textarea" v-model="question" @blur="$v.question.$touch" float-label="Type your question"></q-input>
                 </q-field>
                 <br>
-                <p class="text-card-name">Your question will be linked to {card-name} and shared with the team</p>
+                <p class="text-card-name">Your question will be linked to <em class="card_name"></em> and shared with the team</p>
                 <q-field class="col-xs-12 q-mt-xl">
                     <q-btn color="primary" label="Submit" @click="submit" :disable="isProcessing"></q-btn>
                 </q-field>
@@ -56,7 +56,8 @@
             },
         },
         mounted() {
-            this.$refs.field.focus()
+            this.$refs.field.focus();
+            document.querySelector('.card_name').innerHTML = localStorage.getItem('cardName');
         },
         methods: {
             ...mapActions({
@@ -103,7 +104,6 @@
                     this.askHelp(params).then(this.closeAskHelp);
                 }
             },
-
             setId(id) {
               this.id = id;
             },

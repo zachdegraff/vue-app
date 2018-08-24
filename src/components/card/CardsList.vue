@@ -1,7 +1,8 @@
 <template>
+
     <div class="row gutter-sm cards-list" v-show="items.length > 0">
         <div class="col-xs-8 col-sm-6 col-md-4 col-lg-3" v-for="card in items">
-            <a :href="createViewUrl(card)" @click.prevent.stop="showCard(card.id)">
+            <a :href="createViewUrl(card)" @click.prevent.stop="showCardData(card)">
                 <q-card class="cards-list-item cursor-pointer self-center">
                     <q-card-media>
                         <img :src="getCardImage(card.thumb)">
@@ -53,6 +54,10 @@
                 }
                 return path
             },
+            showCardData(card){
+                localStorage.setItem('cardName', card.name);
+                this.showCard(card.id)
+            }
         }
     }
 </script>
