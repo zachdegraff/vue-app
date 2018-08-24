@@ -29,7 +29,7 @@ export const changeEditingMember = (state, member) => state.editing = member;
 export const inviteMemberToTeamStatusRequest = state => state.inviteMemberToTeamStatus = 'Request';
 export const inviteMemberToTeamStatusSuccess = (state, res) => {
     state.inviteMemberToTeamStatus = 'Success';
-    state.items.push(res.data.member);
+    state.items = replace(state.items, res.data.member)
 };
 export const inviteMemberToTeamStatusFailure = state => state.inviteMemberToTeamStatus = 'Failure';
 
