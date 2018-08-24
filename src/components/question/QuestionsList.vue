@@ -50,7 +50,7 @@
             </q-card-actions>
             <div class="questions-item-comments" v-show="item.showComments">
                 <div
-                        v-for="comment in item.comments"
+                        v-for="(comment, index) in item.comments"
                         :key="`comment_${comment.id}`"
                         class="questions-item-comments-item">
                     <q-list no-border>
@@ -62,23 +62,37 @@
                                 <q-item-tile label>{{comment.user.fullName}}</q-item-tile>
                                 <q-item-tile sublabel>{{toLocaleString(comment.createdAt)}}</q-item-tile>
                             </q-item-main>
+                            <q-item-side right v-if="item.canRemove">
+                                <q-btn round flat icon="more_vert">
+                                    <q-popover>
+                                        <q-list link class="no-border">
+                                            <q-item @click.native="editAnswer(index, comment, item)" v-close-overlay>
+                                                <q-item-main label="Edit nswer"/>
+                                            </q-item>
+                                        </q-list>
+                                    </q-popover>
+                                </q-btn>
+                            </q-item-side>
                         </q-item>
+
                         <q-item>
                             <q-item-main>
                                 <p v-html="comment.content"></p>
                                 <div v-if="comment.cards.length > 0" class="questions-item-comments-item-cards q-mt-sm">
                                     Linked cards:
-                                    <a v-for="card in comment.cards" :key="`card_${card.id}`" href="#" @click.prevent.stop="showCard(card.id)" class="q-ml-sm">{{card.name}}</a>
+                                    <a v-for="card in comment.cards" :key="`card_${card.id}`" href="#"
+                                       @click.prevent.stop="showCard(card.id)" class="q-ml-sm">{{card.name}}</a>
                                 </div>
                             </q-item-main>
                         </q-item>
+
                     </q-list>
                 </div>
             </div>
             <div class="questions-item-reply" v-show="item.showReplyForm">
                 <q-field label="Link cards with answer:" :label-width="3">
-                    <q-chips-input v-model="cards">
-                        <q-autocomplete separator @search="search" @selected="selected" :min-characters="2"/>
+                    <q-chips-input v-model="cards" @remove="remove">
+                        <q-autocomplete separator @search="search" @selected="selected"  :min-characters="2"/>
                     </q-chips-input>
                 </q-field>
                 <q-field label="Add a comment:" :label-width="3" class="q-my-md">
@@ -135,6 +149,7 @@
                 reply: 'questions/comment',
                 remove: 'questions/remove',
                 show: 'questions/show',
+                showComment: 'questions/showComment',
                 showCard: 'modals/openCardsEditor',
                 flushToDefaults: 'questions/flushToDefaults',
                 askHelp: 'questions/store',
@@ -161,6 +176,9 @@
             },
             selected(item) {
                 this.form.cards.push(item.id)
+            },
+            remove(item){
+                this.form.cards.splice( this.form.cards.indexOf(item.id), 1);
             },
             search(terms, done) {
                 this.hints({terms}).then(items => {
@@ -214,6 +232,24 @@
                         this.$refs.askHelp.setId(res.data.id);
                         this.$refs.askHelp.setQuestion(index, res.data.content);
                     });
+                })
+            },
+            editAnswer(index, comment, item) {
+                this.showComment(comment.id).then(res => {
+                    // item.showReplyForm = false;
+                    let cards = [];
+                    res[0].cards.forEach((value, key) => {
+                        cards.push( value.name);
+                        this.form.cards.push( value.id)
+                    });
+                    console.log('cards',cards);
+                    item.showComments = false;
+                    if (item.showReplyForm === false) {
+                        this.cards = cards;
+                        this.form.content = res[0].content
+                    }
+                    item.showReplyForm = !item.showReplyForm
+
                 })
             },
 

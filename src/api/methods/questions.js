@@ -20,6 +20,10 @@ export const show = (id) => {
     return request.get(`/questions/${id}/show`);
 };
 
+export const showComment = (id) => {
+    return request.get(`/questions/${id}/show-comment`);
+};
+
 export const update = (id, attr) => {
     return request.post(`/questions/${id}`, attr);
 };
