@@ -6,8 +6,8 @@
                 <q-btn flat icon="close" @click="isOpen=false" class="float-right"/>
             </q-toolbar>
             <form class="row q-pa-xl flex-center" v-if="comment">
-                <q-field class="col-xs-12" float-label="Link cards with answer:" :label-width="12">
-                    <q-chips-input v-model="cards">
+                <q-field class="col-xs-12" :label-width="12">
+                    <q-chips-input v-model="cards" float-label="Link cards with answer:">
                         <q-autocomplete separator @search="search" @selected="selected" :min-characters="2"/>
                     </q-chips-input>
                 </q-field>
