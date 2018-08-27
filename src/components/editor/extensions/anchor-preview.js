@@ -6,7 +6,7 @@ const AnchorPreview = MediumEditor.Extension.extend({
     // Anchor Preview Options
 
     /* hideDelay: [number]  (previously options.anchorPreviewHideDelay)
-     * time in milliseconds to show the anchor tag preview after the mouse has left the anchor tag.
+     * time in milliseconds to get the anchor tag preview after the mouse has left the anchor tag.
      */
     hideDelay: 500,
 
@@ -195,7 +195,7 @@ const AnchorPreview = MediumEditor.Extension.extend({
             return true;
         }
 
-        // only show when toolbar is not present
+        // only get when toolbar is not present
         var toolbar = this.base.getExtensionByName('toolbar');
         if (!this.showWhenToolbarIsVisible && toolbar && toolbar.isDisplayed && toolbar.isDisplayed()) {
             return true;
@@ -211,7 +211,7 @@ const AnchorPreview = MediumEditor.Extension.extend({
         this.instanceHandleAnchorMouseout = this.handleAnchorMouseout.bind(this);
         this.on(this.anchorToPreview, 'mouseout', this.instanceHandleAnchorMouseout);
         // Using setTimeout + delay because:
-        // - We're going to show the anchor preview according to the configured delay
+        // - We're going to get the anchor preview according to the configured delay
         //   if the mouse has not left the anchor tag in that time
         this.base.delay(function () {
             if (this.anchorToPreview) {

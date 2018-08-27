@@ -1,6 +1,8 @@
 export default {
     count: 0,
 
+    editing: null,
+
     openQuestions: [],
     userQuestions: [],
     cardQuestions: [],
@@ -16,8 +18,9 @@ export default {
     answeredQuestionsLastPage: null,
 
     actionAllStatus: '',
+    actionGetStatus: '',
     actionStoreStatus: '',
-    actionCommentStatus: '',
+    actionUpdateStatus: '',
     actionRemoveStatus: '',
     actionLoadOpenQuestionsStatus: '',
     actionLoadUserQuestionsStatus: '',

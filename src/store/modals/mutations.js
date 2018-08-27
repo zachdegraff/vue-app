@@ -8,6 +8,9 @@ export const changeEditTeamStatus = (state, status) => state.editTeam.status = s
 export const changeCreateCardTagStatus = (state, status) => state.createCardTag.status = status;
 export const changeEditCardTagStatus = (state, status) => state.editCardTag.status = status;
 
+export const changeEditQuestionStatus = (state, status) => state.editQuestion.status = status;
+export const changeEditCommentStatus = (state, status) => state.editComment.status = status;
+
 export const changeInviteMemberStatus = (state, status) => state.inviteMember.status = status;
 export const changeChangeMemberRoleStatus = (state, status) => state.changeMemberRole.status = status;
 

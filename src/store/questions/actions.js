@@ -17,6 +17,24 @@ export const all = ({commit, rootGetters}, params) => {
     })
 };
 
+export const get = ({commit, dispatch}, id) => {
+    return new Promise((resolve, reject) => {
+        commit('getStatusRequest');
+        api.questions.get(id).then(res => {
+            commit('getStatusSuccess', res);
+            resolve(res.data)
+        }).catch(err => {
+            commit('getStatusFailure');
+            reject(err)
+        })
+    })
+};
+
+export const edit = ({commit, dispatch}, question) => {
+    commit('changeEditingQuestion', question);
+    dispatch('modals/openEditQuestion', null, {root: true})
+};
+
 export const store = ({commit, dispatch}, {id, ...params}) => {
     return new Promise((resolve, reject) => {
         commit('storeStatusRequest');
@@ -31,19 +49,6 @@ export const store = ({commit, dispatch}, {id, ...params}) => {
     })
 };
 
-export const comment = ({commit, dispatch}, {id, ...params}) => {
-    return new Promise((resolve, reject) => {
-        commit('commentStatusRequest');
-        api.questions.comment(id, params).then(res => {
-            dispatch('feed/fresh', null, {root: true});
-            commit('commentStatusSuccess');
-            resolve(res.data)
-        }).catch(err => {
-            commit('commentStatusFailure');
-            reject(err)
-        })
-    })
-};
 
 export const remove = ({commit, dispatch}, id) => {
     return new Promise((resolve, reject) => {
@@ -59,43 +64,14 @@ export const remove = ({commit, dispatch}, id) => {
     })
 };
 
-export const show = ({commit, dispatch}, id) => {
-    return new Promise((resolve, reject) => {
-        // commit('removeStatusRequest');
-        api.questions.show(id).then(res => {
-            // commit('storeStatusSuccess', res);
-            dispatch('feed/fresh', null, {root: true});
-            resolve(res.data)
-        }).catch(err => {
-            // commit('storeStatusFailure');
-            reject(err)
-        })
-    })
-};
-
-export const showComment = ({commit, dispatch}, id) => {
-    return new Promise((resolve, reject) => {
-        // commit('removeStatusRequest');
-        api.questions.showComment(id).then(res => {
-            // commit('storeStatusSuccess', res);
-            dispatch('feed/fresh', null, {root: true});
-            resolve(res.data)
-        }).catch(err => {
-            // commit('storeStatusFailure');
-            reject(err)
-        })
-    })
-};
-
 export const update = ({commit, dispatch}, {id, ...params}) => {
     return new Promise((resolve, reject) => {
-        commit('storeUpdateStatusRequest');
+        commit('updateStatusRequest');
         api.questions.update(id, params).then(res => {
-            commit('storeUpdateStatusSuccess', res);
-            dispatch('feed/fresh', null, {root: true});
+            commit('updateStatusSuccess', res);
             resolve(res.data)
         }).catch(err => {
-            commit('storeUpdateStatusFailure');
+            commit('updateStatusFailure');
             reject(err)
         })
     })
@@ -103,6 +79,10 @@ export const update = ({commit, dispatch}, {id, ...params}) => {
 
 export const flushToDefaults = ({commit}) => {
     commit('flushState')
+};
+
+export const removeQuestionComment = ({commit}, comment) => {
+    commit('removeQuestionComment', comment)
 };
 
 export const loadQuestionsCount = ({commit, rootGetters}) => {

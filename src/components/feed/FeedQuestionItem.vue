@@ -13,7 +13,10 @@
                     <q-btn round flat icon="more_vert">
                         <q-popover>
                             <q-list link class="no-border">
-                                <q-item @click.native="destroyQuestion(question)" v-close-overlay>
+                                <q-item @click.native="edit(question)" v-close-overlay>
+                                    <q-item-main label="Edit Question"/>
+                                </q-item>
+                                <q-item @click.native="flush(question)" v-close-overlay>
                                     <q-item-main label="Delete"/>
                                 </q-item>
                             </q-list>
@@ -42,33 +45,7 @@
                     v-if="comments.length > 0"/>
             <q-btn flat no-caps icon="reply" label="Reply" @click="toggleReplyForm()"/>
         </q-card-actions>
-        <div class="questions-item-comments" v-show="showComments">
-            <div
-                    v-for="comment in comments"
-                    :key="comment.id"
-                    class="questions-item-comments-item">
-                <q-list no-border>
-                    <q-item>
-                        <q-item-side>
-                            <img :src="avatar(comment.user.photo)" class="questions-item-avatar"/>
-                        </q-item-side>
-                        <q-item-main>
-                            <q-item-tile label>{{comment.user.fullName}}</q-item-tile>
-                            <q-item-tile sublabel>{{toLocaleString(comment.createdAt)}}</q-item-tile>
-                        </q-item-main>
-                    </q-item>
-                    <q-item>
-                        <q-item-main>
-                            <p v-html="comment.content"></p>
-                            <div v-if="comment.cards.length > 0" class="questions-item-comments-item-cards q-mt-sm">
-                                Linked cards:
-                                <a v-for="card in comment.cards" :key="card.id" href="#" @click.prevent.stop="showCard(card.id)" class="q-ml-sm">{{card.name}}</a>
-                            </div>
-                        </q-item-main>
-                    </q-item>
-                </q-list>
-            </div>
-        </div>
+        <comments-list :question="question" v-show="showComments"/>
         <div class="questions-item-reply" v-show="showReplyForm">
             <q-field label="Link cards with answer:" :label-width="3">
                 <q-chips-input v-model="cards">
@@ -86,9 +63,11 @@
 </template>
 <script>
     import DateFormatter from '../../mixins/DateFormatter'
+    import CommentsList from '../question/CommentsList'
     import {mapActions} from 'vuex'
 
     export default {
+        components: {CommentsList},
         props: ['item'],
         data: () => {
             return {
@@ -124,8 +103,9 @@
         mixins: [DateFormatter],
         methods: {
             ...mapActions({
+                edit: 'questions/edit',
+                reply: 'comments/store',
                 hints: 'search/cardsHints',
-                reply: 'questions/comment',
                 remove: 'questions/remove',
                 showCard: 'modals/openCardsEditor',
             }),
@@ -187,7 +167,7 @@
                 }
                 this.showReplyForm = !this.showReplyForm
             },
-            destroyQuestion(item) {
+            flush(item) {
                 this.confirm().then(() => {
                     this.remove(item.id)
                 }).catch(() => {

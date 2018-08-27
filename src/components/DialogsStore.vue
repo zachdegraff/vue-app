@@ -4,15 +4,18 @@
         <cards-editor v-if="isCardsEditorOpen"/>
         <create-card-tag v-if="isCreateCardTagOpen"/>
         <edit-card-tag v-if="isEditCardTagOpen"/>
+        <edit-question v-if="isEditQuestionOpen"/>
+        <edit-comment v-if="isEditCommentOpen"/>
     </div>
 </template>
 <script>
+    import CardsEditor from './card/CardsEditor'
+    import EditCardTag from './card/EditCardTag'
+    import CreateCardTag from './card/CreateCardTag'
+    import EditComment from './question/EditComment'
+    import EditQuestion from './question/EditQuestion'
     import AskHelp from '../components/team/AskHelp.vue'
-    import CardsEditor from "./card/CardsEditor";
-
     import {mapGetters} from 'vuex'
-    import CreateCardTag from "./card/CreateCardTag";
-    import EditCardTag from "./card/EditCardTag";
 
     export default {
         data: () => {
@@ -23,9 +26,11 @@
                 isAskHelpOpen: 'modals/isAskHelpOpen',
                 isCardsEditorOpen: 'modals/isCardsEditorOpen',
                 isCreateCardTagOpen: 'modals/isCreateCardTagOpen',
-                isEditCardTagOpen: 'modals/isEditCardTagOpen'
+                isEditCardTagOpen: 'modals/isEditCardTagOpen',
+                isEditCommentOpen: 'modals/isEditCommentOpen',
+                isEditQuestionOpen: 'modals/isEditQuestionOpen'
             })
         },
-        components: {EditCardTag, CreateCardTag, AskHelp, CardsEditor}
+        components: {EditComment, EditQuestion, EditCardTag, CreateCardTag, AskHelp, CardsEditor}
     }
 </script>

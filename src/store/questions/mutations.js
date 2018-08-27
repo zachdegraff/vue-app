@@ -1,8 +1,6 @@
 import {remove, replace} from "../../helpers";
 
 export const flushState = state => {
-    state.openUpdateQuestions = [];
-
     state.openQuestions = [];
     state.userQuestions = [];
     state.answeredQuestions = [];
@@ -16,6 +14,16 @@ export const flushState = state => {
     state.answeredQuestionsPage = 0;
     state.answeredQuestionsLastPage = null;
 };
+
+export const removeQuestionComment = (state, comment) => {
+    ['openQuestions', 'userQuestions', 'answeredQuestions'].forEach(stack => {
+        state[stack].forEach(q => q.comments = remove(q.comments, comment))
+    })
+};
+
+export const getStatusRequest = state => state.actionGetStatus = 'Request';
+export const getStatusSuccess = state => state.actionGetStatus = 'Success';
+export const getStatusFailure = state => state.actionGetStatus = 'Failure';
 
 export const allStatusRequest = state => state.actionAllStatus = 'Request';
 export const allStatusSuccess = state => state.actionAllStatus = 'Success';
@@ -31,20 +39,17 @@ export const storeStatusSuccess = (state, res) => {
         state.cardQuestions.push(question)
     }
 };
-export const storeUpdateStatusRequest = state => state.actionStoreUpdateStatus = 'Request';
-
-export const storeUpdateStatusSuccess = (state, res) => {
-    state.actionStoreUpdateStatus = 'Success';
-    state.cardUpdateQuestions = [];
-    const question = res.data.question;
-    state.openUpdateQuestions.unshift(question);
-    if (question.card) {
-        state.cardUpdateQuestions.push(question)
-    }
-};
-export const storeUpdateStatusFailure = state => state.storeUpdateStatusSuccess = 'Failure'
-
 export const storeStatusFailure = state => state.actionStoreStatus = 'Failure';
+
+
+export const updateStatusRequest = state => state.actionUpdateStatus = 'Request';
+export const updateStatusSuccess = (state, res) => {
+    state.actionUpdateStatus = 'Success';
+    state.editing = null
+};
+export const updateStatusFailure = state => state.actionUpdateStatus = 'Failure';
+
+export const changeEditingQuestion = (state, question) => state.editing = question;
 
 export const removeStatusRequest = state => state.actionRemoveStatus = 'Request';
 export const removeStatusSuccess = (state, res) => {
@@ -57,10 +62,6 @@ export const removeStatusSuccess = (state, res) => {
     state.answeredQuestions = remove(state.answeredQuestions, question)
 };
 export const removeStatusFailure = state => state.actionRemoveStatus = 'Failure';
-
-export const commentStatusRequest = state => state.actionCommentStatus = 'Request';
-export const commentStatusSuccess = state => state.actionCommentStatus = 'Success';
-export const commentStatusFailure = state => state.actionCommentStatus = 'Failure';
 
 export const loadQuestionsCountRequest = state => state.actionLoadQuestionsCountStatus = 'Request';
 export const loadQuestionsCountSuccess = (state, res) => {

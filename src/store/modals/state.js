@@ -24,6 +24,14 @@ export default {
         status: false
     },
 
+    editQuestion: {
+        status: false
+    },
+
+    editComment: {
+        status: false
+    },
+
     inviteMember: {
         team: null,
         status: false

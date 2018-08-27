@@ -1,16 +1,15 @@
 <template>
-    <q-modal v-model="isOpen" @hide="closeAskHelp" class="app-modal" :content-classes="['app-ask-help-content']">
+    <q-modal v-model="isOpen"  @hide="closeEditQuestion" class="app-modal" :content-classes="['app-ask-help-content']">
         <app-modal-layout>
             <q-toolbar slot="header">
                 <q-toolbar-title>What are you wondering?</q-toolbar-title>
                 <q-btn flat icon="close" @click="isOpen=false" class="float-right"/>
             </q-toolbar>
-            <form class="row q-pa-xl flex-center">
-                <q-field class="col-xs-12" :error="$v.question.$error" :error-label="firstErrorFor($v.question)">
-                    <q-input ref="field" type="textarea" v-model="question" @blur="$v.question.$touch" float-label="Type your question"></q-input>
+            <form class="row q-pa-xl flex-center" v-if="question">
+                <q-field class="col-xs-12" :error="$v.question.$error" :error-label="firstErrorFor($v.question.content)">
+                    <q-input ref="field" type="textarea" v-model="question.content" @blur="$v.question.content.$touch" float-label="Type your question"></q-input>
                 </q-field>
                 <br>
-                <p class="text-card-name" v-if="card">Your question will be linked to {{card.name}} and shared with the team</p>
                 <q-field class="col-xs-12 q-mt-xl">
                     <q-btn color="primary" label="Submit" @click="submit" :disable="isProcessing"></q-btn>
                 </q-field>
@@ -29,49 +28,35 @@
         components: {AppModalLayout},
         data: () => {
             return {
-                question: '',
                 isOpen: true
             }
         },
         computed: {
             ...mapGetters({
                 team: 'teams/current',
-                card: 'editor/getActiveCard',
-                searchQuery: 'search/getQuery',
-                isProcessing: 'questions/isHelpAsking'
+                isProcessing: 'questions/isUpdating',
+                question: 'questions/getEditingQuestion'
             })
         },
         mixins: [ValidatorMessages],
         validations: {
             question: {
-                required
+                content: {
+                    required
+                },
             },
-        },
-        mounted() {
-            this.$refs.field.focus()
         },
         methods: {
             ...mapActions({
-                askHelp: 'questions/store',
-                closeAskHelp: 'modals/closeAskHelp'
+                update: 'questions/update',
+                closeEditQuestion: 'modals/closeEditQuestion',
             }),
             submit() {
                 this.$v.question.$touch();
                 if (this.$v.question.$error) {
                     return
                 }
-                if (this.team === null) {
-                    return this.$q.notify('Please, choose team.')
-                }
-                const params = {
-                    id: this.team.id,
-                    content: this.question,
-                    searchQuery: this.searchQuery
-                };
-                if (this.card !== undefined) {
-                    params['cardId'] = this.card.id
-                }
-                this.askHelp(params).then(this.closeAskHelp);
+                this.update(this.question).then(this.closeEditQuestion)
             }
         }
     }
@@ -85,12 +70,14 @@
             margin: 0 0 100px -300px;
             overflow: visible;
             max-height: none;
-            .text-card-name {
+
+            .text-card-name{
                 margin-top: 15px;
                 margin-left: -24px
             }
         }
     }
+
 
     @media (max-width: 767px) {
         .app-modal {
