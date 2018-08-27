@@ -146,7 +146,7 @@
                     return this.isReferenceTools = false
                 }
                 this.range = sel.getRangeAt(0);
-                this.start = this.getStartPos();
+                this.start = this.getStartPos(e.keyCode);
                 this.isReferenceTools = this.start !== -1;
 
                 if (this.start !== -1) {
@@ -246,8 +246,9 @@
                     this.select(this.items[this.caret]);
                 }
             },
-            getStartPos() {
+            getStartPos(keyCode) {
                 const sel = document.getSelection();
+
                 if (sel.isCollapsed === false) {
                     return -1;
                 }
@@ -258,9 +259,18 @@
                     }
                     if (this.isInChars(str, i, this.space)) {
                         if (i > 0) {
-                            if (this.isInChars(str, i - 1, this.space)) {
+                            if (keyCode === 8){
+                                if (this.isInChars(str, i, this.space)) {
+                                    return -1
+                                }
+                            }else if (keyCode === 32) {
+                                if (this.isInChars(str, i - 1, this.space)) {
+                                    return -1
+                                }
+                            }else {
                                 return -1
                             }
+
                         }
                     }
                     if (this.isInChars(str, i, this.controls)) {
