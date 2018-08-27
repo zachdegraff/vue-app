@@ -1,6 +1,6 @@
 <template>
     <div class="app-footer">
-        Send your feedback and requests to <a href="mailto:hello@wonderus.app">hello@wonderus.app</a>
+        <a href="https://wonderus.canny.io/feature-requests" target="_blank">Request Features</a> | <a href="https://wonderus.canny.io/bugs" target="_blank">Report Bugs</a> | <a href="https://wonderus.canny.io/" target="_blank">View Roadmap</a>
     </div>
 </template>
 <script>
