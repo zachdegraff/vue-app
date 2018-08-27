@@ -24,6 +24,10 @@ export const showComment = (id) => {
     return request.get(`/questions/${id}/show-comment`);
 };
 
+export const updateComment = (id, attr) => {
+    return request.post(`/questions/${id}/update-comment`, attr);
+};
+
 export const update = (id, attr) => {
     return request.post(`/questions/${id}`, attr);
 };

@@ -87,6 +87,20 @@ export const showComment = ({commit, dispatch}, id) => {
     })
 };
 
+export const updateComment = ({commit, dispatch}, {id, ...params}) => {
+    return new Promise((resolve, reject) => {
+        // commit('commentStatusRequest');
+        api.questions.updateComment(id, params).then(res => {
+            dispatch('feed/fresh', null, {root: true});
+            // commit('commentStatusSuccess');
+            resolve(res.data)
+        }).catch(err => {
+            // commit('commentStatusFailure');
+            reject(err)
+        })
+    })
+};
+
 export const update = ({commit, dispatch}, {id, ...params}) => {
     return new Promise((resolve, reject) => {
         commit('storeUpdateStatusRequest');

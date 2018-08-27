@@ -67,7 +67,7 @@
                                     <q-popover>
                                         <q-list link class="no-border">
                                             <q-item @click.native="editAnswer(index, comment, item)" v-close-overlay>
-                                                <q-item-main label="Edit nswer"/>
+                                                <q-item-main label="Edit Answer"/>
                                             </q-item>
                                         </q-list>
                                     </q-popover>
@@ -117,6 +117,8 @@
         data: () => {
             return {
                 cards: [],
+                commentId: null,
+                index: Number,
                 form: {
                     cards: [],
                     content: ''
@@ -150,6 +152,7 @@
                 remove: 'questions/remove',
                 show: 'questions/show',
                 showComment: 'questions/showComment',
+                updateComment: 'questions/updateComment',
                 showCard: 'modals/openCardsEditor',
                 flushToDefaults: 'questions/flushToDefaults',
                 askHelp: 'questions/store',
@@ -159,14 +162,26 @@
                 this.isAskEditHelpOpen = false;
             },
             submit(item) {
-                const params = {
-                    id: item.id,
-                    ...this.form
-                };
-                this.reply(params).then(res => {
-                    item.comments.push(res.comment);
-                    this.toggleComments(item)
-                })
+
+                if (this.commentId){
+                    const params = {
+                        id: this.commentId,
+                        ...this.form
+                    };
+                    this.updateComment(params).then(res => {
+                        console.log('res',res)
+                        this.toggleComments(item)
+                    })
+                } else {
+                    const params = {
+                        id: item.id,
+                        ...this.form
+                    };
+                    this.reply(params).then(res => {
+                        item.comments.push(res.comment);
+                        this.toggleComments(item)
+                    })
+                }
             },
             avatar(path) {
                 if (!path) {
@@ -236,6 +251,8 @@
             },
             editAnswer(index, comment, item) {
                 this.showComment(comment.id).then(res => {
+                    this.commentId = comment.id;
+                    this.index = index;
                     // item.showReplyForm = false;
                     let cards = [];
                     res[0].cards.forEach((value, key) => {
