@@ -91,10 +91,11 @@
                 </div>
                 <div class="cards-editor-questions" :style="{left: questionsLeftOffset}">
                     <div class="cards-editor-questions-label">
-                        <div class="float-left q-mt-xs" @click="isQuestionsVisible=!isQuestionsVisible">
+                        <div class="float-left q-mt-xs" v-if="this.questions.length > 0" @click="isQuestionsVisible=!isQuestionsVisible">
                             {{questionsLabel}}
                             <q-icon :name="questionIconName"/>
                         </div>
+                        <div class="float-left q-mt-xs empty-questions-text" v-else>Still wondering about {{this.active.name}} ?</div>
                         <q-btn icon="help" label="ask question" dense @click="openAskHelp" class="float-right"/>
                         <div style="clear:both"></div>
                     </div>
@@ -597,6 +598,9 @@
     }
     .cards-editor-sidebar{
         padding: 60px 0 117px;
+    }
+    .empty-questions-text{
+        margin-left: 14px;
     }
 
     @media (max-width: 1024px) {
