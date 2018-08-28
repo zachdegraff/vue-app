@@ -95,7 +95,7 @@
                             {{questionsLabel}}
                             <q-icon :name="questionIconName"/>
                         </div>
-                        <div class="float-left q-mt-xs empty-questions-text" v-else>Still wondering about {{this.active.name}} ?</div>
+                        <div class="float-left q-mt-xs empty-questions-text" v-else >Still wondering about {{this.cardName}} ?</div>
                         <q-btn icon="help" label="ask question" dense @click="openAskHelp" class="float-right"/>
                         <div style="clear:both"></div>
                     </div>
@@ -122,6 +122,7 @@
                 query: '',
                 tagQuery: '',
                 name: null,
+                cardName: null,
                 isOpen: true,
                 isFullScreen: false,
                 isNameChanged: false,
@@ -248,8 +249,10 @@
             if (this.active !== undefined) {
                 this.name.setContent(`<p>${this.active.name}</p>`, 0)
             }
+
             this.name.subscribe('editableInput', (e, el) => {
-                this.active.name = strip_tags(el.innerText.trim())
+                this.active.name = strip_tags(el.innerText.trim());
+                this.cardName = strip_tags(el.innerText.trim())
             });
             this.name.subscribe('focus', this.selectDefaultText);
             this.name.subscribe('blur', this.save)

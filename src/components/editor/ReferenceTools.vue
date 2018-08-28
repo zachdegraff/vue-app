@@ -81,15 +81,10 @@
         watch: {
             query: function (val) {
                 if (val.length < 2) return;
-
                 this.caret = 0;
                 this.items = [];
-                if (this.cache[val] !== undefined) {
-                    return this.items = this.cache[val];
-                }
                 this.hints({terms: val}).then(items => {
                     this.items = items;
-                    this.cache[val] = items
                 });
             },
             editor: function (val) {
@@ -101,23 +96,20 @@
             isReferenceTools: function (val) {
                 if (val === true) {
                     this.caret = 0;
-                    if (this.cache[this.query] !== undefined) {
-                        return this.items = this.cache[this.query]
-                    }
-
                     return this.items = this.defaults
                 }
             }
         },
         created() {
-            this.items = this.defaults;
+            this.items = this.listCards;
         },
         methods: {
             ...mapActions({
                 url: 'route/url',
                 hints: 'search/hints',
                 addCards: 'editor/batch',
-                createCard: 'cards/create'
+                createCard: 'cards/create',
+                listCards: 'cards/getRecentlyUpdated',
             }),
             create() {
                 const params = {
