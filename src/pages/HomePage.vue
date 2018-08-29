@@ -37,7 +37,14 @@
     import {mapActions, mapGetters} from 'vuex'
 
     export default {
+        data: () => {
+            return {
+                scrolled: null
+            }
+        },
         created() {
+            window.addEventListener('scroll', this.handleScroll);
+
             const hash = localStorage.getItem('join-token');
             if (hash !== null) {
                 this.join(hash).then(data => {
@@ -52,6 +59,9 @@
             document.title = this.title;
             this.changeQuery('');
             this.loadQuestionsCount();
+        },
+        destroyed() {
+            window.removeEventListener('scroll', this.handleScroll);
         },
         watch: {
             team: function (val) {
@@ -94,8 +104,20 @@
                 changeQuery: 'search/changeQuery',
                 openAskHelp: 'modals/openAskHelp',
                 showCard: 'modals/openCardsEditor',
-                loadQuestionsCount: 'questions/loadQuestionsCount'
-            })
+                loadQuestionsCount: 'questions/loadQuestionsCount',
+                load: 'feed/load',
+            }),
+
+            handleScroll() {
+                let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
+                let param = true;
+                if (bottomOfWindow){
+                    if (param){
+                        this.load();
+                    }
+                    param = false
+                }
+            },
         }
     }
 </script>
