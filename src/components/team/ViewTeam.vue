@@ -22,6 +22,12 @@
                     </div>
                 </div>
             </div>
+            <table align="right" v-if="showCountNumber">
+                <tr>Limit of Contributors and Admins - {{ count.limit }}</tr>
+                <tr>Contributors and Admins - {{ count.teamMember }}</tr>
+                <tr>Viewers - {{ count.viewerMember }}</tr>
+            </table>
+            <br>
             <q-table title="Team Members" class="bg-white q-mt-xl" :data="members" :columns="columns" :pagination="{rowsPerPage: 20}" row-key="name" :loading="isMembersLoading">
                 <q-td slot="body-cell-actions" slot-scope="props" class="text-right">
                     <q-btn flat round dense icon="more_vert" v-if="props.row.isEditable">
@@ -81,16 +87,31 @@
                 {name: 'role', required: true, label: 'Team Role', field: 'role', sortable: true},
                 {name: 'actions', align: 'right', label: ''},
             ],
-            isDisableBtnClicked: false
+            isDisableBtnClicked: false,
+            count: {
+                limit: null,
+                teamMember: null,
+                viewerMember: null,
+            },
+            showCountNumber: false,
+            teamData: null
         }),
         mixins: [ValidatorMessages],
         watch: {
             team: function (val) {
                 if (val !== null) {
+                    this.teamData = val;
+                    this.getMembersCount(val);
                     this.form = val;
                     document.title = `Manage ${val.name} team - Wonderus`
                 }
-            }
+            },
+            isChangingRole: function (val) {
+                this.getMembersCount(this.teamData);
+            },
+            isMemberInviting: function () {
+                this.getMembersCount(this.teamData);
+            },
         },
         validations: {
             form: {
@@ -141,7 +162,8 @@
                 changeRole: 'modals/openChangeMemberRole',
                 excludeMember: 'members/excludeMemberFromTeam',
                 reSendInvite: 'members/retryMemberInvitation',
-                disableSlackIntegration: 'teams/disableSlack'
+                disableSlackIntegration: 'teams/disableSlack',
+                countsMembers: 'members/getCountsMembers',
             }),
             slack() {
                 window.location = `https://slack.com/oauth/authorize?client_id=${SLACK_CLIENT_ID}&scope=commands,bot,users:read,users:read.email&state=${this.team.id}`;
@@ -184,8 +206,19 @@
                 })
             },
             excludeFromTeam(id) {
-                this.confirm().then(() => this.excludeMember(id)).catch(() => {
+                this.confirm().then(() => this.excludeMember(id)).then(res =>{
+                    this.getMembersCount(this.teamData);
+                }).catch(() => {
                 })
+            },
+            getMembersCount(team){
+                this.teamData = team;
+                this.countsMembers(team.id).then(res => {
+                    this.count.limit = res.limit;
+                    this.count.teamMember = res.countTeamMember;
+                    this.count.viewerMember = res.countViewerMember;
+                    this.showCountNumber = true
+                });
             }
         }
     }

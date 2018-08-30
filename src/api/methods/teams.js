@@ -24,6 +24,10 @@ export const members = (id) => {
     return request.get(`/teams/${id}/members`);
 };
 
+export const countsMembers = (id) => {
+    return request.get(`/teams/${id}/counts-members`);
+};
+
 export const slack = (id, code) => {
     return request.post(`/teams/${id}/slack`, {code});
 };

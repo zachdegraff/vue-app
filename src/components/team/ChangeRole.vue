@@ -72,7 +72,11 @@
                 closeChangingRole: 'modals/closeChangeMemberRole'
             }),
             submit() {
-                this.changeRole({id: this.member.id, role: this.role}).then(this.closeChangingRole)
+                this.changeRole({id: this.member.id, role: this.role}).then(res => {
+                    if (res.member) {
+                        this.closeChangingRole();
+                    }
+                })
             }
         }
     }

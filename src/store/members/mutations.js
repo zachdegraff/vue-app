@@ -40,7 +40,9 @@ export const joinMemberToTeamStatusFailure = state => state.joinMemberToTeamStat
 export const changeMemberRoleStatusRequest = state => state.changeMemberRoleStatus = 'Request';
 export const changeMemberRoleStatusSuccess = (state, res) => {
     state.changeMemberRoleStatus = 'Success';
-    state.items = replace(state.items, res.data.member)
+    if (res.data.member){
+        state.items = replace(state.items, res.data.member)
+    }
 };
 export const changeMemberRoleStatusFailure = state => state.changeMemberRoleStatus = 'Failure';
 
