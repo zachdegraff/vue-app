@@ -7,8 +7,7 @@
                 </q-item-side>
                 <q-item-main>
                     <q-item-tile label>
-                        {{item.user.fullName}} created a new card
-                        <a :href="createViewUrl(item.source)" @click.prevent.stop="showCard(item.source.id)">{{item.source.name}}</a>
+                        {{item.user.fullName}} created <a :href="createViewUrl(item.source)" @click.prevent.stop="showCard(item.source.id)">{{item.source.name}}</a>
                     </q-item-tile>
                     <q-item-tile sublabel>{{toLocaleString(item.createdAt)}}</q-item-tile>
                 </q-item-main>

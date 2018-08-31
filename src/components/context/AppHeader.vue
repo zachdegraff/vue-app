@@ -32,7 +32,7 @@
                     <img src="statics/header-logo.png"/>
                 </router-link>
             </div>
-            <q-btn color="white" class="text-black gt-xs" icon="add" label="Add Card" v-if="canAddCard" @click="addCard" :disabled="isCreating"/>
+            <q-btn color="white" class="text-black gt-xs" icon="add" label="Create a card" v-if="canAddCard" @click="addCard" :disabled="isCreating"/>
             <q-btn color="white" class="short-add-button text-black lt-sm" icon="add" v-if="canAddCard" @click="addCard" :disabled="isCreating"/>
             <div class="auth-user q-ml-md" v-if="user">
                 <img :src="avatar(user.photo)" class="header-icon vertical-middle"/>

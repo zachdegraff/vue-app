@@ -7,10 +7,12 @@
             </q-toolbar>
             <form class="row q-pa-xl flex-center">
                 <q-field class="col-xs-12" :error="$v.question.$error" :error-label="firstErrorFor($v.question)">
-                    <q-input ref="field" type="textarea" v-model="question" @blur="$v.question.$touch" float-label="Type your question"></q-input>
+                    <q-input ref="field" type="textarea" v-model="question" @blur="$v.question.$touch" float-label="Your question"></q-input>
                 </q-field>
-                <br>
-                <p class="text-card-name" v-if="card">Your question will be linked to {{card.name}} and shared with the team</p>
+                <div class="col-xs-12 q-mt-md q-body-2">
+                    <span v-if="card">Your question will be linked to {{card.name}} and shared with the {{team.name}} team.</span>
+                    <span v-if="team && !card">Your question will be shared with the {{team.name}} team.</span>
+                </div>
                 <q-field class="col-xs-12 q-mt-xl">
                     <q-btn color="primary" label="Submit" @click="submit" :disable="isProcessing"></q-btn>
                 </q-field>
