@@ -31,7 +31,7 @@
         },
         computed: {
             ...mapGetters({
-                tags: 'tags/all',
+                tags: 'tags/allNonEmpty',
                 team: 'teams/current',
             }),
             title() {
