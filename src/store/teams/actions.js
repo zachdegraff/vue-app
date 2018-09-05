@@ -22,6 +22,17 @@ export const all = ({commit, dispatch}) => {
     });
 };
 
+export const allTeams = ({commit, dispatch}) => {
+    return new Promise((resolve, reject) => {
+        api.teams.allTeams().then(res => {
+            loadDefaults(dispatch);
+            resolve(res.data.data)
+        }).catch(err => {
+            reject(err)
+        })
+    });
+};
+
 export const get = ({commit}, id) => {
     return new Promise((resolve, reject) => {
         commit('getStatusRequest');

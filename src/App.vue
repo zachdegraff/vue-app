@@ -17,11 +17,14 @@
         },
         created() {
             if (localStorage.getItem('access-token') !== null) {
-                this.loadAuthUser();
-                this.loadFavorite();
-                this.loadUserTeams().then(teams => {
-                    if (teams.length === 0) {
-                        this.$router.push('/welcome')
+                this.loadAuthUser().then(res => {
+                    this.loadFavorite();
+                    if (res.isSuperAdmin !== 1){
+                        this.loadUserTeams().then(teams => {
+                            if (teams.length === 0) {
+                                this.$router.push('/welcome')
+                            }
+                        });
                     }
                 });
             }

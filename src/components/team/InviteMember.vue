@@ -10,6 +10,9 @@
                     <q-field class="q-py-sm" :error="$v.form.email.$error" :error-label="firstErrorFor($v.form.email)">
                         <q-input type="text" float-label="Email" v-model="form.email" @blur="$v.form.email.$touch" @keyup.enter="submit"/>
                     </q-field>
+                    <q-field class="q-py-sm">
+                        <q-select v-model="form.role" :options="form.options" radio/>
+                    </q-field>
                     <div class="q-pt-lg text-center">
                         <q-btn color="primary" label="invite" @click="submit" :disabled="isProcessing"/>
                     </div>
@@ -28,8 +31,24 @@
         data: () => {
             return {
                 form: {
-                    email: ''
+                    email: '',
+                    role: "Contributor",
+                    options: [
+                        {
+                            label: 'Viewer',
+                            value: 'Viewer'
+                        },
+                        {
+                            label: 'Contributor',
+                            value: 'Contributor'
+                        },
+                        {
+                            label: 'Admin',
+                            value: 'Admin'
+                        }
+                    ],
                 },
+
                 isOpen: true
             }
         },

@@ -8,6 +8,10 @@ export const all = (params = {}) => {
     return request.get('/teams', {params})
 };
 
+export const allTeams = (params = {}) => {
+    return request.get('/all-teams', {params})
+};
+
 export const create = (attr) => {
     return request.post('/teams', attr);
 };

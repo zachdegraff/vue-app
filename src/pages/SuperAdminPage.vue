@@ -1,0 +1,67 @@
+<template>
+    <div class="content-container">
+        <div class="row gutter-x-lg">
+            <div class="col-xs-4">
+                <all-teams-navigation />
+            </div>
+            <div class="col-xs-8">
+
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+    import {mapActions, mapGetters} from 'vuex'
+    import AllTeamsNavigation from '../components/super-admin/AllTeamsNavigation.vue'
+
+    export default {
+        data: () => {
+            return {
+                scrolled: null
+            }
+        },
+        created() {
+            const hash = localStorage.getItem('join-token');
+            if (hash !== null) {
+                this.join(hash).then(data => {
+                    this.$router.push({name: 'view_team', params: {id: data.member.teamId}})
+                })
+            }
+            document.title = this.title;
+            this.changeQuery('');
+        },
+        watch: {
+            team: function (val) {
+                document.title = this.title
+            },
+        },
+        computed: {
+            ...mapGetters({
+            }),
+            title() {
+                if (this.team === null) {
+                    return 'Wonderus'
+                }
+                return `${this.team.name} - Wonderus`
+            }
+        },
+        components: {
+            AllTeamsNavigation
+        },
+        methods: {
+            ...mapActions({
+                join: 'members/joinMemberToTeam',
+                changeQuery: 'search/changeQuery',
+                team: 'teams/all',
+            }),
+        }
+    }
+</script>
+<style lang="scss">
+    .feed-item-avatar {
+        border-radius: 50%;
+        vertical-align: middle;
+        width: 40px;
+    }
+</style>

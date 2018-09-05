@@ -10,6 +10,7 @@
             <q-btn color="primary" outline label="Add To Slack" @click="slack" class="q-mt-lg"/>
         </q-card-main>
     </q-card>
+
 </template>
 <script>
     import {mapGetters} from 'vuex'

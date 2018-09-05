@@ -27,6 +27,14 @@ export default [
         ]
     },
     {
+        path: '/super-admin',
+        component: () => import('layouts/DefaultLayout.vue'),
+        beforeEnter: ifAuthenticated,
+        children: [
+            {path: '', name: 'super_admin', component: () => import('pages/SuperAdminPage.vue')}
+        ]
+    },
+    {
         path: '/welcome',
         component: () => import('layouts/DefaultLayout.vue'),
         beforeEnter: ifAuthenticated,

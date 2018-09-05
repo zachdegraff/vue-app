@@ -10,8 +10,8 @@ export const get = (id) => {
  * @param params
  * @returns {Promise}
  */
-export const invite = (id, params = {}) => {
-    return request.post(`/teams/${id}/invite`, params)
+export const invite = (id, params = {}, role) => {
+    return request.post(`/teams/${id}/invite`, params, role)
 };
 
 export const retry = (id) => {

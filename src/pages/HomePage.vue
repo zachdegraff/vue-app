@@ -22,14 +22,19 @@
             </div>
             <div class="col-lg-3 q-px-xl gt-md">
                 <q-btn no-caps color="primary" label="Create a card" class="full-width q-mb-md" @click="createCard"/>
+
                 <q-btn outline no-caps color="primary" label="Ask a question" class="full-width q-mb-lg" @click="openAskHelp"/>
                 <slack-integration class="full-width"/>
+
+                <q-btn v-if="isOwner" outline no-caps color="primary" label="Invite team members" class="full-width q-mb-lg margin-top-24"  @click="invite(team.id)"/>
             </div>
         </div>
+        <invite-member v-if="isMemberInviting"></invite-member>
     </div>
 </template>
 
 <script>
+    import InviteMember from '../components/team/InviteMember.vue'
     import SlackIntegration from '../components/context/SlackIntegration.vue'
     import SiteNavigation from '../components/context/SiteNavigation.vue'
     import FeedQuestionItem from '../components/feed/FeedQuestionItem.vue'
@@ -81,6 +86,7 @@
                 team: 'teams/current',
                 isTeamsLoaded: 'teams/isTeamsLoaded',
                 isFeedLoaded: 'feed/isFreshFeedLoaded',
+                isMemberInviting: 'modals/isInviteMemberOpen',
             }),
             title() {
                 if (this.team === null) {
@@ -92,10 +98,16 @@
                 if (!this.isFeedLoaded) return false;
 
                 return this.feed.length === 0
-            }
+            },
+            isOwner() {
+                if (!this.team) {
+                    return false;
+                }
+                return this.team.isOwner
+            },
         },
         components: {
-            FeedCardItem, SiteNavigation, SlackIntegration, FeedQuestionItem
+            FeedCardItem, SiteNavigation, SlackIntegration, FeedQuestionItem, InviteMember
         },
         methods: {
             ...mapActions({
@@ -106,6 +118,8 @@
                 showCard: 'modals/openCardsEditor',
                 loadQuestionsCount: 'questions/loadQuestionsCount',
                 load: 'feed/load',
+                invite: 'modals/openInviteMember',
+                reSendInvite: 'members/retryMemberInvitation',
             }),
 
             handleScroll() {
@@ -126,5 +140,8 @@
         border-radius: 50%;
         vertical-align: middle;
         width: 40px;
+    }
+    .margin-top-24{
+        margin-top: 24px;
     }
 </style>
