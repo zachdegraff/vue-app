@@ -30,7 +30,7 @@
                 </q-item>
                 <q-item>
                     <q-item-main>
-                        <div v-if="item.card" class="q-mb-sm">Submitted from Card:
+                        <div v-if="item.card && !hideSubmittedCard" class="q-mb-sm">Submitted from Card:
                             <a href="#" @click.prevent.stop="showCard(item.card.id)">{{item.card.name}}</a></div>
                         <div v-if="item.searchQuery" class="q-mb-sm">Submitted from Search: {{item.searchQuery}}</div>
                         <p v-html="item.content"></p>
@@ -73,7 +73,16 @@
 
     export default {
         name: "QuestionList",
-        props: ['items'],
+        props: {
+            items: {
+                type: Array,
+                required: true
+            },
+            hideSubmittedCard: {
+                type: Boolean,
+                default: false
+            }
+        },
         data: () => {
             return {
                 cards: [],

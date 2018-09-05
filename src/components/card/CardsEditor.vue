@@ -95,12 +95,12 @@
                             {{questionsLabel}}
                             <q-icon :name="questionIconName"/>
                         </div>
-                        <div class="float-left q-mt-xs empty-questions-text" v-else >Still wondering about {{this.cardName}} ?</div>
+                        <div class="float-left q-mt-xs empty-questions-text" v-else >Have a question for the team?</div>
                         <q-btn icon="help" label="ask question" dense @click="openAskHelp" class="float-right"/>
                         <div style="clear:both"></div>
                     </div>
                     <div class="q-mt-md" v-show="isQuestionsVisible">
-                        <questions-list :items="questions"/>
+                        <questions-list :items="questions" :hide-submitted-card="true"/>
                     </div>
                 </div>
             </div>

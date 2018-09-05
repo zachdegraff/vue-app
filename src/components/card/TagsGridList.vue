@@ -13,7 +13,7 @@
                 </q-btn>
                 <q-card-media @click.native="$router.push({name: 'tag_cards', params: {name: tag.name}})">
                     <img src="statics/blank-card.png"/>
-                    <div class="tags-item-title">{{tag.name}} ({{tag.cards}})</div>
+                    <div class="tags-item-title q-pa-sm">{{tag.name}} ({{tag.cards}})</div>
                 </q-card-media>
             </q-card>
         </div>
