@@ -2,20 +2,20 @@
     <q-modal v-model="isOpen" @hide="closeAdding" class="app-modal" :content-classes="['app-modal-content']" :content-css="{minWidth: '80vw', minHeight: '50vh'}">
         <app-modal-layout>
             <q-toolbar slot="header">
-                <q-toolbar-title>Adding a new team</q-toolbar-title>
+                <q-toolbar-title>Create a new team</q-toolbar-title>
                 <q-btn flat icon="close" @click="isOpen=false" class="float-right"/>
             </q-toolbar>
             <div class="row q-py-xl gutter-md flex-center">
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10" :error="$v.form.name.$error" :error-label="firstErrorFor($v.form.name)">
                     <q-input v-model="form.name" float-label="Name" @blur="$v.form.name.$touch"/>
                 </q-field>
-                <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10 text-left" label="Image" label-width="12">
+                <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10 text-left" label="Image (optional)" label-width="12">
                     <image-chooser @change="changeFile"></image-chooser>
                 </q-field>
                 <q-field class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-                    <strong>Members</strong><br/>
+                    <strong>Invite your team (optional)</strong><br/>
                     <q-input v-for="(member, idx) in members" :key="idx" v-model="member.email" float-label="Email address"/>
-                    <q-btn @click="addMember" class="q-mt-sm">Add a new member</q-btn>
+                    <q-btn @click="addMember" class="q-mt-sm">INVITE MEMBER</q-btn>
                 </q-field>
                 <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
                     <q-btn @click="save" color="primary" class="q-mt-lg" :disable="isProcessing">create</q-btn>
