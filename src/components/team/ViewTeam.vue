@@ -56,9 +56,11 @@
         </div>
         <invite-member v-if="isMemberInviting"></invite-member>
         <change-role v-if="isChangingRole"></change-role>
+        <cards-editor v-if="isCardsEditorOpen"/>
     </div>
 </template>
 <script>
+    import CardsEditor from '../card/CardsEditor'
     import InviteMember from '../../components/team/InviteMember.vue'
     import ChangeRole from '../../components/team/ChangeRole.vue'
     import ValidatorMessages from '../../mixins/ValidatorMessages'
@@ -127,7 +129,8 @@
                 isUpdating: 'teams/isUpdating',
                 isMembersLoading: 'members/isMembersLoading',
                 isMemberInviting: 'modals/isInviteMemberOpen',
-                isChangingRole: 'modals/isChangeMemberRoleOpen'
+                isChangingRole: 'modals/isChangeMemberRoleOpen',
+                isCardsEditorOpen: 'modals/isCardsEditorOpen',
             }),
             isOwner() {
                 if (!this.team) {
@@ -152,7 +155,7 @@
         },
         components: {
             ImageChooser,
-            InviteMember, ChangeRole
+            InviteMember, ChangeRole, CardsEditor
         },
         methods: {
             ...mapActions({
