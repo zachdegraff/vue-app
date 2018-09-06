@@ -64,7 +64,7 @@
     export default {
         data: () => {
             return {
-                msg: 'Create a Card'
+                msg: 'Create a card'
             }
         },
         computed: {
