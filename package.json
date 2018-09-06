@@ -14,6 +14,7 @@
     "caret-xy": "^2.0.2",
     "medium-editor": "^5.23.3",
     "quasar-framework": "^0.16.0",
+    "v-tooltip": "^2.0.0-rc.33",
     "vuelidate": "^0.6.2"
   },
   "devDependencies": {
