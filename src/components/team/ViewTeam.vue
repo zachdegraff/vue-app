@@ -22,12 +22,7 @@
                     </div>
                 </div>
             </div>
-            <table align="right" v-if="showCountNumber">
-                <tr>Limit of Contributors and Admins - {{ count.limit }}</tr>
-                <tr>Contributors and Admins - {{ count.teamMember }}</tr>
-                <tr>Viewers - {{ count.viewerMember }}</tr>
-            </table>
-            <br>
+
             <q-table title="Team Members" class="bg-white q-mt-xl" :data="members" :columns="columns" :pagination="{rowsPerPage: 20}" row-key="name" :loading="isMembersLoading">
                 <q-td slot="body-cell-actions" slot-scope="props" class="text-right">
                     <q-btn flat round dense icon="more_vert" v-if="props.row.isEditable">
@@ -47,6 +42,11 @@
                     </q-btn>
                 </q-td>
             </q-table>
+            <br>
+            <table align="left" v-if="showCountNumber">
+                <tr>Contributors & Admins: {{ count.teamMember }} of {{ count.limit }} contributors and admins accounts created. </tr>
+            </table>
+            <br>
             <div class="q-mt-xl">
                 <q-btn size="lg" label="Invite new member" color="primary" class="q-mr-md q-mb-md" @click="invite(team.id)"/>
 
