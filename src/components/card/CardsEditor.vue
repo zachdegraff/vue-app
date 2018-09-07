@@ -323,7 +323,7 @@
             addTag(e) {
                 if (e.keyCode !== 13) return;
 
-                const val = this.tagQuery.replace(/\s+/g, '');
+                const val = this.tagQuery;
                 if (val === '') return;
                 if (this.active.tags.indexOf(val) === -1) {
                     this.active.tags.push(val)

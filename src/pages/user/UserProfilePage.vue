@@ -66,7 +66,7 @@
                         if (value === '') {
                             return true
                         }
-                        return value.match(/^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/) !== null
+                        return value.match(/^(?=.*[0-9!@#$%^&*])(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%^&*]{8,}$/) !== null
                     }
                 },
                 password_confirmation: {
