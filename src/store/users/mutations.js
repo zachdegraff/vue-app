@@ -25,3 +25,10 @@ export const loadFavoriteStatusSuccess = (state, res) => {
     state.favorite = res.data.data
 };
 export const loadFavoriteStatusFailure = state => state.actionLoadFavoriteStatus = 'Failure';
+
+export const loadRolesStatusRequest = state => state.actionLoadRolesStatus = 'Request';
+export const loadRolesStatusSuccess = (state, res) => {
+    state.actionLoadRolesStatus = 'Success';
+    state.roles = res.data
+};
+export const loadRolesStatusFailure = state => state.actionLoadRolesStatus = 'Failure';

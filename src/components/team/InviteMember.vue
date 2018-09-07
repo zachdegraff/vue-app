@@ -11,7 +11,7 @@
                         <q-input type="text" float-label="Email" v-model="form.email" @blur="$v.form.email.$touch" @keyup.enter="submit"/>
                     </q-field>
                     <q-field class="q-py-sm">
-                        <q-select v-model="form.role" :options="form.options" radio/>
+                        <q-select v-model="form.role" :options="options" radio/>
                     </q-field>
                     <div class="q-pt-lg text-center">
                         <q-btn color="primary" label="invite" @click="submit" :disabled="isProcessing"/>
@@ -32,23 +32,9 @@
             return {
                 form: {
                     email: '',
-                    role: "Contributor",
-                    options: [
-                        {
-                            label: 'Viewer',
-                            value: 'Viewer'
-                        },
-                        {
-                            label: 'Contributor',
-                            value: 'Contributor'
-                        },
-                        {
-                            label: 'Admin',
-                            value: 'Admin'
-                        }
-                    ],
+                    role: '2',
                 },
-
+                options: [],
                 isOpen: true
             }
         },
@@ -63,6 +49,7 @@
         },
         computed: {
             ...mapGetters({
+                roles: 'users/getRoles',
                 team: 'teams/getViewingTeam',
                 isProcessing: 'members/isInviting'
             })
@@ -71,7 +58,11 @@
             AppModalLayout
         },
         created() {
-            document.title = 'Invite a new member'
+            document.title = 'Invite a new member';
+
+            for (let i in this.roles) {
+                this.options.push({label: this.roles[i], value: i})
+            }
         },
         methods: {
             ...mapActions({

@@ -19,7 +19,8 @@
             if (localStorage.getItem('access-token') !== null) {
                 this.loadAuthUser().then(res => {
                     this.loadFavorite();
-                    if (res.isSuperAdmin !== 1){
+                    this.loadUserRoles();
+                    if (res.isSuperAdmin !== 1) {
                         this.loadUserTeams().then(teams => {
                             if (teams.length === 0) {
                                 this.$router.push('/welcome')
@@ -40,7 +41,8 @@
             ...mapActions({
                 loadAuthUser: 'auth/user',
                 loadUserTeams: 'teams/all',
-                loadFavorite: 'users/loadFavorite'
+                loadFavorite: 'users/loadFavorite',
+                loadUserRoles: 'users/loadRoles'
             }),
             logCanny(user) {
                 Canny('identify', {

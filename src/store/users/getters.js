@@ -9,6 +9,8 @@ export const isFavorite = state => {
 export const isCounting = state => state.actionCountStatus === 'Request';
 export const isUpdating = state => state.actionUpdateStatus === 'Request';
 
+export const getRoles = state => state.roles;
+
 export const getFavoriteCards = (state, getters, rootState, rootGetters) => {
     const team = rootGetters['teams/current'];
     if (team === null) {

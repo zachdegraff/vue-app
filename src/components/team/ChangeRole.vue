@@ -30,31 +30,25 @@
     export default {
         data: () => {
             return {
-                role: 2,
-                options: [
-                    {
-                        label: 'Viewer',
-                        value: 'Viewer'
-                    },
-                    {
-                        label: 'Contributor',
-                        value: 'Contributor'
-                    },
-                    {
-                        label: 'Admin',
-                        value: 'Admin'
-                    }
-                ],
+                role: '2',
+                options: [],
                 isOpen: true
             }
         },
         watch: {
             member: function (val) {
-                this.role = val.role
+                if (!val) return;
+
+                for(let i in this.roles) {
+                    if (this.roles[i] === val.role) {
+                        this.role = i
+                    }
+                }
             }
         },
         computed: {
             ...mapGetters({
+                roles: 'users/getRoles',
                 member: 'members/getEditingMember',
                 isProcessing: 'members/isChangingRole',
                 isMemberLoading: 'members/isMemberLoading'
@@ -65,6 +59,9 @@
         },
         created() {
             document.title = 'Change member role - Wonderus';
+            for (let i in this.roles) {
+                this.options.push({label: this.roles[i], value: i})
+            }
         },
         methods: {
             ...mapActions({

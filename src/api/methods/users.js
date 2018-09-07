@@ -8,6 +8,10 @@ export const all = (params = {}) => {
     return request.get('/users', {params})
 };
 
+export const roles = () => {
+    return request.get('/users/roles')
+};
+
 export const count = (params = {}) => {
     return request.get('/users/count', {params})
 };

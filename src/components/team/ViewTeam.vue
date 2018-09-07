@@ -215,6 +215,8 @@
                 })
             },
             getMembersCount(team){
+                if (team === null) return;
+
                 this.teamData = team;
                 this.countsMembers(team.id).then(res => {
                     this.count.limit = res.limit;

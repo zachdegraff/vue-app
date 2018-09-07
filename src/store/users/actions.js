@@ -41,6 +41,20 @@ export const favorite = ({commit}, id) => {
     })
 };
 
+
+export const loadRoles = ({commit}) => {
+    return new Promise((resolve, reject) => {
+        commit('loadRolesStatusRequest');
+        api.users.roles().then(res => {
+            commit('loadRolesStatusSuccess', res);
+            resolve(res.data)
+        }).catch(err => {
+            commit('loadRolesStatusFailure', err);
+            reject(err)
+        })
+    })
+};
+
 export const loadFavorite = ({commit}) => {
     return new Promise((resolve, reject) => {
         commit('loadFavoriteStatusRequest');
