@@ -34,7 +34,7 @@
         watch: {
             team: function (val) {
                 if (val) {
-                    this.$router.push({name: 'home'})
+                    return this.$router.push({name: 'home'})
                 }
             }
         },

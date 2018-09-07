@@ -1,3 +1,9 @@
+export const flushState = state => {
+    state.items = [];
+    state.page = 0;
+    state.lastPage = null
+};
+
 export const loadStatusRequest = state => state.actionLoadStatus = 'Request';
 export const loadStatusSuccess = (state, res) => {
     state.actionLoadStatus = 'Success';

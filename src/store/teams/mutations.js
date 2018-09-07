@@ -12,6 +12,10 @@ export const remove = (state, id) => {
     }
 };
 
+export const flushState = state => {
+    state.items = []
+};
+
 export const changeCurrentTeam = (state, team) => state.current = team;
 export const changeViewingTeam = (state, team) => state.viewing = team;
 export const changeEditingTeam = (state, team) => state.editing = team;

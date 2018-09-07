@@ -185,7 +185,7 @@
                     if (this.referer) {
                         return this.$router.push(this.referer)
                     }
-                    this.$router.push({name: 'home'})
+                    this.$router.push({name: 'welcome'})
                 })
             },
             close() {

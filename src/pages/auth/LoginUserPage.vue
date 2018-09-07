@@ -74,10 +74,9 @@
                         return this.$router.push(this.referer)
                     }
                     if (res.user.isSuperAdmin == 1){
-                        this.$router.push({name: 'super_admin'})
-                    }else {
-                        this.$router.push({name: 'home'})
+                        return this.$router.push({name: 'super_admin'})
                     }
+                    this.$router.push({name: 'home'})
                 })
             }
         }

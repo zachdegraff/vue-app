@@ -50,6 +50,8 @@ export const logout = ({commit, dispatch}) => {
             delete axios.defaults.headers.common['Authorization'];
             dispatch('cards/flush', null, {root: true});
             dispatch('tags/flush', null, {root: true});
+            dispatch('feed/flush', null, {root: true});
+            dispatch('teams/flush', null, {root: true});
 
             commit('logoutStatusSuccess', res);
             resolve(res.data)

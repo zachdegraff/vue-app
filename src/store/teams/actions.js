@@ -22,6 +22,10 @@ export const all = ({commit, dispatch}) => {
     });
 };
 
+export const flush = ({commit}) => {
+    commit('flushState')
+};
+
 export const allTeams = ({commit, dispatch}) => {
     return new Promise((resolve, reject) => {
         api.teams.allTeams().then(res => {

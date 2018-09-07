@@ -22,6 +22,10 @@ export const load = ({commit, state, rootGetters}) => {
     })
 };
 
+export const flush = ({commit}) => {
+    commit('flushState')
+};
+
 export const fresh = ({commit, state, rootGetters}) => {
     const team = rootGetters['teams/current'];
     if (team === null) {
