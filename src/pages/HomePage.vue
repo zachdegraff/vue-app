@@ -7,8 +7,10 @@
                     <q-btn no-caps color="primary" label="Create a card" class="q-mr-md q-mb-md" @click="createCard"/>
                     <q-btn outline no-caps color="primary" label="Ask a question" class="q-mb-md" @click="openAskHelp"/>
                 </div>
-                <div class="row q-headline" v-show="isEmptyTeam">
-                    There's nothing here yet. Create a knowledge card for a team concept.
+                <div class="q-card full-width inline-block empty_card" v-show="isEmptyTeam">
+                    <h2>Wonderus is your new home for team knowledge!</h2>
+                    <p>Get started by creating your first Knowledge Card for a frequently used team concept.</p>
+                    <q-btn no-caps color="primary" label="Create a card" class="q-mr-md q-mb-md" @click="createCard"/>
                 </div>
                 <div class="row q-mb-lg" v-show="feed.length > 0">
                     <div class="col q-headline">Recent Activity</div>
@@ -143,5 +145,8 @@
     }
     .margin-top-24{
         margin-top: 24px;
+    }
+    .empty_card{
+        padding-left: 20px;
     }
 </style>
