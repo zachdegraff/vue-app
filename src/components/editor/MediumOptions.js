@@ -7,10 +7,10 @@ const MediumOptions = {
     },
     paste: {
         forcePlainText: false,
-        cleanPastedHTML: false,
+        cleanPastedHTML: true,
         cleanReplacements: [],
         cleanAttrs: ['class', 'style', 'dir'],
-        cleanTags: ['meta', 'table', 'tbody', 'thead', 'tr', 'td', 'th'],
+        cleanTags: ['meta', 'table', 'tbody', 'thead', 'tr', 'td', 'th', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
         unwrapTags: []
     },
     placeholder: false,
