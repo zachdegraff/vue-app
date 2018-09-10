@@ -76,6 +76,7 @@
                     this.editor.addEventListener('click', this.handleLinkClicks);
                 }
                 this.medium = new MediumEditor('#contentEditor', MediumOptions);
+
                 if (this.card) {
                     this.medium.setContent(this.card.description || '<p><br></p>', 0)
                 }

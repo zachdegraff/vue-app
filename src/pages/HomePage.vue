@@ -7,7 +7,7 @@
                     <q-btn no-caps color="primary" label="Create a card" class="q-mr-md q-mb-md" @click="createCard"/>
                     <q-btn outline no-caps color="primary" label="Ask a question" class="q-mb-md" @click="openAskHelp"/>
                 </div>
-                <div class="q-card full-width inline-block empty_card" v-show="isEmptyTeam">
+                <div class="q-card full-width empty_card" v-show="isEmptyTeam">
                     <h2>Wonderus is your new home for team knowledge!</h2>
                     <p>Get started by creating your first Knowledge Card for a frequently used team concept.</p>
                     <q-btn no-caps color="primary" label="Create a card" class="q-mr-md q-mb-md" @click="createCard"/>
