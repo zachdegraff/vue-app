@@ -2,7 +2,7 @@
     <div class="content-editor-panel">
         <div class="content-editor-content-helper" @click="editor.focus()" v-show="isHelperVisible">What should your team know?<br/>
             <span class="q-caption">(Hint: Type @ to create and mention other cards.)</span></div>
-        <div id="contentEditor" class="content-editor-content"></div>
+        <div id="contentEditor" ref="editor" class="content-editor-content"></div>
         <q-progress :percentage="files.uploading" v-show="files.isUploading" ref="progressBar" class="content-editor-progress-bar"/>
         <editor-tags :position="tags.position" :is-visible="tags.isVisible" @choose="handleTagChoosing"/>
         <reference-tools :editor="editor" :medium="medium"></reference-tools>
@@ -70,12 +70,16 @@
             }),
             initialize() {
                 this.editor = document.getElementById('contentEditor');
+
                 if (this.editor !== null) {
                     this.editor.addEventListener('keydown', this.handleKeyPress);
                     this.editor.addEventListener('mouseup', this.handleKeyPress);
                     this.editor.addEventListener('click', this.handleLinkClicks);
                 }
                 this.medium = new MediumEditor('#contentEditor', MediumOptions);
+                this.$nextTick(() => {
+                    this.medium.selectElement(this.$refs.editor.childNodes[0]);
+                });
 
                 if (this.card) {
                     this.medium.setContent(this.card.description || '<p><br></p>', 0)
