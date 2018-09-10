@@ -34,6 +34,7 @@
             user: function (val) {
                 if (val !== null) {
                     this.logCanny(val)
+                    this.logFullStory(val)
                 }
             }
         },
@@ -54,6 +55,12 @@
                         avatarURL: user.photo
                     }
                 })
+            },
+            logFullStory(user){
+                FS.identify(user.id, {
+                    displayName: user.firstName,
+                    email: user.email,
+                });
             }
         },
     }
