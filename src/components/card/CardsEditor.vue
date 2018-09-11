@@ -95,7 +95,7 @@
                             {{questionsLabel}}
                             <q-icon :name="questionIconName"/>
                         </div>
-                        <div class="float-left q-mt-xs empty-questions-text" v-else >Have a question for the team?</div>
+                        <!--<div class="float-left q-mt-xs empty-questions-text" v-else >Have a question for the team?</div>-->
                         <q-btn icon="help" label="ask question" dense @click="openAskHelp" class="float-right"/>
                         <div style="clear:both"></div>
                     </div>
