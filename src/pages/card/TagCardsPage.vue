@@ -4,7 +4,9 @@
             <site-navigation class="col-lg-2 gt-md"/>
             <div class="col-md-12 col-lg-7">
                 <div class="row q-mb-lg">
-                    <div class="col q-headline">{{tag}} tag</div>
+
+                    <div class="col q-headline">
+                        <router-link v-bind:to="'/cards/tags'" tag='a' class='primary not_underlined'>Tags</router-link> > {{tag}} tag</div>
                 </div>
                 <q-spinner :size="36" color="red" v-show="isLoading"></q-spinner>
                 <cards-list :items="items"/>
@@ -69,5 +71,8 @@
         width: 100%;
         transform: translateY(-50%);
         text-align: center;
+    }
+    .not_underlined{
+        text-decoration: none;
     }
 </style>
