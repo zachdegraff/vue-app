@@ -77,10 +77,11 @@
                     this.editor.addEventListener('click', this.handleLinkClicks);
                 }
                 this.medium = new MediumEditor('#contentEditor', MediumOptions);
-                this.$nextTick(() => {
-                    this.medium.selectElement(this.$refs.editor.childNodes[0]);
-                });
-
+                    this.$nextTick(() => {
+                            if(this.editor.childNodes[0].innerHTML === '' || this.editor.childNodes[0].innerHTML === '<br>'){
+                                this.medium.selectElement(this.$refs.editor.childNodes[0]);
+                        }
+                    });
                 if (this.card) {
                     this.medium.setContent(this.card.description || '<p><br></p>', 0)
                 }
@@ -229,7 +230,6 @@
                 if (this.editor === null) return false;
                 if (this.editor.childNodes[0] === undefined) return true;
                 if (this.editor.childNodes.length > 1) return false;
-
                 const el = this.editor.childNodes[0];
                 return el.innerHTML === '' || el.innerHTML === '<br>'
             }

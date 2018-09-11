@@ -148,5 +148,7 @@
     }
     .empty_card{
         padding-left: 20px;
+        padding-top: 10px;
+        padding-bottom: 10px;
     }
 </style>
