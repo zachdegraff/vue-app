@@ -8,9 +8,9 @@
                 </div>
                 <tags-grid-list :items="tags"></tags-grid-list>
             </div>
-            <div class="col-lg-3 q-px-xl gt-md">
-                <q-btn no-caps color="primary" label="Create a tag" @click="createCardTag" class="full-width q-mb-md"/>
-            </div>
+            <!--<div class="col-lg-3 q-px-xl gt-md">-->
+                <!--<q-btn no-caps color="primary" label="Create a tag" @click="createCardTag" class="full-width q-mb-md"/>-->
+            <!--</div>-->
         </div>
     </div>
 </template>
