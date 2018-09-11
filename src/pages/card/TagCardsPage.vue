@@ -5,15 +5,21 @@
             <div class="col-md-12 col-lg-7">
                 <div class="row q-mb-lg">
 
-                    <div class="col q-headline">
-                        <router-link v-bind:to="'/cards/tags'" tag='a' class='primary not_underlined'>Tags</router-link> > {{tag}} tag</div>
+                    <div class="col q-headline col-md-8">
+                        <router-link v-bind:to="'/cards/tags'" tag='a' class='primary not_underlined'>Tags</router-link> > {{tag}} tag
+                    </div>
+                    <div class="col-md-4">
+                        <q-btn no-caps color="primary" label="Create card with tag" class="full-width q-mb-md" @click="createCard"/>
+                    </div>
                 </div>
                 <q-spinner :size="36" color="red" v-show="isLoading"></q-spinner>
                 <cards-list :items="items"/>
+
             </div>
             <div class="col-lg-3 q-px-xl gt-md">
 
             </div>
+
         </div>
     </div>
 </template>
@@ -53,6 +59,8 @@
         },
         methods: {
             ...mapActions({
+                createCard: 'editor/create',
+                openAskHelp: 'modals/openAskHelp',
                 filter: 'cards/all',
                 changeQuery: 'search/changeQuery'
             }),
