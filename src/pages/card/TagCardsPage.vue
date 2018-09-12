@@ -4,20 +4,19 @@
             <site-navigation class="col-lg-2 gt-md"/>
             <div class="col-md-12 col-lg-7">
                 <div class="row q-mb-lg">
-
-                    <div class="col q-headline col-md-8">
-                        <router-link v-bind:to="'/cards/tags'" tag='a' class='primary not_underlined'>Tags</router-link> > {{tag}} tag
+                    <div class="q-headline col-md-8 margin-bottom-20">
+                        <router-link v-bind:to="'/cards/tags'" tag='a' class='primary not_underlined'>Tags</router-link> <span>>{{tag}} tag</span>
                     </div>
-                    <div class="col-md-4">
+                    <br>
+                    <div class="col-md-4 max-991">
                         <q-btn no-caps color="primary" label="Create card with tag" class="full-width q-mb-md" @click="createCard"/>
                     </div>
                 </div>
                 <q-spinner :size="36" color="red" v-show="isLoading"></q-spinner>
                 <cards-list :items="items"/>
-
             </div>
             <div class="col-lg-3 q-px-xl gt-md">
-
+                <q-btn no-caps color="primary" label="Create card with tag" class="full-width q-mb-md" @click="createCard"/>
             </div>
 
         </div>
@@ -82,5 +81,13 @@
     }
     .not_underlined{
         text-decoration: none;
+    }
+    .margin-bottom-20{
+        margin-bottom:20px;
+    }
+    @media only screen and (min-width: 992px) {
+        .max-991 {
+            display: none;
+        }
     }
 </style>
