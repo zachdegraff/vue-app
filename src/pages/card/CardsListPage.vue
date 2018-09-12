@@ -47,6 +47,7 @@
             ...mapGetters({
                 team: 'teams/current',
                 items: 'cards/getItems',
+                cardCount: 'cards/cardCount',
                 isLoading: 'cards/isCardsLoading'
             }),
             title() {
@@ -57,21 +58,17 @@
         watch: {
 
             team: function (val) {
-                this.load();
+                this.load().then((res) => {
+                        this.isEmptyCart = res.length == 0;
+                });
                 document.title = this.title;
             }
         },
         created() {
-            this.load();
-            document.title = this.title;
             this.load().then((res) => {
-                if(res.length == 0){
-                    this.isEmptyCart = true;
-                }else{
-                    this.isEmptyCart = false;
-                }
-
+                this.isEmptyCart = res.length == 0;
             });
+            document.title = this.title;
         },
         methods: {
             ...mapActions({
