@@ -2,7 +2,7 @@
     <div class="content-container">
         <div class="row gutter-x-lg">
             <site-navigation class="col-lg-2 gt-md"/>
-            <div class="col-md-12 col-lg-7 q-headline">
+            <div class="col-md-12 col-lg-7">
                 <div class="row lt-lg">
                     <q-btn no-caps color="primary" label="Create a card" @click="createCard" class="q-mr-md q-mb-md"/>
                     <q-btn outline no-caps color="primary" label="Filter cards" to="/cards/table" class="q-mr-md q-mb-md"/>
@@ -10,6 +10,11 @@
                 </div>
                 <div class="row q-mb-lg" v-if="team">
                     <div class="col q-headline">{{team.name}} cards</div>
+                </div>
+                <div class="q-card full-width empty_card" v-show="isEmptyCart">
+                    <h2>No cards yet!</h2>
+                    <p>Get started by creating your first Knowledge Card for a frequently used team concept.</p>
+                    <q-btn no-caps color="primary" label="Create a card" class="q-mr-md q-mb-md" @click="createCard"/>
                 </div>
                 <div class="row flex-center q-mt-lg" v-show="isLoading">
                     <q-spinner :size="36" color="red" />
@@ -33,6 +38,11 @@
     import {prop, route} from "../../helpers"
 
     export default {
+        data: () => {
+            return {
+                isEmptyCart:false,
+        }
+        },
         computed: {
             ...mapGetters({
                 team: 'teams/current',
@@ -45,6 +55,7 @@
         },
         components: {CardsList, SiteNavigation, SlackIntegration},
         watch: {
+
             team: function (val) {
                 this.load();
                 document.title = this.title;
@@ -53,12 +64,27 @@
         created() {
             this.load();
             document.title = this.title;
+            this.load().then((res) => {
+                if(res.length == 0){
+                    this.isEmptyCart = true;
+                }else{
+                    this.isEmptyCart = false;
+                }
+
+            });
         },
         methods: {
             ...mapActions({
                 load: 'cards/all',
                 createCard: 'editor/create',
-            })
+            }),
         }
     }
 </script>
+<style>
+    .empty_card {
+        padding-left: 20px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+</style>
