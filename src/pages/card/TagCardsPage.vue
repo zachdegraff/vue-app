@@ -5,7 +5,7 @@
             <div class="col-md-12 col-lg-7">
                 <div class="row q-mb-lg">
                     <div class="q-headline col-md-8 margin-bottom-20">
-                        <router-link v-bind:to="'/cards/tags'" tag='a' class='primary not_underlined'>Tags</router-link> <span>>{{tag}} tag</span>
+                        <router-link v-bind:to="'/cards/tags'" tag='a' class='primary not_underlined'>Tags</router-link> <span>> {{tag}} tag</span>
                     </div>
                     <br>
                     <div class="col-md-4 max-991">
