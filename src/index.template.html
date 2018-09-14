@@ -56,6 +56,7 @@
     <!-- Download Canny SDK -->
     <script>!function(w,d,i,s){function l(){if(!d.getElementById(i)){var f=d.getElementsByTagName(s)[0],e=d.createElement(s);e.type="text/javascript",e.async=!0,e.src="https://canny.io/sdk.js",f.parentNode.insertBefore(e,f)}}if("function"!=typeof w.Canny){var c=function(){c.q.push(arguments)};c.q=[],w.Canny=c,"complete"===d.readyState?l():w.attachEvent?w.attachEvent("onload",l):w.addEventListener("load",l,!1)}}(window,document,"canny-jssdk","script");</script>
     <script>
+       if(localStorage.getItem('access-token')){
         window['_fs_debug'] = false;
         window['_fs_host'] = 'fullstory.com';
         window['_fs_org'] = 'ERK65';
@@ -71,6 +72,7 @@
             g.identifyAccount=function(i,v){o='account';v=v||{};v.acctId=i;g(o,v)};
             g.clearUserCookie=function(){};
         })(window,document,window['_fs_namespace'],'script','user');
+        }
     </script>
     <%= htmlWebpackPlugin.options.headScripts %>
 

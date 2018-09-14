@@ -57,10 +57,12 @@
                 })
             },
             logFullStory(user){
-                FS.identify(user.id, {
-                    displayName: user.firstName,
-                    email: user.email,
-                });
+                if(localStorage.getItem('access-token')) {
+                    FS.identify(user.id, {
+                        displayName: user.firstName,
+                        email: user.email,
+                    });
+                }
             }
         },
     }
