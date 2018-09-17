@@ -130,7 +130,7 @@
             ...mapGetters({
                 team: 'teams/current',
                 cards: 'cards/getItems',
-                tags: 'tags/all',
+                tags: 'tags/allNonEmpty',
                 isCardsLoading: 'cards/isCardsLoading',
                 getFilteredItems: 'cards/getFilteredItems'
             }),

@@ -58,9 +58,9 @@
         },
         methods: {
             ...mapActions({
+                filter: 'cards/all',
                 createCard: 'editor/create',
                 openAskHelp: 'modals/openAskHelp',
-                filter: 'cards/all',
                 changeQuery: 'search/changeQuery'
             }),
             params() {
