@@ -1,6 +1,6 @@
 <template>
     <div class="content-editor-panel">
-        <div class="content-editor-content-helper" @click="editor.focus()" v-show="isHelperVisible">What should your team know?<br/>
+        <div class="content-editor-content-helper" @click="editor.focus()" v-show="isHelperVisible">Card description...<br/>
             <span class="q-caption">(Hint: Type @ to create and mention other cards.)</span></div>
         <div id="contentEditor" ref="editor" class="content-editor-content"></div>
         <q-progress :percentage="files.uploading" v-show="files.isUploading" ref="progressBar" class="content-editor-progress-bar"/>
