@@ -81,7 +81,7 @@
                                         dense
                                         hide-underline
                                         v-model="active.shorthand"
-                                        placeholder="Shorthand"
+                                        placeholder="Acronyms/shorthand..."
                                         @keydown.enter="insertComma"
                                         @blur="save"/>
                             </q-field>
