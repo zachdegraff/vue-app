@@ -135,8 +135,8 @@
         components: {QuestionsList, AppModalLayout, ContentEditor},
         computed: {
             ...mapGetters({
-                tags: 'tags/all',
                 team: 'teams/current',
+                tags: 'tags/allNonEmpty',
                 isSaved: 'users/isFavorite',
                 isCreating: 'cards/isCreating',
                 isUpdating: 'cards/isUpdating',
@@ -223,6 +223,9 @@
                 if (val.length < 2) return;
 
                 this.tags.forEach(tag => {
+                    const idx = this.active.tags.findIndex(item => item === tag.name);
+                    if (idx !== -1) return;
+
                     if (tag.name.toLowerCase().indexOf(val.toLowerCase()) !== -1) {
                         this.suggests.push(tag.name)
                     }
