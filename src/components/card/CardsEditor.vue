@@ -265,7 +265,7 @@
             this.name = new MediumEditor(field, options);
             if (this.active !== undefined) {
                 if(this.active.name == 'Untitled card'){
-                    this.name.setContent(`<p></p>`, 0)
+                    this.name.setContent(``, 0)
                 }else{
                     this.name.setContent(`<p>${this.active.name}</p>`, 0)
                 }
