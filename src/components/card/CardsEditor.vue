@@ -81,7 +81,7 @@
                                    v-show="active.canRemove"/>
                         </div>
                         <div>
-                            <div class="cards-editor-name" data-disable-return="true"></div>
+                            <div class="cards-editor-name" ref="editor" data-disable-return="true"></div>
                         </div>
                         <div style="clear:both"></div>
                         <div class="cards-editor-shorthand" v-if="active">
@@ -263,6 +263,9 @@
                 field = document.querySelector('.cards-editor-name');
 
             this.name = new MediumEditor(field, options);
+            this.$nextTick(() => {
+                this.name.selectElement(field);
+            });
             if (this.active !== undefined) {
                 if(this.active.name == 'Untitled card'){
                     this.name.setContent(``, 0)
@@ -333,7 +336,8 @@
                 this.filter({tag: item.name}).then(cards => this.batch(cards))
             },
             selectDefaultText() {
-                if (this.active.name !== 'Untitled card') return;
+
+                // if (this.active.name !== 'Untitled card') return;
 
                 const el = this.name.getFocusedElement();
                 if (el.childNodes.length > 0) {
