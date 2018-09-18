@@ -1,5 +1,6 @@
 <template>
-    <q-modal v-model="isOpen" @hide="close" class="app-modal" :content-classes="contentClasses" :content-css="{minWidth: '80vw', minHeight: '88vh'}">
+    <q-modal v-model="isOpen" @hide="close" class="app-modal" :content-classes="contentClasses"
+             :content-css="{minWidth: '80vw', minHeight: '88vh'}">
         <div class="cards-editor-actions" :class="{'in-sidebar': isSidebarVisible}">
             <button class="cards-editor-actions-close" @click="isOpen=false">
                 <q-icon name="close"/>
@@ -8,7 +9,8 @@
                 <q-icon name="fullscreen"/>
             </button>
         </div>
-        <button class="cards-editor-sidebar-collapse" :class="{collapsed:!isSidebarVisible}" @click="isSidebarVisible=!isSidebarVisible">
+        <button class="cards-editor-sidebar-collapse" :class="{collapsed:!isSidebarVisible}"
+                @click="isSidebarVisible=!isSidebarVisible">
             <i></i>
             <q-icon :name="collapseIconName"/>
             <i></i>
@@ -27,7 +29,8 @@
             <div class="cards-editor">
                 <div class="cards-editor-sidebar" :class="{collapsed: !isSidebarVisible}" v-show="isSidebarVisible">
                     <ul class="cards-editor-cards">
-                        <li v-for="card in cards" :key="card.id" @click="open(card.id)" :class="{active: card.id === active.id}">
+                        <li v-for="card in cards" :key="card.id" @click="open(card.id)"
+                            :class="{active: card.id === active.id}">
                             {{card.name}}
                             <q-btn flat dense icon="close" @click.prevent.stop="hide({id: card.id})"/>
                         </li>
@@ -42,10 +45,12 @@
                             <q-btn icon="local_offer" flat dense>
                                 <q-popover anchor="bottom right" self="top right">
                                     <q-field>
-                                        <q-search hide-underline v-model="tagQuery" placeholder="Tag name" @keyup="addTag" class="q-my-md q-mx-md"/>
+                                        <q-search hide-underline v-model="tagQuery" placeholder="Tag name"
+                                                  @keyup="addTag" class="q-my-md q-mx-md"/>
                                     </q-field>
                                     <q-list link separator v-show="suggests.length">
-                                        <q-item v-for="(tag, idx) in suggests" :key="idx" @click.native="selectTag(tag)">
+                                        <q-item v-for="(tag, idx) in suggests" :key="idx"
+                                                @click.native="selectTag(tag)">
                                             <q-item-main>
                                                 <q-item-tile>{{tag}}</q-item-tile>
                                             </q-item-main>
@@ -60,16 +65,20 @@
                                                 <q-item-tile>{{tag}}</q-item-tile>
                                             </q-item-main>
                                             <q-item-side right>
-                                                <q-btn flat dense color="negative" icon="close" @click="removeTag(idx)"/>
+                                                <q-btn flat dense color="negative" icon="close"
+                                                       @click="removeTag(idx)"/>
                                             </q-item-side>
                                         </q-item>
                                     </q-list>
                                 </q-popover>
                                 <span class="q-ml-xs" v-show="tagsCount > 0">{{tagsCount}}</span>
                             </q-btn>
-                            <q-btn icon="bookmark" flat dense @click="toggleFavorite(active.id)" v-show="isSaved(active.id)"/>
-                            <q-btn icon="bookmark_border" flat dense @click="toggleFavorite(active.id)" v-show="!isSaved(active.id)"/>
-                            <q-btn icon="delete" flat dense @click.prevent.stop="flush($event)" v-show="active.canRemove"/>
+                            <q-btn icon="bookmark" flat dense @click="toggleFavorite(active.id)"
+                                   v-show="isSaved(active.id)"/>
+                            <q-btn icon="bookmark_border" flat dense @click="toggleFavorite(active.id)"
+                                   v-show="!isSaved(active.id)"/>
+                            <q-btn icon="delete" flat dense @click.prevent.stop="flush($event)"
+                                   v-show="active.canRemove"/>
                         </div>
                         <div>
                             <div class="cards-editor-name" data-disable-return="true"></div>
@@ -91,7 +100,8 @@
                 </div>
                 <div class="cards-editor-questions" :style="{left: questionsLeftOffset}">
                     <div class="cards-editor-questions-label">
-                        <div class="float-left q-mt-xs" v-if="this.questions.length > 0" @click="isQuestionsVisible=!isQuestionsVisible">
+                        <div class="float-left q-mt-xs" v-if="this.questions.length > 0"
+                             @click="isQuestionsVisible=!isQuestionsVisible">
                             {{questionsLabel}}
                             <q-icon :name="questionIconName"/>
                         </div>
@@ -241,18 +251,25 @@
         mounted() {
             const options = {
                     toolbar: false,
-                    placeholder: false,
+                    placeholder: {
+                        text: 'Card name...',
+                        hideOnClick: false
+                    },
                     disableReturn: false,
                     disableDoubleReturn: false,
-                    disableExtraSpaces: false
+                    disableExtraSpaces: false,
+
                 },
                 field = document.querySelector('.cards-editor-name');
 
             this.name = new MediumEditor(field, options);
             if (this.active !== undefined) {
-                this.name.setContent(`<p>${this.active.name}</p>`, 0)
+                if(this.active.name == 'Untitled card'){
+                    this.name.setContent(`<p></p>`, 0)
+                }else{
+                    this.name.setContent(`<p>${this.active.name}</p>`, 0)
+                }
             }
-
             this.name.subscribe('editableInput', (e, el) => {
                 this.active.name = strip_tags(el.innerText.trim());
                 this.cardName = strip_tags(el.innerText.trim())
@@ -590,10 +607,11 @@
         }
     }
 
-    .cards-editor-sidebar-actions{
+    .cards-editor-sidebar-actions {
         border-top: 1px solid #ccc;
     }
-    .create-new-card{
+
+    .create-new-card {
         border: 1px solid #e0e0e0;
         margin-top: 6px;
     }
@@ -602,10 +620,12 @@
         padding-left: 0px;
         width: 100%;
     }
-    .cards-editor-sidebar{
+
+    .cards-editor-sidebar {
         padding: 60px 0 117px;
     }
-    .empty-questions-text{
+
+    .empty-questions-text {
         margin-left: 14px;
     }
 
