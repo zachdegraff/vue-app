@@ -77,11 +77,11 @@
                     this.editor.addEventListener('click', this.handleLinkClicks);
                 }
                 this.medium = new MediumEditor('#contentEditor', MediumOptions);
-                    // this.$nextTick(() => {
-                    //         if(this.editor.childNodes[0].innerHTML === '' || this.editor.childNodes[0].innerHTML === '<br>'){
-                    //             this.medium.selectElement(this.$refs.editor.childNodes[0]);
-                    //     }
-                    // });
+                    this.$nextTick(() => {
+                            if(this.editor.childNodes[0].innerHTML === '' || this.editor.childNodes[0].innerHTML === '<br>'){
+                                this.medium.selectElement(this.$refs.editor.childNodes[0]);
+                        }
+                    });
                 if (this.card) {
                     this.medium.setContent(this.card.description || '<p><br></p>', 0)
                 }

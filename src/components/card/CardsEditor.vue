@@ -263,9 +263,7 @@
                 field = document.querySelector('.cards-editor-name');
 
             this.name = new MediumEditor(field, options);
-            this.$nextTick(() => {
-                this.name.selectElement(field);
-            });
+
             if (this.active !== undefined) {
                 if(this.active.name == 'Untitled card'){
                     this.name.setContent(``, 0)
@@ -336,8 +334,7 @@
                 this.filter({tag: item.name}).then(cards => this.batch(cards))
             },
             selectDefaultText() {
-
-                // if (this.active.name !== 'Untitled card') return;
+                if (this.active.name !== 'Untitled card') return;
 
                 const el = this.name.getFocusedElement();
                 if (el.childNodes.length > 0) {
