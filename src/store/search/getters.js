@@ -7,14 +7,17 @@ export const getSuggestQuery = state => {
     return state.query;
 };
 export const getQueryTags = state => {
+
     if (state.query === '' || state.query.indexOf('#') === -1) return [];
 
-    const matches = state.query.match(/#(.*?)($|\s+)/g), result = [];
-    if (matches !== null) {
-        matches.forEach(item => {
-            result.push(item.substring(1));
-        })
-    }
+     let result = [state.query.replace(/#/g, '')];
+
+    // if (matches !== null) {
+    //     matches.forEach(item => {
+    //         result.push(item.substring(1));
+    //     })
+    // }
+
     return result
 };
 export const getResults = state => state.results;

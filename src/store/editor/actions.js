@@ -52,7 +52,7 @@ export const create = ({dispatch, commit, rootGetters}, options = {}) => {
 
     const params = Object.assign({
         teamId: team.id,
-        name: query !== '' ? query : 'Untitled card',
+        name: 'Untitled card',
         description: '<p><br></p>',
         tags: options.allowTags === true ? rootGetters['search/getQueryTags'] : []
     }, options);
