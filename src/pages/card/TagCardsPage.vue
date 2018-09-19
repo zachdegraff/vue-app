@@ -9,14 +9,14 @@
                     </div>
                     <br>
                     <div class="col-md-4 max-991">
-                        <q-btn no-caps color="primary" label="Create card with tag" class="full-width q-mb-md" @click="createCard"/>
+                        <q-btn no-caps color="primary" label="Create card with tag" class="full-width q-mb-md" @click="createCard()"/>
                     </div>
                 </div>
                 <q-spinner :size="36" color="red" v-show="isLoading"></q-spinner>
                 <cards-list :items="items"/>
             </div>
             <div class="col-lg-3 q-px-xl gt-md">
-                <q-btn no-caps color="primary" label="Create card with tag" class="full-width q-mb-md" @click="createCard"/>
+                <q-btn no-caps color="primary" label="Create card with tag" class="full-width q-mb-md" @click="createCard()"/>
             </div>
 
         </div>
@@ -59,12 +59,15 @@
         methods: {
             ...mapActions({
                 filter: 'cards/all',
-                createCard: 'editor/create',
+                // createCard: 'editor/create',
                 openAskHelp: 'modals/openAskHelp',
                 changeQuery: 'search/changeQuery'
             }),
             params() {
                 return {tag: this.tag};
+            },
+            createCard() {
+                this.$store.dispatch('editor/create', {allowTags: true},{root: true})
             }
         }
     }
