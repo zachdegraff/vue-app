@@ -645,8 +645,13 @@
             text-align: right;
         }
         .cards-editor-name {
+            width: 73%;
+        }
+        .cards-editor-name {
             font-size: 1.3rem;
         }
     }
-
+    .cards-editor-name{
+        width: 90%;
+    }
 </style>
