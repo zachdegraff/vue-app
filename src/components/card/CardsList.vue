@@ -4,7 +4,7 @@
             <h3 class="letter">{{key}}</h3>
             <div class="cards">
                 <div v-for="card in cards">
-                    <a :href="createViewUrl(card)" @click.prevent.stop="showCard(card.id)"> {{card.name}} <span v-if="card.shorthand[0]">(<span v-for="(shorthand, index) in card.shorthand">{{shorthand}}<span v-if="index !== shorthand.length">, </span> </span>)</span></a>
+                    <a :href="createViewUrl(card)" @click.prevent.stop="showCard(card.id)"> {{card.name}} <span v-if="card.shorthand[0]">(<span v-for="(shorthand, ind) in card.shorthand">{{shorthand}}<span v-if="ind !== card.shorthand.length - 1">, </span> </span>)</span></a>
                 </div>
             </div>
             <!--<a :href="createViewUrl(card)" @click.prevent.stop="showCard(card.id)">-->
