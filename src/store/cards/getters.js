@@ -7,7 +7,7 @@ export const getById = state => {
     }
 };
 
-export const getItems = state => state.items;
+export const getItems = state => state.cardItems;
 
 export const getCardsAmount = state => state.amount;
 

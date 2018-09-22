@@ -14,6 +14,7 @@ import search from './search'
 import members from './members'
 import questions from './questions'
 import comments from './comments'
+import publicSites from './public-sites'
 
 Vue.use(Vuex);
 
@@ -31,7 +32,8 @@ const store = new Vuex.Store({
         search,
         members,
         questions,
-        comments
+        comments,
+        publicSites,
     }
 });
 

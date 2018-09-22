@@ -17,7 +17,7 @@ export const all = ({commit, rootGetters}, params = {}) => {
         commit('allStatusRequest');
         api.cards.all(params).then(res => {
             commit('allStatusSuccess', res);
-            resolve(res.data.data)
+            resolve(res.data)
         }).catch(err => {
             commit('allStatusFailure', err);
             reject(err)

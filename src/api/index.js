@@ -8,6 +8,7 @@ import * as members from './methods/members'
 import * as questions from './methods/questions'
 import * as comments from './methods/comments'
 import * as tags from './methods/tags'
+import * as publicSites from './methods/publicSites'
 
 
 const api = {
@@ -20,7 +21,8 @@ const api = {
     files,
     members,
     questions,
-    comments
+    comments,
+    publicSites,
 };
 
 export default api

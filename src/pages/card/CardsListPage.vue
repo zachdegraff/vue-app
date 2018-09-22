@@ -56,13 +56,13 @@
         },
         components: {CardsList, SiteNavigation, SlackIntegration},
         watch: {
-
             team: function (val) {
                 this.load().then((res) => {
                         this.isEmptyCart = res.length == 0;
                 });
                 document.title = this.title;
             }
+
         },
         created() {
             this.load().then((res) => {
@@ -70,6 +70,7 @@
             });
             document.title = this.title;
         },
+
         methods: {
             ...mapActions({
                 load: 'cards/all',

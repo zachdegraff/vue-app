@@ -164,6 +164,14 @@ export default [
             {path: 'my', name: 'my_questions', component: () => import('pages/question/UserQuestionsPage.vue')}
         ]
     },
+    {
+        path: '/for/',
+        component: () => import('layouts/DefaultLayout.vue'),
+        beforeEnter: ifAuthenticated,
+        children: [
+            {path: ':name', name: 'public_sites', component: () => import('pages/public-sites/PublicSitePage.vue')},
+        ]
+    },
     { // Always leave this as last one
         path: '*',
         component: () => import('pages/404')

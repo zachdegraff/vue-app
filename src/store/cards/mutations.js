@@ -13,7 +13,7 @@ export const allStatusRequest = state => {
 };
 export const allStatusSuccess = (state, res) => {
     state.actionAllStatus = 'Success';
-    state.items = res.data.data
+    state.cardItems = res.data;
 };
 export const allStatusFailure = state => state.actionAllStatus = 'Failure';
 
