@@ -4,7 +4,7 @@
             <h3 class="letter">{{key}}</h3>
             <div class="cards">
                 <div v-for="card in cards">
-                    <a :href="createViewUrl(card)" @click.prevent.stop="showCard(card.id)"> {{card.name}} <span v-if="card.shorthand[0]">(<span v-for="(shorthand, ind) in card.shorthand">{{shorthand}}<span v-if="ind !== card.shorthand.length - 1">, </span> </span>)</span></a>
+                    <a v-if="card" :href="createViewUrl(card)" @click.prevent.stop="showCard(card.id)"> {{card.name}} <span v-if="false">(<span v-for="(shorthand, ind) in card.shorthand">{{shorthand}}<span v-if="ind !== card.shorthand.length - 1">, </span> </span>)</span></a>
                 </div>
             </div>
             <!--<a :href="createViewUrl(card)" @click.prevent.stop="showCard(card.id)">-->
@@ -44,6 +44,7 @@
                 showCard: 'modals/openCardsEditor'
             }),
             createViewUrl(card) {
+                if(card)
                 return route('view_card', {id: card.id})
             },
             shorthand(list) {
@@ -83,7 +84,7 @@
         }
     }
     .letter{
-        width: 5%;
+        width: 50px;
         text-transform: uppercase;
         color: #5AD08E;
         border: 1px #5AD08E solid;
@@ -101,7 +102,7 @@
     }
     .cards{
         display: inline-block;
-        margin-left: 10%;
+        margin-left: 80px;
         line-height: 30px;
     }
     .card-block{
