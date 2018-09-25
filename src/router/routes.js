@@ -92,7 +92,7 @@ export default [
         ]
     },
     {
-        path: '/cards/',
+        path: '/glossary/',
         component: () => import('layouts/DefaultLayout.vue'),
         beforeEnter: ifAuthenticated,
         children: [

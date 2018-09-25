@@ -6,15 +6,15 @@
                 <q-icon name="home" size="1.4rem" class="q-mr-sm"/>
                 Feed
             </q-item>
-            <q-item to="/cards" :class="{active:isActive('cards')}">
-                <q-icon name="note" size="1.4rem" class="q-mr-sm"/>
-                Cards
+            <q-item to="/glossary" :class="{active:isActive('glossary')}">
+                <q-icon name="library_books" size="1.4rem" class="q-mr-sm"/>
+                Glossary
             </q-item>
             <q-item to="/questions" :class="{active:isActive('questions')}">
                 <q-icon name="help" size="1.4rem" class="q-mr-sm"/>
                 Questions
             </q-item>
-            <q-item to="/cards/tags" :class="{active:isActive('tags')}">
+            <q-item to="/glossary/tags" :class="{active:isActive('tags')}">
                 <q-icon name="local_offer" size="1.4rem" class="q-mr-sm"/>
                 Tags
             </q-item>
@@ -27,9 +27,9 @@
             return {
                 links: {
                     home: ['/'],
-                    cards: ['/cards', '/cards/table', '/cards/saved'],
+                    glossary: ['/glossary', '/glossary/table', '/glossary/saved'],
                     questions: ['/questions', '/questions/answered', '/questions/my'],
-                    tags: ['/cards/tags']
+                    tags: ['/glossary/tags']
                 }
             }
         },

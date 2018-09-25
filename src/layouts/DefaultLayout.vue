@@ -14,7 +14,7 @@
                                             <q-item-tile>Feed</q-item-tile>
                                         </q-item-main>
                                     </q-item>
-                                    <q-item to="/cards">
+                                    <q-item to="/glossary">
                                         <q-item-side icon="note"/>
                                         <q-item-main>
                                             <q-item-tile>Cards</q-item-tile>
@@ -26,7 +26,7 @@
                                             <q-item-tile>Questions</q-item-tile>
                                         </q-item-main>
                                     </q-item>
-                                    <q-item to="/cards/tags">
+                                    <q-item to="/glossary/tags">
                                         <q-item-side icon="local_offer"/>
                                         <q-item-main>
                                             <q-item-tile>Tags</q-item-tile>
