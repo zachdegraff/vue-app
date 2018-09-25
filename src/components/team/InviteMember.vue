@@ -50,9 +50,13 @@
         computed: {
             ...mapGetters({
                 roles: 'users/getRoles',
-                team: 'teams/getViewingTeam',
+                currentTeam: 'teams/current',
+                viewingTeam: 'teams/getViewingTeam',
                 isProcessing: 'members/isInviting'
-            })
+            }),
+            team() {
+                return this.viewingTeam || this.currentTeam
+            }
         },
         components: {
             AppModalLayout
