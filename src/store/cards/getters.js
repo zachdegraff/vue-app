@@ -9,8 +9,12 @@ export const getById = state => {
 
 export const getItems = state => state.items;
 export const getAlphabetItems = state => {
-    const result = {}, other = [];
-    state.items.forEach(item => {
+    const result = {}, other = [],
+        items = state.items.sort((a, b) => {
+            return ('' + a.name.toLowerCase()).localeCompare(b.name.toLowerCase())
+        });
+
+    items.forEach(item => {
         let letter = item.name.charAt(0).toLocaleLowerCase();
         if (!letter.match(/[a-z]/)) {
             return other.push(item);
