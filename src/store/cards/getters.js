@@ -7,7 +7,24 @@ export const getById = state => {
     }
 };
 
-export const getItems = state => state.cardItems;
+export const getItems = state => state.items;
+export const getAlphabetItems = state => {
+    const result = {}, other = [];
+    state.items.forEach(item => {
+        let letter = item.name.charAt(0).toLocaleLowerCase();
+        if (!letter.match(/[a-z]/)) {
+            return other.push(item);
+        }
+        if (result[letter] === undefined) {
+            result[letter] = []
+        }
+        result[letter].push(item)
+    });
+    if (other.length > 0) {
+        result['#'] = other
+    }
+    return result
+};
 
 export const getCardsAmount = state => state.amount;
 
@@ -68,6 +85,6 @@ export const getRecentlyUpdated = state => state.recently;
 export const isCreating = state => state.actionCreateStatus === 'Request';
 export const isUpdating = state => state.actionUpdateStatus === 'Request';
 export const isCardLoading = state => state.actionGetStatus === 'Request';
-export const isCardsLoading = state => state.actionAllStatus === 'Request';
+export const isCardsLoading = state => state.actionAllStatus === '' || state.actionAllStatus === 'Request';
 export const isCardsAmountLoading = state => state.actionCardsAmount === 'Request';
 export const isCardsAmountLoaded = state => state.actionCardsAmount === 'Success';

@@ -11,18 +11,18 @@
                 <div class="row q-mb-lg" v-if="team">
                     <div class="col q-headline">{{team.name}} cards</div>
                 </div>
-                <div class="q-card full-width empty_card" v-show="isEmptyCart">
+                <div class="q-card full-width empty_card" v-show="isEmptyCards">
                     <h2>No cards yet!</h2>
                     <p>Get started by creating your first Knowledge Card for a frequently used team concept.</p>
                     <q-btn no-caps color="primary" label="Create a card" class="q-mr-md q-mb-md" @click="createCard"/>
                 </div>
                 <div class="row flex-center q-mt-lg" v-show="isLoading">
-                    <q-spinner :size="36" color="red" />
+                    <q-spinner :size="36" color="red"/>
                 </div>
-                <cards-list :items="items"></cards-list>
+                <cards-list :items="alphabetItems"></cards-list>
             </div>
             <div class="col-lg-3 q-px-xl gt-md">
-                <q-btn no-caps color="primary" label="Create a card" @click="createCard" class="full-width q-mb-md" />
+                <q-btn no-caps color="primary" label="Create a card" @click="createCard" class="full-width q-mb-md"/>
                 <q-btn outline no-caps color="primary" label="Filter cards" to="/cards/table" class="full-width q-mb-md"/>
                 <q-btn outline no-caps color="primary" label="Saved cards" to="/cards/saved" class="full-width q-mb-md"/>
                 <slack-integration class="full-width"/>
@@ -38,36 +38,36 @@
     import {prop, route} from "../../helpers"
 
     export default {
-        data: () => {
-            return {
-                isEmptyCart:false,
-        }
-        },
         computed: {
             ...mapGetters({
                 team: 'teams/current',
                 items: 'cards/getItems',
                 cardCount: 'cards/cardCount',
-                isLoading: 'cards/isCardsLoading'
+                isLoading: 'cards/isCardsLoading',
+                alphabetItems: 'cards/getAlphabetItems'
             }),
             title() {
                 return `${prop(this.team, 'name')} cards - Wonderus`
+            },
+            isEmptyCards() {
+                if (this.isLoading) {
+                    return false
+                }
+                return this.items.length === 0;
             }
         },
         components: {CardsList, SiteNavigation, SlackIntegration},
         watch: {
-            team: function (val) {
-                this.load().then((res) => {
-                        this.isEmptyCart = res.length == 0;
-                });
+            team: function (val, old) {
+                if (val === old) return;
+
+                this.load();
                 document.title = this.title;
             }
 
         },
         created() {
-            this.load().then((res) => {
-                this.isEmptyCart = res.length == 0;
-            });
+            this.load();
             document.title = this.title;
         },
 
