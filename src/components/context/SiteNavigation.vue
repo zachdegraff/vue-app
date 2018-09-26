@@ -27,7 +27,7 @@
             return {
                 links: {
                     home: ['/'],
-                    glossary: ['/glossary', '/glossary/table', '/glossary/saved'],
+                    glossary: ['/glossary', '/glossary/table', '/glossary/favorites'],
                     questions: ['/questions', '/questions/answered', '/questions/my'],
                     tags: ['/glossary/tags']
                 }

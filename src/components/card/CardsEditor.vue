@@ -73,9 +73,9 @@
                                 </q-popover>
                                 <span class="q-ml-xs" v-show="tagsCount > 0">{{tagsCount}}</span>
                             </q-btn>
-                            <q-btn icon="bookmark" flat dense @click="toggleFavorite(active.id)"
+                            <q-btn icon="star" flat dense @click="toggleFavorite(active.id)"
                                    v-show="isSaved(active.id)"/>
-                            <q-btn icon="bookmark_border" flat dense @click="toggleFavorite(active.id)"
+                            <q-btn icon="star_border" flat dense @click="toggleFavorite(active.id)"
                                    v-show="!isSaved(active.id)"/>
                             <q-btn icon="delete" flat dense @click.prevent.stop="flush($event)"
                                    v-show="active.canRemove"/>
