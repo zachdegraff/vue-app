@@ -1,7 +1,7 @@
 <template>
     <div class="row gutter-sm cards-list">
        <div class="charArray">
-           <span @click="getClassName(char)" v-bind:class="{ 'bold': Object.keys(items).includes(char) }" v-for="char in charArray">{{char}}</span>
+         <b>Jump To: </b>  <span @click="getClassName(char)" v-bind:class="{ 'bold': Object.keys(items).includes(char) }" v-for="char in charArray">{{char}}</span>
        </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 card-block" v-for="(cards,key) in items">
             <h3 class="letter" v-if="key !== '#'" :class="key">{{key}}</h3>
