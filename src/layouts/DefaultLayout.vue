@@ -15,9 +15,9 @@
                                         </q-item-main>
                                     </q-item>
                                     <q-item to="/glossary">
-                                        <q-item-side icon="note"/>
+                                        <q-item-side icon="library_books"/>
                                         <q-item-main>
-                                            <q-item-tile>Cards</q-item-tile>
+                                            <q-item-tile>Glossary</q-item-tile>
                                         </q-item-main>
                                     </q-item>
                                     <q-item to="/questions">

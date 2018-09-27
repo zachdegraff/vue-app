@@ -424,7 +424,9 @@
         }
 
     }
-
+    .cards-editor-main{
+        overflow-x: hidden !important;
+    }
     .cards-editor-cards {
         background: #f4f4f4;
         color: #707070;
