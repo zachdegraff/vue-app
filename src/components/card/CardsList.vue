@@ -1,5 +1,9 @@
 <template>
     <div class="row gutter-sm cards-list">
+        <div class="filter-by-tag col-md-12">
+            <span>Filter by Tag: </span>
+            <span class="filter-tags" @click="tagFilter(tag,$event)" v-for="tag in tags">{{tag.name}}</span>
+        </div>
        <div class="charArray">
          <span class="jump-to">Jump To: </span>  <span @click="getClassName(char)" v-bind:class="{ 'bold': Object.keys(items).includes(char) }" v-for="char in charArray">{{char}}</span>
        </div>
@@ -25,6 +29,7 @@
         computed: {
             ...mapGetters({
                 charArray: 'cards/getCharArray',
+                tags: 'tags/allNonEmpty',
             }),
         },
         props: {
@@ -42,6 +47,13 @@
                 }else{
                     VueScrollTo.scrollTo('.'+char);
                 }
+            },
+            tagFilter(tag,event){
+                document.querySelectorAll('.filter-tags').forEach(function(a) {
+                    a.classList.remove('active')
+                });
+                let element = event.target;
+                element.classList.add("active");
             },
             createViewUrl(card) {
                 if(card)
@@ -123,6 +135,22 @@
         width: 20px;
         display: inline-block;
     }
+    .filter-by-tag span:not(:first-child){
+        color: #95989D;
+        font-size: 18px;
+        cursor: pointer;
+        display: inline-block;
+        border: 2px solid;
+        text-align: center;
+        padding: 10px;
+        margin-left: 20px;
+        border-top-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+    .filter-by-tag span.active{
+        border: 2px solid #5AD08E;
+        color:#5AD08E;
+    }
     .bold{
         font-weight: bold;
         cursor: pointer !important;
@@ -131,8 +159,18 @@
     .jump-to{
         color: #95989D !important;
         width: 95px !important;
+        text-transform: none;
+    }
+    .filter-by-tag span:first-child{
+        color: #95989D !important;
+        width: 110px !important;
+        text-transform: none;
     }
     .bold:hover{
         color: #07ab07 !important
+    }
+    .filter-by-tag{
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 20px !important;
     }
 </style>
