@@ -6,7 +6,7 @@
                 <div class="row lt-lg">
                     <q-btn no-caps color="primary" label="Create a card" @click="createCard" class="q-mr-md q-mb-md"/>
                     <q-btn outline no-caps color="primary" label="Filter cards" to="/glossary/table" class="q-mr-md q-mb-md"/>
-                    <q-btn outline no-caps color="primary" label="Saved cards" to="/glossary/saved" class="q-mr-md q-mb-md"/>
+                    <q-btn outline no-caps color="primary" label="Saved cards" to="/glossary/favorites" class="q-mr-md q-mb-md"/>
                 </div>
                 <div class="row q-mb-lg" v-if="team">
                     <div class="col q-headline">{{team.name}} Glossary</div>
@@ -24,7 +24,7 @@
             <div class="col-lg-3 q-px-xl gt-md">
                 <q-btn no-caps color="primary" label="Create a card" @click="createCard" class="full-width q-mb-md"/>
                 <q-btn outline no-caps color="primary" label="Filter cards" to="/glossary/table" class="full-width q-mb-md"/>
-                <q-btn outline no-caps color="primary" label="Saved cards" to="/glossary/saved" class="full-width q-mb-md"/>
+                <q-btn outline no-caps color="primary" label="Saved cards" to="/glossary/favorites" class="full-width q-mb-md"/>
                 <slack-integration class="full-width"/>
             </div>
         </div>

@@ -1,39 +1,37 @@
 <template>
     <div class="row gutter-sm cards-list">
+        <div class="filter-by-tag col-md-12">
+            <span>Filter by Tag: </span>
+            <span class="filter-tags" @click="tagFilter(tag,$event)" v-for="tag in tags">{{tag.name}}</span>
+        </div>
+       <div class="charArray">
+         <span class="jump-to">Jump To: </span>  <span @click="getClassName(char)" v-bind:class="{ 'bold': Object.keys(items).includes(char) }" v-for="char in charArray">{{char}}</span>
+       </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 card-block" v-for="(cards,key) in items">
-            <h3 class="letter">{{key}}</h3>
+            <h3 class="letter" v-if="key !== '#'" :class="key">{{key}}</h3>
+            <h3 class="letter lastItem" v-if="key == '#'" >{{key}}</h3>
             <div class="cards">
                 <div v-for="card in cards">
                     <a v-if="card" :href="createViewUrl(card)" @click.prevent.stop="showCard(card.id)"> {{card.name}} <span v-if="false">(<span v-for="(shorthand, ind) in card.shorthand">{{shorthand}}<span v-if="ind !== card.shorthand.length - 1">, </span> </span>)</span></a>
                 </div>
             </div>
-            <!--<a :href="createViewUrl(card)" @click.prevent.stop="showCard(card.id)">-->
-                <!--<q-card class="cards-list-item cursor-pointer self-center">-->
-                    <!--<q-card-media>-->
-                        <!--<img :src="getCardImage(card.thumb)">-->
-
-                        <!--<q-card-title slot="overlay" v-if="card.thumb">-->
-                            <!--{{card.name}}-->
-                            <!--<span slot="subtitle" v-if="card.shorthand.length"><q-icon name="style" class="q-mr-sm"/><span v-html="shorthand(card.shorthand)"></span></span>-->
-                        <!--</q-card-title>-->
-                        <!--<div class="cards-list-item-title" v-if="!card.thumb">-->
-                            <!--{{card.name}}-->
-                            <!--<div v-if="card.shorthand.length">-->
-                                <!--<q-icon name="style"/>-->
-                                <!--<span v-html="shorthand(card.shorthand)"></span>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</q-card-media>-->
-                <!--</q-card>-->
-            <!--</a>-->
         </div>
     </div>
 </template>
 <script>
+    import Vue from 'vue'
     import {mapActions, mapGetters} from 'vuex'
     import {route} from '../../helpers'
+    import VueScrollTo from 'vue-scrollto';
+    Vue.use(VueScrollTo);
 
     export default {
+        computed: {
+            ...mapGetters({
+                charArray: 'cards/getCharArray',
+                tags: 'tags/allNonEmpty',
+            }),
+        },
         props: {
             items: {
                 required: true
@@ -43,6 +41,20 @@
             ...mapActions({
                 showCard: 'modals/openCardsEditor'
             }),
+            getClassName(char){
+                if(char === '#'){
+                    VueScrollTo.scrollTo('.lastItem');
+                }else{
+                    VueScrollTo.scrollTo('.'+char);
+                }
+            },
+            tagFilter(tag,event){
+                document.querySelectorAll('.filter-tags').forEach(function(a) {
+                    a.classList.remove('active')
+                });
+                let element = event.target;
+                element.classList.add("active");
+            },
             createViewUrl(card) {
                 if(card)
                 return route('view_card', {id: card.id})
@@ -111,5 +123,54 @@
     }
     .cards div a:hover{
         color:#006400;
+    }
+    .charArray{
+        text-transform: uppercase;
+    }
+    .charArray span{
+        padding-right: 10px;
+        color: #d0d1d2;
+        font-size: 18px;
+        cursor: context-menu;
+        width: 20px;
+        display: inline-block;
+    }
+    .filter-by-tag span:not(:first-child){
+        color: #95989D;
+        font-size: 18px;
+        cursor: pointer;
+        display: inline-block;
+        border: 2px solid;
+        text-align: center;
+        padding: 10px;
+        margin-left: 20px;
+        border-top-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+    .filter-by-tag span.active{
+        border: 2px solid #5AD08E;
+        color:#5AD08E;
+    }
+    .bold{
+        font-weight: bold;
+        cursor: pointer !important;
+        color: #95989D !important;
+    }
+    .jump-to{
+        color: #95989D !important;
+        width: 95px !important;
+        text-transform: none;
+    }
+    .filter-by-tag span:first-child{
+        color: #95989D !important;
+        width: 110px !important;
+        text-transform: none;
+    }
+    .bold:hover{
+        color: #07ab07 !important
+    }
+    .filter-by-tag{
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 20px !important;
     }
 </style>

@@ -29,7 +29,14 @@ export const getAlphabetItems = state => {
     }
     return result
 };
-
+export const getCharArray = state =>  {
+    var a = [], i = 'a'.charCodeAt(0), j = 'z'.charCodeAt(0);
+    for (; i <= j; ++i) {
+        a.push(String.fromCharCode(i));
+    }
+    a.push("#");
+    return a;
+};
 export const getCardsAmount = state => state.amount;
 
 export const getFilteredItems = state => {
