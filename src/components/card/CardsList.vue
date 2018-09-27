@@ -1,7 +1,7 @@
 <template>
     <div class="row gutter-sm cards-list">
        <div class="charArray">
-         <span class="bold">Jump To: </span>  <span @click="getClassName(char)" v-bind:class="{ 'bold': Object.keys(items).includes(char) }" v-for="char in charArray">{{char}}</span>
+         <span class="jump-to">Jump To: </span>  <span @click="getClassName(char)" v-bind:class="{ 'bold': Object.keys(items).includes(char) }" v-for="char in charArray">{{char}}</span>
        </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 card-block" v-for="(cards,key) in items">
             <h3 class="letter" v-if="key !== '#'" :class="key">{{key}}</h3>
@@ -119,11 +119,20 @@
         padding-right: 10px;
         color: #d0d1d2;
         font-size: 18px;
-        cursor: not-allowed;
+        cursor: context-menu;
+        width: 20px;
+        display: inline-block;
     }
     .bold{
         font-weight: bold;
         cursor: pointer !important;
         color: #95989D !important;
+    }
+    .jump-to{
+        color: #95989D !important;
+        width: 95px !important;
+    }
+    .bold:hover{
+        color: #07ab07 !important
     }
 </style>
