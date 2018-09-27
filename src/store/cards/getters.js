@@ -8,35 +8,6 @@ export const getById = state => {
 };
 
 export const getItems = state => state.items;
-export const getAlphabetItems = state => {
-    const result = {}, other = [],
-        items = state.items.sort((a, b) => {
-            return ('' + a.name.toLowerCase()).localeCompare(b.name.toLowerCase())
-        });
-
-    items.forEach(item => {
-        let letter = item.name.charAt(0).toLocaleLowerCase();
-        if (!letter.match(/[a-z]/)) {
-            return other.push(item);
-        }
-        if (result[letter] === undefined) {
-            result[letter] = []
-        }
-        result[letter].push(item)
-    });
-    if (other.length > 0) {
-        result['#'] = other
-    }
-    return result
-};
-export const getCharArray = state =>  {
-    var a = [], i = 'a'.charCodeAt(0), j = 'z'.charCodeAt(0);
-    for (; i <= j; ++i) {
-        a.push(String.fromCharCode(i));
-    }
-    a.push("#");
-    return a;
-};
 export const getCardsAmount = state => state.amount;
 
 export const getFilteredItems = state => {

@@ -45,7 +45,7 @@
         </q-page-container>
         <app-footer></app-footer>
         <dialogs-store></dialogs-store>
-        <p class="back-to-top" v-if="scrolled" @click="scrollTop()">&uarr;</p>
+        <p class="back-to-top" v-if="scrolled" v-scroll-to="{el: '#q-app'}">&uarr;</p>
     </q-layout>
 </template>
 
@@ -55,9 +55,6 @@
     import DialogsStore from '../components/DialogsStore.vue'
     import SearchForm from '../components/SearchForm'
     import {mapGetters} from 'vuex'
-    import Vue from 'vue'
-    import VueScrollTo from 'vue-scrollto';
-    Vue.use(VueScrollTo);
 
     export default {
         computed: {
@@ -73,9 +70,6 @@
         methods: {
             handleScroll () {
                 this.scrolled = window.scrollY > 200;
-            },
-            scrollTop () {
-                VueScrollTo.scrollTo('#q-app');
             }
         },
         beforeMount () {

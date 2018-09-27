@@ -16,24 +16,7 @@ export const getFavoriteCards = (state, getters, rootState, rootGetters) => {
     if (team === null) {
         return []
     }
-        const result = {}, other = [],
-            items = state.favorite.sort((a, b) => {
-                return ('' + a.name.toLowerCase()).localeCompare(b.name.toLowerCase())
-            });
-        items.forEach(item => {
-            let letter = item.name.charAt(0).toLocaleLowerCase();
-            if (!letter.match(/[a-z]/)) {
-                return other.push(item);
-            }
-            if (result[letter] === undefined) {
-                result[letter] = []
-            }
-            result[letter].push(item)
-        });
-        if (other.length > 0) {
-            result['#'] = other
-        }
-        return result
+    return state.favorite.filter(card => card.teamId === team.id);
 };
 export const getFavoriteCardsCount = (state, getters) => {
     return getters['getFavoriteCards'].length

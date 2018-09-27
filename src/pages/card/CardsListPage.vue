@@ -19,7 +19,7 @@
                 <div class="row flex-center q-mt-lg" v-show="isLoading">
                     <q-spinner :size="36" color="red"/>
                 </div>
-                <cards-list :items="alphabetItems"></cards-list>
+                <cards-list :items="items"></cards-list>
             </div>
             <div class="col-lg-3 q-px-xl gt-md">
                 <q-btn no-caps color="primary" label="Create a card" @click="createCard" class="full-width q-mb-md"/>
@@ -43,8 +43,7 @@
                 team: 'teams/current',
                 items: 'cards/getItems',
                 cardCount: 'cards/cardCount',
-                isLoading: 'cards/isCardsLoading',
-                alphabetItems: 'cards/getAlphabetItems'
+                isLoading: 'cards/isCardsLoading'
             }),
             title() {
                 return `${prop(this.team, 'name')} Glossary - Wonderus`
