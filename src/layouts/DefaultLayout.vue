@@ -45,6 +45,7 @@
         </q-page-container>
         <app-footer></app-footer>
         <dialogs-store></dialogs-store>
+        <p class="back-to-top" v-if="scrolled" @click="scrollTop()">&uarr;</p>
     </q-layout>
 </template>
 
@@ -54,12 +55,34 @@
     import DialogsStore from '../components/DialogsStore.vue'
     import SearchForm from '../components/SearchForm'
     import {mapGetters} from 'vuex'
+    import Vue from 'vue'
+    import VueScrollTo from 'vue-scrollto';
+    Vue.use(VueScrollTo);
 
     export default {
         computed: {
             ...mapGetters({
                 team: 'teams/current'
             })
+        },
+        data () {
+            return {
+                scrolled: false
+            };
+        },
+        methods: {
+            handleScroll () {
+                this.scrolled = window.scrollY > 200;
+            },
+            scrollTop () {
+                VueScrollTo.scrollTo('#q-app');
+            }
+        },
+        beforeMount () {
+            window.addEventListener('scroll', this.handleScroll);
+        },
+        beforeDestroy () {
+            window.removeEventListener('scroll', this.handleScroll);
         },
         components: {
             SearchForm,
@@ -70,6 +93,19 @@
     }
 </script>
 <style lang="scss">
+    .back-to-top{
+        background: #2fab65;
+        color: #fff;
+        position: fixed;
+        right: 15px;
+        bottom: 50px;
+        width: 45px;
+        height: 40px;
+        font-size: 20px;
+        text-align: center;
+        padding-top: 6px;
+        cursor: pointer;
+    }
     .mobile-site-navigation {
         .q-item {
             &.router-link-active, &.router-link-exact-active {
