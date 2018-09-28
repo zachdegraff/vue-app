@@ -13,7 +13,7 @@
             <div class="cards">
                 <div v-for="card in list">
                     <a v-if="card" :href="createViewUrl(card)" @click.prevent.stop="showCard(card.id)"> {{card.name}}
-                        <span v-if="false">(<span v-for="(shorthand, ind) in card.shorthand">{{shorthand}}<span v-if="ind !== card.shorthand.length - 1">, </span> </span>)</span></a>
+                        <span v-if="card.shorthand[0]">(<span v-for="(shorthand, ind) in card.shorthand">{{shorthand}}<span v-if="ind !== card.shorthand.length - 1">, </span> </span>)</span></a>
                 </div>
             </div>
         </div>
