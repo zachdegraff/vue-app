@@ -4,7 +4,7 @@ module.exports = function (ctx) {
     return {
         // app plugins (/src/plugins)
         plugins: [
-            'axios', 'vuelidate'
+            'axios', 'vuelidate', 'scrollto'
         ],
         css: [
             'app.styl'
