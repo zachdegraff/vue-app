@@ -1,5 +1,15 @@
 <template>
     <div class="row gutter-sm cards-list">
+        <!-- Single Selection using Radios -->
+        <q-select
+                @click="filterTag = tag"
+                inverted
+                filter
+                multiple
+                float-label="Select something"
+                v-model="multipleSelect"
+                :options="options"
+        />
         <div class="filter-by-tag col-md-12">
             <span>Filter by Tag: </span>
             <span class="filter-tags" :class="{active: filterTag === tag}" @click="filterTag = tag" v-for="tag in tags">{{tag.name}}</span>
@@ -32,10 +42,30 @@
         },
         data: () => {
             return {
-                filterTag: null
+                filterTag: null,
+                lazy: [],
+                select: 'fb',
+                multipleSelect: ['goog', 'twtr'],
+                error: true,
+                warning: false,
+                options:[],
+            }
+        },
+        mounted () {
+            this.options = [];
+
+            for (let a = 0; a < this.tags.length; a++){
+                console.log(a);
+                this.options.push(
+                    {
+                        'label':this.tags[a]['name'],
+                        'value':this.tags[a]['name']
+                    }
+                );
             }
         },
         computed: {
+
             tags() {
                 const result = {};
                 this.items.forEach(item => {
@@ -81,6 +111,9 @@
             }
         },
         methods: {
+            setOptions(){
+                console.log(tags);
+            },
             ...mapActions({
                 showCard: 'modals/openCardsEditor'
             }),
