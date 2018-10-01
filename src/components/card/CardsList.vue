@@ -163,7 +163,7 @@
             padding-right: 10px;
             color: #d0d1d2;
             font-size: 18px;
-            cursor: context-menu;
+            cursor: default;
             width: 20px;
             display: inline-block;
         }
