@@ -1,18 +1,21 @@
 <template>
     <div class="row gutter-sm cards-list">
-        <!-- Single Selection using Radios -->
-        <q-select
-                @click="filterTag = tag"
-                inverted
-                filter
-                multiple
-                float-label="Select something"
-                v-model="multipleSelect"
-                :options="options"
-        />
+
         <div class="filter-by-tag col-md-12">
-            <span>Filter by Tag: </span>
-            <span class="filter-tags" :class="{active: filterTag === tag}" @click="filterTag = tag" v-for="tag in tags">{{tag.name}}</span>
+            <div class="row">
+                <div class="col-sm-3">
+                    <q-select
+                            filter
+                            multiple
+                            stack-label="Filter by tag"
+                            :display-value="selectTagsLabel"
+                            v-model="filterTagsIdList"
+                            :options="options"
+                    />
+                </div>
+            </div>
+
+            <!--<span class="filter-tags" :class="{active: filterTag === tag}" @click="filterTag = tag" v-for="tag in tags">{{tag.name}}</span>-->
         </div>
         <div class="charArray">
             <span class="jump-to">Jump To: </span>
@@ -42,30 +45,10 @@
         },
         data: () => {
             return {
-                filterTag: null,
-                lazy: [],
-                select: 'fb',
-                multipleSelect: ['goog', 'twtr'],
-                error: true,
-                warning: false,
-                options:[],
-            }
-        },
-        mounted () {
-            this.options = [];
-
-            for (let a = 0; a < this.tags.length; a++){
-                console.log(a);
-                this.options.push(
-                    {
-                        'label':this.tags[a]['name'],
-                        'value':this.tags[a]['name']
-                    }
-                );
+                filterTagsIdList: [],
             }
         },
         computed: {
-
             tags() {
                 const result = {};
                 this.items.forEach(item => {
@@ -90,8 +73,8 @@
                 });
 
                 items.forEach(item => {
-                    if (this.filterTag !== null) {
-                        if (!this.isCardTag(item, this.filterTag)) {
+                    if (this.filterTagsIdList.length > 0) {
+                        if (!this.isCardTag(item)) {
                             return
                         }
                     }
@@ -108,12 +91,24 @@
                     result['#'] = other
                 }
                 return result
+            },
+            options() {
+                return this.tags.map(item => {
+                        return {'value': item.id, 'label': item.name}
+                    }
+                )
+            },
+            selectTagsLabel() {
+                if (this.filterTagsIdList.length === 0) {
+                    return 'No tags selected'
+                }
+                if (this.filterTagsIdList.length === 1) {
+                    return '1 tag selected'
+                }
+                return `${this.filterTagsIdList.length} tags selected`
             }
         },
         methods: {
-            setOptions(){
-                console.log(tags);
-            },
             ...mapActions({
                 showCard: 'modals/openCardsEditor'
             }),
@@ -126,11 +121,11 @@
             createViewUrl(card) {
                 return route('view_card', {id: card.id})
             },
-            isCardTag(card, tag) {
+            isCardTag(card) {
                 if (!card.tags || card.tags.length === 0) {
                     return false;
                 }
-                return card.tags.findIndex(item => item.id === tag.id) !== -1
+                return card.tags.findIndex(item => this.filterTagsIdList.includes(item.id)) !== -1
             }
         }
     }
