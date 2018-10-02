@@ -19,14 +19,17 @@
         </div>
         <div class="charArray">
             <span class="jump-to">Jump To: </span>
-            <span v-bind:class="{'bold': Object.keys(cards).includes(char) }" v-for="char in chars" v-scroll-to="{el:`.char${char.charCodeAt(0)}`}">{{char}}</span>
+            <span v-bind:class="{'bold': Object.keys(cards).includes(char) }" v-for="char in chars"
+                  v-scroll-to="{el:`.char${char.charCodeAt(0)}`}">{{char}}</span>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 card-block" v-for="(list, key) in cards">
             <h3 class="letter" :class="`char${key.charCodeAt(0)}`">{{key}}</h3>
             <div class="cards">
                 <div v-for="card in list">
                     <a v-if="card" :href="createViewUrl(card)" @click.prevent.stop="showCard(card.id)"> {{card.name}}
-                        <span v-if="card.shorthand[0]">(<span v-for="(shorthand, ind) in card.shorthand">{{shorthand}}<span v-if="ind !== card.shorthand.length - 1">, </span> </span>)</span></a>
+                        <span v-if="card.shorthand[0]">(<span
+                                v-for="(shorthand, ind) in card.shorthand">{{shorthand}}<span
+                                v-if="ind !== card.shorthand.length - 1">, </span> </span>)</span></a>
                 </div>
             </div>
         </div>
@@ -93,10 +96,15 @@
                 return result
             },
             options() {
+                this.tags.sort(function (a, b) {
+                        let x = a.name.toLowerCase();
+                        let y = b.name.toLowerCase();
+                    return x < y ? -1 : x > y ? 1 : 0;
+                });
                 return this.tags.map(item => {
-                        return {'value': item.id, 'label': item.name}
+                        return {'label': item.name, 'value': item.id}
                     }
-                )
+                );
             },
             selectTagsLabel() {
                 if (this.filterTagsIdList.length === 0) {
