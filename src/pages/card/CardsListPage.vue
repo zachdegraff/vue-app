@@ -65,7 +65,6 @@
                 items: 'cards/getItems',
                 cardCount: 'cards/cardCount',
                 isLoading: 'cards/isCardsLoading',
-                filterTagsIdList: 'cards/getGlossaryFilterTags'
             }),
             tags() {
                 const result = {};
