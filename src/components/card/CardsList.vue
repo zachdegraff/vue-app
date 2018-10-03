@@ -1,22 +1,5 @@
 <template>
     <div class="row gutter-sm cards-list">
-
-        <div class="filter-by-tag col-md-12">
-            <div class="row">
-                <div class="col-sm-3">
-                    <!--<q-select-->
-                            <!--filter-->
-                            <!--multiple-->
-                            <!--stack-label="Filter by tag"-->
-                            <!--:display-value="selectTagsLabel"-->
-                            <!--v-model="filterTagsIdList"-->
-                            <!--:options="options"-->
-                    <!--/>-->
-                </div>
-            </div>
-
-            <!--<span class="filter-tags" :class="{active: filterTag === tag}" @click="filterTag = tag" v-for="tag in tags">{{tag.name}}</span>-->
-        </div>
         <div class="charArray">
             <span class="jump-to">Jump To: </span>
             <span v-bind:class="{'bold': Object.keys(cards).includes(char) }" v-for="char in chars"
@@ -44,11 +27,11 @@
             items: {
                 required: true,
                 type: Array
-            }
-        },
-        data: () => {
-            return {
-                filterTagsIdList: [],
+            },
+            filterTagsIdList: {
+                required: true,
+                type: Array,
+                default: []
             }
         },
         computed: {
@@ -96,12 +79,10 @@
                 return result
             },
             options() {
-                this.tags.sort(function (a, b) {
-                        let x = a.name.toLowerCase();
-                        let y = b.name.toLowerCase();
-                    return x < y ? -1 : x > y ? 1 : 0;
+                const options = this.tags.sort((a, b) => {
+                    return ('' + a.name.toLowerCase()).localeCompare(b.name.toLowerCase())
                 });
-                return this.tags.map(item => {
+                return options.map(item => {
                         return {'label': item.name, 'value': item.id}
                     }
                 );

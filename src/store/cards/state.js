@@ -11,6 +11,4 @@ export default {
     actionCreateStatus: '',
     actionCardsAmount: '',
     actionRecentlyStatus: '',
-    glossaryFilterTags: [],
-    favouriteFilterTags: []
 }
