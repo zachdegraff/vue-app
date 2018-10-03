@@ -5,8 +5,16 @@
             <div class="col-md-12 col-lg-7">
                 <div class="row lt-lg">
                     <q-btn no-caps color="primary" label="Create a card" @click="createCard" class="q-mr-md q-mb-md"/>
-                    <q-btn outline no-caps color="primary" label="Filter cards" to="/glossary/table" class="q-mr-md q-mb-md"/>
-                    <q-btn outline no-caps color="primary" label="Saved cards" to="/glossary/favorites" class="q-mr-md q-mb-md"/>
+                    <q-select
+                            filter
+                            multiple
+                            stack-label="Filter by tag"
+                            :display-value="selectTagsLabel"
+                            v-model="filterTagsIdList"
+                            :options="options"
+                    />
+                    <!--<q-btn outline no-caps color="primary" label="Filter cards" to="/glossary/table" class="q-mr-md q-mb-md"/>-->
+                    <!--<q-btn outline no-caps color="primary" label="Saved cards" to="/glossary/favorites" class="q-mr-md q-mb-md"/>-->
                 </div>
                 <div class="row q-mb-lg" v-if="team">
                     <div class="col q-headline">{{team.name}} Glossary</div>
@@ -23,8 +31,16 @@
             </div>
             <div class="col-lg-3 q-px-xl gt-md">
                 <q-btn no-caps color="primary" label="Create a card" @click="createCard" class="full-width q-mb-md"/>
-                <q-btn outline no-caps color="primary" label="Filter cards" to="/glossary/table" class="full-width q-mb-md"/>
-                <q-btn outline no-caps color="primary" label="Saved cards" to="/glossary/favorites" class="full-width q-mb-md"/>
+                <q-select
+                        filter
+                        multiple
+                        stack-label="Filter by tag"
+                        :display-value="selectTagsLabel"
+                        v-model="filterTagsIdList"
+                        :options="options"
+                />
+                <!--<q-btn outline no-caps color="primary" label="Filter cards" to="/glossary/table" class="full-width q-mb-md"/>-->
+                <!--<q-btn outline no-caps color="primary" label="Saved cards" to="/glossary/favorites" class="full-width q-mb-md"/>-->
                 <slack-integration class="full-width"/>
             </div>
         </div>
@@ -38,6 +54,11 @@
     import {prop, route} from "../../helpers"
 
     export default {
+        data: () => {
+            return {
+                filterTagsIdList: [],
+            }
+        },
         computed: {
             ...mapGetters({
                 team: 'teams/current',
@@ -45,6 +66,36 @@
                 cardCount: 'cards/cardCount',
                 isLoading: 'cards/isCardsLoading'
             }),
+            tags() {
+                const result = {};
+                this.items.forEach(item => {
+                    if (!item.tags || item.tags.length === 0) {
+                        return
+                    }
+                    item.tags.forEach(tag => result[tag.id] = tag)
+                });
+                return Object.values(result)
+            },
+            options() {
+                this.tags.sort(function (a, b) {
+                    let x = a.name.toLowerCase();
+                    let y = b.name.toLowerCase();
+                    return x < y ? -1 : x > y ? 1 : 0;
+                });
+                return this.tags.map(item => {
+                        return {'label': item.name, 'value': item.id}
+                    }
+                );
+            },
+            selectTagsLabel() {
+                if (this.filterTagsIdList.length === 0) {
+                    return 'No tags selected'
+                }
+                if (this.filterTagsIdList.length === 1) {
+                    return '1 tag selected'
+                }
+                return `${this.filterTagsIdList.length} tags selected`
+            },
             title() {
                 return `${prop(this.team, 'name')} Glossary - Wonderus`
             },

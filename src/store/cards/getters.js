@@ -9,6 +9,8 @@ export const getById = state => {
 
 export const getItems = state => state.items;
 export const getCardsAmount = state => state.amount;
+export const getFavouriteFilterTags = state => state.favouriteFilterTags;
+export const getGlossaryFilterTags = state => state.glossaryFilterTags;
 
 export const getFilteredItems = state => {
     return filter => {

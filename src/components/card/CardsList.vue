@@ -4,14 +4,14 @@
         <div class="filter-by-tag col-md-12">
             <div class="row">
                 <div class="col-sm-3">
-                    <q-select
-                            filter
-                            multiple
-                            stack-label="Filter by tag"
-                            :display-value="selectTagsLabel"
-                            v-model="filterTagsIdList"
-                            :options="options"
-                    />
+                    <!--<q-select-->
+                            <!--filter-->
+                            <!--multiple-->
+                            <!--stack-label="Filter by tag"-->
+                            <!--:display-value="selectTagsLabel"-->
+                            <!--v-model="filterTagsIdList"-->
+                            <!--:options="options"-->
+                    <!--/>-->
                 </div>
             </div>
 
@@ -200,7 +200,6 @@
             color: #d0d1d2;
             font-size: 18px;
             cursor: default;
-            width: 20px;
             display: inline-block;
         }
     }
