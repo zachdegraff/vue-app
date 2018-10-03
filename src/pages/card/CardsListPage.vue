@@ -32,6 +32,7 @@
             <div class="col-lg-3 q-px-xl gt-md">
                 <q-btn no-caps color="primary" label="Create a card" @click="createCard" class="full-width q-mb-md"/>
                 <q-select
+                        class="margin-15"
                         filter
                         multiple
                         stack-label="Filter by tag"
@@ -134,5 +135,8 @@
         padding-left: 20px;
         padding-top: 10px;
         padding-bottom: 10px;
+    }
+    .margin-15{
+        margin-bottom: 15px;
     }
 </style>
