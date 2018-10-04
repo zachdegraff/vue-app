@@ -6,6 +6,7 @@
                 <div class="row lt-lg">
                     <q-btn no-caps color="primary" label="Create a card" @click="createCard" class="q-mr-md q-mb-md"/>
                     <q-select
+                            class="q-mr-md q-mb-md"
                             filter
                             multiple
                             stack-label="Filter by tag"
@@ -32,7 +33,7 @@
             <div class="col-lg-3 q-px-xl gt-md">
                 <q-btn no-caps color="primary" label="Create a card" @click="createCard" class="full-width q-mb-md"/>
                 <q-select
-                        class="margin-15"
+                        class="margin-15 q-mr-md q-mb-md"
                         filter
                         multiple
                         stack-label="Filter by tag"
