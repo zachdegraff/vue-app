@@ -167,7 +167,6 @@ export default [
     {
         path: '/for/',
         component: () => import('layouts/DefaultLayout.vue'),
-        beforeEnter: ifAuthenticated,
         children: [
             {path: ':name', name: 'public_sites', component: () => import('pages/public-sites/PublicSitePage.vue')},
         ]
