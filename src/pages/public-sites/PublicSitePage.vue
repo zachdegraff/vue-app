@@ -46,7 +46,7 @@
                 siteData: 'publicSites/getSiteData'
             }),
             filteredData: function () {
-                var search_array = this.siteData.team.cards,
+                var search_array = (this.siteData.team) ? this.siteData.team.cards : null,
                     searchString = this.searchString;
 
                 if(!searchString){
