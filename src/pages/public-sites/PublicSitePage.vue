@@ -10,14 +10,21 @@
                     <h1>{{siteData.name}}</h1>
                     <div class="public-search">
                         <i aria-hidden="true" class="q-icon q-if-control material-icons">search</i>
-                        <input type="text" placeholder="Search for features, basic knowledge or options..." />
+                        <input type="text" placeholder="Search for features, basic knowledge or options..." v-model="searchString"/>
                         <input type="button" value="Find" class="find-button" :style="background()">
                     </div>
                 </div>
                 <div class="col-lg-3 q-px-xl gt-md"></div>
             </div>
-
         </div>
+        <section>
+            <div class="col-md-12 col-lg-7 card-parent">
+                <div class="card-section" v-for="card in filteredData" >
+                        <h2>{{card.name}}</h2>
+                        <p v-html="card.description"></p>
+                </div>
+            </div>
+        </section>
         <div class="row gutter-x-lg">
             <div class="col-md-12 col-lg-7">
                 <h1></h1>
@@ -29,10 +36,34 @@
     import {mapActions, mapGetters} from 'vuex'
 
     export default {
+        data: () => {
+            return {
+                searchString: "",
+            }
+        },
         computed: {
             ...mapGetters({
                 siteData: 'publicSites/getSiteData'
             }),
+            filteredData: function () {
+                var search_array = this.siteData.team.cards,
+                    searchString = this.searchString;
+
+                if(!searchString){
+                    return search_array;
+                }
+
+                searchString = searchString.trim().toLowerCase();
+
+                search_array = search_array.filter(item => {
+                    if(item.name.toLowerCase().indexOf(searchString) !== -1){
+                        return item;
+                    }
+                });
+
+                // Return an array with the filtered data.
+                return search_array;
+            }
         },
         created() {
             this.$store.commit('publicSites/setSiteLink', this.$route.params.name, {root: true});
@@ -109,5 +140,15 @@
         opacity: 0.6;
         top: 0;
         left: 0;
+    }
+    .card-parent{
+        padding: 20px;
+    }
+    .card-section{
+        height: 200px;
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 20px;
     }
 </style>
