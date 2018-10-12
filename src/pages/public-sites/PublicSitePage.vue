@@ -22,6 +22,7 @@
                 <div class="card-section" v-for="card in filteredData" >
                         <h2>{{card.name}}</h2>
                         <p v-html="card.description"></p>
+                    <span class="tags" v-for="tag in card.tags">{{tag.name}}</span>
                 </div>
             </div>
         </section>
@@ -150,5 +151,14 @@
         border-radius: 10px;
         padding: 15px;
         margin-top: 20px;
+    }
+    .tags{
+        background: orange;
+        border-radius: 0 33px;
+        padding: 10px;
+        height: 40px;
+        display: inline-block;
+        min-width: 85px;
+        text-align: center;
     }
 </style>
