@@ -21,7 +21,7 @@
             <div class="col-md-12 col-lg-7 card-parent">
                 <h2 v-if="filteredData && filteredData.length == 0">No results for {{searchString}}.</h2>
                 <div class="card-section" v-for="card in filteredData">
-                    <router-link v-bind:to="'/for/public-site-1/'+card.id" tag='a'><h2>{{card.name}}</h2></router-link>
+                    <router-link v-bind:to="'/for/'+siteData.site_link+'/'+card.id" tag='a'><h2>{{card.name}}</h2></router-link>
                         <p v-html="(card.description.length > 500 )? card.description.substring(0,500)+'...' : card.description"></p>
                     <span class="tags" v-for="tag in card.tags">{{tag.name}}</span>
                 </div>
