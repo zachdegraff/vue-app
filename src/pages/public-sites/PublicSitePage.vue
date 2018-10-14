@@ -177,4 +177,7 @@
         min-width: 85px;
         text-align: center;
     }
+    a{
+        text-decoration: none;
+    }
 </style>
