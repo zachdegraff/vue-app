@@ -19,9 +19,11 @@
         </div>
         <section>
             <div class="col-md-12 col-lg-7 card-parent">
+                <h2 v-if="filteredData.length == 0">No results...</h2>
                 <div class="card-section" v-for="card in filteredData" >
+
                         <h2>{{card.name}}</h2>
-                        <p v-html="card.description"></p>
+                        <p v-html="(card.description.length > 500 )? card.description.substring(0,500)+'...' : card.description"></p>
                     <span class="tags" v-for="tag in card.tags">{{tag.name}}</span>
                 </div>
             </div>
@@ -37,6 +39,7 @@
     import {mapActions, mapGetters} from 'vuex'
 
     export default {
+
         data: () => {
             return {
                 searchString: "",
@@ -66,6 +69,7 @@
                 return search_array;
             }
         },
+
         created() {
             this.$store.commit('publicSites/setSiteLink', this.$route.params.name, {root: true});
             this.getSite();
