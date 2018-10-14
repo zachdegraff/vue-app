@@ -6,11 +6,12 @@
                 <div class="col-md-12 col-lg-7 header-middle">
                     <div class="overlay" :style="background()">
                     </div>
-                      <img class="public-logo" src="statics/quasar-logo.png" alt="" />
+                    <img class="public-logo" src="statics/quasar-logo.png" alt=""/>
                     <h1>{{siteData.name}}</h1>
                     <div class="public-search">
                         <i aria-hidden="true" class="q-icon q-if-control material-icons">search</i>
-                        <input type="text" placeholder="Search for features, basic knowledge or options..." v-model="searchString"/>
+                        <input type="text" placeholder="Search for features, basic knowledge or options..."
+                               v-model="searchString"/>
                         <input type="button" value="Find" class="find-button" :style="background()">
                     </div>
                 </div>
@@ -18,12 +19,15 @@
             </div>
         </div>
         <section>
+            <router-link v-bind:to="'/for/'+siteData.site_link" tag='a'><span class="nav-site">{{siteData.name}}</span>
+            </router-link>
+            <span>> {{cardData.name}}</span>
             <div class="col-md-12 col-lg-7 card-parent">
-                <h2 v-if="filteredData && filteredData.length == 0">No results for {{searchString}}.</h2>
-                <div class="card-section" v-for="card in filteredData">
-                    <router-link v-bind:to="'/for/public-site-1/'+card.id" tag='a'><h2>{{card.name}}</h2></router-link>
-                        <p v-html="(card.description.length > 500 )? card.description.substring(0,500)+'...' : card.description"></p>
-                    <span class="tags" v-for="tag in card.tags">{{tag.name}}</span>
+                <!--<h2 v-if="filteredData && filteredData.length == 0">No results for {{searchString}}.</h2>-->
+                <div class="card-section">
+                    <h2>{{cardData.name}}</h2>
+                    <p v-html="(descLength > 500 )? cardData.description.substring(0,500)+'...' : cardData.description"></p>
+                    <span class="tags" v-for="tag in cardData.tags">{{tag.name}}</span>
                 </div>
             </div>
         </section>
@@ -46,18 +50,19 @@
         },
         computed: {
             ...mapGetters({
-                siteData: 'publicSites/getSiteData'
+                siteData: 'publicSites/getSiteData',
+                cardData: 'publicSites/getCardData',
             }),
             filteredData: function () {
                 var search_array = (this.siteData.team) ? this.siteData.team.cards : null,
                     searchString = this.searchString;
-                if(!searchString){
+                if (!searchString) {
                     return search_array;
                 }
                 searchString = searchString.trim().toLowerCase();
 
                 search_array = search_array.filter(item => {
-                    if(item.name.toLowerCase().indexOf(searchString) !== -1){
+                    if (item.name.toLowerCase().indexOf(searchString) !== -1) {
                         return item;
                     }
                 });
@@ -65,17 +70,22 @@
                 return search_array;
             },
         },
-
         created() {
+            this.$store.commit('publicSites/setCardId', this.$route.params.cardId, {root: true});
             this.$store.commit('publicSites/setSiteLink', this.$route.params.name, {root: true});
             this.getSite();
+            this.getCard();
         },
         methods: {
             ...mapActions({
-                getSite: 'publicSites/getSiteDataByLink'
+                getSite: 'publicSites/getSiteDataByLink',
+                getCard: 'publicSites/getCardByCardId'
             }),
-            background(){
+            background() {
                 return 'background: ' + this.siteData.primary_color
+            },
+            descLength() {
+                return this.cardData.description.length;
             }
         }
     }
@@ -90,35 +100,42 @@
     header {
         display: none;
     }
-    .public-logo{
+
+    .public-logo {
         width: 60px;
         position: relative;
         top: 15px;
     }
-    .header-middle{
+
+    .header-middle {
         padding-top: 30px;
     }
-    .header-middle h1{
+
+    .header-middle h1 {
         padding-left: 10px;
         color: white;
         display: inline-block;
         position: relative;
     }
-    .public-search input[type='text']{
+
+    .public-search input[type='text'] {
         width: 420px;
         border: 0;
         height: 50px;
         padding-left: 50px;
     }
-    .public-search{
+
+    .public-search {
         position: relative;
         margin-left: 60px;
     }
-    .public-search i{
+
+    .public-search i {
         position: absolute;
         top: 15px;
         left: 10px;
     }
+
     .find-button {
         color: #fff;
         font-size: 18px;
@@ -133,7 +150,8 @@
         width: 100px;
         margin-left: 5px;
     }
-    .overlay{
+
+    .overlay {
         position: absolute;
         height: 300px;
         width: 100%;
@@ -142,17 +160,16 @@
         top: 0;
         left: 0;
     }
-    .card-parent{
-        padding: 20px;
-    }
-    .card-section{
+
+    .card-section {
         min-height: 200px;
         border: 2px solid #ccc;
         border-radius: 10px;
         padding: 15px;
         margin-top: 20px;
     }
-    .tags{
+
+    .tags {
         background: orange;
         border-radius: 0 33px;
         padding: 10px;
@@ -160,5 +177,12 @@
         display: inline-block;
         min-width: 85px;
         text-align: center;
+    }
+
+    section {
+        padding: 20px;
+    }
+    a{
+        text-decoration: none;
     }
 </style>

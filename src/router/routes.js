@@ -168,7 +168,8 @@ export default [
         path: '/for/',
         component: () => import('layouts/DefaultLayout.vue'),
         children: [
-            {path: ':name', name: 'public_sites', component: () => import('pages/public-sites/PublicSitePage.vue')},
+            {path: ':name',card:'card_id' , name: 'public_sites', component: () => import('pages/public-sites/PublicSitePage.vue')},
+            {path: ':name/:cardId',name: 'single_card', component: () => import('pages/public-sites/PublicSiteCardPage.vue')},
         ]
     },
     { // Always leave this as last one
