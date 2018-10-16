@@ -24,6 +24,9 @@
                 <div class="card-section" v-for="card in filteredData">
                     <router-link v-bind:to="'/for/'+siteData.site_link+'/'+card.id" tag='a'><h2>{{card.name}}</h2>
                     </router-link>
+                    <div class="card_img" v-if="card.img">
+                        <img :src="card.img" alt="">
+                    </div>
                     <p v-html="(descLength > 500 )? card.description.substring(0,500)+'...' : card.description"></p>
                     <span class="tags" v-for="tag in card.tags">{{tag.name}}</span>
                 </div>
@@ -179,5 +182,15 @@
     }
     a{
         text-decoration: none;
+    }
+    .card-section img:first-child {
+        width: 100px;
+    }
+    .card_img{
+        float: left;
+        margin-right: 30px;
+    }
+    .card-section img{
+        max-width: 200px;
     }
 </style>
