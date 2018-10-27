@@ -183,7 +183,7 @@ const AnchorPreview = MediumEditor.Extension.extend({
             return;
         }
 
-        if (target.href.match(/\/cards\/([0-9]+)/)) {
+        if (target.href.match(/\/(cards|glossary)\/([0-9]+)/)) {
             return;
         }
 
