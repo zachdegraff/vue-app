@@ -145,10 +145,10 @@
             handleLinkClicks(e) {
                 if (e.target.nodeName !== 'A') return true;
 
-                const matches = e.target.href.match(/\/cards\/([0-9]+)/);
+                const matches = e.target.href.match(/\/(cards|glossary)\/([0-9]+)/);
                 if (matches !== null) {
                     e.preventDefault();
-                    this.open(parseInt(matches[1]))
+                    this.open(parseInt(matches[2]))
                 }
                 return true
             },
