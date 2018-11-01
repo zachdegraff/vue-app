@@ -14,10 +14,6 @@
                 <q-icon name="help" size="1.4rem" class="q-mr-sm"/>
                 Questions
             </q-item>
-            <q-item to="/glossary/tags" :class="{active:isActive('tags')}">
-                <q-icon name="local_offer" size="1.4rem" class="q-mr-sm"/>
-                Tags
-            </q-item>
         </q-list>
     </div>
 </template>
@@ -27,9 +23,8 @@
             return {
                 links: {
                     home: ['/'],
-                    glossary: ['/glossary', '/glossary/table', '/glossary/favorites'],
-                    questions: ['/questions', '/questions/answered', '/questions/my'],
-                    tags: ['/glossary/tags']
+                    glossary: ['/glossary', '/glossary/table', '/glossary/favorites', '/glossary/tags'],
+                    questions: ['/questions', '/questions/answered', '/questions/my']
                 }
             }
         },

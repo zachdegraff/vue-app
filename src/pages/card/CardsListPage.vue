@@ -44,6 +44,8 @@
                 <!--<q-btn outline no-caps color="primary" label="Filter cards" to="/glossary/table" class="full-width q-mb-md"/>-->
                 <!--<q-btn outline no-caps color="primary" label="Saved cards" to="/glossary/favorites" class="full-width q-mb-md"/>-->
                 <slack-integration class="full-width"/>
+
+                <q-btn to="/glossary/tags" outline no-caps color="primary" label="Manage Tags" class="full-width q-mb-lg margin-top-24"/>
             </div>
         </div>
     </div>

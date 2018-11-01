@@ -180,17 +180,21 @@
         min-width: 85px;
         text-align: center;
     }
-    a{
+
+    a {
         text-decoration: none;
     }
+
     .card-section img:first-child {
         width: 100px;
     }
-    .card_img{
+
+    .card_img {
         float: left;
         margin-right: 30px;
     }
-    .card-section img{
+
+    .card-section img {
         max-width: 200px;
     }
 </style>
