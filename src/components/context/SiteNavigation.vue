@@ -15,7 +15,7 @@
                 Questions
             </q-item>
         </q-list>
-        <div v-if="team && team.isEditable">
+        <div v-if="team && team.isOwner">
             <div class="q-caption uppercase text-weight-bold q-pl-xl q-my-md">share</div>
             <q-list link no-border class="site-navigation q-mt-sm">
                 <q-item to="/integrations" :class="{active:isActive('integrations')}">
