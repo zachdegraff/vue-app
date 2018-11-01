@@ -23,7 +23,7 @@
                 <div class="q-card full-width empty_card" v-show="isEmptyCards">
                     <h2>No cards yet!</h2>
                     <p>Get started by creating your first Knowledge Card for a frequently used team concept.</p>
-                    <q-btn no-caps color="primary" label="Create a card" class="q-mr-md q-mb-md" @click="createCard"/>
+                    <q-btn no-caps color="primary" :label="createCardLabel" class="q-mr-md q-mb-md" @click="createCard"/>
                 </div>
                 <div class="row flex-center q-mt-lg" v-show="isLoading">
                     <q-spinner :size="36" color="red"/>
@@ -31,7 +31,7 @@
                 <cards-list :items="items" :filterTagsIdList="filterTagsIdList"></cards-list>
             </div>
             <div class="col-lg-3 q-px-xl gt-md">
-                <q-btn no-caps color="primary" label="Create a card" @click="createCard" class="full-width q-mb-md"/>
+                <q-btn no-caps color="primary" :label="createCardLabel" @click="createCard" class="full-width q-mb-md"/>
                 <q-select
                         class="margin-15 q-mr-md q-mb-md"
                         filter
@@ -45,7 +45,7 @@
                 <!--<q-btn outline no-caps color="primary" label="Saved cards" to="/glossary/favorites" class="full-width q-mb-md"/>-->
                 <slack-integration class="full-width"/>
 
-                <q-btn to="/glossary/tags" outline no-caps color="primary" label="Manage Tags" class="full-width q-mb-lg margin-top-24"/>
+                <q-btn to="/glossary/tags" outline no-caps color="primary" label="Manage Tags" class="full-width q-mt-lg"/>
             </div>
         </div>
     </div>
@@ -103,6 +103,12 @@
             title() {
                 return `${prop(this.team, 'name')} Glossary - Wonderus`
             },
+            createCardLabel() {
+                if (this.filterTagsIdList.length === 0) {
+                    return 'Create a card';
+                }
+                return 'Create a card with tags';
+            },
             isEmptyCards() {
                 if (this.isLoading) {
                     return false
@@ -124,12 +130,21 @@
             this.load();
             document.title = this.title;
         },
-
         methods: {
             ...mapActions({
                 load: 'cards/all',
-                createCard: 'editor/create',
+                create: 'editor/create',
             }),
+            createCard() {
+                if (this.filterTagsIdList.length === 0) {
+                    return this.create()
+                }
+                const tags = this.tags.filter(item => {
+                    return this.filterTagsIdList.includes(item.id)
+                }).map(item => item.name);
+
+                this.create({tags})
+            }
         }
     }
 </script>
@@ -139,7 +154,8 @@
         padding-top: 10px;
         padding-bottom: 10px;
     }
-    .margin-15{
+
+    .margin-15 {
         margin-bottom: 15px;
     }
 </style>

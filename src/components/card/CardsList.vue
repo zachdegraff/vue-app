@@ -29,9 +29,8 @@
                 type: Array
             },
             filterTagsIdList: {
-                required: true,
                 type: Array,
-                default: []
+                default: () => []
             }
         },
         computed: {

@@ -5,18 +5,19 @@
             <div class="col-md-12 col-lg-7">
                 <div class="row q-mb-lg">
                     <div class="q-headline col-md-8 margin-bottom-20">
-                        <router-link v-bind:to="'/glossary/tags'" tag='a' class='primary not_underlined'>Tags</router-link> <span>> {{tag}} tag</span>
+                        <router-link v-bind:to="'/glossary/tags'" tag='a' class='primary not_underlined'>Tags</router-link>
+                        <span>> {{tag}} tag</span>
                     </div>
                     <br>
                     <div class="col-md-4 max-991">
-                        <q-btn no-caps color="primary" label="Create card with tag" class="full-width q-mb-md" @click="createCard()"/>
+                        <q-btn no-caps color="primary" label="Create card with tag" class="full-width q-mb-md" @click="createCard({tags: [tag]})"/>
                     </div>
                 </div>
                 <q-spinner :size="36" color="red" v-show="isLoading"></q-spinner>
                 <cards-list :items="items"/>
             </div>
             <div class="col-lg-3 q-px-xl gt-md">
-                <q-btn no-caps color="primary" label="Create card with tag" class="full-width q-mb-md" @click="createCard()"/>
+                <q-btn no-caps color="primary" label="Create card with tag" class="full-width q-mb-md" @click="createCard({tags: [tag]})"/>
             </div>
 
         </div>
@@ -54,20 +55,16 @@
         created() {
             this.filter(this.params());
             document.title = this.title;
-            this.changeQuery('#' + this.tag)
         },
         methods: {
             ...mapActions({
                 filter: 'cards/all',
-                // createCard: 'editor/create',
+                createCard: 'editor/create',
                 openAskHelp: 'modals/openAskHelp',
                 changeQuery: 'search/changeQuery'
             }),
             params() {
                 return {tag: this.tag};
-            },
-            createCard() {
-                this.$store.dispatch('editor/create', {allowTags: true},{root: true})
             }
         }
     }
@@ -82,12 +79,15 @@
         transform: translateY(-50%);
         text-align: center;
     }
-    .not_underlined{
+
+    .not_underlined {
         text-decoration: none;
     }
-    .margin-bottom-20{
-        margin-bottom:20px;
+
+    .margin-bottom-20 {
+        margin-bottom: 20px;
     }
+
     @media only screen and (min-width: 992px) {
         .max-991 {
             display: none;
