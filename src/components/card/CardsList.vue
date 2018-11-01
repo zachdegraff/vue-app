@@ -1,7 +1,7 @@
 <template>
     <div class="row gutter-sm cards-list">
         <div class="charArray">
-            <span class="jump-to">Jump To: </span>
+            <div class="jump-to q-body-1 q-my-xs">Jump to... </div>
             <span v-bind:class="{'bold': Object.keys(cards).includes(char) }" v-for="char in chars"
                   v-scroll-to="{el:`.char${char.charCodeAt(0)}`}">{{char}}</span>
         </div>
@@ -211,6 +211,7 @@
     }
 
     .jump-to {
+        display: block;
         color: #95989D !important;
         width: 95px !important;
         text-transform: none;
