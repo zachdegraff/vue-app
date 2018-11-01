@@ -49,9 +49,6 @@
             <br>
             <div class="q-mt-xl">
                 <q-btn size="lg" label="Invite new member" color="primary" class="q-mr-md q-mb-md" @click="invite(team.id)"/>
-
-                <q-btn size="lg" label="Connect with Slack" color="white" class="text-black q-mb-md" @click="slack" v-if="canEnableSlack"/>
-                <q-btn size="lg" label="Disable Slack" color="red" class="q-mb-md" @click="disableSlack" v-if="canDisableSlack"/>
             </div>
         </div>
         <invite-member v-if="isMemberInviting"></invite-member>
@@ -137,20 +134,6 @@
                     return false;
                 }
                 return this.team.isOwner
-            },
-            canEnableSlack() {
-                if (!this.isOwner) {
-                    return false;
-                }
-
-                return this.team.integrations.find(i => i.service === 'slack') === undefined;
-            },
-            canDisableSlack() {
-                if (!this.isOwner) {
-                    return false;
-                }
-
-                return this.team.integrations.find(i => i.service === 'slack') !== undefined;
             }
         },
         components: {
@@ -165,12 +148,8 @@
                 changeRole: 'modals/openChangeMemberRole',
                 excludeMember: 'members/excludeMemberFromTeam',
                 reSendInvite: 'members/retryMemberInvitation',
-                disableSlackIntegration: 'teams/disableSlack',
                 countsMembers: 'members/getCountsMembers',
             }),
-            slack() {
-                window.location = `https://slack.com/oauth/authorize?client_id=${SLACK_CLIENT_ID}&scope=commands,bot,users:read,users:read.email&state=${this.team.id}`;
-            },
             save() {
                 this.$v.form.$touch();
                 if (this.$v.form.$error) {
@@ -201,12 +180,6 @@
             },
             changeFile(file) {
                 this.file = file
-            },
-            disableSlack() {
-                this.confirm().then(() => {
-                    this.disableSlackIntegration(this.team.id).then(() => this.view(this.team.id))
-                }).catch(() => {
-                })
             },
             excludeFromTeam(id) {
                 this.confirm().then(() => this.excludeMember(id)).then(res =>{

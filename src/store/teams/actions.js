@@ -102,6 +102,13 @@ export const remove = ({commit}, id) => {
     })
 };
 
+export const reloadCurrentTeam = ({dispatch, commit, getters}) => {
+    const current = getters['current'];
+    if (current === null) return;
+
+    dispatch('get', current.id).then(team => commit('changeCurrentTeam', team));
+};
+
 export const changeCurrentTeam = ({dispatch, commit, getters}, id) => {
     const current = getters['current'];
     if (current === null || current.id === id) return;

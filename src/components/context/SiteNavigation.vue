@@ -15,18 +15,35 @@
                 Questions
             </q-item>
         </q-list>
+        <div v-if="team && team.isEditable">
+            <div class="q-caption uppercase text-weight-bold q-pl-xl q-my-md">share</div>
+            <q-list link no-border class="site-navigation q-mt-sm">
+                <q-item to="/integrations" :class="{active:isActive('integrations')}">
+                    <q-icon name="swap_vert" size="1.4rem" class="q-mr-sm"/>
+                    Integrations
+                </q-item>
+            </q-list>
+        </div>
     </div>
 </template>
 <script>
+    import {mapGetters} from 'vuex'
+
     export default {
         data: () => {
             return {
                 links: {
                     home: ['/'],
                     glossary: ['/glossary', '/glossary/table', '/glossary/favorites', '/glossary/tags'],
-                    questions: ['/questions', '/questions/answered', '/questions/my']
+                    questions: ['/questions', '/questions/answered', '/questions/my'],
+                    integrations: ['/integrations']
                 }
             }
+        },
+        computed: {
+            ...mapGetters({
+                team: 'teams/current'
+            })
         },
         methods: {
             isActive(name) {

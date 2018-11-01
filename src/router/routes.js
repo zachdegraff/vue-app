@@ -165,6 +165,14 @@ export default [
         ]
     },
     {
+        path: '/integrations/',
+        component: () => import('layouts/DefaultLayout.vue'),
+        beforeEnter: ifAuthenticated,
+        children: [
+            {path: '', name: 'integrations', component: () => import('pages/integration/IntegrationsListPage.vue')},
+        ]
+    },
+    {
         path: '/for/',
         component: () => import('layouts/DefaultLayout.vue'),
         children: [
