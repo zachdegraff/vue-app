@@ -26,7 +26,7 @@
                 <div class="row flex-center q-mt-lg" v-show="isLoading">
                     <q-spinner :size="36" color="red"/>
                 </div>
-                <cards-list :items="items" :filterTagsIdList="filterTagsIdList"></cards-list>
+                <cards-list :items="items" :filterTagsIdList="filterTagsIdList" v-if="items.length"></cards-list>
             </div>
             <div class="col-lg-3 q-px-xl gt-md">
                 <q-btn no-caps color="primary" :label="createCardLabel" @click="createCard" class="full-width q-mb-md"/>
