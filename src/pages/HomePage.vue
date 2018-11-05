@@ -26,7 +26,7 @@
                 <q-btn no-caps color="primary" label="Create a card" class="full-width q-mb-md" @click="createCard"/>
 
                 <q-btn outline no-caps color="primary" label="Ask a question" class="full-width q-mb-lg" @click="openAskHelp"/>
-                <slack-integration class="full-width"/>
+                <slack-integration v-if="isOwner" class="full-width" />
 
                 <q-btn v-if="isOwner" outline no-caps color="primary" label="Invite team members" class="full-width q-mb-lg margin-top-24"  @click="invite(team.id)"/>
             </div>

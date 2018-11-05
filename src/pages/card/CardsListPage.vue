@@ -14,8 +14,6 @@
                             v-model="filterTagsIdList"
                             :options="options"
                     />
-                    <!--<q-btn outline no-caps color="primary" label="Filter cards" to="/glossary/table" class="q-mr-md q-mb-md"/>-->
-                    <!--<q-btn outline no-caps color="primary" label="Saved cards" to="/glossary/favorites" class="q-mr-md q-mb-md"/>-->
                 </div>
                 <div class="row q-mb-lg" v-if="team">
                     <div class="col q-headline">{{team.name}} Glossary</div>
@@ -41,10 +39,6 @@
                         v-model="filterTagsIdList"
                         :options="options"
                 />
-                <!--<q-btn outline no-caps color="primary" label="Filter cards" to="/glossary/table" class="full-width q-mb-md"/>-->
-                <!--<q-btn outline no-caps color="primary" label="Saved cards" to="/glossary/favorites" class="full-width q-mb-md"/>-->
-                <slack-integration class="full-width"/>
-
                 <q-btn to="/glossary/tags" outline no-caps color="primary" label="Manage Tags" class="full-width q-mt-lg"/>
             </div>
         </div>
