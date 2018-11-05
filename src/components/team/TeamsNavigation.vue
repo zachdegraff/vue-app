@@ -13,7 +13,7 @@
                                 <q-item @click.native="edit(team.id)" v-close-overlay>
                                     <q-item-main label="Edit"/>
                                 </q-item>
-                                <q-item @click.native="flush(team.id)" v-close-overlay>
+                                <q-item @click.native="flush(team.id)" v-if="team.isOwner" v-close-overlay>
                                     <q-item-main label="Delete"/>
                                 </q-item>
                             </q-list>
