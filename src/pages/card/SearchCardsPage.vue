@@ -9,7 +9,7 @@
                 <div class="row q-mb-lg">
                     <div class="col q-headline">Search results</div>
                 </div>
-                <cards-list :items="items"/>
+                <cards-search-list :items="items"/>
                 <div class="row flex-center q-mt-lg" v-show="suggestQuery">
                     <q-spinner :size="36" color="red" v-show="isLoading"></q-spinner>
                     <div class="col text-center q-mt-xl" v-show="isEmptyResult">There are no results.
@@ -30,7 +30,7 @@
 </template>
 <script>
     import SiteNavigation from '../../components/context/SiteNavigation.vue'
-    import CardsList from '../../components/card/CardsList'
+    import CardsSearchList from '../../components/card/CardsSearchList.vue'
     import {mapActions, mapGetters} from 'vuex'
     import {route} from '../../helpers'
 
@@ -80,7 +80,7 @@
                 return true;
             }
         },
-        components: {CardsList, SiteNavigation},
+        components: {CardsSearchList, SiteNavigation},
         methods: {
             ...mapActions({
                 search: 'search/search',
