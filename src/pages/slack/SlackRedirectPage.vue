@@ -9,12 +9,12 @@
     export default {
         created() {
             if (this.$route.query.error !== undefined) {
-                return this.$router.push({name: 'teams'})
+                return this.$router.push({name: 'integrations'})
             }
             const params = {
                 id: this.$route.query.state,
                 code: this.$route.query.code
-            }, redirect = () => this.$router.push({name: 'view_team', params: {id: this.$route.query.state}});
+            }, redirect = () => this.$router.push({name: 'integrations'});
 
             this.addSlackIntegration(params).then(redirect).catch(redirect)
         },
