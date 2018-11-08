@@ -14,13 +14,16 @@
             const params = {
                 id: this.$route.query.state,
                 code: this.$route.query.code
-            }, redirect = () => this.$router.push({name: 'integrations'});
+            }, redirect = () => {
+                this.reloadCurrentTeam().then(() => this.$router.push({name: 'integrations'}));
+            };
 
             this.addSlackIntegration(params).then(redirect).catch(redirect)
         },
         methods: {
             ...mapActions({
-                addSlackIntegration: 'teams/addSlackIntegration'
+                addSlackIntegration: 'teams/addSlackIntegration',
+                reloadCurrentTeam: 'teams/reloadCurrentTeam'
             })
         }
     }
