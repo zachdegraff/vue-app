@@ -65,6 +65,7 @@
             }
             document.title = this.title;
             this.changeQuery('');
+            this.loadFreshFeed();
             this.loadQuestionsCount();
         },
         destroyed() {
@@ -113,14 +114,15 @@
         },
         methods: {
             ...mapActions({
+                load: 'feed/load',
+                loadFreshFeed: 'feed/fresh',
                 createCard: 'editor/create',
                 join: 'members/joinMemberToTeam',
                 changeQuery: 'search/changeQuery',
                 openAskHelp: 'modals/openAskHelp',
                 showCard: 'modals/openCardsEditor',
-                loadQuestionsCount: 'questions/loadQuestionsCount',
-                load: 'feed/load',
                 invite: 'modals/openInviteMember',
+                loadQuestionsCount: 'questions/loadQuestionsCount',
                 reSendInvite: 'members/retryMemberInvitation',
             }),
 
