@@ -1,5 +1,5 @@
 <template>
-    <div class="">
+    <div class="" v-show="siteData.name">
         <div id="public-header">
             <div class="row gutter-x-lg">
                 <div class="col-lg-3 gt-md"></div>
@@ -73,7 +73,9 @@
 
         created() {
             this.$store.commit('publicSites/setSiteLink', this.$route.params.name, {root: true});
-            this.getSite();
+            this.getSite().catch(err => {
+                this.$router.push({name: 'not_found'})
+            })
         },
         methods: {
             ...mapActions({

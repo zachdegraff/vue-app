@@ -180,6 +180,11 @@ export default [
             {path: ':name/:cardId',name: 'single_card', component: () => import('pages/public-sites/PublicSiteCardPage.vue')},
         ]
     },
+    {
+        path: '/404',
+        name: 'not_found',
+        component: () => import('pages/404')
+    },
     { // Always leave this as last one
         path: '*',
         component: () => import('pages/404')
