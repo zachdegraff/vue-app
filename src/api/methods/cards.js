@@ -36,6 +36,10 @@ export const search = (params) => {
     return request.get('/cards/search', {params})
 };
 
+export const index = (params) => {
+    return request.post('/cards/index', {params})
+};
+
 export const cardsHints = (params) => {
     return request.get('/cards/cards-hints', {params})
 };

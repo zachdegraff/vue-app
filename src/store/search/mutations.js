@@ -18,6 +18,10 @@ export const searchStatusSuccess = (state, res) => {
 };
 export const searchStatusFailure = state => state.actionSearchStatus = 'Failure';
 
+export const indexStatusRequest = state => state.actionSearchStatus = 'Request';
+export const indexStatusSuccess = state => state.actionSearchStatus = 'Success';
+export const indexStatusFailure = state => state.actionSearchStatus = 'Failure';
+
 
 export const hintsStatusRequest = state => {
     state.actionHintsStatus = 'Request';

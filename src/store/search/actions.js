@@ -45,6 +45,19 @@ export const cardsHints = ({commit, rootGetters}, params) => {
     })
 };
 
+export const index = ({commit, rootGetters}, id) => {
+    return new Promise((resolve, reject) => {
+        commit('indexStatusRequest');
+        api.cards.index({teamId: id}).then(res => {
+            commit('indexStatusSuccess', res);
+            resolve(res.data)
+        }).catch(err => {
+            commit('indexStatusFailure', err);
+            reject(err)
+        })
+    })
+};
+
 export const search = ({commit, rootGetters}, params = {}) => {
     return new Promise((resolve, reject) => {
         const team = rootGetters['teams/current'];
