@@ -6,6 +6,7 @@
         <div class="col-xs-9 col-sm-9">
             <div class="q-headline">Slack</div>
             <div class="q-mt-sm">Make your team glossary available and collect team questions directly within Slack</div>
+            <div class="q-mt-sm" v-if="slackTeamName">Connected to: <strong>{{slackTeamName}}</strong></div>
         </div>
         <div class="col-xs-12 col-sm-2">
             <q-btn label="connect" color="primary" class="q-mt-md" @click="enable" v-if="canEnableSlack"/>
@@ -29,19 +30,31 @@
                 }
                 return this.team.isOwner
             },
+            integration() {
+                if (!this.team) {
+                    return null;
+                }
+                return this.team.integrations.find(i => i.service === 'slack')
+            },
+            slackTeamName() {
+                if (!this.integration) {
+                    return null
+                }
+                return this.integration.teamName
+            },
             canEnableSlack() {
                 if (!this.isOwner) {
                     return false;
                 }
 
-                return this.team.integrations.find(i => i.service === 'slack') === undefined;
+                return this.integration === undefined;
             },
             canDisableSlack() {
                 if (!this.isOwner) {
                     return false;
                 }
 
-                return this.team.integrations.find(i => i.service === 'slack') !== undefined;
+                return this.integration !== undefined;
             }
         },
         watch: {
