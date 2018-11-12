@@ -26,10 +26,10 @@
                                             <q-item-tile>Questions</q-item-tile>
                                         </q-item-main>
                                     </q-item>
-                                    <q-item to="/glossary/tags">
-                                        <q-item-side icon="local_offer"/>
+                                    <q-item to="/integrations" v-if="team && team.isOwner">
+                                        <q-item-side icon="swap_vert"/>
                                         <q-item-main>
-                                            <q-item-tile>Tags</q-item-tile>
+                                            <q-item-tile>Integrations</q-item-tile>
                                         </q-item-main>
                                     </q-item>
                                 </q-list>
