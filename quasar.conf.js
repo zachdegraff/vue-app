@@ -105,7 +105,8 @@ module.exports = function (ctx) {
                 'QRouteTab',
                 'QTabPane',
                 'QInfiniteScroll',
-                'QProgress'
+                'QProgress',
+                'QColor'
             ],
             directives: [
                 'Ripple', 'CloseOverlay'

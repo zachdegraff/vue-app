@@ -1,8 +1,21 @@
 import request from '../request'
 
-export const getByLink = (siteLink) => {
-    return request.get(`/one-public-site/${siteLink}`)
+export const get = (link) => {
+    return request.get(`/public-sites/${link}`)
 };
-export const getByCard = (cardId) => {
-    return request.get(`/public-site-card/${cardId}`)
+
+export const all = (params = {}) => {
+    return request.get(`/public-sites`, {params})
+};
+
+export const store = (attr) => {
+    return request.post('/public-sites', attr);
+};
+
+export const getSiteConfig = (id) => {
+    return request.get(`/public-sites/${id}/config`)
+};
+
+export const getSiteCards = (link) => {
+    return request.get(`/public-sites/${link}/cards`)
 };

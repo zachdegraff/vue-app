@@ -31,8 +31,8 @@
 <script>
     import {required, email, sameAs, minLength} from 'vuelidate/lib/validators'
     import ValidatorMessages from '../../mixins/ValidatorMessages'
+    import ImageChooser from '../../components/ImageChooser'
     import {mapActions, mapGetters} from 'vuex'
-    import ImageChooser from "../../components/ImageChooser";
 
     export default {
         components: {ImageChooser},

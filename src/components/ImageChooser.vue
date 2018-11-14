@@ -42,6 +42,11 @@
                 this.file = {path: this.path}
             }
         },
+        watch: {
+            path: function (val) {
+                if (val) this.file = {path: this.path}
+            }
+        },
         methods: {
             remove() {
                 this.file = null;

@@ -1,7 +1,11 @@
 export default {
-    siteData: {},
-    siteLink: null,
-    teamName: null,
-    cardId: null,
-    cardData: {},
+    site: null,
+    cards: [],
+    teamSites: [],
+
+    storeStatus: '',
+    loadSiteStatus: '',
+    loadCardsStatus: '',
+    loadTeamSitesStatus: '',
+    loadSiteConfigStatus: ''
 }

@@ -1,5 +1,6 @@
-export const getSiteLink = state => state.siteLink;
-export const getTeamName = state => state.teamName;
-export const getSiteData = state => state.siteData;
-export const getCardId = state => state.cardId;
-export const getCardData = state => state.cardData;
+export const getSite = state => state.site;
+export const getCards = state => state.cards;
+export const getTeamSites = state => state.teamSites;
+
+export const isSiteLoading = state => state.loadSiteStatus === 'Request';
+export const isCardsLoading = state => state.loadCardsStatus === 'Request';

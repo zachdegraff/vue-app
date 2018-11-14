@@ -22,6 +22,10 @@
                     <q-icon name="swap_vert" size="1.4rem" class="q-mr-sm"/>
                     Integrations
                 </q-item>
+                <q-item to="/public-sites" :class="{active:isActive('publicSites')}">
+                    <q-icon name="launch" size="1.4rem" class="q-mr-sm"/>
+                    Public Site
+                </q-item>
             </q-list>
         </div>
     </div>
@@ -36,7 +40,8 @@
                     home: ['/'],
                     glossary: ['/glossary', '/glossary/table', '/glossary/favorites', '/glossary/tags'],
                     questions: ['/questions', '/questions/answered', '/questions/my'],
-                    integrations: ['/integrations']
+                    integrations: ['/integrations'],
+                    publicSites: ['/public-sites']
                 }
             }
         },

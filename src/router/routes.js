@@ -173,11 +173,19 @@ export default [
         ]
     },
     {
-        path: '/for/',
+        path: '/public-sites/',
         component: () => import('layouts/DefaultLayout.vue'),
+        beforeEnter: ifAuthenticated,
+        children: [
+            {path: '', name: 'edit_public_site', component: () => import('pages/public-sites/EditPublicSitePage.vue')},
+        ]
+    },
+    {
+        path: '/for/',
+        component: () => import('layouts/ClearLayout.vue'),
         children: [
             {path: ':name',card:'card_id' , name: 'public_sites', component: () => import('pages/public-sites/PublicSitePage.vue')},
-            {path: ':name/:cardId',name: 'single_card', component: () => import('pages/public-sites/PublicSiteCardPage.vue')},
+            {path: ':name/:cardId', name: 'single_card', component: () => import('pages/public-sites/PublicSiteCardPage.vue')},
         ]
     },
     {
