@@ -225,7 +225,8 @@
                 if (val === null) return;
 
                 document.title = this.title;
-                this.name.setContent(`<p>${val.name}</p>`, 0);
+                const name = val.name === 'Untitled card' ? '' : `<p>${val.name}</p>`;
+                this.name.setContent(name, 0);
                 this.loadQuestions(val)
             },
             tagQuery: function (val) {
@@ -267,15 +268,13 @@
                 this.name.selectElement(field);
             });
             if (this.active !== undefined) {
-                if(this.active.name == 'Untitled card'){
-                    this.name.setContent(``, 0)
-                }else{
-                    this.name.setContent(`<p>${this.active.name}</p>`, 0)
-                }
+                const name = this.active.name === 'Untitled card' ? '' : `<p>${this.active.name}</p>`;
+                this.name.setContent(name, 0);
             }
             this.name.subscribe('editableInput', (e, el) => {
-                this.active.name = strip_tags(el.innerText.trim());
-                this.cardName = strip_tags(el.innerText.trim())
+                const name = strip_tags(el.innerText.trim());
+                this.active.name = name === '' ? 'Untitled card' : name;
+                this.cardName = this.active.name
             });
             this.name.subscribe('focus', this.selectDefaultText);
             this.name.subscribe('blur', this.save)
@@ -424,9 +423,11 @@
         }
 
     }
-    .cards-editor-main{
+
+    .cards-editor-main {
         overflow-x: hidden !important;
     }
+
     .cards-editor-cards {
         background: #f4f4f4;
         color: #707070;
@@ -653,7 +654,8 @@
             font-size: 1.3rem;
         }
     }
-    .cards-editor-name{
+
+    .cards-editor-name {
         width: 90%;
     }
 </style>
