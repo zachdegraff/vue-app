@@ -1,6 +1,6 @@
 <template>
     <div v-if="site">
-        <div class="public-site-header q-pt-xl" :overlay="overlay">
+        <div class="public-site-header q-pt-xl" :style="overlay">
             <div class="row flex-center">
                 <div class="col-xs-10 col-md-9 col-lg-5 relative-position">
                     <img class="public-site-logo gt-sm" :src="logo"/>
@@ -10,28 +10,32 @@
                 </div>
             </div>
         </div>
-        <div class="row flex-center" v-if="card">
+        <div class="row flex-center">
             <div class="col-xs-11 col-lg-8 col-xl-6">
                 <div class="q-mt-md">
                     <router-link :to="`/for/${site.slug}`">{{site.name}}</router-link>
-                    <span v-if="card">> {{card.name}}</span>
+                    <span>> {{tag}} Tag</span>
                 </div>
-                <q-card class="full-width q-ma-md">
+                <h2 v-show="query.length > 0 && items.length == 0">No results for {{query}}.</h2>
+                <q-card class="full-width q-ma-md" v-for="card in items" :key="card.id">
                     <q-card-title>
-                        <h2>{{card.name}}</h2>
+                        <router-link :to="`/for/${site.slug}/${card.id}`">{{card.name}}</router-link>
                         <span slot="subtitle">{{card.shorthand.join(', ')}}</span>
                     </q-card-title>
                     <q-card-main v-html="filterDescription(card)"/>
+                    <q-card-separator/>
+                    <q-card-actions>
+                        <q-btn v-for="tag in card.tags" :label="tag.name" :to="`/for/${site.slug}/tag/${tag.name}`" :key="tag.id" flat/>
+                    </q-card-actions>
                 </q-card>
             </div>
         </div>
     </div>
 </template>
 <script>
-    import {mapActions, mapGetters} from 'vuex'
+    import {mapGetters, mapActions} from 'vuex'
 
     export default {
-
         data: () => {
             return {
                 query: '',
@@ -42,14 +46,14 @@
                 site: 'publicSites/getSite',
                 cards: 'publicSites/getCards'
             }),
-            card() {
-                return this.cards.find(card => card.id === parseInt(this.$route.params.cardId))
-            },
             logo() {
                 if (this.team && this.team.photo) {
                     return this.team.photo
                 }
                 return 'statics/quasar-logo.png'
+            },
+            tag() {
+                return this.$route.params.tag
             },
             link() {
                 return this.$route.params.name
@@ -60,14 +64,21 @@
                 }
                 return this.site.team
             },
+            items() {
+                const cards = this.cards.filter(card => {
+                    return card.tags.find(tag => tag.name === this.tag) !== undefined
+                }), query = this.query.trim().toLowerCase();
+
+                if (query === '') {
+                    return cards
+                }
+                return cards.filter(item => item.name.toLowerCase().indexOf(query) !== -1)
+            },
             overlay() {
                 if (this.site.background) {
-                    return `background:url(${this.site.background})`
+                    return {background: `url(${this.site.background})`}
                 }
-                if (this.site.primaryColor) {
-                    return `background:${this.site.primaryColor}`
-                }
-                return ''
+                return {}
             }
         },
         watch: {
@@ -76,14 +87,11 @@
             }
         },
         created() {
-            if (this.site === null) {
-                this.loadSite(this.link);
-                this.loadCards(this.link).then(() => {
-                    if (!this.card) {
-                        this.$router.push({name: 'not_found'})
-                    }
-                })
+            if (this.site !== null) {
+                return this.setMetaData()
             }
+            this.loadSite(this.link).catch(err => this.$router.push({name: 'not_found'}));
+            this.loadCards(this.link)
         },
         methods: {
             ...mapActions({
@@ -97,12 +105,19 @@
 
                 const meta = document.getElementsByTagName("META").namedItem('description');
                 if (meta !== undefined) {
-                    meta.content = `Quickly decode terms and acronyms with ${this.site.name}`
+                    meta.content = `Search ${this.site.name} for quick answers to acronyms and pages`
                 }
             },
             filterDescription(card) {
-                let content = card.description.replace(/\/(cards|glossary)\/([0-9]+)/g, `/for/${this.link}/$2`);
-                return content.replace(/\/(cards|glossary)\/tag\/(.+?)/g, `/for/${this.link}/tag/$2`)
+                let content = card.description.substring(0, 500);
+                if (card.description.length > 500) {
+                    content += '...'
+                }
+
+                content = content.replace(/\/(cards|glossary)\/([0-9]+)/g, `/for/${this.link}/$2`);
+                content = content.replace(/\/(cards|glossary)\/tag\/(.+?)/g, `/for/${this.link}/tag/$2`);
+
+                return content
             }
         }
     }
