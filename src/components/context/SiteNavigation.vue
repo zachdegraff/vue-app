@@ -22,7 +22,7 @@
                     <q-icon name="swap_vert" size="1.4rem" class="q-mr-sm"/>
                     Integrations
                 </q-item>
-                <q-item to="/public-sites" :class="{active:isActive('publicSites')}">
+                <q-item to="/public-sites" :class="{active:isActive('publicSites')}" v-if="team && team.isSiteAllowed == 1">
                     <q-icon name="launch" size="1.4rem" class="q-mr-sm"/>
                     Public Site
                 </q-item>

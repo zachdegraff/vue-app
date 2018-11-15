@@ -22,6 +22,12 @@
                                 <q-item @click.native="reIndex(team.id)" v-close-overlay>
                                     <q-item-main label="Re-Index"/>
                                 </q-item>
+                                <q-item @click.native="enableSite(team)" v-if="team.isSiteAllowed == 0" v-close-overlay>
+                                    <q-item-main label="Enable Public Site"/>
+                                </q-item>
+                                <q-item @click.native="disableSite(team)" v-if="team.isSiteAllowed == 1" v-close-overlay>
+                                    <q-item-main label="Disable Public Site"/>
+                                </q-item>
                             </q-list>
                         </q-popover>
                     </q-btn>
@@ -34,7 +40,7 @@
 <script>
     import EditTeam from '../../components/team/EditTeam.vue'
     import {mapActions, mapGetters} from 'vuex'
-    import {notify} from '../../helpers'
+    import {notify, replace} from '../../helpers'
 
     export default {
         data: () => {
@@ -52,6 +58,7 @@
             ...mapActions({
                 index: 'search/index',
                 remove: 'teams/remove',
+                update: 'teams/update',
                 allTeams: 'teams/allTeams',
                 edit: 'modals/openEditTeam',
             }),
@@ -62,16 +69,31 @@
                 return path
             },
             reIndex(id) {
-              this.index(id).then(() => notify('Done'))
+                this.index(id).then(() => notify('Done'))
+            },
+            enableSite(id) {
+                this.toggleSite(id, 1)
+            },
+            disableSite(id) {
+                this.toggleSite(id, 0)
+            },
+            toggleSite(team, flag) {
+                const data = new FormData();
+                for (let i in team) {
+                    data.append(i, team[i])
+                }
+                data.append('name', 'Barahta');
+                data.append('_method', 'PUT');
+                data.append('isSiteAllowed', flag);
+
+                this.update({id: team.id, form: data}).then(res => this.teams = replace(this.teams, res.team))
             },
             isActive(item) {
                 return item.id === parseInt(this.$route.params.id)
             },
         },
-        created(){
-            this.teams = this.allTeams().then(res => {
-                this.teams = res;
-            });
+        created() {
+            this.teams = this.allTeams().then(res => this.teams = res);
         }
     }
 </script>
