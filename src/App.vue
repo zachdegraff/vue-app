@@ -33,7 +33,7 @@
         watch: {
             user: function (val) {
                 if (val !== null) {
-                    this.logCanny(val)
+                    this.logCanny(val);
                     this.logFullStory(val)
                 }
             }
@@ -56,8 +56,8 @@
                     }
                 })
             },
-            logFullStory(user){
-                if(localStorage.getItem('access-token')) {
+            logFullStory(user) {
+                if (localStorage.getItem('access-token')) {
                     FS.identify(user.id, {
                         displayName: user.firstName,
                         email: user.email,

@@ -82,7 +82,6 @@
                 for (let i in team) {
                     data.append(i, team[i])
                 }
-                data.append('name', 'Barahta');
                 data.append('_method', 'PUT');
                 data.append('isSiteAllowed', flag);
 
