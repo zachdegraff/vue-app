@@ -77,7 +77,12 @@
             }
         },
         created() {
-            if (this.team && !this.site) this.loadSites()
+            if (this.team && !this.site) this.loadSites();
+            if (this.tags.length === 0) this.loadTags();
+
+            if (this.site) {
+                this.init(this.site)
+            }
         },
         watch: {
             team: function (val) {
@@ -85,16 +90,8 @@
             },
             site: function (val) {
                 if (!val) return;
-                this.background = val.background;
 
-                this.loadSiteConfig(val.id).then(config => {
-                    ['featuredCards', 'includedTags', 'excludedTags'].forEach(key => {
-                        this.form[key] = config[key];
-                        this[key] = config[key].map(item => item.name);
-                    })
-                });
-
-                ['id', 'name', 'linkColor', 'primaryColor', 'accentColor'].forEach(key => this.form[key] = val[key])
+                this.init(val)
             },
             featuredCards: function (val, old) {
                 if (val.length < old.length) this.toggleItems(val, 'featuredCards')
@@ -128,6 +125,7 @@
             ...mapActions({
                 hints: 'search/cardsHints',
                 store: 'publicSites/store',
+                loadTags: 'tags/all',
                 loadSites: 'publicSites/loadTeamSites',
                 loadSiteConfig: 'publicSites/loadSiteConfig'
             }),
@@ -142,7 +140,21 @@
                     }
                     data.append(i, this.form[i])
                 }
-                this.store(data)
+                this.store(data).then(res => {
+                    this.form.id = res.site.id
+                })
+            },
+            init(site) {
+                this.background = site.background;
+
+                this.loadSiteConfig(site.id).then(config => {
+                    ['featuredCards', 'includedTags', 'excludedTags'].forEach(key => {
+                        this.form[key] = config[key];
+                        this[key] = config[key].map(item => item.name);
+                    })
+                });
+
+                ['id', 'name', 'linkColor', 'primaryColor', 'accentColor'].forEach(key => this.form[key] = site[key])
             },
             changeFile(file) {
                 this.form.background = file;
