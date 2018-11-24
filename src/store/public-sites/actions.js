@@ -44,6 +44,19 @@ export const loadCards = ({commit}, link) => {
     });
 };
 
+export const searchCards = ({commit}, {link, query}) => {
+    return new Promise((resolve, reject) => {
+        commit('searchCardsStatusRequest');
+        api.publicSites.searchSiteCards(link, query).then(res => {
+            commit('searchCardsStatusSuccess', res);
+            resolve(res.data.data)
+        }).catch(err => {
+            commit('searchCardsStatusFailure', err);
+            reject(err)
+        })
+    });
+};
+
 export const loadSiteConfig = ({commit}, id) => {
     return new Promise((resolve, reject) => {
         commit('loadSiteConfigStatusRequest');

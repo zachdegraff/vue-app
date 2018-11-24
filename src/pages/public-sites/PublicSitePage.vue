@@ -6,16 +6,25 @@
                     <img class="public-site-logo gt-sm" :src="logo"/>
                     <h1 class="text-white">{{site.name}}</h1>
 
-                    <q-search placeholder="Search for acronyms or terms..." v-model="query" inverted color="white" inverted-light hide-underline/>
+                    <q-search placeholder="Search for acronyms or terms..." v-model="query" :debounce="600" inverted color="white" inverted-light hide-underline/>
                 </div>
             </div>
         </div>
         <div class="row flex-center">
-            <div class="col-xs-11 col-lg-8 col-xl-6">
-                <h2 v-show="query.length > 0 && items.length == 0">No results for {{query}}.</h2>
+            <div class="col-xs-11 col-lg-8 col-xl-6" v-show="query.length === 0">
+                <q-card class="full-width q-ma-md" v-for="card in cards" :key="card.id">
+                    <q-card-title>
+                        <router-link :to="`/for/${site.slug}/${card.id}`" :style="accentColor">{{card.name}}</router-link>
+                        <span slot="subtitle">{{card.shorthand.join(', ')}}</span>
+                    </q-card-title>
+                    <q-card-main v-html="filterDescription(card)"/>
+                </q-card>
+            </div>
+            <div class="col-xs-11 col-lg-8 col-xl-6" v-show="query.length > 0">
+                <h2 v-show="items.length === 0 && !isSearching">No results for {{query}}.</h2>
                 <q-card class="full-width q-ma-md" v-for="card in items" :key="card.id">
                     <q-card-title>
-                        <router-link :to="`/for/${site.slug}/${card.id}`">{{card.name}}</router-link>
+                        <router-link :to="`/for/${site.slug}/${card.id}`" :style="accentColor">{{card.name}}</router-link>
                         <span slot="subtitle">{{card.shorthand.join(', ')}}</span>
                     </q-card-title>
                     <q-card-main v-html="filterDescription(card)"/>
@@ -30,19 +39,21 @@
     export default {
         data: () => {
             return {
-                query: '',
+                query: ''
             }
         },
         computed: {
             ...mapGetters({
                 site: 'publicSites/getSite',
-                cards: 'publicSites/getCards'
+                cards: 'publicSites/getCards',
+                items: 'publicSites/getSearchResults',
+                isSearching: 'publicSites/isSearchLoading',
             }),
             logo() {
                 if (this.team && this.team.photo) {
                     return this.team.photo
                 }
-                return 'statics/quasar-logo.png'
+                return 'statics/team.png'
             },
             link() {
                 return this.$route.params.name
@@ -53,22 +64,25 @@
                 }
                 return this.site.team
             },
-            items() {
-                const query = this.query.trim().toLowerCase();
-
-                if (query === '') {
-                    return this.cards
-                }
-                return this.cards.filter(item => item.name.toLowerCase().indexOf(query) !== -1)
-            },
             overlay() {
                 if (this.site.background) {
                     return {background: `url(${this.site.background})`}
                 }
                 return {}
+            },
+            accentColor() {
+                if (this.site.accentColor) {
+                    return {color: this.site.accentColor}
+                }
+                return {}
             }
         },
         watch: {
+            query: function (val) {
+                if (val.length < 1) return;
+
+                this.searchCards({link: this.link, query: val})
+            },
             site: function (val) {
                 this.setMetaData()
             }
@@ -83,7 +97,8 @@
         methods: {
             ...mapActions({
                 loadSite: 'publicSites/loadSite',
-                loadCards: 'publicSites/loadCards'
+                loadCards: 'publicSites/loadCards',
+                searchCards: 'publicSites/searchCards',
             }),
             setMetaData() {
                 if (!this.site) return;

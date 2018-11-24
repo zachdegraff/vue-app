@@ -13,6 +13,13 @@ export const loadCardsStatusSuccess = (state, res) => {
 };
 export const loadCardsStatusFailure = state => state.loadCardsStatus = 'Failure';
 
+export const searchCardsStatusRequest = state => state.searchCardsStatus = 'Request';
+export const searchCardsStatusSuccess = (state, res) => {
+    state.searchCardsStatus = 'Success';
+    state.searchResults = res.data.data
+};
+export const searchCardsStatusFailure = state => state.searchCardsStatus = 'Failure';
+
 export const loadTeamSitesStatusRequest = state => state.loadTeamSitesStatus = 'Request';
 export const loadTeamSitesStatusSuccess = (state, res) => {
     state.loadTeamSitesStatus = 'Success';

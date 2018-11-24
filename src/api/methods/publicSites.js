@@ -19,3 +19,7 @@ export const getSiteConfig = (id) => {
 export const getSiteCards = (link) => {
     return request.get(`/public-sites/${link}/cards`)
 };
+
+export const searchSiteCards = (link, query) => {
+    return request.get(`/public-sites/${link}/search`, {params: {query}})
+};
