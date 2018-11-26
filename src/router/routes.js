@@ -186,6 +186,7 @@ export default [
         children: [
             {path: ':name',card:'card_id' , name: 'public_sites', component: () => import('pages/public-sites/PublicSitePage.vue')},
             {path: ':name/tag/:tag', name: 'site_tag_cards', component: () => import('pages/public-sites/PublicSiteTagPage.vue')},
+            {path: ':name/search', component: () => import('pages/public-sites/PublicSiteSearchPage.vue')},
             {path: ':name/:cardId', name: 'single_card', component: () => import('pages/public-sites/PublicSiteCardPage.vue')},
         ]
     },

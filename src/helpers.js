@@ -121,7 +121,7 @@ export const strip_tags = (str, allowed_tags = '') => {
         }
     }
     return str;
-}
+};
 
 
 export const error = (message) => {

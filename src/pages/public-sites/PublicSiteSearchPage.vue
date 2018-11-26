@@ -5,14 +5,11 @@
             <div class="col-xs-11 col-lg-8 col-xl-6">
                 <div class="q-mt-md">
                     <router-link :to="`/for/${site.slug}`">{{site.name}}</router-link>
-                    <span>> {{tag}} Tag</span>
+                    <span>> Search Results</span>
                 </div>
+                <h2 v-show="isEmptyResults">No results for "{{query}}".</h2>
+
                 <site-cards-list :site="site" :cards="cards"/>
-            </div>
-        </div>
-        <div class="row flex-center" v-show="isSearching">
-            <div class="col-xs-2 text-center">
-                <q-spinner-circles color="primary" size="50"/>
             </div>
         </div>
     </div>
@@ -27,23 +24,39 @@
 
     export default {
         mixins: [PublicSite],
+        components: {SiteSearchForm, SiteCardsList},
         computed: {
             ...mapGetters({
                 cards: 'publicSites/getSearchResults',
                 isSearching: 'publicSites/isSearchLoading',
             }),
-            tag() {
-                return this.$route.params.tag
+            link() {
+                return this.$route.params.name
+            },
+            query() {
+                return this.$route.query.q
+            },
+            isEmptyResults() {
+                if (this.query.length === 0) return;
+
+                return this.cards.length === 0 && !this.isSearching;
             }
         },
-        components: {SiteSearchForm, SiteCardsList},
+        watch: {
+            query: function (val) {
+                this.search(val)
+            }
+        },
         created() {
-            this.searchCards({link: this.link, params: {tag: this.tag}})
+            this.search(this.query)
         },
         methods: {
             ...mapActions({
-                searchCards: 'publicSites/searchCards'
+                searchCards: 'publicSites/searchCards',
             }),
+            search(query) {
+                this.searchCards({link: this.link, params: {query}})
+            },
             setMetaData(site) {
                 if (!site) return;
 
