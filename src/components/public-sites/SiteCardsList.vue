@@ -2,7 +2,7 @@
     <div>
         <q-card class="full-width q-ma-md" v-for="card in cards" :key="card.id">
             <q-card-title>
-                <router-link :to="`/for/${site.slug}/${card.id}`" :style="accentColor">{{card.name}}</router-link>
+                <router-link :to="`/for/${site.slug}/${card.id}`">{{card.name}}</router-link>
                 <span slot="subtitle">{{card.shorthand.join(', ')}}</span>
             </q-card-title>
             <q-card-main v-html="filterDescription(card)"/>
@@ -21,14 +21,6 @@
             cards: {
                 type: Array,
                 required: true
-            }
-        },
-        computed: {
-            accentColor() {
-                if (this.site.accentColor) {
-                    return {color: this.site.accentColor}
-                }
-                return {}
             }
         },
         methods: {
