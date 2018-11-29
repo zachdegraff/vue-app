@@ -2,8 +2,18 @@
     <div class="public-site-header q-pt-xl" :style="overlay">
         <div class="row flex-center">
             <div class="col-xs-10 col-md-9 col-lg-5">
-                <h1 class="text-white text-center"><img class="public-site-logo gt-sm" :src="logo"/>{{site.name}}</h1>
-                <q-search placeholder="Search for acronyms or terms..." v-model="terms" @keyup.enter="submit" :debounce="600" inverted color="white" inverted-light hide-underline/>
+                <h1 class="text-center cursor-pointer" @click="toHome" :style="accentColor"><img class="public-site-logo gt-sm" :src="logo"/>{{site.name}}</h1>
+                <q-search
+                        no-icon
+                        inverted
+                        hide-underline
+                        inverted-light
+                        v-model="terms"
+                        color="white"
+                        :debounce="600"
+                        :after="config"
+                        @keyup.enter="submit"
+                        placeholder="Search for acronyms or terms..."/>
             </div>
         </div>
     </div>
@@ -18,7 +28,15 @@
         },
         data: () => {
             return {
-                terms: ''
+                terms: '',
+                config: [
+                    {
+                        icon: 'search',
+                        handler() {
+
+                        }
+                    }
+                ]
             }
         },
         created() {
@@ -42,18 +60,33 @@
                 }
                 return this.site.team
             },
+            link() {
+                return this.$route.params.name
+            },
             overlay() {
                 if (this.site.background) {
                     return {background: `url(${this.site.background})`}
                 }
                 return {}
+            },
+            accentColor() {
+                if (!this.site) return {color: '#fff'};
+
+                return {color: this.site.accentColor}
             }
         },
         methods: {
             submit() {
+                if (this.terms === '') {
+                    return this.$router.push({name: 'public_site', params: {name: this.link}})
+                }
+
                 if (this.terms.length < 2) return;
 
                 this.$router.push({path: `/for/${this.site.slug}/search`, query: {q: this.terms}});
+            },
+            toHome() {
+                this.$router.push({name: 'public_site', params: {name: this.link}})
             }
         }
     }

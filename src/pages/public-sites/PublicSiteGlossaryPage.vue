@@ -3,31 +3,34 @@
         <site-search-form :site="site"/>
         <div class="row flex-center">
             <div class="col-xs-11 col-lg-8 col-xl-6">
-                <site-cards-list :site="site" :cards="featuredCards"/>
-            </div>
-        </div>
-        <div class="row flex-center">
-            <div class="col-xs-11 col-lg-8 col-xl-6 text-center">
-                <q-btn
-                        no-caps
-                        label="View A-Z list"
-                        :to="`/for/${site.slug}/glossary`"
-                        :style="{background: this.site.linkColor, color: '#fff'}"/>
+                <div class="q-mt-md">
+                    <router-link :to="`/for/${site.slug}`">{{site.name}}</router-link>
+                    <span>> Glossary</span>
+                </div>
+                <div class="q-mt-md">
+                    <glossary-cards :site="site" :items="cards" :letter-color="linkColor"/>
+                </div>
             </div>
         </div>
     </div>
 </template>
 <script>
     import SiteSearchForm from '../../components/public-sites/SiteSearchForm.vue'
-    import SiteCardsList from '../../components/public-sites/SiteCardsList.vue'
-
+    import GlossaryCards from '../../components/public-sites/GlossaryCards'
     import PublicSite from '../../mixins/PublicSite'
 
     import {mapGetters, mapActions} from 'vuex'
 
     export default {
         mixins: [PublicSite],
-        components: {SiteSearchForm, SiteCardsList},
+        computed: {
+            linkColor() {
+                if (!this.site) return '';
+
+                return this.site.linkColor
+            }
+        },
+        components: {GlossaryCards, SiteSearchForm},
         methods: {
             setMetaData(site) {
                 if (!site) return;

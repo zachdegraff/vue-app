@@ -184,10 +184,32 @@ export default [
         path: '/for/',
         component: () => import('layouts/ClearLayout.vue'),
         children: [
-            {path: ':name',card:'card_id' , name: 'public_sites', component: () => import('pages/public-sites/PublicSitePage.vue')},
-            {path: ':name/tag/:tag', name: 'site_tag_cards', component: () => import('pages/public-sites/PublicSiteTagPage.vue')},
-            {path: ':name/search', component: () => import('pages/public-sites/PublicSiteSearchPage.vue')},
-            {path: ':name/:cardId', name: 'single_card', component: () => import('pages/public-sites/PublicSiteCardPage.vue')},
+            {
+                path: ':name/glossary',
+                name: 'public_site_glossary',
+                component: () => import('pages/public-sites/PublicSiteGlossaryPage.vue')
+            },
+            {
+                path: ':name/search',
+                name: 'public_site_search',
+                component: () => import('pages/public-sites/PublicSiteSearchPage.vue')
+            },
+            {
+                path: ':name/tag/:tag',
+                name: 'public_site_tag',
+                component: () => import('pages/public-sites/PublicSiteTagPage.vue')
+            },
+            {
+                path: ':name/:cardId',
+                name: 'public_site_card',
+                component: () => import('pages/public-sites/PublicSiteCardPage.vue')
+            },
+            {
+                path: ':name',
+                card: 'card_id',
+                name: 'public_site',
+                component: () => import('pages/public-sites/PublicSitePage.vue')
+            }
         ]
     },
     {

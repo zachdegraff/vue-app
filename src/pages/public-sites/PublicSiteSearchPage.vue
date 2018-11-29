@@ -7,9 +7,14 @@
                     <router-link :to="`/for/${site.slug}`">{{site.name}}</router-link>
                     <span>> Search Results</span>
                 </div>
-                <h2 v-show="isEmptyResults">No results for "{{query}}".</h2>
+                <h2 v-show="isEmptyResults">No results for "{{query}}". <router-link :to="`/for/${site.slug}/glossary`">View A-Z List.</router-link></h2>
 
                 <site-cards-list :site="site" :cards="cards"/>
+            </div>
+        </div>
+        <div class="row flex-center" v-show="isSearching">
+            <div class="col-xs-2 text-center">
+                <q-spinner-circles :style="accentColor" size="50"/>
             </div>
         </div>
     </div>

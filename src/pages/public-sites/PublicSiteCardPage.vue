@@ -18,7 +18,7 @@
         </div>
         <div class="row flex-center" v-show="!card">
             <div class="col-xs-2 text-center">
-                <q-spinner-circles color="primary" size="50"/>
+                <q-spinner-circles :style="accentColor" size="50"/>
             </div>
         </div>
     </div>
@@ -31,29 +31,16 @@
     import {mapActions} from 'vuex'
 
     export default {
-        data: () => {
-            return {
-                card: null,
-            }
-        },
         mixins: [PublicSite],
         computed: {
-            cardId() {
-                return this.$route.params.cardId
+            card() {
+                return this.cards.find(card => card.id === parseInt(this.$route.params.cardId))
             }
         },
         components: {
             SiteSearchForm
         },
-        created() {
-            this.loadCard(this.cardId)
-                .then(card => this.card = card)
-                .catch(() => this.$router.push({name: 'not_found'}));
-        },
         methods: {
-            ...mapActions({
-                loadCard: 'cards/get'
-            }),
             setMetaData(site) {
                 if (!site) return;
 

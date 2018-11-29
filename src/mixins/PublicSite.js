@@ -4,10 +4,16 @@ const PublicSite = {
     computed: {
         ...mapGetters({
             site: 'publicSites/getSite',
-            cards: 'publicSites/getCards'
+            cards: 'publicSites/getCards',
+            featuredCards: 'publicSites/getFeaturedCards',
         }),
         link() {
             return this.$route.params.name
+        },
+        accentColor() {
+            if (!this.site) return {};
+
+            return {color: this.site.accentColor}
         }
     },
     watch: {
@@ -24,12 +30,14 @@ const PublicSite = {
 
         this.loadSite(this.link).catch(() => this.$router.push({name: 'not_found'}));
         this.loadCards(this.link);
+        this.loadFeaturedCards(this.link);
 
     },
     methods: {
         ...mapActions({
             loadSite: 'publicSites/loadSite',
-            loadCards: 'publicSites/loadCards'
+            loadCards: 'publicSites/loadCards',
+            loadFeaturedCards: 'publicSites/loadFeaturedCards'
         }),
         setLinkColor() {
             if (!this.site || !this.site.linkColor) return;

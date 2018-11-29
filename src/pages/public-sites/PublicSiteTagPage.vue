@@ -7,12 +7,12 @@
                     <router-link :to="`/for/${site.slug}`">{{site.name}}</router-link>
                     <span>> {{tag}} Tag</span>
                 </div>
-                <site-cards-list :site="site" :cards="cards"/>
+                <site-cards-list :site="site" :cards="items"/>
             </div>
         </div>
-        <div class="row flex-center" v-show="isSearching">
+        <div class="row flex-center" v-show="isCardsLoading">
             <div class="col-xs-2 text-center">
-                <q-spinner-circles color="primary" size="50"/>
+                <q-spinner-circles :style="accentColor" size="50"/>
             </div>
         </div>
     </div>
@@ -29,21 +29,20 @@
         mixins: [PublicSite],
         computed: {
             ...mapGetters({
-                cards: 'publicSites/getSearchResults',
-                isSearching: 'publicSites/isSearchLoading',
+                cards: 'publicSites/getCards',
+                isCardsLoading: 'publicSites/isCardsLoading',
             }),
             tag() {
                 return this.$route.params.tag
+            },
+            items() {
+                return this.cards.filter(card => {
+                    return card.tags.find(tag => tag.name === this.tag) !== undefined
+                })
             }
         },
         components: {SiteSearchForm, SiteCardsList},
-        created() {
-            this.searchCards({link: this.link, params: {tag: this.tag}})
-        },
         methods: {
-            ...mapActions({
-                searchCards: 'publicSites/searchCards'
-            }),
             setMetaData(site) {
                 if (!site) return;
 

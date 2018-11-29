@@ -124,7 +124,7 @@
             },
             options() {
                 return this.tags.map(tag => {
-                    return {id: tag.id, label: tag.name, value: tag.name}
+                    return {id: tag.id, name: tag.name, label: tag.name, value: tag.name}
                 })
             },
             isPublished() {
@@ -189,13 +189,14 @@
                 if (idx === -1) this.form[target].push(item)
             },
             toggleItems(value, source) {
-                this.form[source] = this.form[source].filter(item => value.includes(item.value))
+                this.form[source] = this.form[source].filter(item => value.includes(item.name))
             },
             searchCards(terms, done) {
                 this.hints({terms}).then(items => {
                     const result = items.map(item => {
                         return {
                             id: item.id,
+                            name: item.name,
                             label: item.name,
                             value: item.name
                         };

@@ -2,6 +2,7 @@ export default {
     site: null,
     cards: [],
     teamSites: [],
+    featuredCards: [],
     searchResults: [],
 
     storeStatus: '',
@@ -9,5 +10,6 @@ export default {
     loadCardsStatus: '',
     searchCardsStatus: '',
     loadTeamSitesStatus: '',
-    loadSiteConfigStatus: ''
+    loadSiteConfigStatus: '',
+    loadFeaturedCardsStatus: ''
 }

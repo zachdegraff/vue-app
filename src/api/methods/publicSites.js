@@ -20,6 +20,10 @@ export const getSiteCards = (link) => {
     return request.get(`/public-sites/${link}/cards`)
 };
 
+export const getSiteFeaturedCards = (link) => {
+    return request.get(`/public-sites/${link}/featured-cards`)
+};
+
 export const searchSiteCards = (link, params) => {
     return request.get(`/public-sites/${link}/search`, {params})
 };
