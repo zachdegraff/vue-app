@@ -12,7 +12,7 @@
                         <h2>{{card.name}}</h2>
                         <span slot="subtitle">{{card.shorthand.join(', ')}}</span>
                     </q-card-title>
-                    <q-card-main v-html="filterDescription(card)"/>
+                    <q-card-main v-html="filterDescription(card)" @click.native="handleClicks"/>
                 </q-card>
             </div>
         </div>
@@ -49,6 +49,25 @@
                 const meta = document.getElementsByTagName("META").namedItem('description');
                 if (meta !== undefined) {
                     meta.content = `Quickly decode terms and acronyms with ${this.site.name}`
+                }
+            },
+            handleClicks($event) {
+                const {target} = $event;
+                if (target.href && target.href.match(`/for/${this.link}`)) {
+                    const {altKey, ctrlKey, metaKey, shiftKey, button, defaultPrevented} = $event;
+                    if (metaKey || altKey || ctrlKey || shiftKey) return;
+                    if (defaultPrevented) return;
+                    if (button !== undefined && button !== 0) return;
+                    if (target && target.getAttribute) {
+                        const linkTarget = target.getAttribute('target');
+                        if (/\b_blank\b/i.test(linkTarget)) return
+                    }
+                    const url = new URL(target.href);
+                    const to = url.pathname;
+                    if (window.location.pathname !== to && $event.preventDefault) {
+                        $event.preventDefault();
+                        this.$router.push(to)
+                    }
                 }
             },
             filterDescription(card) {
