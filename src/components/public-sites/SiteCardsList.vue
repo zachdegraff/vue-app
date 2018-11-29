@@ -24,16 +24,12 @@
             }
         },
         methods: {
-            convertLinks(content) {
-                return content.replace(/\/(cards|glossary)\/([0-9]+)/g, `/for/${this.link}/$2`)
-            },
             filterDescription(card) {
                 let content = strip_tags(card.description).substring(0, 500);
                 if (card.description.length > 500) {
                     content += '...'
                 }
-
-                return this.convertLinks(content)
+                return content
             }
         }
     }
