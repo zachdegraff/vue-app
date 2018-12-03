@@ -5,12 +5,15 @@
                 <router-link :to="`/for/${site.slug}/${card.id}`">{{card.name}}</router-link>
                 <span slot="subtitle">{{card.shorthand.join(', ')}}</span>
             </q-card-title>
-            <q-card-main v-html="filterDescription(card)"/>
+            <q-card-main class="relative-position" @click.native="handleClicks">
+                <div v-html="convertLinks(card)" class="public-site-cards-item-content"/>
+                <i></i>
+            </q-card-main>
         </q-card>
     </div>
 </template>
 <script>
-    import {strip_tags} from '../../helpers'
+    import PublicSiteLinks from '../../mixins/PublicSiteLinks'
 
     export default {
         props: {
@@ -23,14 +26,29 @@
                 required: true
             }
         },
-        methods: {
-            filterDescription(card) {
-                let content = strip_tags(card.description).substring(0, 500);
-                if (card.description.length > 500) {
-                    content += '...'
-                }
-                return content
+        computed: {
+            link() {
+                return this.$route.params.name
             }
-        }
+        },
+        mixins: [PublicSiteLinks]
     }
 </script>
+<style>
+    .public-site-cards-item-content {
+        position: relative;
+        height: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .public-site-cards-item-content + i {
+        position: absolute;
+        bottom: 16px;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(247, 247, 247, 1));;
+        display: block;
+        height: 30px;
+    }
+</style>
