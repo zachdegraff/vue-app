@@ -47,7 +47,7 @@ const PublicSite = {
             style.setAttribute('id', 'siteLinkColor');
             document.head.appendChild(style);
 
-            style.innerHTML = `a {color: ${this.site.linkColor} !important}; a:hover {color: ${this.site.linkColor} !important; opacity:0.7}`;
+            style.innerHTML = `a {color: ${this.site.linkColor} !important}; a:hover {color: ${this.site.linkColor} !important}`;
         }
     }
 };
