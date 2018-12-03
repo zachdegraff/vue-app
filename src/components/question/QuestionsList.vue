@@ -18,7 +18,7 @@
                             <q-popover>
                                 <q-list link class="no-border">
                                     <q-item @click.native="edit(item)" v-close-overlay>
-                                        <q-item-main label="Edit Question"/>
+                                        <q-item-main label="Edit Request"/>
                                     </q-item>
                                     <q-item @click.native="flush(item)" v-close-overlay>
                                         <q-item-main label="Delete"/>

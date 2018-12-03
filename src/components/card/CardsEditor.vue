@@ -65,8 +65,7 @@
                                                 <q-item-tile>{{tag}}</q-item-tile>
                                             </q-item-main>
                                             <q-item-side right>
-                                                <q-btn flat dense color="negative" icon="close"
-                                                       @click="removeTag(idx)"/>
+                                                <q-btn flat dense color="negative" icon="close" @click="removeTag(idx)"/>
                                             </q-item-side>
                                         </q-item>
                                     </q-list>
@@ -106,7 +105,7 @@
                             <q-icon :name="questionIconName"/>
                         </div>
                         <!--<div class="float-left q-mt-xs empty-questions-text" v-else >Have a question for the team?</div>-->
-                        <q-btn icon="help" label="ask question" dense @click="openAskHelp" class="float-right"/>
+                        <q-btn icon="help" label="Request information" dense @click="openAskHelp" class="float-right"/>
                         <div style="clear:both"></div>
                     </div>
                     <div class="q-mt-md" v-show="isQuestionsVisible">
@@ -186,9 +185,9 @@
             },
             questionsLabel() {
                 if (this.questions.length > 0) {
-                    return `Questions (${this.questions.length})`;
+                    return `Requests (${this.questions.length})`;
                 }
-                return 'Questions'
+                return 'Requests'
             },
             questionIconName() {
                 if (this.isQuestionsVisible) {

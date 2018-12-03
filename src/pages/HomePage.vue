@@ -5,7 +5,7 @@
             <div class="col-md-12 col-lg-7">
                 <div class="row lt-lg">
                     <q-btn no-caps color="primary" label="Create a card" class="q-mr-md q-mb-md" @click="createCard"/>
-                    <q-btn outline no-caps color="primary" label="Ask a question" class="q-mb-md" @click="openAskHelp"/>
+                    <q-btn outline no-caps color="primary" label="Submit request" class="q-mb-md" @click="openAskHelp"/>
                 </div>
                 <div class="q-card full-width empty_card" v-show="isEmptyTeam">
                     <h2>Wonderus is your new home for team knowledge!</h2>
@@ -25,7 +25,7 @@
             <div class="col-lg-3 q-px-xl gt-md">
                 <q-btn no-caps color="primary" label="Create a card" class="full-width q-mb-md" @click="createCard"/>
 
-                <q-btn outline no-caps color="primary" label="Ask a question" class="full-width q-mb-lg" @click="openAskHelp"/>
+                <q-btn outline no-caps color="primary" label="Submit request" class="full-width q-mb-lg" @click="openAskHelp"/>
                 <slack-integration v-if="isOwner" class="full-width" />
 
                 <q-btn v-if="isOwner" outline no-caps color="primary" label="Invite team members" class="full-width q-mb-lg margin-top-24"  @click="invite(team.id)"/>

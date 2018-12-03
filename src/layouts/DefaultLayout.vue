@@ -20,10 +20,10 @@
                                             <q-item-tile>Glossary</q-item-tile>
                                         </q-item-main>
                                     </q-item>
-                                    <q-item to="/questions">
+                                    <q-item to="/requests">
                                         <q-item-side icon="help"/>
                                         <q-item-main>
-                                            <q-item-tile>Questions</q-item-tile>
+                                            <q-item-tile>Requests</q-item-tile>
                                         </q-item-main>
                                     </q-item>
                                     <q-item to="/integrations" v-if="team && team.isOwner">

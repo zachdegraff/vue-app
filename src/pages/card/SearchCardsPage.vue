@@ -18,7 +18,7 @@
                 </div>
                 <div class="row flex-center q-mt-lg" v-if="isAskHelpAvailable">
                     <div class="col text-center q-mt-xl">
-                        Not finding what you need? <a href="javascript:void(0)" @click="openAskHelp">Ask for help</a>.
+                        Not finding what you need? <a href="javascript:void(0)" @click="openAskHelp">Submit a request for an answer</a>.
                     </div>
                 </div>
             </div>

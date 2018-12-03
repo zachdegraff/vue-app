@@ -4,22 +4,22 @@
             <site-navigation class="col-lg-2 gt-md"/>
             <div class="col-md-12 col-lg-7">
                 <div class="row lt-lg">
-                    <q-btn no-caps color="primary" label="Ask a question" @click="openAskHelp" class="q-mb-md"/>
+                    <q-btn no-caps color="primary" label="Submit request" @click="openAskHelp" class="q-mb-md"/>
                 </div>
                 <div class="row q-mb-lg">
-                    <div class="col q-headline">Questions</div>
+                    <div class="col q-headline">Requests</div>
                 </div>
                 <div class="row q-my-lg questions-container">
                     <q-tabs no-pane-border color="#f7f7f7" class="col">
                         <!-- Tabs - notice slot="title" -->
-                        <q-route-tab label="Open" to="/questions" slot="title" name="open"/>
-                        <q-route-tab label="Answered" to="/questions/answered" slot="title" name="answered"/>
-                        <q-route-tab label="My questions" to="/questions/my" slot="title" name="user"/>
+                        <q-route-tab label="Open" to="/requests" slot="title" name="open"/>
+                        <q-route-tab label="Answered" to="/requests/answered" slot="title" name="answered"/>
+                        <q-route-tab label="My requests" to="/requests/my" slot="title" name="user"/>
 
                         <!-- Targets -->
                         <q-tab-pane name="open">
                             <q-infinite-scroll :handler="loadMoreQuestions">
-                                <div class="q-mt-md" v-show="ifEmpty">There are no questions that need to be answered. Ask one!</div>
+                                <div class="q-mt-md" v-show="ifEmpty">There are no requests for knowledge from your team. Submit one!</div>
                                 <questions-list :items="questions"></questions-list>
                                 <q-spinner slot="message" :size="40" color="red"/>
                             </q-infinite-scroll>
@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div class="col-lg-3 q-px-xl gt-md">
-                <q-btn no-caps color="primary" label="Ask a question" @click="openAskHelp" class="full-width q-mb-lg"/>
+                <q-btn no-caps color="primary" label="Submit request" @click="openAskHelp" class="full-width q-mb-lg"/>
             </div>
         </div>
     </div>

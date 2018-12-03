@@ -6,12 +6,12 @@
                 <q-btn flat icon="close" @click="isOpen=false" class="float-right"/>
             </q-toolbar>
             <form class="row q-pa-xl flex-center">
-                <q-field class="col-xs-12" :error="$v.question.$error" :error-label="firstErrorFor($v.question)">
-                    <q-input ref="field" type="textarea" v-model="question" @blur="$v.question.$touch" float-label="Your question"></q-input>
+                <q-field class="col-xs-12" :error="$v.request.$error" :error-label="firstErrorFor($v.request)">
+                    <q-input ref="field" type="textarea" v-model="request" @blur="$v.request.$touch" float-label="Your request"></q-input>
                 </q-field>
                 <div class="col-xs-12 q-mt-md q-body-2">
-                    <span v-if="card">Your question will be linked to {{card.name}} and shared with the {{team.name}} team.</span>
-                    <span v-if="team && !card">Your question will be shared with the {{team.name}} team.</span>
+                    <span v-if="card">Your request will be linked to {{card.name}} and shared with the {{team.name}} team.</span>
+                    <span v-if="team && !card">Your request will be shared with the {{team.name}} team.</span>
                 </div>
                 <q-field class="col-xs-12 q-mt-xl">
                     <q-btn color="primary" label="Submit" @click="submit" :disable="isProcessing"></q-btn>
@@ -31,7 +31,7 @@
         components: {AppModalLayout},
         data: () => {
             return {
-                question: '',
+                request: '',
                 isOpen: true
             }
         },
@@ -45,7 +45,7 @@
         },
         mixins: [ValidatorMessages],
         validations: {
-            question: {
+            request: {
                 required
             },
         },
@@ -58,8 +58,8 @@
                 closeAskHelp: 'modals/closeAskHelp'
             }),
             submit() {
-                this.$v.question.$touch();
-                if (this.$v.question.$error) {
+                this.$v.request.$touch();
+                if (this.$v.request.$error) {
                     return
                 }
                 if (this.team === null) {
@@ -67,7 +67,7 @@
                 }
                 const params = {
                     id: this.team.id,
-                    content: this.question,
+                    content: this.request,
                     searchQuery: this.searchQuery
                 };
                 if (this.card !== undefined) {

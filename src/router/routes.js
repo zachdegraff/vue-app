@@ -151,7 +151,7 @@ export default [
         ]
     },
     {
-        path: '/questions/',
+        path: '/requests/',
         component: () => import('layouts/DefaultLayout.vue'),
         beforeEnter: ifAuthenticated,
         children: [

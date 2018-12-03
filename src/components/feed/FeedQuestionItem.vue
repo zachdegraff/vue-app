@@ -14,7 +14,7 @@
                         <q-popover>
                             <q-list link class="no-border">
                                 <q-item @click.native="edit(question)" v-close-overlay>
-                                    <q-item-main label="Edit Question"/>
+                                    <q-item-main label="Edit Request"/>
                                 </q-item>
                                 <q-item @click.native="flush(question)" v-close-overlay>
                                     <q-item-main label="Delete"/>
@@ -95,9 +95,9 @@
             },
             actionTypeLabel() {
                 if (this.item.actionType === 'answer') {
-                    return 'answered a question'
+                    return 'answered a request'
                 }
-                return 'asked a question'
+                return 'submitted a request'
             }
         },
         mixins: [DateFormatter],

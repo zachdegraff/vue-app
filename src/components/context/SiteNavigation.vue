@@ -10,9 +10,9 @@
                 <q-icon name="library_books" size="1.4rem" class="q-mr-sm"/>
                 Glossary
             </q-item>
-            <q-item to="/questions" :class="{active:isActive('questions')}">
+            <q-item to="/requests" :class="{active:isActive('questions')}">
                 <q-icon name="help" size="1.4rem" class="q-mr-sm"/>
-                Questions
+                Requests
             </q-item>
         </q-list>
         <div v-if="team && team.isOwner">
@@ -39,7 +39,7 @@
                 links: {
                     home: ['/'],
                     glossary: ['/glossary', '/glossary/table', '/glossary/favorites', '/glossary/tags'],
-                    questions: ['/questions', '/questions/answered', '/questions/my'],
+                    requests: ['/requests', '/requests/answered', '/requests/my'],
                     integrations: ['/integrations'],
                     publicSites: ['/public-sites']
                 }
