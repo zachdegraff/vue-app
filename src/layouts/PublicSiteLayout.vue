@@ -59,11 +59,10 @@
     }
 
     .public-site-footer {
-        border-top: solid 1px #ddd;
-        color: rgba(0, 0, 0, 0.4);
-        height: 100px;
-        margin-top: 50px;
+        border-top: solid 1px #eee;
+        font-size: .9rem;
+        margin: 40px 0 20px;
+        padding: 10px 0;
         text-align: center;
-        padding: 15px;
     }
 </style>
