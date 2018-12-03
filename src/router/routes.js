@@ -182,7 +182,7 @@ export default [
     },
     {
         path: '/for/',
-        component: () => import('layouts/ClearLayout.vue'),
+        component: () => import('layouts/PublicSiteLayout.vue'),
         children: [
             {
                 path: ':name/glossary',
