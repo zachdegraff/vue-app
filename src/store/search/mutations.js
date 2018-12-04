@@ -14,7 +14,7 @@ export const searchStatusRequest = state => {
 };
 export const searchStatusSuccess = (state, res) => {
     state.actionSearchStatus = 'Success';
-    state.results = res.data.data
+    state.results = res.data.data || []
 };
 export const searchStatusFailure = state => state.actionSearchStatus = 'Failure';
 

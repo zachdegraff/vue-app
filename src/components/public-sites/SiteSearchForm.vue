@@ -81,7 +81,7 @@
                     return this.$router.push({name: 'public_site', params: {name: this.link}})
                 }
 
-                if (this.terms.length < 2) return;
+                if (this.terms.length < 1) return;
 
                 this.$router.push({path: `/for/${this.site.slug}/search`, query: {q: this.terms}});
             },

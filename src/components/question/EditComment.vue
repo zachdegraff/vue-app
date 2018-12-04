@@ -8,7 +8,7 @@
             <form class="row q-pa-xl flex-center" v-if="comment">
                 <q-field class="col-xs-12" :label-width="12">
                     <q-chips-input v-model="cards" float-label="Link cards with answer:">
-                        <q-autocomplete separator @search="search" @selected="selected" :min-characters="2"/>
+                        <q-autocomplete separator @search="search" @selected="selected" :min-characters="1"/>
                     </q-chips-input>
                 </q-field>
                 <q-field class="col-xs-12 q-mt-md" :error="$v.comment.$error" :error-label="firstErrorFor($v.comment.content)">
