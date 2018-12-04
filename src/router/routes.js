@@ -135,6 +135,8 @@ export default [
         beforeEnter: ifAuthenticated,
         children: [
             {path: ':id', name: 'view_team', component: () => import('pages/team/ViewTeamPage.vue'), props: true},
+            {path: ':id/members', name: 'team_members', component: () => import('pages/team/TeamMembersPage.vue'), props: true},
+            {path: ':id/plan', name: 'team_plan', component: () => import('pages/team/TeamPlanPage.vue'), props: true},
             {path: ':id/edit', name: 'edit_team', component: () => import('pages/team/EditTeamPage.vue'), props: true},
             {
                 path: ':id/invite',

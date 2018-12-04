@@ -3,13 +3,13 @@
         <app-header></app-header>
         <q-page-container>
             <q-page>
-                <div class="row gutter-md q-pa-md">
-                    <div class="col-xs-12 col-sm-4">
-                        <teams-navigation></teams-navigation>
-                    </div>
-                    <div class="col-xs-12 col-sm-8">
-                        <view-team></view-team>
-                        <router-view :key="$route.fullPath"/>
+                <div class="content-container">
+                    <div class="row gutter-md q-pa-md">
+                        <teams-navigation class="col-lg-2 gt-md"></teams-navigation>
+                        <div class="col-md-12 col-lg-7">
+                            <router-view :key="$route.fullPath"/>
+                        </div>
+                        <div class="col-lg-3 q-px-xl gt-md"></div>
                     </div>
                 </div>
             </q-page>

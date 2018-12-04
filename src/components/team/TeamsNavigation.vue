@@ -1,82 +1,95 @@
 <template>
     <div>
-        <q-list highlight inset-separator link class="bg-white q-mt-md" v-if="teams.length>0">
-            <q-item v-for="team in teams" :key="team.id" :active="isActive(team)" :to="{name: 'view_team', params: {id: team.id}}">
-                <q-item-side>
-                    <img :src="photo(team.photo)" class="round-borders" width="50px"/>
-                </q-item-side>
-                <q-item-main :label="team.name"/>
-                <q-item-side right>
-                    <q-btn flat round dense icon="more_vert" v-if="team.isEditable">
-                        <q-popover>
-                            <q-list link>
-                                <q-item @click.native="edit(team.id)" v-close-overlay>
-                                    <q-item-main label="Edit"/>
-                                </q-item>
-                                <q-item @click.native="flush(team.id)" v-if="team.isOwner" v-close-overlay>
-                                    <q-item-main label="Delete"/>
-                                </q-item>
-                            </q-list>
-                        </q-popover>
-                    </q-btn>
-                </q-item-side>
+        <q-select filter :options="options" v-model="selected"/>
+        <q-list link no-border class="teams-navigation q-mt-lg">
+            <q-item :to="`/teams/${id}`" :class="{active:isActive('view')}">
+                <q-icon name="info" size="1.4rem" class="q-mr-sm"/>
+                About
+            </q-item>
+            <q-item :to="`/teams/${id}/members`" :class="{active:isActive('members')}">
+                <q-icon name="group" size="1.4rem" class="q-mr-sm"/>
+                Members
+            </q-item>
+            <q-item :to="`/teams/${id}/plan`" :class="{active:isActive('plan')}">
+                <q-icon name="account_balance_wallet" size="1.4rem" class="q-mr-sm"/>
+                Plan
             </q-item>
         </q-list>
-        <div class="q-pt-lg text-center">
+        <div class="q-mt-lg text-center">
             <q-btn label="create team" color="primary" @click="create"/>
         </div>
-        <edit-team v-if="isTeamEditing"/>
+        <div class="q-mt-lg text-center"></div>
         <create-team v-if="isTeamAdding"/>
     </div>
 </template>
 <script>
     import CreateTeam from '../../components/team/CreateTeam.vue'
-    import EditTeam from '../../components/team/EditTeam.vue'
     import {mapActions, mapGetters} from 'vuex'
 
     export default {
+        data: () => {
+            return {
+                selected: null,
+                patterns: {
+                    view: '^/teams/[0-9]+$',
+                    plan: '^/teams/[0-9]+/plan$',
+                    members: '^/teams/[0-9]+/members$'
+                }
+            }
+        },
+        watch: {
+            selected: function (val) {
+                if (!val) return;
+
+                this.$router.push(`/teams/${val}`)
+            }
+        },
         computed: {
             ...mapGetters({
                 teams: 'teams/all',
-                isTeamEditing: 'modals/isEditTeamOpen',
                 isTeamAdding: 'modals/isCreateTeamOpen'
-            })
+            }),
+            id() {
+                return this.$route.params.id
+            },
+            options() {
+                return this.teams.map(team => {
+                    return {value: team.id, label: team.name}
+                })
+            }
         },
-        components: {CreateTeam, EditTeam},
+        components: {CreateTeam},
+        created() {
+            this.selected = parseInt(this.$route.params.id)
+        },
         methods: {
             ...mapActions({
-                remove: 'teams/remove',
-                edit: 'modals/openEditTeam',
                 create: 'modals/openCreateTeam',
+                changeTeam: 'teams/changeCurrentTeam'
             }),
-            photo(path) {
-                if (!path) {
-                    return 'statics/team.png'
-                }
-                return path
-            },
-            flush(id) {
-                this.confirm().then(() => {
-                    this.remove(id).then(() => {
-                        if (this.teams.length === 0) {
-                            return this.$router.push({name: 'home'})
-                        }
-                        return this.$router.push({name: 'view_team', params: {id: this.teams[0].id}})
-                    })
-                }).catch(() => {
-                })
-            },
-            isActive(item) {
-                return item.id === parseInt(this.$route.params.id)
-            },
-            confirm() {
-                return this.$q.dialog({
-                    title: 'Confirm',
-                    message: 'Are you sure?',
-                    cancel: true,
-                    color: 'secondary'
-                });
+            isActive(name) {
+                const pattern = this.patterns[name] || '';
+
+                return this.$route.fullPath.match(pattern)
             }
         }
     }
 </script>
+<style lang="scss">
+    .teams-navigation {
+        .q-item {
+            border-left: solid 10px transparent;
+            padding: 8px 25px;
+
+            &.router-link-active, &.router-link-exact-active {
+                background: none;
+            }
+
+            &.active, &:hover {
+                background: none;
+                border-left-color: #2fab65;
+                color: #2fab65
+            }
+        }
+    }
+</style>

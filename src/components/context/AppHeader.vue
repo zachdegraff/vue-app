@@ -16,7 +16,7 @@
                             </q-item>
                             <q-item-separator/>
                             <q-item :to="manage">
-                                <q-item-main label="Manage Teams"/>
+                                <q-item-main label="Team Settings"/>
                             </q-item>
                         </q-list>
                     </q-popover>
