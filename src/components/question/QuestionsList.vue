@@ -52,7 +52,7 @@
             <div class="questions-item-reply" v-show="item.showReplyForm">
                 <q-field label="Link cards with answer:" :label-width="3">
                     <q-chips-input v-model="cards">
-                        <q-autocomplete separator @search="search" @selected="selected" :min-characters="2"/>
+                        <q-autocomplete separator @search="search" @selected="selected" :min-characters="1"/>
                     </q-chips-input>
                 </q-field>
                 <q-field label="Add a comment:" :label-width="3" class="q-my-md">

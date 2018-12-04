@@ -18,7 +18,7 @@
         <div class="cards-editor-sidebar-actions row" v-show="isSidebarVisible">
             <div class="cards-editor-sidebar-actions-search col-lg-12 ">
                 <q-search hide-underline v-model="query" placeholder="Add card to list">
-                    <q-autocomplete separator @search="search" @selected="selected" :min-characters="2"/>
+                    <q-autocomplete separator @search="search" @selected="selected" :min-characters="1"/>
                 </q-search>
             </div>
             <div class="create-new-card  col-lg-12">

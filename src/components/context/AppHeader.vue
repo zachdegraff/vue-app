@@ -32,7 +32,7 @@
                     <img src="statics/header-logo.png"/>
                 </router-link>
             </div>
-            <q-btn color="white" v-tooltip.top-center="msg" class="text-black gt-xs" icon="add" label="" v-if="canAddCard" @click="addCard" :disabled="isCreating"/>
+            <q-btn color="white" v-tooltip.top-center="'Create a card'" class="text-black gt-xs" icon="add" label="" v-if="canAddCard" @click="addCard" :disabled="isCreating"/>
             <q-btn color="white" class="short-add-button text-black lt-sm" icon="add" v-if="canAddCard" @click="addCard" :disabled="isCreating"/>
             <div class="auth-user q-ml-md" v-if="user">
                 <img :src="avatar(user.photo)" class="header-icon vertical-middle"/>
@@ -55,24 +55,16 @@
     </q-layout-header>
 </template>
 <script>
-    import Vue from 'vue'
     import SearchForm from '../../components/SearchForm.vue'
     import {mapActions, mapGetters} from 'vuex'
-    import VTooltip from 'v-tooltip'
-    Vue.use(VTooltip);
 
     export default {
-        data: () => {
-            return {
-                msg: 'Create a card'
-            }
-        },
         computed: {
             ...mapGetters({
                 user: 'auth/user',
                 teams: 'teams/all',
-                isCreating: 'cards/isCreating',
-                current: 'teams/current'
+                current: 'teams/current',
+                isCreating: 'cards/isCreating'
             }),
             manage() {
                 if (this.current !== null) {
