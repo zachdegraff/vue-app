@@ -31,12 +31,10 @@
                 <q-btn v-if="isOwner" outline no-caps color="primary" label="Invite team members" class="full-width q-mb-lg margin-top-24"  @click="invite(team.id)"/>
             </div>
         </div>
-        <invite-member v-if="isMemberInviting"></invite-member>
     </div>
 </template>
 
 <script>
-    import InviteMember from '../components/team/InviteMember.vue'
     import SlackIntegration from '../components/context/SlackIntegration.vue'
     import SiteNavigation from '../components/context/SiteNavigation.vue'
     import FeedQuestionItem from '../components/feed/FeedQuestionItem.vue'
@@ -65,8 +63,7 @@
             }
             document.title = this.title;
             this.changeQuery('');
-            this.loadFreshFeed();
-            this.loadQuestionsCount();
+            this.loadFreshFeed()
         },
         destroyed() {
             window.removeEventListener('scroll', this.handleScroll);
@@ -110,7 +107,7 @@
             },
         },
         components: {
-            FeedCardItem, SiteNavigation, SlackIntegration, FeedQuestionItem, InviteMember
+            FeedCardItem, SiteNavigation, SlackIntegration, FeedQuestionItem
         },
         methods: {
             ...mapActions({
@@ -122,8 +119,6 @@
                 openAskHelp: 'modals/openAskHelp',
                 showCard: 'modals/openCardsEditor',
                 invite: 'modals/openInviteMember',
-                loadQuestionsCount: 'questions/loadQuestionsCount',
-                reSendInvite: 'members/retryMemberInvitation',
             }),
 
             handleScroll() {

@@ -9,7 +9,7 @@ export const all = (params = {}) => {
 };
 
 export const allTeams = (params = {}) => {
-    return request.get('/all-teams', {params})
+    return request.get('/teams/all', {params})
 };
 
 export const create = (attr) => {
@@ -28,8 +28,8 @@ export const members = (id) => {
     return request.get(`/teams/${id}/members`);
 };
 
-export const countsMembers = (id) => {
-    return request.get(`/teams/${id}/counts-members`);
+export const stats = (id) => {
+    return request.get(`/teams/${id}/stats`);
 };
 
 export const slack = (id, code) => {

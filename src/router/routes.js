@@ -120,24 +120,23 @@ export default [
             {path: '', name: 'cards_list', component: () => import('pages/card/CardsListPage.vue')}
         ]
     },
-    {
+    /*{
         path: '/teams/',
         component: () => import('layouts/DefaultLayout.vue'),
         beforeEnter: ifAuthenticated,
         children: [
             {path: '', name: 'teams', component: () => import('pages/team/ManageTeamsPage.vue')},
-            {path: 'create', name: 'create_team', component: () => import('pages/team/CreateTeamPage.vue')},
+            ,
         ]
-    },
+    },*/
     {
         path: '/teams/',
         component: () => import('layouts/TeamLayout.vue'),
         beforeEnter: ifAuthenticated,
         children: [
-            {path: ':id', name: 'view_team', component: () => import('pages/team/ViewTeamPage.vue'), props: true},
+            {path: 'create', name: 'create_team', component: () => import('pages/team/CreateTeamPage.vue')},
             {path: ':id/members', name: 'team_members', component: () => import('pages/team/TeamMembersPage.vue'), props: true},
             {path: ':id/plan', name: 'team_plan', component: () => import('pages/team/TeamPlanPage.vue'), props: true},
-            {path: ':id/edit', name: 'edit_team', component: () => import('pages/team/EditTeamPage.vue'), props: true},
             {
                 path: ':id/invite',
                 name: 'invite_member',
@@ -150,6 +149,7 @@ export default [
                 component: () => import('pages/team/ChangeRolePage.vue'),
                 props: true
             },
+            {path: ':id', name: 'view_team', component: () => import('pages/team/ViewTeamPage.vue'), props: true},
         ]
     },
     {

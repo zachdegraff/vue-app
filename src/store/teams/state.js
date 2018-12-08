@@ -1,13 +1,12 @@
 export default {
     items: [],
-
-    viewing: null,
-    editing: null,
-
+    stats: {},
+    plan: null,
     current: null,
 
     actionAllStatus: '',
     actionGetStatus: '',
+    actionStatsStatus: '',
     actionUpdateStatus: '',
     actionCreateStatus: '',
     actionRemoveStatus: '',

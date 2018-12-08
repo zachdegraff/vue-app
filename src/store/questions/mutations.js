@@ -63,13 +63,6 @@ export const removeStatusSuccess = (state, res) => {
 };
 export const removeStatusFailure = state => state.actionRemoveStatus = 'Failure';
 
-export const loadQuestionsCountRequest = state => state.actionLoadQuestionsCountStatus = 'Request';
-export const loadQuestionsCountSuccess = (state, res) => {
-    state.actionLoadQuestionsCountStatus = 'Success';
-    state.count = res.data
-};
-export const loadQuestionsCountFailure = state => state.actionLoadQuestionsCountStatus = 'Failure';
-
 export const loadOpenQuestionsStatusRequest = state => state.actionLoadOpenQuestionsStatus = 'Request';
 export const loadOpenQuestionsStatusSuccess = (state, res) => {
     state.actionLoadOpenQuestionsStatus = 'Success';

@@ -63,6 +63,16 @@ export const removeStatusSuccess = (state, res) => {
 };
 export const removeStatusFailure = state => state.actionRemoveStatus = 'Failure';
 
+export const statsStatusRequest = state => {
+    state.actionStatsStatus = 'Request';
+    state.stats = {}
+};
+export const statsStatusSuccess = (state, res) => {
+    state.actionStatsStatus = 'Success';
+    state.stats = res.data
+};
+export const statsStatusFailure = state => state.actionStatsStatus = 'Failure';
+
 export const addSlackStatusRequest = state => state.actionAddSlackStatus = 'Request';
 export const addSlackStatusSuccess = state => state.actionAddSlackStatus = 'Success';
 export const addSlackStatusFailure = state => state.actionAddSlackStatus = 'Failure';

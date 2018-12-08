@@ -64,7 +64,6 @@
         },
         methods: {
             ...mapActions({
-                view: 'teams/view',
                 create: 'teams/create',
                 closeAdding: 'modals/closeCreateTeam'
             }),
@@ -74,10 +73,7 @@
                     return
                 }
 
-                this.create(this.prepare()).then((data) => {
-                    this.view(data.team.id);
-                    this.closeAdding();
-                })
+                this.create(this.prepare()).then(this.closeAdding)
             },
             prepare() {
                 const data = new FormData();

@@ -3,7 +3,7 @@ export const getById = state => {
         if (state.items.length === 0) {
             return undefined;
         }
-        return state.items.find(item => item.id === id);
+        return state.items.find(item => item.id === parseInt(id));
     }
 };
 
@@ -26,9 +26,6 @@ export const current = state => {
 
     return state.current;
 };
-
-export const getViewingTeam = state => state.viewing;
-export const getEditingTeam = state => state.editing;
 
 export const isCreating = state => state.actionCreateStatus === 'Request';
 export const isUpdating = state => state.actionUpdateStatus === 'Request';

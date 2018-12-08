@@ -8,7 +8,6 @@ export const getById = state => {
 };
 
 export const getItems = state => state.items;
-export const getCardsAmount = state => state.amount;
 export const getFavouriteFilterTags = state => state.favouriteFilterTags;
 export const getGlossaryFilterTags = state => state.glossaryFilterTags;
 
@@ -70,5 +69,3 @@ export const isCreating = state => state.actionCreateStatus === 'Request';
 export const isUpdating = state => state.actionUpdateStatus === 'Request';
 export const isCardLoading = state => state.actionGetStatus === 'Request';
 export const isCardsLoading = state => state.actionAllStatus === '' || state.actionAllStatus === 'Request';
-export const isCardsAmountLoading = state => state.actionCardsAmount === 'Request';
-export const isCardsAmountLoaded = state => state.actionCardsAmount === 'Success';

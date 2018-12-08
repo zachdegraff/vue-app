@@ -13,9 +13,6 @@
                                 <q-item :to="{name: 'view_team', params: {id: team.id}}" v-close-overlay>
                                     <q-item-main label="View"/>
                                 </q-item>
-                                <q-item @click.native="edit(team.id)" v-close-overlay>
-                                    <q-item-main label="Edit"/>
-                                </q-item>
                                 <q-item @click.native="flush(team.id)" v-close-overlay>
                                     <q-item-main label="Delete"/>
                                 </q-item>
@@ -38,7 +35,6 @@
     </div>
 </template>
 <script>
-    import EditTeam from '../../components/team/EditTeam.vue'
     import {mapActions, mapGetters} from 'vuex'
     import {notify, replace} from '../../helpers'
 
@@ -53,14 +49,12 @@
                 isTeamEditing: 'modals/isEditTeamOpen'
             })
         },
-        components: {EditTeam},
         methods: {
             ...mapActions({
                 index: 'search/index',
                 remove: 'teams/remove',
                 update: 'teams/update',
                 allTeams: 'teams/allTeams',
-                edit: 'modals/openEditTeam',
             }),
             photo(path) {
                 if (!path) {

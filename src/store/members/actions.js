@@ -31,16 +31,6 @@ export const loadTeamMembers = ({commit}, id) => {
     });
 };
 
-export const getCountsMembers = ({commit}, id) => {
-    return new Promise((resolve, reject) => {
-        api.teams.countsMembers(id).then(res => {
-            resolve(res.data)
-        }).catch(err => {
-            reject(err)
-        })
-    });
-};
-
 export const inviteMemberToTeam = ({commit, dispatch}, {id, params}) => {
     return new Promise((resolve, reject) => {
         commit('inviteMemberToTeamStatusRequest');
@@ -96,10 +86,6 @@ export const loadInvitation = ({commit}) => {
             reject(err)
         })
     })
-};
-
-export const changeEditingMember = ({commit, dispatch}, id) => {
-    dispatch('loadMember', id).then(member => commit('changeEditingMember', member))
 };
 
 export const retryMemberInvitation = ({commit}, id) => {

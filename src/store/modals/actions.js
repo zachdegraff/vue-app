@@ -28,18 +28,6 @@ export const closeCreateTeam = ({dispatch, commit}) => {
     commit('changeCreateTeamStatus', false);
 };
 
-
-export const openEditTeam = ({commit, dispatch}, id) => {
-    dispatch('route/next', {name: 'edit_team', id}, {root: true});
-    dispatch('teams/changeEditingTeam', id, {root: true});
-    commit('changeEditTeamStatus', true);
-};
-
-export const closeEditTeam = ({dispatch, commit}) => {
-    dispatch('route/pop', null, {root: true});
-    commit('changeEditTeamStatus', false);
-};
-
 export const openCreateCardTag = ({commit, dispatch}, id) => {
     dispatch('route/next', {name: 'create_card_tag', id}, {root: true});
     commit('changeCreateCardTagStatus', true);
@@ -72,8 +60,9 @@ export const closeEditComment = ({dispatch, commit}) => {
     commit('changeEditCommentStatus', false)
 };
 
-export const openInviteMember = ({commit, dispatch, rootGetters}, id) => {
+export const openInviteMember = ({commit, dispatch}, id) => {
     dispatch('route/next', {name: 'invite_member', id}, {root: true});
+    commit('changeInviteMemberTeamId', id);
     commit('changeInviteMemberStatus', true);
 };
 export const closeInviteMember = ({dispatch, commit}) => {
@@ -83,7 +72,7 @@ export const closeInviteMember = ({dispatch, commit}) => {
 
 export const openChangeMemberRole = ({commit, dispatch, rootGetters}, {teamId, memberId}) => {
     dispatch('route/next', {name: 'change_role', ...{id: teamId, memberId: memberId}}, {root: true});
-    dispatch('members/changeEditingMember', memberId, {root: true});
+    commit('changeChangeMemberRoleMemberId', memberId);
     commit('changeChangeMemberRoleStatus', true);
 };
 export const closeChangeMemberRole = ({dispatch, commit}) => {

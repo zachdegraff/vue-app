@@ -34,7 +34,6 @@
                     email: '',
                     role: '2',
                 },
-                options: [],
                 isOpen: true
             }
         },
@@ -50,23 +49,22 @@
         computed: {
             ...mapGetters({
                 roles: 'users/getRoles',
-                currentTeam: 'teams/current',
-                viewingTeam: 'teams/getViewingTeam',
-                isProcessing: 'members/isInviting'
+                isProcessing: 'members/isInviting',
+                teamId: 'modals/getInviteMemberTeamId'
             }),
-            team() {
-                return this.viewingTeam || this.currentTeam
+            options() {
+                let items = [];
+                for (let i in this.roles) {
+                    items.push({label: this.roles[i], value: i})
+                }
+                return items
             }
         },
         components: {
             AppModalLayout
         },
         created() {
-            document.title = 'Invite a new member';
-
-            for (let i in this.roles) {
-                this.options.push({label: this.roles[i], value: i})
-            }
+            document.title = 'Invite a new member'
         },
         methods: {
             ...mapActions({
@@ -78,7 +76,7 @@
                 if (this.$v.form.$error) {
                     return
                 }
-                this.invite({id: this.team.id, params: this.form}).then(this.closeInviting)
+                this.invite({id: this.teamId, params: this.form}).then(this.closeInviting)
             }
         }
     }

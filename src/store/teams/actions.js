@@ -1,11 +1,10 @@
 import api from '../../api'
 
 function loadDefaults(dispatch) {
+    dispatch('stats');
     dispatch('tags/all', {}, {root: true});
     dispatch('feed/fresh', {}, {root: true});
-    dispatch('cards/cardsAmount', {}, {root: true});
     dispatch('cards/recently', {}, {root: true});
-    dispatch('questions/loadQuestionsCount', {}, {root: true});
 }
 
 export const all = ({commit, dispatch}) => {
@@ -26,10 +25,9 @@ export const flush = ({commit}) => {
     commit('flushState')
 };
 
-export const allTeams = ({commit, dispatch}) => {
+export const allTeams = () => {
     return new Promise((resolve, reject) => {
         api.teams.allTeams().then(res => {
-            loadDefaults(dispatch);
             resolve(res.data.data)
         }).catch(err => {
             reject(err)
@@ -48,17 +46,6 @@ export const get = ({commit}, id) => {
             reject(err)
         })
     });
-};
-
-export const view = ({commit, dispatch}, id) => {
-    commit('changeViewingTeam', null);
-    return new Promise((resolve, reject) => {
-        dispatch('get', id).then(team => {
-            commit('changeViewingTeam', team);
-            resolve(team)
-        }).catch(reject);
-        dispatch('members/loadTeamMembers', id, {root: true})
-    })
 };
 
 export const create = ({commit, dispatch}, data) => {
@@ -102,6 +89,22 @@ export const remove = ({commit}, id) => {
     })
 };
 
+export const stats = ({commit, getters}) => {
+    return new Promise((resolve, reject) => {
+        const team = getters['current'];
+        if (team === null) return;
+
+        commit('statsStatusRequest');
+        api.teams.stats(team.id).then(res => {
+            commit('statsStatusSuccess', res);
+            resolve(res.data)
+        }).catch(err => {
+            commit('statsStatusFailure', err);
+            reject(err)
+        })
+    })
+};
+
 export const reloadCurrentTeam = ({dispatch, commit, getters}) => {
     const current = getters['current'];
     if (current === null) return;
@@ -115,15 +118,11 @@ export const changeCurrentTeam = ({dispatch, commit, getters}, id) => {
 
     localStorage.setItem('current-team', id);
 
-    dispatch('get', id).then(team => {
+    const team = getters['getById'](id);
+    if (team) {
         commit('changeCurrentTeam', team);
         loadDefaults(dispatch)
-    });
-};
-
-export const changeEditingTeam = ({commit, dispatch}, id) => {
-    commit('changeEditingTeam', null);
-    dispatch('get', id).then(team => commit('changeEditingTeam', team))
+    }
 };
 
 export const addSlackIntegration = ({commit}, {id, code}) => {

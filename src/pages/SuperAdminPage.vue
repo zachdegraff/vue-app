@@ -17,29 +17,12 @@
 </template>
 
 <script>
-    import {mapActions, mapGetters} from 'vuex'
     import AllTeamsNavigation from '../components/super-admin/AllTeamsNavigation.vue'
+    import {mapActions, mapGetters} from 'vuex'
 
     export default {
-        data: () => {
-            return {
-                scrolled: null
-            }
-        },
         created() {
-            const hash = localStorage.getItem('join-token');
-            if (hash !== null) {
-                this.join(hash).then(data => {
-                    this.$router.push({name: 'view_team', params: {id: data.member.teamId}})
-                })
-            }
-            document.title = this.title;
-            this.changeQuery('');
-        },
-        watch: {
-            team: function (val) {
-                document.title = this.title
-            },
+            document.title = 'Wonderus'
         },
         computed: {
             ...mapGetters({
@@ -56,12 +39,6 @@
                     return false;
                 }
                 return this.user.isSuperAdmin
-            },
-            title() {
-                if (this.team === null) {
-                    return 'Wonderus'
-                }
-                return `${this.team.name} - Wonderus`
             }
         },
         components: {
@@ -69,9 +46,7 @@
         },
         methods: {
             ...mapActions({
-                join: 'members/joinMemberToTeam',
-                changeQuery: 'search/changeQuery',
-                team: 'teams/all',
+                team: 'teams/all'
             }),
         }
     }

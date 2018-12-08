@@ -24,8 +24,6 @@ export const loadTeamMembersStatusSuccess = (state, res) => {
 
 export const loadTeamMembersStatusFailure = state => state.loadTeamMembersStatus = 'Failure';
 
-export const changeEditingMember = (state, member) => state.editing = member;
-
 export const inviteMemberToTeamStatusRequest = state => state.inviteMemberToTeamStatus = 'Request';
 export const inviteMemberToTeamStatusSuccess = (state, res) => {
     state.inviteMemberToTeamStatus = 'Success';

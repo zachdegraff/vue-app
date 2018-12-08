@@ -8,7 +8,6 @@ export const get = state => {
 };
 
 export const getTeamMembers = state => state.items;
-export const getEditingMember = state => state.editing;
 export const getInvitation = state => state.invitation;
 
 export const isInviting = state => state.inviteMemberToTeamStatus === 'Request';

@@ -9,23 +9,19 @@
 
                 <p class="q-mt-lg q-body-1" v-if="user">If you are expecting an invite for an existing Wonderus team, please make sure a team admin sent the invitation to {{user.email}}.</p>
             </div>
-            <create-team v-if="isTeamAdding"/>
         </div>
     </div>
 </template>
 <script>
-    import CreateTeam from '../components/team/CreateTeam.vue'
     import {mapGetters, mapActions} from 'vuex'
 
     export default {
         computed: {
             ...mapGetters({
                 user: 'auth/user',
-                team: 'teams/current',
-                isTeamAdding: 'modals/isCreateTeamOpen'
+                team: 'teams/current'
             })
         },
-        components: {CreateTeam},
         created() {
             if (this.team) {
                 this.$router.push({name: 'home'})

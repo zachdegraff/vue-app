@@ -31,15 +31,15 @@
         data: () => {
             return {
                 role: '2',
-                options: [],
-                isOpen: true
+                isOpen: true,
+                member: null
             }
         },
         watch: {
             member: function (val) {
                 if (!val) return;
 
-                for(let i in this.roles) {
+                for (let i in this.roles) {
                     if (this.roles[i] === val.role) {
                         this.role = i
                     }
@@ -49,31 +49,33 @@
         computed: {
             ...mapGetters({
                 roles: 'users/getRoles',
-                member: 'members/getEditingMember',
+                id: 'modals/getChangeRoleMemberId',
                 isProcessing: 'members/isChangingRole',
                 isMemberLoading: 'members/isMemberLoading'
-            })
+            }),
+            options() {
+                let items = [];
+                for (let i in this.roles) {
+                    items.push({label: this.roles[i], value: i})
+                }
+                return items
+            }
         },
         components: {
             AppModalLayout
         },
         created() {
             document.title = 'Change member role - Wonderus';
-            for (let i in this.roles) {
-                this.options.push({label: this.roles[i], value: i})
-            }
+            this.loadMember(this.id).then(member => this.member = member)
         },
         methods: {
             ...mapActions({
+                loadMember: 'members/loadMember',
                 changeRole: 'members/changeMemberRole',
                 closeChangingRole: 'modals/closeChangeMemberRole'
             }),
             submit() {
-                this.changeRole({id: this.member.id, role: this.role}).then(res => {
-                    if (res.member) {
-                        this.closeChangingRole();
-                    }
-                })
+                this.changeRole({id: this.member.id, role: this.role}).then(this.closeChangingRole)
             }
         }
     }

@@ -48,13 +48,6 @@ export const createStatusSuccess = (state, res) => {
 };
 export const createStatusFailure = state => state.actionCreateStatus = 'Failure';
 
-export const cardsAmountStatusRequest = state => state.actionCardsAmount = 'Request';
-export const cardsAmountStatusSuccess = (state, res) => {
-    state.actionCardsAmount = 'Success';
-    state.amount = res.data
-};
-export const cardsAmountStatusFailure = state => state.actionCardsAmount = 'Failure';
-
 export const recentlyUpdatedStatusRequest = state => state.actionRecentlyStatus = 'Request';
 export const recentlyUpdatedStatusSuccess = (state, res) => {
     state.actionRecentlyStatus = 'Success';

@@ -11,11 +11,6 @@ export default {
         status: false
     },
 
-    editTeam: {
-        team: null,
-        status: false
-    },
-
     createCardTag: {
         status: false
     },
@@ -33,12 +28,12 @@ export default {
     },
 
     inviteMember: {
-        team: null,
+        teamId: null,
         status: false
     },
 
     changeMemberRole: {
-        member: null,
+        memberId: null,
         status: false
     },
 }

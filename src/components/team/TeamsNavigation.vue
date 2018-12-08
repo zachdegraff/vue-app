@@ -1,6 +1,8 @@
 <template>
     <div>
-        <q-select filter :options="options" v-model="selected"/>
+        <div class="q-pl-md">
+            <q-select filter :options="options" v-model="selected"/>
+        </div>
         <q-list link no-border class="teams-navigation q-mt-lg">
             <q-item :to="`/teams/${id}`" :class="{active:isActive('view')}">
                 <q-icon name="info" size="1.4rem" class="q-mr-sm"/>
@@ -15,16 +17,10 @@
                 Plan
             </q-item>
         </q-list>
-        <div class="q-mt-lg text-center">
-            <q-btn label="create team" color="primary" @click="create"/>
-        </div>
-        <div class="q-mt-lg text-center"></div>
-        <create-team v-if="isTeamAdding"/>
     </div>
 </template>
 <script>
-    import CreateTeam from '../../components/team/CreateTeam.vue'
-    import {mapActions, mapGetters} from 'vuex'
+    import {mapGetters} from 'vuex'
 
     export default {
         data: () => {
@@ -38,16 +34,15 @@
             }
         },
         watch: {
-            selected: function (val) {
-                if (!val) return;
+            selected: function (val, old) {
+                if (!val || !old) return;
 
                 this.$router.push(`/teams/${val}`)
             }
         },
         computed: {
             ...mapGetters({
-                teams: 'teams/all',
-                isTeamAdding: 'modals/isCreateTeamOpen'
+                teams: 'teams/all'
             }),
             id() {
                 return this.$route.params.id
@@ -58,15 +53,10 @@
                 })
             }
         },
-        components: {CreateTeam},
         created() {
             this.selected = parseInt(this.$route.params.id)
         },
         methods: {
-            ...mapActions({
-                create: 'modals/openCreateTeam',
-                changeTeam: 'teams/changeCurrentTeam'
-            }),
             isActive(name) {
                 const pattern = this.patterns[name] || '';
 
@@ -90,6 +80,12 @@
                 border-left-color: #2fab65;
                 color: #2fab65
             }
+        }
+    }
+
+    @media (max-width: 991px) {
+        .teams-navigation {
+            display: flex;
         }
     }
 </style>

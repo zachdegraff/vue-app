@@ -1,6 +1,6 @@
 <template>
     <q-layout>
-        <app-header></app-header>
+        <app-header/>
         <q-page-container>
             <q-page>
                 <div class="row q-ma-sm lt-lg" v-show="team">
@@ -43,8 +43,8 @@
                 <router-view :key="$route.fullPath"/>
             </q-page>
         </q-page-container>
-        <app-footer></app-footer>
-        <dialogs-store></dialogs-store>
+        <app-footer/>
+        <dialogs-store/>
         <p class="back-to-top" v-if="scrolled" v-scroll-to="{el: '#q-app'}">&uarr;</p>
     </q-layout>
 </template>

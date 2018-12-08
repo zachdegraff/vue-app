@@ -85,23 +85,6 @@ export const removeQuestionComment = ({commit}, comment) => {
     commit('removeQuestionComment', comment)
 };
 
-export const loadQuestionsCount = ({commit, rootGetters}) => {
-    return new Promise((resolve, reject) => {
-        const team = rootGetters['teams/current'];
-        if (team === null) {
-            resolve(0)
-        }
-        commit('loadQuestionsCountRequest');
-        api.questions.count(team.id).then(res => {
-            commit('loadQuestionsCountSuccess', res);
-            resolve(res.data)
-        }).catch(err => {
-            commit('loadQuestionsCountFailure', err);
-            reject(err)
-        })
-    })
-};
-
 export const loadCardQuestions = ({commit, state, rootGetters}, card) => {
     const team = rootGetters['teams/current'];
     if (team === null) {

@@ -1,5 +1,3 @@
-export const getCount = state => state.count;
-
 export const getEditingQuestion = state => state.editing;
 
 export const getOpenQuestions = state => state.openQuestions;

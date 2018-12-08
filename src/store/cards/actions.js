@@ -1,10 +1,9 @@
 import api from '../../api'
 
 const loadHomeItems = (dispatch) => {
+    dispatch('recently');
     dispatch('tags/all', null, {root: true});
     dispatch('feed/fresh', null, {root: true});
-    dispatch('cardsAmount');
-    dispatch('recently');
 };
 
 export const all = ({commit, rootGetters}, params = {}) => {
@@ -84,23 +83,6 @@ export const remove = ({commit, dispatch}, id) => {
 
 export const flush = ({commit}) => {
     commit('flushCardsState')
-};
-
-export const cardsAmount = ({commit, rootGetters}) => {
-    return new Promise((resolve, reject) => {
-        const team = rootGetters['teams/current'];
-        if (team === null) {
-            resolve(0)
-        }
-        commit('cardsAmountStatusRequest');
-        api.cards.count({teamId: team.id}).then(res => {
-            commit('cardsAmountStatusSuccess', res);
-            resolve(res.data)
-        }).catch(err => {
-            commit('cardsAmountStatusFailure', err);
-            reject(err)
-        })
-    })
 };
 
 export const recently = ({commit, rootGetters}) => {

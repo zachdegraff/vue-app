@@ -23,12 +23,10 @@
             })
         },
         created() {
-            this.view(this.id);
             this.invite(this.id)
         },
         methods: {
             ...mapActions({
-                view: 'teams/view',
                 invite: 'modals/openInviteMember',
             })
         }

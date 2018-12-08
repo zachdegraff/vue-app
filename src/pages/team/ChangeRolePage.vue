@@ -26,12 +26,13 @@
             })
         },
         created() {
-            this.view(this.id).then(() => this.changeRole(this.memberId))
-
+            this.changeRole({
+                teamId: this.id,
+                memberId: this.memberId
+            })
         },
         methods: {
             ...mapActions({
-                view: 'teams/view',
                 changeRole: 'modals/openChangeMemberRole',
             })
         }

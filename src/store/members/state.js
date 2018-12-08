@@ -1,7 +1,5 @@
 export default {
     items: [],
-
-    editing: null,
     invitation: null,
 
     loadMemberStatus: '',
