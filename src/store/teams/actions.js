@@ -25,9 +25,10 @@ export const flush = ({commit}) => {
     commit('flushState')
 };
 
-export const allTeams = () => {
+export const allTeams = ({commit}) => {
     return new Promise((resolve, reject) => {
         api.teams.allTeams().then(res => {
+            commit('allStatusSuccess', res);
             resolve(res.data.data)
         }).catch(err => {
             reject(err)

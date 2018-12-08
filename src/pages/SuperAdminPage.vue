@@ -18,7 +18,7 @@
 
 <script>
     import AllTeamsNavigation from '../components/super-admin/AllTeamsNavigation.vue'
-    import {mapActions, mapGetters} from 'vuex'
+    import {mapGetters} from 'vuex'
 
     export default {
         created() {
@@ -43,11 +43,6 @@
         },
         components: {
             AllTeamsNavigation
-        },
-        methods: {
-            ...mapActions({
-                team: 'teams/all'
-            }),
         }
     }
 </script>

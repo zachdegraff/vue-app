@@ -31,7 +31,6 @@
                 </q-item-side>
             </q-item>
         </q-list>
-        <edit-team v-if="isTeamEditing"/>
     </div>
 </template>
 <script>
@@ -43,11 +42,6 @@
             return {
                 teams: null
             }
-        },
-        computed: {
-            ...mapGetters({
-                isTeamEditing: 'modals/isEditTeamOpen'
-            })
         },
         methods: {
             ...mapActions({
