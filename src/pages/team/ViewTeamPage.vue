@@ -6,26 +6,32 @@
             </div>
         </div>
         <div v-if="team">
+            <div class="q-headline">About Team</div>
             <div class="row gutter-x-md q-mt-md">
-                <div class="col-xs-12 col-sm-6 col-lg-4 col-xl-3">
+                <div class="col-xs-12 col-sm-4 col-lg-3">
                     <img :src="photo(team.photo)" class="round-borders full-width"/>
                 </div>
-                <div class="col-xs-12 col-sm-6 col-lg-8 col-xl-9">
+                <div class="col-xs-12 col-sm-8 col-lg-9">
                     <q-field class="q-mt-md" :error="$v.form.name.$error" :error-label="firstErrorFor($v.form.name)">
-                        <q-input v-model="form.name" float-label="Name" @blur="$v.form.name.$touch" :readonly="!isOwner"/>
+                        <q-input v-model="form.name" float-label="Team Name" @blur="$v.form.name.$touch" :readonly="!isOwner"/>
                     </q-field>
-                    <q-field class="q-mt-lg" v-if="isOwner">
+                    <q-field class="q-mt-lg" label="Change Team Photo" label-width="12" v-if="isOwner">
                         <image-chooser @change="changeFile"></image-chooser>
                     </q-field>
-                    <div class="q-mt-lg">
-                        To remove this team from Wonderus, please contact <a href="mailto:hello@wonderus.app">hello@wonderus.app</a>
-                    </div>
-                    <div v-show="isOwner">
+                    <div class="text-right" v-show="isOwner">
                         <q-btn @click="save" color="primary" class="q-mt-lg" label="save" :disable="isUpdating"/>
+                    </div>
+                    <div class="q-mt-lg text-center">
+                        <q-btn label="Create new team" no-caps color="primary" @click="create"/>
                     </div>
                 </div>
             </div>
-
+            <div class="text-center q-mt-lg" v-if="isOwner">
+                To remove this team from Wonderus, please contact <a href="mailto:hello@wonderus.app">hello@wonderus.app</a>
+            </div>
+            <div class="text-center q-mt-lg" v-if="!isOwner">
+                Only team admins can make changes to team settings and invite new members.
+            </div>
         </div>
     </div>
 </template>
@@ -81,7 +87,8 @@
         },
         methods: {
             ...mapActions({
-                update: 'teams/update'
+                update: 'teams/update',
+                create: 'modals/openCreateTeam'
             }),
             save() {
                 this.$v.form.$touch();

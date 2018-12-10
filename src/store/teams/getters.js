@@ -26,10 +26,11 @@ export const current = state => {
 
     return state.current;
 };
-
+export const getTeamStats = state => state.stats;
 export const isCreating = state => state.actionCreateStatus === 'Request';
 export const isUpdating = state => state.actionUpdateStatus === 'Request';
 export const isTeamLoading = state => state.actionGetStatus === 'Request';
+export const isStatsLoading = state => state.actionStatsStatus === 'Request';
 export const isTeamsLoading = state => state.actionAllStatus === 'Request';
 export const isTeamsLoaded = state => state.actionAllStatus === 'Success';
 

@@ -90,14 +90,19 @@ export const remove = ({commit}, id) => {
     })
 };
 
-export const stats = ({commit, getters}) => {
+export const stats = ({commit, getters}, id) => {
     return new Promise((resolve, reject) => {
-        const team = getters['current'];
-        if (team === null) return;
-
+        const team = getters['current'] || {};
+        id = id || team.id;
+        if (!id) {
+            return resolve({})
+        }
         commit('statsStatusRequest');
-        api.teams.stats(team.id).then(res => {
+        api.teams.stats(id).then(res => {
             commit('statsStatusSuccess', res);
+            if (id === team.id) {
+                commit('setTeamStats', res.data);
+            }
             resolve(res.data)
         }).catch(err => {
             commit('statsStatusFailure', err);

@@ -20,6 +20,9 @@
                     </q-btn>
                 </q-td>
             </q-table>
+            <div class="q-mt-lg text-right" v-if="isOwner">
+                <q-btn label="Invite new member" no-caps color="primary" @click="invite(id)"/>
+            </div>
         </div>
     </div>
 </template>
@@ -58,6 +61,12 @@
             }),
             team() {
                 return this.getTeam(this.id)
+            },
+            isOwner() {
+                if (!this.team) {
+                    return false;
+                }
+                return this.team.isOwner
             }
         },
         created() {
@@ -67,8 +76,9 @@
         },
         methods: {
             ...mapActions({
-                loadTeamMembers: 'members/loadTeamMembers',
+                invite: 'modals/openInviteMember',
                 changeRole: 'modals/openChangeMemberRole',
+                loadTeamMembers: 'members/loadTeamMembers',
                 excludeMember: 'members/excludeMemberFromTeam',
                 reSendInvite: 'members/retryMemberInvitation'
             }),
