@@ -1,28 +1,27 @@
 <template>
     <div>
-        <div>
-            <q-table title="Team Members" class="bg-white" :data="members" :columns="columns" :pagination="{rowsPerPage: 20}" row-key="name" :loading="isMembersLoading">
-                <q-td slot="body-cell-actions" slot-scope="props" class="text-right">
-                    <q-btn flat round dense icon="more_vert" v-if="props.row.isEditable">
-                        <q-popover>
-                            <q-list link>
-                                <q-item v-if="props.row.user === null" @click.native="reSendInvite(props.row.id)" v-close-overlay>
-                                    <q-item-main label="Resend invite email"/>
-                                </q-item>
-                                <q-item @click.native="changeRole({teamId: team.id, memberId: props.row.id})" v-close-overlay>
-                                    <q-item-main label="Change Role"/>
-                                </q-item>
-                                <q-item @click.native="excludeFromTeam(props.row.id)" v-close-overlay>
-                                    <q-item-main label="Delete From Team"/>
-                                </q-item>
-                            </q-list>
-                        </q-popover>
-                    </q-btn>
-                </q-td>
-            </q-table>
-            <div class="q-mt-lg text-right" v-if="isOwner">
-                <q-btn label="Invite new member" no-caps color="primary" @click="invite(id)"/>
-            </div>
+        <div class="q-headline">Team Members</div>
+        <q-table class="bg-white q-mt-md" :data="members" :columns="columns" :pagination="{rowsPerPage: 20}" row-key="name" :loading="isMembersLoading">
+            <q-td slot="body-cell-actions" slot-scope="props" class="text-right">
+                <q-btn flat round dense icon="more_vert" v-if="props.row.isEditable">
+                    <q-popover>
+                        <q-list link>
+                            <q-item v-if="props.row.user === null" @click.native="reSendInvite(props.row.id)" v-close-overlay>
+                                <q-item-main label="Resend invite email"/>
+                            </q-item>
+                            <q-item @click.native="changeRole({teamId: team.id, memberId: props.row.id})" v-close-overlay>
+                                <q-item-main label="Change Role"/>
+                            </q-item>
+                            <q-item @click.native="excludeFromTeam(props.row.id)" v-close-overlay>
+                                <q-item-main label="Delete From Team"/>
+                            </q-item>
+                        </q-list>
+                    </q-popover>
+                </q-btn>
+            </q-td>
+        </q-table>
+        <div class="q-mt-lg text-right" v-if="isOwner">
+            <q-btn label="Invite new member" no-caps color="primary" @click="invite(id)"/>
         </div>
     </div>
 </template>

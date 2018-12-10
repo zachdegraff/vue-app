@@ -21,10 +21,10 @@
                     <div class="text-right" v-show="isOwner">
                         <q-btn @click="save" color="primary" class="q-mt-lg" label="save" :disable="isUpdating"/>
                     </div>
-                    <div class="q-mt-lg text-center">
-                        <q-btn label="Create new team" no-caps color="primary" @click="create"/>
-                    </div>
                 </div>
+            </div>
+            <div class="q-mt-lg text-center">
+                <q-btn label="Create new team" flat no-caps color="primary" @click="create"/>
             </div>
             <div class="text-center q-mt-lg" v-if="isOwner">
                 To remove this team from Wonderus, please contact <a href="mailto:hello@wonderus.app">hello@wonderus.app</a>
