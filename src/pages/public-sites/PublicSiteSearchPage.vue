@@ -7,7 +7,9 @@
                     <router-link :to="`/for/${site.slug}`">{{site.name}}</router-link>
                     <span>> Search Results</span>
                 </div>
-                <h2 v-show="isEmptyResults">No results for "{{query}}". <router-link :to="`/for/${site.slug}/glossary`">View A-Z List.</router-link></h2>
+                <h2 v-show="isEmptyResults">No results for "{{query}}".
+                    <router-link :to="`/for/${site.slug}/glossary`">View A-Z List.</router-link>
+                </h2>
 
                 <site-cards-list :site="site" :cards="cards"/>
             </div>
@@ -65,11 +67,11 @@
             setMetaData(site) {
                 if (!site) return;
 
-                document.title = `${site.name} | Wonderus`;
+                document.title = `${this.query} - ${site.name}`;
 
                 const meta = document.getElementsByTagName("META").namedItem('description');
                 if (meta !== undefined) {
-                    meta.content = `Search ${site.name} for quick answers to acronyms and pages`
+                    meta.content = `Search results for ${this.query} on ${site.name}. Powered by Wonderus.`
                 }
             }
         }

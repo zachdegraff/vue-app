@@ -29,7 +29,7 @@
     import PublicSite from '../../mixins/PublicSite'
     import PublicSiteLinks from '../../mixins/PublicSiteLinks'
 
-    import {mapActions} from 'vuex'
+    import {strip_tags} from '../../helpers'
 
     export default {
         mixins: [PublicSite, PublicSiteLinks],
@@ -45,11 +45,12 @@
             setMetaData(site) {
                 if (!site) return;
 
-                document.title = `${site.name} | Wonderus`;
+                const shorthand = this.card.shorthand.length > 0 ? `(${this.card.shorthand.join(', ')})` : '';
+                document.title = `${this.card.name} ${shorthand} - ${site.name}`;
 
                 const meta = document.getElementsByTagName("META").namedItem('description');
                 if (meta !== undefined) {
-                    meta.content = `Quickly decode terms and acronyms with ${this.site.name}`
+                    meta.content = strip_tags(this.card.description).substring(0, 255)
                 }
             }
         }

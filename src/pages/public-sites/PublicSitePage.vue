@@ -32,11 +32,11 @@
             setMetaData(site) {
                 if (!site) return;
 
-                document.title = `${site.name} | Wonderus`;
+                document.title = `${site.name}`;
 
                 const meta = document.getElementsByTagName("META").namedItem('description');
                 if (meta !== undefined) {
-                    meta.content = `Search ${site.name} for quick answers to acronyms and pages`
+                    meta.content = `Decode ${site.name}'s commonly used acronyms and terms. Powered by Wonderus.`
                 }
             }
         }

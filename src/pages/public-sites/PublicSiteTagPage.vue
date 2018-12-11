@@ -46,11 +46,11 @@
             setMetaData(site) {
                 if (!site) return;
 
-                document.title = `${site.name} | Wonderus`;
+                document.title = `${this.tag} - ${site.name}`;
 
                 const meta = document.getElementsByTagName("META").namedItem('description');
                 if (meta !== undefined) {
-                    meta.content = `Search ${site.name} for quick answers to acronyms and pages`
+                    meta.content = `View all acronyms and terms tagged with ${this.tag} on ${site.name}. Powered by Wonderus.`
                 }
             }
         }
