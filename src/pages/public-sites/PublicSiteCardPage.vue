@@ -41,9 +41,14 @@
         components: {
             SiteSearchForm
         },
+        watch: {
+            card: function (val) {
+                this.setMetaData(this.site, val)
+            }
+        },
         methods: {
             setMetaData(site) {
-                if (!site) return;
+                if (!site || !this.card) return;
 
                 const shorthand = this.card.shorthand.length > 0 ? `(${this.card.shorthand.join(', ')})` : '';
                 document.title = `${this.card.name} ${shorthand} - ${site.name}`;
