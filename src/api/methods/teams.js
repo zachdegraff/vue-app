@@ -28,10 +28,6 @@ export const members = (id) => {
     return request.get(`/teams/${id}/members`);
 };
 
-export const stats = (id) => {
-    return request.get(`/teams/${id}/stats`);
-};
-
 export const slack = (id, code) => {
     return request.post(`/teams/${id}/slack`, {code});
 };

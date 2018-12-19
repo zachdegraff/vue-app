@@ -63,11 +63,6 @@ export const removeStatusSuccess = (state, res) => {
 };
 export const removeStatusFailure = state => state.actionRemoveStatus = 'Failure';
 
-export const setTeamStats = (state, stats) => state.stats = stats;
-export const statsStatusRequest = state => state.actionStatsStatus = 'Request';
-export const statsStatusSuccess = state => state.actionStatsStatus = 'Success';
-export const statsStatusFailure = state => state.actionStatsStatus = 'Failure';
-
 export const addSlackStatusRequest = state => state.actionAddSlackStatus = 'Request';
 export const addSlackStatusSuccess = state => state.actionAddSlackStatus = 'Success';
 export const addSlackStatusFailure = state => state.actionAddSlackStatus = 'Failure';

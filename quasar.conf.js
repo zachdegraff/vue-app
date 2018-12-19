@@ -4,7 +4,7 @@ module.exports = function (ctx) {
     return {
         // app plugins (/src/plugins)
         plugins: [
-            'axios', 'vuelidate', 'scrollto', 'tooltip'
+            'axios', 'vuelidate', 'scrollto', 'tooltip', 'stripe'
         ],
         css: [
             'app.styl'
@@ -30,15 +30,18 @@ module.exports = function (ctx) {
                 ? {
                     API_HOST: JSON.stringify('http://wonderus'),
                     APP_HOST: JSON.stringify('http://localhost:8080'),
-                    SLACK_CLIENT_ID: JSON.stringify('371875442850.371336699377')
+                    SLACK_CLIENT_ID: JSON.stringify('371875442850.371336699377'),
+                    STRIPE_KEY: JSON.stringify('pk_test_YGJ171tRQutvSN9s8JYwij6n')
                 } : (process.env.APP_STAGE === 'test' ? {
                     API_HOST: JSON.stringify('https://devapi.wonderus.app'),
                     APP_HOST: JSON.stringify('https://dev.wonderus.app'),
-                    SLACK_CLIENT_ID: JSON.stringify('405045441623.403459552065')
+                    SLACK_CLIENT_ID: JSON.stringify('405045441623.403459552065'),
+                    STRIPE_KEY: JSON.stringify('pk_test_YGJ171tRQutvSN9s8JYwij6n')
                 } : {
                     API_HOST: JSON.stringify('https://api.wonderus.app'),
                     APP_HOST: JSON.stringify('https://i.wonderus.app'),
-                    SLACK_CLIENT_ID: JSON.stringify('372369379348.372595746706')
+                    SLACK_CLIENT_ID: JSON.stringify('372369379348.372595746706'),
+                    STRIPE_KEY: JSON.stringify('pk_test_YGJ171tRQutvSN9s8JYwij6n')
                 }),
             // gzip: true,
             // analyze: true,

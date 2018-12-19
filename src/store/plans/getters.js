@@ -1,0 +1,1 @@
+export const all = state => state.items;

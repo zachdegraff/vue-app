@@ -1,10 +1,10 @@
 import api from '../../api'
 
 function loadDefaults(dispatch) {
-    dispatch('stats');
-    dispatch('tags/all', {}, {root: true});
-    dispatch('feed/fresh', {}, {root: true});
-    dispatch('cards/recently', {}, {root: true});
+    dispatch('tags/all', null, {root: true});
+    dispatch('feed/fresh', null, {root: true});
+    dispatch('cards/recently', null, {root: true});
+    dispatch('subscription/load', null, {root: true});
 }
 
 export const all = ({commit, dispatch}) => {
@@ -85,27 +85,6 @@ export const remove = ({commit}, id) => {
             resolve(res.data)
         }).catch(err => {
             commit('removeStatusFailure', err);
-            reject(err)
-        })
-    })
-};
-
-export const stats = ({commit, getters}, id) => {
-    return new Promise((resolve, reject) => {
-        const team = getters['current'] || {};
-        id = id || team.id;
-        if (!id) {
-            return resolve({})
-        }
-        commit('statsStatusRequest');
-        api.teams.stats(id).then(res => {
-            commit('statsStatusSuccess', res);
-            if (id === team.id) {
-                commit('setTeamStats', res.data);
-            }
-            resolve(res.data)
-        }).catch(err => {
-            commit('statsStatusFailure', err);
             reject(err)
         })
     })

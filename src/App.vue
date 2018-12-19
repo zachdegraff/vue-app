@@ -19,6 +19,7 @@
             if (localStorage.getItem('access-token') !== null) {
                 this.loadAuthUser().then(res => {
                     this.loadFavorite();
+                    this.loadPaidPlans();
                     this.loadUserRoles();
                     if (res.isSuperAdmin !== 1) {
                         this.loadUserTeams().then(teams => {
@@ -41,6 +42,7 @@
         methods: {
             ...mapActions({
                 loadAuthUser: 'auth/user',
+                loadPaidPlans: 'plans/all',
                 loadUserTeams: 'teams/all',
                 loadFavorite: 'users/loadFavorite',
                 loadUserRoles: 'users/loadRoles'

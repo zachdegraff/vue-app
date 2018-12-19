@@ -26,6 +26,18 @@ const DateFormatter = {
                     date.getSeconds()
                 ));
             return `${this.__time(utc)}, ${this.__month(utc.getMonth())} ${utc.getDate()} ${utc.getFullYear()}`
+        },
+        toLocaleDateString(value) {
+            const date = new Date(value.replace(/-/g, '/')),
+                utc = new Date(Date.UTC(
+                    date.getFullYear(),
+                    date.getMonth(),
+                    date.getDate(),
+                    date.getHours(),
+                    date.getMinutes(),
+                    date.getSeconds()
+                ));
+            return `${this.__month(utc.getMonth())} ${utc.getDate()}, ${utc.getFullYear()}`
         }
     }
 };
