@@ -4,7 +4,7 @@
             <site-navigation class="col-lg-2 gt-md"/>
             <div class="col-md-12 col-lg-7">
                 <div class="row lt-lg">
-                    <q-btn no-caps color="primary" label="Create a card" @click="createCard" class="q-mr-md q-mb-md"/>
+                    <q-btn no-caps color="primary" label="Create a card" @click="createCard" class="q-mr-md q-mb-md" :disabled="!isValidSubscription"/>
                     <q-select
                             class="q-mr-md q-mb-md"
                             filter
@@ -21,7 +21,7 @@
                 <div class="q-card full-width empty_card" v-show="isEmptyCards">
                     <h2>No cards yet!</h2>
                     <p>Get started by creating your first Knowledge Card for a frequently used team concept.</p>
-                    <q-btn no-caps color="primary" :label="createCardLabel" class="q-mr-md q-mb-md" @click="createCard"/>
+                    <q-btn no-caps color="primary" :label="createCardLabel" class="q-mr-md q-mb-md" @click="createCard" :disabled="!isValidSubscription"/>
                 </div>
                 <div class="row flex-center q-mt-lg" v-show="isLoading">
                     <q-spinner :size="36" color="red"/>
@@ -29,7 +29,7 @@
                 <cards-list :items="items" :filterTagsIdList="filterTagsIdList" v-if="items.length"></cards-list>
             </div>
             <div class="col-lg-3 q-px-xl gt-md">
-                <q-btn no-caps color="primary" :label="createCardLabel" @click="createCard" class="full-width q-mb-md"/>
+                <q-btn no-caps color="primary" :label="createCardLabel" @click="createCard" class="full-width q-mb-md" :disabled="!isValidSubscription"/>
                 <q-select
                         class="margin-15 q-mr-md q-mb-md"
                         filter
@@ -63,6 +63,7 @@
                 items: 'cards/getItems',
                 cardCount: 'cards/cardCount',
                 isLoading: 'cards/isCardsLoading',
+                isValidSubscription: 'subscription/isValid'
             }),
             tags() {
                 const result = {};

@@ -21,13 +21,13 @@
                     </q-popover>
                     <q-btn flat no-caps dense size="md" color="primary" label="Change" class="team-plan-change-btn" @click="isEmailPopoverOpen=true" v-show="!isInvoiceEmailChanging"/>
                 </div>
-                <div v-if="team.cardBrand">
+                <div v-if="team && team.cardBrand">
                     <strong>Payment Method:</strong> {{team.cardBrand}} ending in *{{team.cardLastFour}}
                     <q-btn flat no-caps dense size="md" color="primary" label="Change Payment Method" class="team-plan-change-btn" @click="$refs.method.open()" v-show="!isPaymentMethodChanging"/>
                     <vue-stripe-checkout
                             ref="method"
-                            image="statics/favicon/apple-icon.png"
                             name="Wonderus"
+                            image="statics/favicon/apple-icon.png"
                             label="Update Card Details"
                             panelLabel="Update Card Details"
                             :allow-remember-me="false"
@@ -91,10 +91,19 @@
                 isPaymentMethodChanging: 'subscription/isPaymentMethodChanging'
             }),
             plan() {
-                if (this.plans.length > 0) {
-                    return this.plans[0]
+                if (this.plans.length === 0 || !this.subscription) return;
+                for (let i in this.plans) {
+                    const plan = this.plans[i];
+                    if (this.subscription.managers > plan.managers) {
+                        continue
+                    }
+                    if (this.subscription.viewers > plan.viewers) {
+                        continue
+                    }
+                    return plan
                 }
-                return null
+                const maxPrice = Math.max(...this.plans.map(p => p.price));
+                return this.plans.find(plan => plan.price === maxPrice);
             },
             price() {
                 if (!this.plan) return false;

@@ -12,7 +12,7 @@
                             <q-item @click.native="changeRole({teamId: team.id, memberId: props.row.id})" v-close-overlay>
                                 <q-item-main label="Change Role"/>
                             </q-item>
-                            <q-item @click.native="excludeFromTeam(props.row.id)" v-close-overlay>
+                            <q-item @click.native="excludeFromTeam(props.row.id)" v-close-overlay v-show="isValidSubscription">
                                 <q-item-main label="Delete From Team"/>
                             </q-item>
                         </q-list>
@@ -21,7 +21,7 @@
             </q-td>
         </q-table>
         <div class="q-mt-lg text-right" v-if="isOwner">
-            <q-btn label="Invite new member" no-caps color="primary" @click="invite(id)"/>
+            <q-btn label="Invite new member" no-caps color="primary" @click="invite(id)" :disabled="!isValidSubscription"/>
         </div>
     </div>
 </template>
@@ -56,7 +56,8 @@
             ...mapGetters({
                 getTeam: 'teams/getById',
                 members: 'members/getTeamMembers',
-                isMembersLoading: 'members/isMembersLoading'
+                isMembersLoading: 'members/isMembersLoading',
+                isValidSubscription: 'subscription/isValid'
             }),
             team() {
                 return this.getTeam(this.id)

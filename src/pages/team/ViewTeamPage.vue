@@ -19,7 +19,7 @@
                         <image-chooser @change="changeFile"></image-chooser>
                     </q-field>
                     <div class="text-right" v-show="isOwner">
-                        <q-btn @click="save" color="primary" class="q-mt-lg" label="save" :disable="isUpdating"/>
+                        <q-btn @click="save" color="primary" class="q-mt-lg" label="save" :disable="isDisabledSaveBtn"/>
                     </div>
                 </div>
             </div>
@@ -67,7 +67,8 @@
         computed: {
             ...mapGetters({
                 getTeam: 'teams/getById',
-                isUpdating: 'teams/isUpdating'
+                isUpdating: 'teams/isUpdating',
+                isValidSubscription: 'subscription/isValid'
             }),
             team() {
                 return this.getTeam(this.id)
@@ -77,6 +78,9 @@
                     return false;
                 }
                 return this.team.isOwner
+            },
+            isDisabledSaveBtn() {
+                return this.isUpdating || !this.isValidSubscription
             }
         },
         components: {

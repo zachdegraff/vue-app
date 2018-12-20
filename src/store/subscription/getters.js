@@ -1,3 +1,10 @@
+export const isValid = state => {
+    const sub = state.subscription;
+    if (sub === null) return false;
+
+    return sub.isValid
+};
+
 export const isSubscriptionLoading = state => state.actionLoadStatus === 'Request';
 export const isSubscriptionCreating = state => state.actionCreateStatus === 'Request';
 

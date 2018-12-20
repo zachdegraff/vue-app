@@ -32,8 +32,8 @@
                     <img src="statics/header-logo.png"/>
                 </router-link>
             </div>
-            <q-btn color="white" v-tooltip.top-center="'Create a card'" class="text-black gt-xs" icon="add" label="" v-if="canAddCard" @click="addCard" :disabled="isCreating"/>
-            <q-btn color="white" class="short-add-button text-black lt-sm" icon="add" v-if="canAddCard" @click="addCard" :disabled="isCreating"/>
+            <q-btn color="white" v-tooltip.top-center="'Create a card'" class="text-black gt-xs" icon="add" label="" v-if="canAddCard" @click="addCard" :disabled="isDisabledAddBtn"/>
+            <q-btn color="white" class="short-add-button text-black lt-sm" icon="add" v-if="canAddCard" @click="addCard" :disabled="isDisabledAddBtn"/>
             <div class="auth-user q-ml-md" v-if="user">
                 <img :src="avatar(user.photo)" class="header-icon vertical-middle"/>
                 <q-popover>
@@ -64,7 +64,8 @@
                 user: 'auth/user',
                 teams: 'teams/all',
                 current: 'teams/current',
-                isCreating: 'cards/isCreating'
+                isCreating: 'cards/isCreating',
+                isValidSubscription: 'subscription/isValid'
             }),
             manage() {
                 if (this.current !== null) {
@@ -77,6 +78,9 @@
                     return false
                 }
                 return this.current.isEditable
+            },
+            isDisabledAddBtn() {
+                return this.isCreating || !this.isValidSubscription
             }
         },
         components: {
@@ -118,6 +122,7 @@
         left: 50%;
         margin-left: -68px;
         z-index: 100;
+
         img {
             height: 25px;
         }
@@ -154,6 +159,7 @@
             margin: 0 10px 0 -10px;
         }
     }
+
     .tooltip {
         display: block !important;
         z-index: 10000;

@@ -10,7 +10,7 @@
                 <q-icon name="library_books" size="1.4rem" class="q-mr-sm"/>
                 Glossary
             </q-item>
-            <q-item to="/requests" :class="{active:isActive('questions')}">
+            <q-item to="/requests" :class="{active:isActive('requests')}">
                 <q-icon name="help" size="1.4rem" class="q-mr-sm"/>
                 Requests
             </q-item>

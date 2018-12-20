@@ -10,7 +10,7 @@
                 <div class="q-card full-width empty_card" v-show="isEmptyTeam">
                     <h2>Wonderus is your new home for team knowledge!</h2>
                     <p>Get started by creating your first Knowledge Card for a frequently used team concept.</p>
-                    <q-btn no-caps color="primary" label="Create a card" class="q-mr-md q-mb-md" @click="createCard"/>
+                    <q-btn no-caps color="primary" label="Create a card" class="q-mr-md q-mb-md" @click="createCard" :disabled="!isValidSubscription"/>
                 </div>
                 <div class="row q-mb-lg" v-show="feed.length > 0">
                     <div class="col q-headline">Recent Activity</div>
@@ -23,12 +23,12 @@
                 </div>
             </div>
             <div class="col-lg-3 q-px-xl gt-md">
-                <q-btn no-caps color="primary" label="Create a card" class="full-width q-mb-md" @click="createCard"/>
+                <q-btn no-caps color="primary" label="Create a card" class="full-width q-mb-md" @click="createCard" :disabled="!isValidSubscription"/>
 
-                <q-btn outline no-caps color="primary" label="Submit request" class="full-width q-mb-lg" @click="openAskHelp"/>
+                <q-btn outline no-caps color="primary" label="Submit request" class="full-width q-mb-lg" @click="openAskHelp" :disabled="!isValidSubscription"/>
                 <slack-integration v-if="isOwner" class="full-width" />
 
-                <q-btn v-if="isOwner" outline no-caps color="primary" label="Invite team members" class="full-width q-mb-lg margin-top-24"  @click="invite(team.id)"/>
+                <q-btn v-if="isOwner" outline no-caps color="primary" label="Invite team members" class="full-width q-mb-lg margin-top-24"  @click="invite(team.id)" :disabled="!isValidSubscription"/>
             </div>
         </div>
     </div>
@@ -87,6 +87,7 @@
                 isTeamsLoaded: 'teams/isTeamsLoaded',
                 isFeedLoaded: 'feed/isFreshFeedLoaded',
                 isMemberInviting: 'modals/isInviteMemberOpen',
+                isValidSubscription: 'subscription/isValid'
             }),
             title() {
                 if (this.team === null) {

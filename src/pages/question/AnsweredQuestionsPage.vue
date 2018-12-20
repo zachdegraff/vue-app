@@ -4,7 +4,7 @@
             <site-navigation class="col-lg-2 gt-md"/>
             <div class="col-md-12 col-lg-7">
                 <div class="row lt-lg">
-                    <q-btn no-caps color="primary" label="Submit request" class="q-mb-md"/>
+                    <q-btn no-caps color="primary" label="Submit request" class="q-mb-md" :disabled="!isValidSubscription"/>
                 </div>
                 <div class="row q-mb-lg">
                     <div class="col q-headline">Requests</div>
@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div class="col-lg-3 q-px-xl gt-md">
-                <q-btn no-caps color="primary" label="Submit request" class="full-width q-mb-lg" @click="openAskHelp"/>
+                <q-btn no-caps color="primary" label="Submit request" class="full-width q-mb-lg" @click="openAskHelp" :disabled="!isValidSubscription"/>
             </div>
         </div>
     </div>
@@ -44,7 +44,8 @@
             ...mapGetters({
                 team: 'teams/current',
                 questions: 'questions/getAnsweredQuestions',
-                isLoadQuestions: 'questions/isLoadAnsweredQuestions'
+                isLoadQuestions: 'questions/isLoadAnsweredQuestions',
+                isValidSubscription: 'subscription/isValid'
             }),
             ifEmpty() {
                 if (this.isLoadQuestions) {
