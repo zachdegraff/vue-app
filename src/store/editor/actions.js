@@ -67,7 +67,10 @@ export const create = ({dispatch, commit, rootGetters}, options = {}) => {
     })
 };
 
-export const save = ({dispatch, getters}) => {
+export const save = ({dispatch, getters, rootGetters}) => {
+    const isValidSubscription = rootGetters['subscription/isValid'];
+    if (!isValidSubscription) return;
+
     const data = {...getters['getActiveCard']},
         form = new FormData();
     for (let i in data) {

@@ -38,7 +38,8 @@
         },
         computed: {
             ...mapGetters({
-                card: 'editor/getActiveCard'
+                card: 'editor/getActiveCard',
+                isValidSubscription: 'subscription/isValid'
             })
         },
         components: {ReferenceTools, EditorTags, AnchorHelper},
@@ -77,6 +78,7 @@
                     this.editor.addEventListener('mouseup', this.handleKeyPress);
                     this.editor.addEventListener('click', this.handleLinkClicks);
                 }
+                MediumOptions.disableEditing = !this.isValidSubscription;
                 this.medium = new MediumEditor('#contentEditor', MediumOptions);
                 if(this.field.innerHTML !== ''){
                     this.$nextTick(() => {

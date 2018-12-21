@@ -22,7 +22,7 @@
                 </q-search>
             </div>
             <div class="create-new-card  col-lg-12">
-                <q-btn no-caps flat label="Create new card" icon="add" @click="create" :disabled="isCreating"/>
+                <q-btn no-caps flat label="Create new card" icon="add" @click="create" :disabled="isCreateBtnDisabled"/>
             </div>
         </div>
         <app-modal-layout>
@@ -42,7 +42,7 @@
                             <span>{{processStatus}}</span>
                         </div>
                         <div class="cards-editor-tools" v-if="active">
-                            <q-btn icon="local_offer" flat dense>
+                            <q-btn icon="local_offer" flat dense :disabled="!isValidSubscription">
                                 <q-popover anchor="bottom right" self="top right">
                                     <q-field>
                                         <q-search hide-underline v-model="tagQuery" placeholder="Tag name"
@@ -73,11 +73,11 @@
                                 <span class="q-ml-xs" v-show="tagsCount > 0">{{tagsCount}}</span>
                             </q-btn>
                             <q-btn icon="star" flat dense @click="toggleFavorite(active.id)"
-                                   v-show="isSaved(active.id)"/>
+                                   v-show="isSaved(active.id)" :disabled="!isValidSubscription"/>
                             <q-btn icon="star_border" flat dense @click="toggleFavorite(active.id)"
-                                   v-show="!isSaved(active.id)"/>
+                                   v-show="!isSaved(active.id)" :disabled="!isValidSubscription"/>
                             <q-btn icon="delete" flat dense @click.prevent.stop="flush($event)"
-                                   v-show="active.canRemove"/>
+                                   v-show="active.canRemove" :disabled="!isValidSubscription"/>
                         </div>
                         <div>
                             <div class="cards-editor-name" ref="editor" data-disable-return="true"></div>
@@ -91,7 +91,8 @@
                                         v-model="active.shorthand"
                                         placeholder="Acronyms/shorthand..."
                                         @keydown.enter="insertComma"
-                                        @blur="save"/>
+                                        @blur="save"
+                                        :readonly="!isValidSubscription"/>
                             </q-field>
                         </div>
                     </div>
@@ -105,7 +106,7 @@
                             <q-icon :name="questionIconName"/>
                         </div>
                         <!--<div class="float-left q-mt-xs empty-questions-text" v-else >Have a question for the team?</div>-->
-                        <q-btn icon="help" label="Request information" dense @click="openAskHelp" class="float-right"/>
+                        <q-btn icon="help" label="Request information" dense @click="openAskHelp" class="float-right" :disabled="!isValidSubscription"/>
                         <div style="clear:both"></div>
                     </div>
                     <div class="q-mt-md" v-show="isQuestionsVisible">
@@ -151,7 +152,8 @@
                 isUpdating: 'cards/isUpdating',
                 active: 'editor/getActiveCard',
                 cards: 'editor/getEditorCards',
-                questions: 'questions/getCardQuestions'
+                questions: 'questions/getCardQuestions',
+                isValidSubscription: 'subscription/isValid'
             }),
             processStatus() {
                 if (this.isUpdating) {
@@ -217,6 +219,9 @@
                 }
                 parts.push('Wonderus');
                 return parts.join(' - ')
+            },
+            isCreateBtnDisabled() {
+                return this.isCreating || !this.isValidSubscription
             }
         },
         watch: {
@@ -258,7 +263,7 @@
                     disableReturn: false,
                     disableDoubleReturn: false,
                     disableExtraSpaces: false,
-
+                    disableEditing: !this.isValidSubscription
                 },
                 field = document.querySelector('.cards-editor-name');
 
@@ -381,6 +386,7 @@
         left: 20px;
         top: 20px;
         z-index: 1000;
+
         &.in-sidebar {
             background: #f4f4f4;
             left: 0;
@@ -388,10 +394,12 @@
             padding: 20px;
             width: 30%;
         }
+
         &:hover {
             .q-icon.material-icons {
                 display: block;
             }
+
             .cards-editor-actions-close {
                 background: #fe6058;
             }
@@ -400,6 +408,7 @@
                 background: #29ca42;
             }
         }
+
         & > button {
             border: none;
             background: #ccc;
@@ -412,6 +421,7 @@
             height: 16px;
             text-align: center;
             width: 16px;
+
             .q-icon.material-icons {
                 display: none;
                 font-size: 12px;
@@ -433,19 +443,23 @@
         list-style: none;
         padding: 0;
         margin: 0;
+
         li {
             border-left: solid 5px #f4f4f4;
             cursor: pointer;
             position: relative;
             padding: 20px 30px 20px 20px;
+
             &.active, &:hover {
                 background: #e6f0ea;
                 border-left-color: #2eab64;
                 color: #1e201f;
+
                 button {
                     display: block;
                 }
             }
+
             button {
                 display: none;
                 position: absolute;
@@ -470,6 +484,7 @@
         bottom: 0;
         width: 30%;
         overflow: scroll;
+
         &.collapsed {
             & + .cards-editor-main {
                 width: 100%;
@@ -489,12 +504,15 @@
         line-height: 1;
         width: 20px;
         z-index: 100;
+
         .q-icon {
             font-size: 20px;
         }
+
         &.collapsed {
             left: 0;
         }
+
         i:first-child {
             border-style: solid;
             border-width: 20px 0 0 20px;
@@ -506,6 +524,7 @@
             height: 0;
 
         }
+
         i:last-child {
             border-style: solid;
             border-width: 20px 20px 0 0;
@@ -533,6 +552,7 @@
         .q-search {
             background: #fff;
             padding: 5px;
+
             input {
                 font-size: .9rem;
             }
@@ -550,6 +570,7 @@
         display: flex;
         overflow: scroll;
         flex-direction: column;
+
         input.q-input-target {
             height: auto;
         }
@@ -574,6 +595,7 @@
     .cards-editor-shorthand {
         font-size: 16px;
         margin: 5px 10px 20px 0;
+
         .q-field-icon {
             font-size: 1rem;
             margin: -1px 0 0;
@@ -608,6 +630,7 @@
 
     .cards-editor-questions-label {
         color: #424242;
+
         > div:first-child {
             cursor: pointer;
         }
