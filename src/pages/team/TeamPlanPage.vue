@@ -27,7 +27,7 @@
                     <vue-stripe-checkout
                             ref="method"
                             name="Wonderus"
-                            image="statics/favicon/apple-icon.png"
+                            image="statics/stripe.png"
                             label="Update Card Details"
                             panelLabel="Update Card Details"
                             :allow-remember-me="false"
@@ -56,7 +56,7 @@
                 </div>
                 <vue-stripe-checkout
                         ref="subscription"
-                        image="statics/favicon/apple-icon.png"
+                        image="statics/stripe.png"
                         :name="plan.name"
                         currency="USD"
                         :amount="price"
