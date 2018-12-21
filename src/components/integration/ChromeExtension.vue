@@ -1,14 +1,14 @@
 <template>
     <div class="row gutter-md">
         <div class="col-xs-12 col-sm-10">
-            <img src="statics/integrations/spreadsheet.png" class="float-left" width="45"/>
+            <img src="statics/integrations/chrome-icon.png" class="float-left" width="50"/>
             <div style="margin-left: 70px">
-                <div class="q-headline">Spreadsheet Upload</div>
-                <div class="q-mt-sm">Import existing cards from an Excel or csv spreadsheet by sending your file to <a href="mailto:hello@wonderus.app">hello@wonderus.app</a></div>
+                <div class="q-headline">Google Chrome Extension</div>
+                <div class="q-mt-sm">Search your team glossary from anywhere on the web by highlighting text on the page</div>
             </div>
         </div>
         <div class="col-xs-12 col-sm-2">
-            <q-btn label="send file" color="primary" class="full-width q-mt-md" @click="openMailClient"/>
+            <q-btn label="add to chrome" color="primary" class="full-width q-mt-md" @click="openExtensionPage"/>
         </div>
     </div>
 </template>
@@ -44,8 +44,8 @@
                     this.$router.push({name: 'home'})
                 }
             },
-            openMailClient() {
-                openURL(`mailto:hello@wonderus.app?subject=Spreadsheet Upload`)
+            openExtensionPage() {
+                openURL(`https://chrome.google.com/webstore/detail/wonderus/edilcchikfplmgfoaekmlaeemedhimpb`)
             }
         }
     }

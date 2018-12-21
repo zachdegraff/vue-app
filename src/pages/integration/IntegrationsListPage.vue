@@ -7,7 +7,10 @@
                     <div class="col q-headline">Integrations</div>
                 </div>
                 <q-list sparse no-border>
-                    <q-item >
+                    <q-item>
+                        <chrome-extension/>
+                    </q-item>
+                    <q-item>
                         <slack-integration/>
                     </q-item>
                     <q-item>
@@ -22,12 +25,13 @@
 </template>
 <script>
     import SiteNavigation from '../../components/context/SiteNavigation.vue'
+    import ChromeExtension from '../../components/integration/ChromeExtension.vue'
     import SlackIntegration from '../../components/integration/SlackIntegration.vue'
     import SpreadsheetUpload from '../../components/integration/SpreadsheetUpload.vue'
 
     export default {
         components: {
-            SiteNavigation, SlackIntegration, SpreadsheetUpload
+            SiteNavigation, SlackIntegration, SpreadsheetUpload, ChromeExtension
         }
     }
 </script>
