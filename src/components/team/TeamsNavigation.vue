@@ -34,6 +34,9 @@
             }
         },
         watch: {
+            id: function(val) {
+                this.selected = parseInt(val)
+            },
             selected: function (val, old) {
                 if (!val || !old) return;
 

@@ -90,7 +90,7 @@
             ...mapActions({
                 logout: 'auth/logout',
                 addCard: 'editor/create',
-                changeTeam: 'teams/changeCurrentTeam'
+                changeCurrentTeam: 'teams/changeCurrentTeam'
             }),
             exit() {
                 this.logout().then(() => this.$router.push({name: 'login_user'}))
@@ -106,6 +106,12 @@
                     return 'statics/profile.jpg'
                 }
                 return path
+            },
+            changeTeam(id) {
+                this.changeCurrentTeam(id);
+                if (this.$route.path.indexOf('/teams/') === 0) {
+                    this.$router.push(`/teams/${id}`)
+                }
             }
         }
     }
