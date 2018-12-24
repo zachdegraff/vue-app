@@ -12,6 +12,25 @@
                     <p>Get started by creating your first Knowledge Card for a frequently used team concept.</p>
                     <q-btn no-caps color="primary" label="Create a card" class="q-mr-md q-mb-md" @click="createCard" :disabled="!isValidSubscription"/>
                 </div>
+                <div v-if="team" v-show="isExpiredTrial">
+                    <q-card class="self-center bg-white">
+                        <q-list no-border>
+                            <q-item style="align-items: flex-start">
+                                <q-item-side>
+                                    <img src="statics/jeff.jpg" class="feed-item-avatar"/>
+                                </q-item-side>
+                                <q-item-main>
+                                    Hi there,
+                                    <br/><br/>
+                                    <strong>Your free trial has expired.</strong> You will still have access to your team's knowledge base but cannot make changes or invite new members without subscribing to a plan.
+                                    <br/><br/>
+                                    Visit <router-link :to="`/teams/${team.id}/plan`">the plans page</router-link> to subscribe and for more information.
+                                </q-item-main>
+                            </q-item>
+                        </q-list>
+                    </q-card>
+                    <div class="q-mt-xl q-pt-xl"></div>
+                </div>
                 <div class="row q-mb-lg" v-show="feed.length > 0">
                     <div class="col q-headline">Recent Activity</div>
                 </div>
@@ -26,9 +45,9 @@
                 <q-btn no-caps color="primary" label="Create a card" class="full-width q-mb-md" @click="createCard" :disabled="!isValidSubscription"/>
 
                 <q-btn outline no-caps color="primary" label="Submit request" class="full-width q-mb-lg" @click="openAskHelp" :disabled="!isValidSubscription"/>
-                <slack-integration v-if="isOwner" class="full-width" />
+                <slack-integration v-if="isOwner" class="full-width"/>
 
-                <q-btn v-if="isOwner" outline no-caps color="primary" label="Invite team members" class="full-width q-mb-lg margin-top-24"  @click="invite(team.id)" :disabled="!isValidSubscription"/>
+                <q-btn v-if="isOwner" outline no-caps color="primary" label="Invite team members" class="full-width q-mb-lg margin-top-24" @click="invite(team.id)" :disabled="!isValidSubscription"/>
             </div>
         </div>
     </div>
@@ -84,6 +103,7 @@
             ...mapGetters({
                 feed: 'feed/getItems',
                 team: 'teams/current',
+                subscription: 'subscription/getSubscription',
                 isTeamsLoaded: 'teams/isTeamsLoaded',
                 isFeedLoaded: 'feed/isFreshFeedLoaded',
                 isMemberInviting: 'modals/isInviteMemberOpen',
@@ -106,6 +126,15 @@
                 }
                 return this.team.isOwner
             },
+            isExpiredTrial() {
+                if (this.isValidSubscription) {
+                    return false
+                }
+                if (!this.subscription) {
+                    return false
+                }
+                return this.subscription.isFree
+            }
         },
         components: {
             FeedCardItem, SiteNavigation, SlackIntegration, FeedQuestionItem
@@ -125,8 +154,8 @@
             handleScroll() {
                 let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
                 let param = true;
-                if (bottomOfWindow){
-                    if (param){
+                if (bottomOfWindow) {
+                    if (param) {
                         this.load();
                     }
                     param = false
@@ -141,10 +170,12 @@
         vertical-align: middle;
         width: 40px;
     }
-    .margin-top-24{
+
+    .margin-top-24 {
         margin-top: 24px;
     }
-    .empty_card{
+
+    .empty_card {
         padding-left: 20px;
         padding-top: 10px;
         padding-bottom: 10px;
