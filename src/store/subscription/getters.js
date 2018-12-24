@@ -5,6 +5,8 @@ export const isValid = state => {
     return sub.isValid
 };
 
+export const getCoupons = state => state.coupons;
+
 export const isSubscriptionLoading = state => state.actionLoadStatus === 'Request';
 export const isSubscriptionCreating = state => state.actionCreateStatus === 'Request';
 

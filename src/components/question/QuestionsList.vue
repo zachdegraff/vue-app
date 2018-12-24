@@ -168,7 +168,7 @@
             },
             confirm() {
                 return this.$q.dialog({
-                    title: 'Delete question?',
+                    title: 'Delete request?',
                     message: 'This cannot be undone.',
                     ok: 'Yes, delete',
                     cancel: true,

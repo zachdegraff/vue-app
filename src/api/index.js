@@ -9,6 +9,7 @@ import * as questions from './methods/questions'
 import * as comments from './methods/comments'
 import * as tags from './methods/tags'
 import * as plans from './methods/plans'
+import * as coupons from './methods/coupons'
 import * as subscription from './methods/subscription'
 import * as publicSites from './methods/publicSites'
 
@@ -25,6 +26,7 @@ const api = {
     members,
     questions,
     comments,
+    coupons,
     subscription,
     publicSites,
 };

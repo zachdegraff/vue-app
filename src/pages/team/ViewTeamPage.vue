@@ -15,6 +15,10 @@
                     <q-field class="q-mt-md" :error="$v.form.name.$error" :error-label="firstErrorFor($v.form.name)">
                         <q-input v-model="form.name" float-label="Team Name" @blur="$v.form.name.$touch" :readonly="!isOwner"/>
                     </q-field>
+                    <q-field class="q-mt-lg" v-if="user.isSuperAdmin">
+                        <q-select :options="options" float-label="Coupon" v-model="form.couponId"/>
+                    </q-field>
+
                     <q-field class="q-mt-lg" label="Change Team Photo" label-width="12" v-if="isOwner">
                         <image-chooser @change="changeFile"></image-chooser>
                     </q-field>
@@ -27,7 +31,8 @@
                 <q-btn label="Create new team" flat no-caps color="primary" @click="create"/>
             </div>
             <div class="text-center q-mt-lg" v-if="isOwner">
-                To remove this team from Wonderus, please contact <a href="mailto:hello@wonderus.app">hello@wonderus.app</a>
+                To remove this team from Wonderus, please contact
+                <a href="mailto:hello@wonderus.app">hello@wonderus.app</a>
             </div>
             <div class="text-center q-mt-lg" v-if="!isOwner">
                 Only team admins can make changes to team settings and invite new members.
@@ -45,7 +50,8 @@
         props: ['id'],
         data: () => ({
             form: {
-                name: ''
+                name: '',
+                couponId: ''
             },
             file: null
         }),
@@ -66,12 +72,21 @@
         },
         computed: {
             ...mapGetters({
+                user: 'auth/user',
                 getTeam: 'teams/getById',
+                coupons: 'subscription/getCoupons',
                 isUpdating: 'teams/isUpdating',
                 isValidSubscription: 'subscription/isValid'
             }),
             team() {
                 return this.getTeam(this.id)
+            },
+            options() {
+                const items = [{value: '', label: ''}];
+                items.push(...this.coupons.map(coupon => {
+                    return {value: coupon.id, label: coupon.name}
+                }));
+                return items
             },
             isOwner() {
                 if (!this.team) {
@@ -80,6 +95,9 @@
                 return this.team.isOwner
             },
             isDisabledSaveBtn() {
+                if (this.user.isSuperAdmin) {
+                    return false
+                }
                 return this.isUpdating || !this.isValidSubscription
             }
         },
@@ -87,12 +105,14 @@
             ImageChooser
         },
         created() {
+            this.loadCoupons();
             if (this.team) this.init(this.team)
         },
         methods: {
             ...mapActions({
                 update: 'teams/update',
-                create: 'modals/openCreateTeam'
+                create: 'modals/openCreateTeam',
+                loadCoupons: 'subscription/loadCoupons'
             }),
             save() {
                 this.$v.form.$touch();
@@ -103,7 +123,10 @@
                 this.update({id: this.id, form: this.prepare()});
             },
             init(team) {
-                this.form = team;
+                this.form = Object.assign(this.form, team);
+                if (team.coupon) {
+                    this.form.couponId = team.coupon.id
+                }
                 document.title = `Manage ${team.name} team - Wonderus`
             },
             photo(path) {
@@ -114,8 +137,8 @@
             },
             prepare() {
                 const data = new FormData();
-                for (let i in this.team) {
-                    data.append(i, this.team[i])
+                for (let i in this.form) {
+                    data.append(i, this.form[i])
                 }
                 data.append('_method', 'PUT');
                 if (this.file !== null) {

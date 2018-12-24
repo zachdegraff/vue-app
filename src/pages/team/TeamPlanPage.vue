@@ -7,14 +7,10 @@
         <div class="team-plan-info" v-if="!isSubscriptionLoading && subscription">
             <div class="q-mt-lg">
                 <strong>Subscription:</strong> {{subscription.name}}
-                <div v-if="subscription.isFree">
-                    <strong>Trial Days Remaining:</strong> {{subscription.trialDaysRemaining}} days
-                </div>
-                <div v-if="subscription.price"><strong>Cost:</strong> ${{subscription.price}}/{{subscription.interval}}
-                </div>
-                <div v-if="subscription.nextBillingDate">
-                    <strong>Next Billing Date:</strong> {{toLocaleDateString(subscription.nextBillingDate)}}
-                </div>
+                <div v-if="subscription.isFree"><strong>Trial Days Remaining:</strong> {{subscription.trialDaysRemaining}} days</div>
+                <div v-if="subscription.price && team.coupon"><strong>Discount:</strong> {{team.coupon.percentOff}}% ({{team.coupon.name}})</div>
+                <div v-if="subscription.price"><strong>Cost:</strong> ${{subscription.price}}/{{subscription.interval}}</div>
+                <div v-if="subscription.nextBillingDate"><strong>Next Billing Date:</strong> {{toLocaleDateString(subscription.nextBillingDate)}}</div>
                 <div v-if="!subscription.isFree && team.email"><strong>Invoices Sent To:</strong> {{team.email}}
                     <q-popover v-model="isEmailPopoverOpen" class="q-pa-sm" style="width: 400px">
                         <q-input v-model="email" @blur="updateEmailAddress" float-label="Email address"/>
@@ -46,11 +42,14 @@
                 <strong>Total Knowledge Cards:</strong> {{subscription.cards}}
                 <span v-show="subscription.limitCards > 0">/ {{subscription.limitCards}}</span>
             </div>
+            <div class="q-mt-lg" v-if="canSubscribe && team.coupon">
+                <strong>Discount:</strong> {{team.coupon.percentOff}}% ({{team.coupon.name}})
+            </div>
             <div class="q-mt-lg" v-show="isSubscriptionCreating">
                 <q-spinner :size="50" color="red"></q-spinner>
             </div>
             <div class="q-mt-lg" v-if="canSubscribe">
-                <strong>Cost to Subscribe:</strong> ${{plan.price}}/{{plan.interval}} ({{plan.name}})
+                <strong>Cost to Subscribe:</strong> ${{price}}/{{plan.interval}} ({{plan.name}})
                 <div class="q-mt-lg" v-show="price">
                     <q-btn no-caps color="primary" label="Subscribe Now" @click="$refs.subscription.open()"/>
                 </div>
@@ -59,7 +58,7 @@
                         image="statics/stripe.png"
                         :name="plan.name"
                         currency="USD"
-                        :amount="price"
+                        :amount="stripeAmount"
                         :allow-remember-me="false"
                         @done="createSubscription"
                 ></vue-stripe-checkout>
@@ -106,9 +105,13 @@
                 return this.plans.find(plan => plan.price === maxPrice);
             },
             price() {
-                if (!this.plan) return false;
+                if (!this.plan) return null;
 
-                return this.plan.price * 100
+                let price = this.plan.price;
+                if (this.team.coupon) {
+                    price -= (this.team.coupon.percentOff * 100 / price)
+                }
+                return price
             },
             team() {
                 return this.getTeam(this.id)
@@ -129,6 +132,11 @@
                     return false
                 }
                 return !this.isSubscriptionCreating;
+            },
+            stripeAmount() {
+                if (!this.price) return false;
+
+                return this.price * 100
             }
         },
         watch: {

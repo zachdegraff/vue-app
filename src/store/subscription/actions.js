@@ -35,6 +35,18 @@ export const create = ({commit, dispatch}, {id, ...params}) => {
     })
 };
 
+export const loadCoupons = ({commit}) => {
+    return new Promise((resolve, reject) => {
+        commit('loadCouponsStatusRequest');
+        api.coupons.all().then(res => {
+            commit('loadCouponsStatusSuccess', res);
+            resolve(res.data.data)
+        }).catch(err => {
+            commit('loadCouponsStatusFailure', err);
+            reject(err)
+        })
+    })
+};
 
 export const changeInvoiceEmail = ({commit, dispatch}, {id, ...params}) => {
     return new Promise((resolve, reject) => {
