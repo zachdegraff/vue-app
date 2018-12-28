@@ -8,7 +8,7 @@
             <div class="q-mt-lg">
                 <strong>Subscription:</strong> {{subscription.name}}
                 <div v-if="subscription.isFree"><strong>Trial Days Remaining:</strong> {{subscription.trialDaysRemaining}} days</div>
-                <div v-if="subscription.price && team.coupon"><strong>Discount:</strong> {{team.coupon.percentOff}}% ({{team.coupon.name}})</div>
+                <div v-if="subscription.price && team.coupon && team.coupon.isRegular"><strong>Discount:</strong> {{team.coupon.percentOff}}% ({{team.coupon.name}})</div>
                 <div v-if="subscription.price"><strong>Cost:</strong> ${{subscription.price}}/{{subscription.interval}}</div>
                 <div v-if="subscription.nextBillingDate"><strong>Next Billing Date:</strong> {{toLocaleDateString(subscription.nextBillingDate)}}</div>
                 <div v-if="!subscription.isFree && team.email"><strong>Invoices Sent To:</strong> {{team.email}}
@@ -50,7 +50,7 @@
             </div>
             <div class="q-mt-lg" v-if="canSubscribe">
                 <strong>Cost to Subscribe:</strong> ${{price}}/{{plan.interval}} ({{plan.name}})
-                <div class="q-mt-lg" v-show="price">
+                <div class="q-mt-lg">
                     <q-btn no-caps color="primary" label="Subscribe Now" @click="$refs.subscription.open()"/>
                 </div>
                 <vue-stripe-checkout
@@ -107,9 +107,9 @@
             price() {
                 if (!this.plan) return null;
 
-                let price = this.plan.price;
+                let price = parseFloat(this.plan.price);
                 if (this.team.coupon) {
-                    price -= (this.team.coupon.percentOff * 100 / price)
+                    price -= (parseInt(this.team.coupon.percentOff) * price / 100)
                 }
                 return price
             },
