@@ -41,7 +41,7 @@ module.exports = function (ctx) {
                     API_HOST: JSON.stringify('https://api.wonderus.app'),
                     APP_HOST: JSON.stringify('https://i.wonderus.app'),
                     SLACK_CLIENT_ID: JSON.stringify('372369379348.372595746706'),
-                    STRIPE_KEY: JSON.stringify('pk_test_YGJ171tRQutvSN9s8JYwij6n')
+                    STRIPE_KEY: JSON.stringify('pk_live_MgNvdMfjaerc0H6lmShha83s')
                 }),
             // gzip: true,
             // analyze: true,
