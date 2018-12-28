@@ -63,6 +63,8 @@
                         @done="createSubscription"
                 ></vue-stripe-checkout>
             </div>
+
+            <div class="q-mt-lg" v-show="subscription && !subscription.isFree">To cancel or make changes to your plan, please contact <a href="mailto:hello@wonderus.app">hello@wonderus.app</a></div>
         </div>
     </div>
 </template>
