@@ -55,7 +55,7 @@
         mixins: [PublicSiteLinks],
         methods: {
             open(card) {
-                return this.$router.push(`/for/${site.slug}/${card.id}`)
+                return this.$router.push(`/for/${this.site.slug}/${card.id}`)
             },
             cover(card) {
                 if (card.image) {
