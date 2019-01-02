@@ -12,7 +12,7 @@
                         <h2>{{card.name}}</h2>
                         <span slot="subtitle">{{card.shorthand.join(', ')}}</span>
                     </q-card-title>
-                    <q-card-main v-html="convertLinks(card)" @click.native="handleClicks"/>
+                    <q-card-main v-html="convertLinks(card)" @click.native="handleClicks" class="public-site-card-full-content"/>
                 </q-card>
             </div>
         </div>
@@ -61,3 +61,8 @@
         }
     }
 </script>
+<style>
+    .public-site-card-full-content img {
+        max-width: 100%;
+    }
+</style>

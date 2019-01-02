@@ -4,7 +4,8 @@
             :pagination-enabled="false"
             :navigation-enabled="cards.length > 3"
             :navigation-next-label="next"
-            :navigation-prev-label="prev">
+            :navigation-prev-label="prev"
+            :per-page-custom="[[200, 1], [700, 2], [1050, 3]]">
         <slide v-for="card in cards" :key="card.id">
             <div class="public-site-cards-item" :style="cover(card)" @click="open">
                 <div class="public-site-cards-item-title" :style="accentColor" :class="{bottom: card.image}">
