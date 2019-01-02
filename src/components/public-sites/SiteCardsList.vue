@@ -7,7 +7,7 @@
             :navigation-prev-label="prev"
             :per-page-custom="[[200, 1], [700, 2], [1050, 3]]">
         <slide v-for="card in cards" :key="card.id">
-            <div class="public-site-cards-item" :style="cover(card)" @click="open">
+            <div class="public-site-cards-item" :style="cover(card)" @click="() => open(card)">
                 <div class="public-site-cards-item-title" :style="accentColor" :class="{bottom: card.image}">
                     <div class="public-site-cards-item-title-name">{{card.name}}</div>
                     <div class="public-site-cards-item-title-shorthand">
