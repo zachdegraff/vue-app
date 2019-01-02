@@ -19,8 +19,6 @@
     import GlossaryCards from '../../components/public-sites/GlossaryCards'
     import PublicSite from '../../mixins/PublicSite'
 
-    import {mapGetters, mapActions} from 'vuex'
-
     export default {
         mixins: [PublicSite],
         computed: {
