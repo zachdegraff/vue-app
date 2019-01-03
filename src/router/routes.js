@@ -120,15 +120,16 @@ export default [
             {path: '', name: 'cards_list', component: () => import('pages/card/CardsListPage.vue')}
         ]
     },
-    /*{
+    {
         path: '/teams/',
         component: () => import('layouts/DefaultLayout.vue'),
         beforeEnter: ifAuthenticated,
         children: [
-            {path: '', name: 'teams', component: () => import('pages/team/ManageTeamsPage.vue')},
-            ,
+            {path: '', name: 'team_redirector', component: () => import('pages/team/TeamRedirectorPage.vue')},
+            {path: 'plan', name: 'plan_redirector', component: () => import('pages/team/TeamRedirectorPage.vue')},
+            {path: 'members', name: 'members_redirector', component: () => import('pages/team/TeamRedirectorPage.vue')},
         ]
-    },*/
+    },
     {
         path: '/teams/',
         component: () => import('layouts/TeamLayout.vue'),
