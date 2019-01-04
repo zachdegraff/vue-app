@@ -8,16 +8,16 @@
             :per-page-custom="[[200, 1], [700, 2], [1050, 3]]">
         <slide v-for="card in cards" :key="card.id">
             <div class="public-site-cards-item" :style="cover(card)" @click="() => open(card)">
-                <div class="public-site-cards-item-title" :style="accentColor" :class="{bottom: card.image}">
+                <div class="public-site-cards-item-title" :style="accentColor" :class="{bottom: card.thumb}">
                     <div class="public-site-cards-item-title-name">{{card.name}}</div>
                     <div class="public-site-cards-item-title-shorthand">
                         {{card.shorthand.join(', ')}}
                     </div>
                 </div>
-                <div @click.native="handleClicks" v-show="!card.image" class="public-site-cards-item-content">
+                <div @click.native="handleClicks" v-show="!card.thumb" class="public-site-cards-item-content">
                     <div v-html="convertLinks(card)"/>
                 </div>
-                <i v-show="!card.image"></i>
+                <i v-show="!card.thumb"></i>
             </div>
         </slide>
     </carousel>
@@ -58,9 +58,9 @@
                 return this.$router.push(`/for/${this.site.slug}/${card.id}`)
             },
             cover(card) {
-                if (card.image) {
+                if (card.thumb) {
                     return {
-                        'background': `url(${card.image})`,
+                        'background': `url(${card.thumb})`,
                         'background-size': 'cover'
                     }
                 }
