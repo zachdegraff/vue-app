@@ -53,8 +53,8 @@ export const create = ({commit, dispatch}, data) => {
     return new Promise((resolve, reject) => {
         commit('createStatusRequest');
         api.teams.create(data).then(res => {
-            dispatch('changeCurrentTeam', res.data.team.id);
             commit('createStatusSuccess', res);
+            dispatch('changeCurrentTeam', res.data.team);
             resolve(res.data)
         }).catch(err => {
             commit('createStatusFailure', err);
@@ -67,8 +67,8 @@ export const update = ({commit, dispatch}, {id, form}) => {
     return new Promise((resolve, reject) => {
         commit('updateStatusRequest');
         api.teams.update(id, form).then(res => {
-            dispatch('changeCurrentTeam', res.data.team.id);
             commit('updateStatusSuccess', res);
+            dispatch('changeCurrentTeam', res.data.team);
             resolve(res.data)
         }).catch(err => {
             commit('updateStatusFailure', err);
@@ -97,17 +97,11 @@ export const reloadCurrentTeam = ({dispatch, commit, getters}) => {
     dispatch('get', current.id).then(team => commit('changeCurrentTeam', team));
 };
 
-export const changeCurrentTeam = ({dispatch, commit, getters}, id) => {
-    const current = getters['current'];
-    if (current === null || current.id === id) return;
+export const changeCurrentTeam = ({dispatch, commit, getters}, team) => {
+    localStorage.setItem('current-team', team.id);
 
-    localStorage.setItem('current-team', id);
-
-    const team = getters['getById'](id);
-    if (team) {
-        commit('changeCurrentTeam', team);
-        loadDefaults(dispatch)
-    }
+    commit('changeCurrentTeam', team);
+    loadDefaults(dispatch)
 };
 
 export const addSlackIntegration = ({commit}, {id, code}) => {
