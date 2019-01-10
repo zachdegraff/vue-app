@@ -18,7 +18,7 @@
         watch: {
             isTeamAdding: function (val) {
                 if (!val) {
-                    this.$router.push({name: 'teams'})
+                    this.$router.push({name: 'home'})
                 }
             }
         },

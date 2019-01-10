@@ -71,7 +71,7 @@
                 if (this.current !== null) {
                     return {name: 'view_team', params: {id: this.current.id}}
                 }
-                return {name: 'teams'}
+                return {name: 'team_redirector'}
             },
             canAddCard() {
                 if (this.current === null) {
