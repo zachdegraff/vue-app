@@ -43,7 +43,7 @@
         },
         methods: {
             ...mapActions({
-                logout: 'auth/logout',
+                logout: 'auth/flush',
                 loadAuthUser: 'auth/user',
                 loadPaidPlans: 'plans/all',
                 loadUserTeams: 'teams/all',
