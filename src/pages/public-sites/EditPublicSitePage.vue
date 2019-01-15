@@ -12,8 +12,11 @@
                     <a :href="siteUrl" target="_blank">{{siteUrl}}</a>
                 </div>
                 <div class="row q-mt-lg gutter-md">
-                    <q-field class="col-xs-12 col-sm-10">
-                        <q-input v-model="form.name" float-label="Site name"/>
+                    <q-field class="col-xs-12 col-sm-5" :error="$v.form.slug.$error" :error-label="firstErrorFor($v.form.slug)">
+                        <q-input v-model="form.slug" float-label="Site URL" suffix=".wonderus.app" @blur="$v.form.slug.$touch"/>
+                    </q-field>
+                    <q-field class="col-xs-12 col-sm-10" :error="$v.form.name.$error" :error-label="firstErrorFor($v.form.name)">
+                        <q-input v-model="form.name" float-label="Site name" @blur="$v.form.name.$touch"/>
                     </q-field>
                     <q-field class="col-xs-12 col-sm-10">
                         <q-color v-model="form.primaryColor" float-label="Primary Color"/>
@@ -53,11 +56,12 @@
     </div>
 </template>
 <script>
+    import {required, maxLength} from 'vuelidate/lib/validators'
     import SiteNavigation from '../../components/context/SiteNavigation.vue'
+    import ValidatorMessages from '../../mixins/ValidatorMessages'
     import ImageChooser from '../../components/ImageChooser'
     import {mapGetters, mapActions} from 'vuex'
-
-    const APP_HOST = process.env.APP_HOST;
+    import {slug} from '../../helpers'
 
     export default {
         data: () => {
@@ -65,6 +69,7 @@
                 form: {
                     id: null,
                     name: '',
+                    slug: '',
                     background: null,
                     linkColor: '',
                     primaryColor: '',
@@ -79,6 +84,19 @@
                 featuredCards: [],
                 includedTags: [],
                 excludedTags: []
+            }
+        },
+        mixins: [ValidatorMessages],
+        validations: {
+            form: {
+                name: {
+                    required
+                },
+                slug: {
+                    slug,
+                    required,
+                    maxLength: maxLength(30)
+                }
             }
         },
         created() {
@@ -120,7 +138,7 @@
             siteUrl() {
                 if (!this.site) return '';
 
-                return `${APP_HOST}/for/${this.site.slug}`
+                return `https://${this.form.slug}.wonderus.app`
             },
             options() {
                 return this.tags.map(tag => {
@@ -143,6 +161,11 @@
                 loadSiteConfig: 'publicSites/loadSiteConfig'
             }),
             submit() {
+                this.$v.form.$touch();
+                if (this.$v.form.$error) {
+                    return
+                }
+
                 const data = this.prepare();
                 return this.store(data).then(() => this.loadSites())
             },
@@ -164,7 +187,7 @@
                     })
                 });
 
-                ['id', 'name', 'linkColor', 'primaryColor', 'accentColor', 'isActive'].forEach(key => this.form[key] = site[key])
+                ['id', 'name', 'slug', 'linkColor', 'primaryColor', 'accentColor', 'isActive'].forEach(key => this.form[key] = site[key])
             },
             prepare() {
                 const data = new FormData();

@@ -198,3 +198,7 @@ export const guid = () => {
 
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 };
+
+export const slug = (value) => {
+    return /^[a-zA-Z0-9-_]+$/.test(value)
+}

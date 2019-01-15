@@ -1,7 +1,9 @@
 const messages = {
     'required': 'Field is required',
     'minLength': 'Field must have at least :min letters',
+    'maxLength': 'URL must be less than :max characters and only contain letters and numbers',
     'email': 'Invalid email address',
+    'slug': 'URL must only contain letters and numbers',
     'exactPattern': 'Password must contain letters, numbers, and special characters.'
 };
 
