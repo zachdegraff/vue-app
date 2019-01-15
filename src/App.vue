@@ -28,6 +28,8 @@
                             }
                         });
                     }
+                }).catch(err => {
+                    this.logout().then(() => this.$router.push({name: 'login_user'}))
                 });
             }
         },
@@ -41,6 +43,7 @@
         },
         methods: {
             ...mapActions({
+                logout: 'auth/flush',
                 loadAuthUser: 'auth/user',
                 loadPaidPlans: 'plans/all',
                 loadUserTeams: 'teams/all',

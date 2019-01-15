@@ -62,6 +62,19 @@ export const logout = ({commit, dispatch}) => {
     })
 };
 
+export const flush = ({commit, dispatch}) => {
+    return new Promise((resolve, reject) => {
+        localStorage.removeItem('access-token');
+        delete axios.defaults.headers.common['Authorization'];
+        dispatch('cards/flush', null, {root: true});
+        dispatch('tags/flush', null, {root: true});
+        dispatch('feed/flush', null, {root: true});
+        dispatch('teams/flush', null, {root: true});
+
+        resolve(true)
+    })
+};
+
 export const forgot = ({commit}, email) => {
     return new Promise((resolve, reject) => {
         commit('forgotStatusRequest');

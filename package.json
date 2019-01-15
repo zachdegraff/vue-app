@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "node-sass": "^4.9.0",
+    "prettier": "^1.12.0",
     "quasar-cli": "^0.15.14",
     "sass-loader": "^7.0.1"
   },

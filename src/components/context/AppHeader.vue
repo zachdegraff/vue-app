@@ -6,7 +6,7 @@
                     <img :src="photo(current.photo)" class="team-photo round-borders vertical-middle" v-if="current"/>
                     <q-popover>
                         <q-list link>
-                            <q-item v-close-overlay v-for="team in teams" :key="team.id" @click.native="changeTeam(team.id)">
+                            <q-item v-close-overlay v-for="team in teams" :key="team.id" @click.native="changeTeam(team)">
                                 <q-item-side>
                                     <q-item-tile>
                                         <img :src="photo(team.photo)" class="vertical-middle round-borders" style="width: 50px"/>
@@ -71,7 +71,7 @@
                 if (this.current !== null) {
                     return {name: 'view_team', params: {id: this.current.id}}
                 }
-                return {name: 'teams'}
+                return {name: 'team_redirector'}
             },
             canAddCard() {
                 if (this.current === null) {
@@ -107,10 +107,10 @@
                 }
                 return path
             },
-            changeTeam(id) {
-                this.changeCurrentTeam(id);
+            changeTeam(team) {
+                this.changeCurrentTeam(team);
                 if (this.$route.path.indexOf('/teams/') === 0) {
-                    this.$router.push(`/teams/${id}`)
+                    this.$router.push(`/teams/${team.id}`)
                 }
             }
         }
