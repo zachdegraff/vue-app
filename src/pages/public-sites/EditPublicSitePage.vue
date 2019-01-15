@@ -138,7 +138,7 @@
             siteUrl() {
                 if (!this.site) return '';
 
-                return `https://${this.form.slug}.wonderus.app`
+                return `https://${this.form.slug}.wonderus.app`.toLowerCase().trim()
             },
             options() {
                 return this.tags.map(tag => {
