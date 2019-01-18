@@ -1,5 +1,5 @@
 <template>
-    <div class="row gutter-md">
+    <div class="row gutter-md full-width">
         <div class="col-xs-12 col-sm-10">
             <img src="statics/integrations/chrome-icon.png" class="float-left" width="50"/>
             <div style="margin-left: 70px">
