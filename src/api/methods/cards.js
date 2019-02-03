@@ -20,6 +20,10 @@ export const update = (id, attr) => {
     return request.post(`/cards/${id}`, attr);
 };
 
+export const fastSave = (id, attr) => {
+    return request.post(`/cards/${id}/fast-save`, attr);
+};
+
 export const count = (params) => {
     return request.get(`/cards/count`, {params});
 };

@@ -7,6 +7,12 @@ export const getById = state => {
     }
 };
 
+export const getCardContent = state => {
+    return id => {
+        return state.contents[id]
+    }
+};
+
 export const getEditorCards = state => state.cards;
 
 export const getActiveCard = state => state.cards.find(card => card.isActive);

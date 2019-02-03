@@ -1,4 +1,5 @@
 import {strip_tags} from '../../helpers'
+import api from '../../api'
 
 const flushEmptyCard = (dispatch, card) => {
     if (!card) return;
@@ -78,6 +79,21 @@ export const save = ({dispatch, getters, rootGetters}) => {
     }
     form.append('_method', 'PUT');
     return dispatch('cards/update', {id: data.id, form}, {root: true})
+};
+
+export const autosave = ({commit, getters, rootGetters}) => {
+    const isValidSubscription = rootGetters['subscription/isValid'];
+    if (!isValidSubscription) return;
+
+    const card = getters['getActiveCard'];
+    if (card === undefined) return;
+
+    const content = getters['getCardContent'](card.id);
+    if (content !== undefined && card.description.length === content.length) return;
+
+    api.cards.fastSave(card.id, {content: card.description}).then(() => {
+        commit('setCardContent', {id: card.id, content: card.description})
+    })
 };
 
 export const hide = ({commit, dispatch, getters}, payload) => {

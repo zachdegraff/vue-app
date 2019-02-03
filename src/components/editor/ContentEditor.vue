@@ -33,7 +33,8 @@
                     isUploading: false
                 },
                 activeElement: null,
-                isHelperVisible: false
+                isHelperVisible: false,
+                timer: null
             }
         },
         computed: {
@@ -48,9 +49,11 @@
             document.addEventListener('keydown', this.handleArrowScroll);
         },
         mounted() {
+            this.timer = setInterval(this.autosave, 5000);
             setTimeout(this.initialize, 100)
         },
         destroyed() {
+            clearInterval(this.timer);
             window.removeEventListener('wheel', this.handlePageWheel);
             document.removeEventListener('keydown', this.handleArrowScroll);
         },
@@ -68,6 +71,7 @@
             ...mapActions({
                 save: 'editor/save',
                 open: 'editor/open',
+                autosave: 'editor/autosave'
             }),
             initialize() {
                 this.editor = document.getElementById('contentEditor');
@@ -80,10 +84,10 @@
                 }
                 MediumOptions.disableEditing = !this.isValidSubscription;
                 this.medium = new MediumEditor('#contentEditor', MediumOptions);
-                if(this.field.innerHTML !== ''){
+                if (this.field.innerHTML !== '') {
                     this.$nextTick(() => {
-                            if(this.editor.childNodes[0].innerHTML === '' || this.editor.childNodes[0].innerHTML === '<br>'){
-                                this.medium.selectElement(this.$refs.editor.childNodes[0]);
+                        if (this.editor.childNodes[0].innerHTML === '' || this.editor.childNodes[0].innerHTML === '<br>') {
+                            this.medium.selectElement(this.$refs.editor.childNodes[0]);
                         }
                     });
                 }
@@ -253,6 +257,7 @@
         font-size: 1.125rem;
         line-height: 1.5em;
         outline: none;
+
         img {
             max-width: 100%;
             max-height: 250px;
@@ -284,6 +289,7 @@
 
     .medium-editor-anchor-preview {
         z-index: 7000;
+
         a {
             text-decoration: none;
             margin: 5px 10px;

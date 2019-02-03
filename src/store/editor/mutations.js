@@ -39,3 +39,7 @@ export const setActiveCard = (state, card) => {
         return item
     })
 };
+
+export const setCardContent = (state, {id, content}) => {
+    state.contents[id] = content;
+};
