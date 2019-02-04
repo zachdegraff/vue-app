@@ -9,6 +9,8 @@ export const getCoupons = state => state.coupons;
 export const getSubscription = state => state.subscription;
 
 
+export const isSubscriptionLoaded = state => state.actionLoadStatus === 'Success';
+
 export const isSubscriptionLoading = state => state.actionLoadStatus === 'Request';
 export const isSubscriptionCreating = state => state.actionCreateStatus === 'Request';
 

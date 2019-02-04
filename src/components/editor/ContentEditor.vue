@@ -40,7 +40,8 @@
         computed: {
             ...mapGetters({
                 card: 'editor/getActiveCard',
-                isValidSubscription: 'subscription/isValid'
+                isValidSubscription: 'subscription/isValid',
+                isSubscriptionLoaded: 'subscription/isSubscriptionLoaded'
             })
         },
         components: {ReferenceTools, EditorTags, AnchorHelper},
@@ -50,7 +51,9 @@
         },
         mounted() {
             this.timer = setInterval(this.autosave, 5000);
-            setTimeout(this.initialize, 100)
+            if (this.isSubscriptionLoaded) {
+                setTimeout(this.initialize, 100)
+            }
         },
         destroyed() {
             clearInterval(this.timer);
@@ -65,6 +68,9 @@
                 }
                 this.tags.isVisible = false;
                 this.isHelperVisible = this.isEmptyEditor()
+            },
+            isSubscriptionLoaded: function () {
+                this.initialize()
             }
         },
         methods: {
