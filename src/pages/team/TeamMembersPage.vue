@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="q-headline">Team Members</div>
-        <q-table class="bg-white q-mt-md" :data="members" :columns="columns" :pagination="{rowsPerPage: 20}" row-key="name" :loading="isMembersLoading">
+        <q-table class="bg-white q-mt-md" :data="members" :columns="columns" :pagination.sync="pagination" row-key="name" :loading="isMembersLoading">
             <q-td slot="body-cell-actions" slot-scope="props" class="text-right">
                 <q-btn flat round dense icon="more_vert" v-if="props.row.isEditable">
                     <q-popover>
@@ -43,7 +43,10 @@
                 {name: 'email', required: true, label: 'Email Address', field: 'email', sortable: true},
                 {name: 'role', required: true, label: 'Team Role', field: 'role', sortable: true},
                 {name: 'actions', align: 'right', label: ''},
-            ]
+            ],
+            pagination: {
+                rowsPerPage: 20
+            }
         }),
         watch: {
             team: function (val) {

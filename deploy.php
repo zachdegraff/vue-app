@@ -25,10 +25,10 @@ host('prod')
     ->set('deploy_path', '/var/www/wonderus/{{application}}')
     ->set('stage_var', 'APP_STAGE=prod');
 task('quasar:build', function () {
-    run('cd {{release_path}} && {{stage_var}} quasar build');
+    run('cd {{release_path}} && {{stage_var}} quasar build', ['timeout' => null]);
 });
 task('npm:install', function () {
-    run('cd {{release_path}} && npm install');
+    run('cd {{release_path}} && npm install', ['timeout' => null]);
 });
 task('deploy', [
     'deploy:info',
