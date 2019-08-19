@@ -1,22 +1,22 @@
 <template>
-    <div class="row gutter-sm cards-list">
-        <div class="charArray">
-            <div class="jump-to q-body-1 q-my-xs">Jump to... </div>
-            <span v-bind:class="{'bold': Object.keys(cards).includes(char) }" v-for="char in chars"
-                  v-scroll-to="{el:`.char${char.charCodeAt(0)}`}">{{char}}</span>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 card-block" v-for="(list, key) in cards">
-            <h3 class="letter" :class="`char${key.charCodeAt(0)}`">{{key}}</h3>
-            <div class="cards">
-                <div v-for="card in list">
-                    <a v-if="card" :href="createViewUrl(card)" @click.prevent.stop="showCard(card.id)"> {{card.name}}
-                        <span v-if="card.shorthand[0]">(<span
-                                v-for="(shorthand, ind) in card.shorthand">{{shorthand}}<span
-                                v-if="ind !== card.shorthand.length - 1">, </span> </span>)</span></a>
-                </div>
-            </div>
-        </div>
+  <div class="row gutter-sm cards-list">
+    <div class="charArray" id="charsList">
+      <div class="jump-to q-body-1 q-my-xs">Jump to...</div>
+      <span v-bind:class="{'bold': Object.keys(cards).includes(char) }" v-for="char in chars"
+            v-scroll-to="{el:`.char${char.charCodeAt(0)}`, offset: -63}">{{char}}</span>
     </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 card-block" v-for="(list, key) in cards">
+      <h3 class="letter" :class="`char${key.charCodeAt(0)}`">{{key}}</h3>
+      <div class="cards">
+        <div v-for="card in list">
+          <a v-if="card" :href="createViewUrl(card)" @click.prevent.stop="showCard(card.id)"> {{card.name}}
+            <span v-if="card.shorthand[0]">(<span
+              v-for="(shorthand, ind) in card.shorthand">{{shorthand}}<span
+              v-if="ind !== card.shorthand.length - 1">, </span> </span>)</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 <script>
     import {mapActions, mapGetters} from 'vuex'
@@ -96,6 +96,16 @@
                 return `${this.filterTagsIdList.length} tags selected`
             }
         },
+        mounted() {
+            const el = document.getElementById('charsList'),
+                sticky = el.offsetTop;
+            window.onscroll = _ => {
+                if (window.pageYOffset > sticky) {
+                    return el.classList.add('js-sticky');
+                }
+                el.classList.remove('js-sticky');
+            };
+        },
         methods: {
             ...mapActions({
                 showCard: 'modals/openCardsEditor'
@@ -119,116 +129,131 @@
     }
 </script>
 <style lang="scss">
-    .cards-list-item-title {
-        color: #0c0c0c;
-        position: absolute;
-        left: 0;
-        line-height: 1.5;
-        font-size: 16px;
-        transform: translateY(-50%);
-        text-align: center;
-        top: 50%;
-        width: 100%;
-        div {
-            font-size: 14px;
-        }
-    }
+  .cards-list-item-title {
+    color: #0c0c0c;
+    position: absolute;
+    left: 0;
+    line-height: 1.5;
+    font-size: 16px;
+    transform: translateY(-50%);
+    text-align: center;
+    top: 50%;
+    width: 100%;
 
-    @media (max-width: 576px) {
-        .cards-list {
-            justify-content: center;
-        }
+    div {
+      font-size: 14px;
     }
+  }
 
-    .letter {
-        width: 50px;
-        text-transform: uppercase;
-        color: #5AD08E;
-        border: 1px #5AD08E solid;
-        border-radius: 100%;
-        text-align: center;
-        display: inline-block;
-        position: absolute;
-        margin: 5px;
+  @media (max-width: 576px) {
+    .cards-list {
+      justify-content: center;
     }
+  }
 
-    .cards {
-        display: inline-block;
-        margin-left: 80px;
-        line-height: 30px;
-        a {
-            text-decoration: none;
-            color: #95989D;
-            font-size: 17px;
-            display: block;
-        }
-    }
+  .letter {
+    width: 50px;
+    text-transform: uppercase;
+    color: #5AD08E;
+    border: 1px #5AD08E solid;
+    border-radius: 100%;
+    text-align: center;
+    display: inline-block;
+    position: absolute;
+    margin: 5px;
+  }
 
-    .card-block {
-        position: relative;
-        margin-top: 20px;
-    }
+  .cards {
+    display: inline-block;
+    margin-left: 80px;
+    line-height: 30px;
 
-    .cards div a:hover {
-        color: #006400;
+    a {
+      text-decoration: none;
+      color: #95989D;
+      font-size: 17px;
+      display: block;
     }
+  }
 
-    .charArray {
-        text-transform: uppercase;
-        span {
-            padding-right: 10px;
-            color: #d0d1d2;
-            font-size: 18px;
-            cursor: default;
-            display: inline-block;
-        }
-    }
+  .card-block {
+    position: relative;
+    margin-top: 20px;
+  }
 
-    .filter-by-tag span {
-        margin: 0 20px 10px 0;
-        &.filter-tags {
-            color: #95989D;
-            font-size: 18px;
-            cursor: pointer;
-            display: inline-block;
-            border: 2px solid;
-            text-align: center;
-            padding: 10px;
-            border-top-left-radius: 10px;
-            border-bottom-right-radius: 10px;
-        }
-    }
+  .cards div a:hover {
+    color: #006400;
+  }
 
-    .filter-by-tag span.active {
-        border: 2px solid #5AD08E;
-        color: #5AD08E;
-    }
+  .charArray {
+    text-transform: uppercase;
 
-    .bold {
-        font-weight: bold;
-        cursor: pointer !important;
-        color: #95989D !important;
+    span {
+      padding-right: 10px;
+      color: #d0d1d2;
+      font-size: 18px;
+      cursor: default;
+      display: inline-block;
     }
+  }
 
-    .jump-to {
-        display: block;
-        color: #95989D !important;
-        width: 95px !important;
-        text-transform: none;
-    }
+  .filter-by-tag span {
+    margin: 0 20px 10px 0;
 
-    .filter-by-tag span:first-child {
-        color: #95989D !important;
-        width: 110px !important;
-        text-transform: none;
+    &.filter-tags {
+      color: #95989D;
+      font-size: 18px;
+      cursor: pointer;
+      display: inline-block;
+      border: 2px solid;
+      text-align: center;
+      padding: 10px;
+      border-top-left-radius: 10px;
+      border-bottom-right-radius: 10px;
     }
+  }
 
-    .bold:hover {
-        color: #07ab07 !important
-    }
+  .filter-by-tag span.active {
+    border: 2px solid #5AD08E;
+    color: #5AD08E;
+  }
 
-    .filter-by-tag {
-        border-bottom: 1px solid #ccc;
-        padding-bottom: 20px !important;
-    }
+  .bold {
+    font-weight: bold;
+    cursor: pointer !important;
+    color: #95989D !important;
+  }
+
+  .jump-to {
+    display: block;
+    color: #95989D !important;
+    width: 95px !important;
+    text-transform: none;
+  }
+
+  .js-sticky {
+    background: #f7f7f7;
+    position: fixed;
+    top: 0;
+    z-index: 100;
+  }
+
+  .js-sticky + .card-block {
+    padding-top: 63px;
+  }
+
+  .filter-by-tag span:first-child {
+    color: #95989D !important;
+    width: 110px !important;
+    text-transform: none;
+  }
+
+  .bold:hover {
+    color: #07ab07 !important
+  }
+
+  .filter-by-tag {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 20px !important;
+  }
 </style>

@@ -16,7 +16,8 @@
                     />
                 </div>
                 <div class="row q-mb-lg" v-if="team">
-                    <div class="col q-headline">{{team.name}} Glossary</div>
+                    <div class="col-sm-12 q-headline">{{team.name}} Glossary</div>
+                    <em v-show="items.length" style="color:#95989D">{{items.length}} total cards</em>
                 </div>
                 <div class="q-card full-width empty_card" v-show="isEmptyCards">
                     <h2>No cards yet!</h2>
@@ -61,7 +62,6 @@
             ...mapGetters({
                 team: 'teams/current',
                 items: 'cards/getItems',
-                cardCount: 'cards/cardCount',
                 isLoading: 'cards/isCardsLoading',
                 isValidSubscription: 'subscription/isValid'
             }),
