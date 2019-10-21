@@ -10,21 +10,23 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
-    "axios": "^0.18.0",
-    "caret-xy": "^2.0.2",
-    "medium-editor": "^5.23.3",
-    "quasar-framework": "^0.16.0",
-    "v-tooltip": "^2.0.0-rc.33",
-    "vue-carousel": "^0.17.0",
-    "vue-scrollto": "^2.13.0",
-    "vue-stripe-checkout": "^1.2.1",
-    "vuelidate": "^0.6.2"
+    "axios": "0.19.0",
+    "caret-xy": "2.0.2",
+    "medium-editor": "5.23.3",
+    "quasar-framework": "0.17.20",
+    "v-tooltip": "2.0.2",
+    "vue-carousel": "0.17.0",
+    "vue-scrollto": "2.13.0",
+    "vue-stripe-checkout": "1.2.1",
+    "vuelidate": "0.6.2"
   },
   "devDependencies": {
-    "node-sass": "^4.9.0",
-    "prettier": "^1.12.0",
-    "quasar-cli": "^0.15.14",
-    "sass-loader": "^7.0.1"
+    "node-sass": "^4.12.0",
+    "prettier": "1.12.0",
+    "quasar-cli": "0.17.26",
+    "sass-loader": "7.0.1",
+    "strip-ansi": "^3.0.1",
+    "vue-template-compiler": "^2.6.10"
   },
   "engines": {
     "node": ">= 8.9.0",
