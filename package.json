@@ -21,12 +21,13 @@
     "vuelidate": "0.6.2"
   },
   "devDependencies": {
-    "node-sass": "^4.12.0",
+    "node-sass": "^4.14.0",
     "prettier": "1.12.0",
     "quasar-cli": "0.17.26",
     "sass-loader": "7.0.1",
     "strip-ansi": "^3.0.1",
-    "vue-template-compiler": "^2.6.10"
+    "vue": "2.6.10",
+    "vue-template-compiler": "2.6.10"
   },
   "engines": {
     "node": ">= 8.9.0",
