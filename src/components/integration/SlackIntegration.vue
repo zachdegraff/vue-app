@@ -71,7 +71,7 @@
                 reloadCurrentTeam: 'teams/reloadCurrentTeam'
             }),
             enable() {
-                window.location = `https://slack.com/oauth/authorize?client_id=${SLACK_CLIENT_ID}&scope=commands,bot,users:read,users:read.email&state=${this.team.id}`;
+                window.location = `https://slack.com/oauth/v2/authorize?client_id=${SLACK_CLIENT_ID}&scope=commands,chat:write,im:write,users:read,users:read.email&state=${this.team.id}`;
             },
             disable() {
                 this.confirm().then(() => {
