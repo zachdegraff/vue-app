@@ -30,7 +30,7 @@
                 <cards-list :items="items" :filterTagsIdList="filterTagsIdList" v-if="items.length"></cards-list>
             </div>
             <div class="col-lg-3 q-px-xl gt-md">
-                <q-btn no-caps color="primary" :label="createCardLabel" @click="createCard" class="full-width q-mb-md" :disabled="!isValidSubscription"/>
+                <q-btn no-caps color="primary" :label="createCardLabel" @click="createCard" class="full-width q-mb-md" :disabled="!isValidSubscription" v-if="isManager"/>
                 <q-select
                         class="margin-15 q-mr-md q-mb-md"
                         filter
@@ -40,7 +40,7 @@
                         v-model="filterTagsIdList"
                         :options="options"
                 />
-                <q-btn to="/glossary/tags" outline no-caps color="primary" label="Manage Tags" class="full-width q-mt-lg"/>
+                <q-btn to="/glossary/tags" outline no-caps color="primary" label="Manage Tags" class="full-width q-mt-lg" v-if="isManager"/>
             </div>
         </div>
     </div>
@@ -62,6 +62,7 @@
             ...mapGetters({
                 team: 'teams/current',
                 items: 'cards/getItems',
+				isManager: 'teams/isManager',
                 isLoading: 'cards/isCardsLoading',
                 isValidSubscription: 'subscription/isValid'
             }),

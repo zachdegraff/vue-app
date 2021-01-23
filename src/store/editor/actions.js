@@ -69,8 +69,9 @@ export const create = ({dispatch, commit, rootGetters}, options = {}) => {
 };
 
 export const save = ({dispatch, getters, rootGetters}) => {
+	const isManager = rootGetters['teams/isManager']
     const isValidSubscription = rootGetters['subscription/isValid'];
-    if (!isValidSubscription) return;
+	if (!isManager || !isValidSubscription) return;
 
     const data = {...getters['getActiveCard']},
         form = new FormData();
@@ -82,8 +83,9 @@ export const save = ({dispatch, getters, rootGetters}) => {
 };
 
 export const autosave = ({commit, getters, rootGetters}) => {
-    const isValidSubscription = rootGetters['subscription/isValid'];
-    if (!isValidSubscription) return;
+    const isManager = rootGetters['teams/isManager']
+	const isValidSubscription = rootGetters['subscription/isValid']
+    if (!isManager || !isValidSubscription) return;
 
     const card = getters['getActiveCard'];
     if (card === undefined) return;

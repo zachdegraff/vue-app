@@ -40,6 +40,7 @@
         computed: {
             ...mapGetters({
                 card: 'editor/getActiveCard',
+				isManager: 'teams/isManager',
                 isValidSubscription: 'subscription/isValid',
                 isSubscriptionLoaded: 'subscription/isSubscriptionLoaded'
             })
@@ -88,7 +89,7 @@
                     this.editor.addEventListener('mouseup', this.handleKeyPress);
                     this.editor.addEventListener('click', this.handleLinkClicks);
                 }
-                MediumOptions.disableEditing = !this.isValidSubscription;
+                MediumOptions.disableEditing = !this.isValidSubscription || !this.isManager;
                 this.medium = new MediumEditor('#contentEditor', MediumOptions);
                 if (this.field.innerHTML !== '') {
                     this.$nextTick(() => {

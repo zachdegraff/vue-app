@@ -27,6 +27,13 @@ export const current = state => {
     return state.current;
 };
 
+
+export const isManager = ({current}) => {
+    if (!current) {
+        return false
+    }
+    return current.isEditable
+}
 export const isCreating = state => state.actionCreateStatus === 'Request';
 export const isUpdating = state => state.actionUpdateStatus === 'Request';
 export const isTeamLoading = state => state.actionGetStatus === 'Request';

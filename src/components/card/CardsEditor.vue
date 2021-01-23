@@ -21,7 +21,7 @@
                     <q-autocomplete separator @search="search" @selected="selected" :min-characters="1"/>
                 </q-search>
             </div>
-            <div class="create-new-card  col-lg-12">
+            <div class="create-new-card col-lg-12" v-if="isManager">
                 <q-btn no-caps flat label="Create new card" icon="add" @click="create" :disabled="isCreateBtnDisabled"/>
             </div>
         </div>
@@ -42,7 +42,7 @@
                             <span>{{processStatus}}</span>
                         </div>
                         <div class="cards-editor-tools" v-if="active">
-                            <q-btn icon="local_offer" flat dense :disabled="!isValidSubscription">
+                            <q-btn icon="local_offer" flat dense :disabled="!isValidSubscription" v-if="isManager">
                                 <q-popover anchor="bottom right" self="top right">
                                     <q-field>
                                         <q-search hide-underline v-model="tagQuery" placeholder="Tag name"
@@ -92,7 +92,7 @@
                                         placeholder="Acronyms/shorthand..."
                                         @keydown.enter="insertComma"
                                         @blur="save"
-                                        :readonly="!isValidSubscription"/>
+                                        :readonly="!isValidSubscription || !isManager"/>
                             </q-field>
                         </div>
                     </div>
@@ -148,6 +148,7 @@
                 team: 'teams/current',
                 tags: 'tags/allNonEmpty',
                 isSaved: 'users/isFavorite',
+				isManager: 'teams/isManager',
                 isCreating: 'cards/isCreating',
                 isUpdating: 'cards/isUpdating',
                 active: 'editor/getActiveCard',
@@ -263,7 +264,7 @@
                     disableReturn: false,
                     disableDoubleReturn: false,
                     disableExtraSpaces: false,
-                    disableEditing: !this.isValidSubscription
+                    disableEditing: !this.isValidSubscription || !this.isManager
                 },
                 field = document.querySelector('.cards-editor-name');
 

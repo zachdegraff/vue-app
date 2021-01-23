@@ -12,7 +12,7 @@
                 <q-icon name="group" size="1.4rem" class="q-mr-sm"/>
                 Members
             </q-item>
-            <q-item :to="`/teams/${id}/plan`" :class="{active:isActive('plan')}">
+            <q-item :to="`/teams/${id}/plan`" :class="{active:isActive('plan')}" v-if="isManager">
                 <q-icon name="account_balance_wallet" size="1.4rem" class="q-mr-sm"/>
                 Plan
             </q-item>
@@ -45,7 +45,8 @@
         },
         computed: {
             ...mapGetters({
-                teams: 'teams/all'
+                teams: 'teams/all',
+				isManager: 'teams/isManager'
             }),
             id() {
                 return this.$route.params.id
