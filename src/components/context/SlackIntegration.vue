@@ -31,7 +31,7 @@
         },
         methods: {
             slack() {
-                window.location = `https://slack.com/oauth/v2/authorize?client_id=${SLACK_CLIENT_ID}&scope=commands,chat:write,im:write,users:read,users:read.email&state=${this.team.id}`;
+                window.location = `https://slack.com/oauth/v2/authorize?client_id=${SLACK_CLIENT_ID}&scope=app_mentions:read,commands,channels:history,chat:write,im:history,im:write,team:read,users:read,users:read.email&state=${this.team.id}`;
             }
         }
     }
