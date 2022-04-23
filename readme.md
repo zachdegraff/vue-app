@@ -1,3 +1,5 @@
 # Quasar App
 
-> WIP
+nvm use  8.9.0
+yarn install
+yarn quasar dev
