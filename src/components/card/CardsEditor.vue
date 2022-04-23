@@ -400,15 +400,14 @@
             .q-icon.material-icons {
                 display: block;
             }
-
-            .cards-editor-actions-close {
-                background: #fe6058;
-            }
-
-            .cards-editor-actions-fullscreen {
-                background: #29ca42;
-            }
         }
+		.cards-editor-actions-close {
+			background: #fe6058;
+		}
+
+		.cards-editor-actions-fullscreen {
+			background: #29ca42;
+		}
 
         & > button {
             border: none;
@@ -424,7 +423,7 @@
             width: 16px;
 
             .q-icon.material-icons {
-                display: none;
+                display: block;
                 font-size: 12px;
                 left: 2px;
                 position: absolute;
