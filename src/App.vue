@@ -1,5 +1,5 @@
 <template>
-    <div id="q-app">
+    <div id="q-app" :class="{ darkmode: darkmode }">
         <q-ajax-bar :delay="100" size="2px" color="white"/>
         <router-view/>
     </div>
@@ -10,6 +10,10 @@
 
     export default {
         name: 'App',
+		data() {
+			return { darkmode: false }
+		},
+
         computed: {
             ...mapGetters({
                 user: 'auth/user'
@@ -28,6 +32,8 @@
                             }
                         });
                     }
+                this.darkmode = val.darkMode;
+
                 }).catch(err => {
                     this.logout().then(() => this.$router.push({name: 'login_user'}))
                 });
@@ -36,6 +42,8 @@
         watch: {
             user: function (val) {
                 if (val !== null) {
+					this.darkmode = val.darkMode;
+
                     this.logCanny(val);
                     this.logFullStory(val)
                 }

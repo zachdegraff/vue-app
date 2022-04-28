@@ -24,6 +24,9 @@
 				<q-field class="q-py-sm">
 					<q-checkbox label="Receive email notifications for requests" v-model="form.sendNotifications"/>
 				</q-field>
+				<q-field class="q-py-sm">
+					<q-checkbox label="Turn on Dark Mode?" v-model="form.darkMode"/>
+				</q-field>
 				<div class="q-pt-lg">
 					<q-btn :disabled="isProcessing" @click="submit" color="primary" label="save"/>
 				</div>
@@ -49,7 +52,8 @@
 					password_confirmation: '',
 					file: null,
 					flushPhoto: false,
-					sendNotifications: true
+					sendNotifications: true,
+					darkMode: true
 				},
 				isOpen: true
 			}
@@ -102,7 +106,7 @@
 				update: 'users/update'
 			}),
 			loadValues(user) {
-				['email', 'firstName', 'lastName', 'sendNotifications'].forEach(i => this.form[i] = user[i])
+				['email', 'firstName', 'lastName', 'sendNotifications', 'darkMode'].forEach(i => this.form[i] = user[i])
 			},
 			submit() {
 				this.$v.form.$touch();
