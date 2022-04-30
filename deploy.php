@@ -5,13 +5,13 @@ set('git_tty', false);
 set('ssh_type', 'native');
 set('ssh_multiplexing', false);
 set('application', 'app');
-set('repository', 'git@github.com:jeffstern/wonderus-app.git');
+set('repository', 'git@github.com:Wonderus/App.git');
 add('shared_files', ['dist/spa-mat/.htaccess']);
 add('shared_dirs', []);
 add('writable_dirs', []);// Hosts
 set('default_stage', 'dev');
 host('dev')
-    ->hostname('ec2-18-220-139-147.us-east-2.compute.amazonaws.com')
+    ->hostname('ec2-3-140-190-183.us-east-2.compute.amazonaws.com')
     ->identityFile('~/.ssh/WonderusAWS.pem')
     ->user('ubuntu')
     ->set('branch', 'dev')
