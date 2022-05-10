@@ -25,7 +25,7 @@
 					<q-checkbox label="Receive email notifications for requests" v-model="form.sendNotifications"/>
 				</q-field>
 				<q-field class="q-py-sm">
-					<q-checkbox label="Turn on Dark Mode?" v-model="form.darkMode"/>
+					<q-checkbox label="Enable Dark Mode" v-model="form.darkMode"/>
 				</q-field>
 				<div class="q-pt-lg">
 					<q-btn :disabled="isProcessing" @click="submit" color="primary" label="save"/>
