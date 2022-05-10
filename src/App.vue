@@ -32,7 +32,7 @@
                             }
                         });
                     }
-                this.darkmode = val.darkMode;
+                	this.darkmode = val.darkMode;
 
                 }).catch(err => {
                     this.logout().then(() => this.$router.push({name: 'login_user'}))
@@ -44,6 +44,10 @@
                 if (val !== null) {
 					this.darkmode = val.darkMode;
 
+					if (val.darkMode) {
+						document.body.style.backgroundColor = "rgb(17,18,21)";
+						document.body.classList.add('darkmode');
+					}
                     this.logCanny(val);
                     this.logFullStory(val)
                 }
