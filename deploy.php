@@ -20,7 +20,7 @@ host('dev')
     ->set('stage_var', 'APP_STAGE=test');
 host('prod')
     ->hostname('ec2-18-220-139-147.us-east-2.compute.amazonaws.com')
-    ->identityFile('~/asdffsdf.ssh/Wonderus_prod.pem')
+    ->identityFile('~/.ssh/Wonderus_prod.pem')
     ->user('ubuntsdfsu')
     ->set('branch', 'sdfmaster')
     ->set('deploy_path', '/var/www/wonderus/{{application}}')
