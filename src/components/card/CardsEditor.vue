@@ -105,8 +105,11 @@
                             {{questionsLabel}}
                             <q-icon :name="questionIconName"/>
                         </div>
-                        <!--<div class="float-left q-mt-xs empty-questions-text" v-else >Have a question for the team?</div>-->
-                        <q-btn icon="help" label="Request information" dense @click="openAskHelp" class="float-right" :disabled="!isValidSubscription"/>
+                       <div class="float-left q-mt-xs empty-questions-text" v-else >Have a question for the team?</div>
+                       	<div class="float-right">
+                       		<q-btn class="float-right card-save-button" no-caps dense label="Save" icon="add" @click="saveValidate" />
+                       		<q-btn icon="help" no-caps label="Request information" dense @click="openAskHelp" class="float-right" :disabled="!isValidSubscription"/>
+						</div>
                         <div style="clear:both"></div>
                     </div>
                     <div class="q-mt-md" v-show="isQuestionsVisible">
@@ -282,7 +285,7 @@
                 this.cardName = this.active.name
             });
             this.name.subscribe('focus', this.selectDefaultText);
-            this.name.subscribe('blur', this.save)
+            this.name.subscribe('blur', this.saveValidate)
         },
         methods: {
             ...mapActions({
@@ -357,18 +360,23 @@
                     this.active.tags.push(val)
                 }
                 this.tagQuery = '';
-                this.save()
+                this.saveValidate()
             },
             selectTag(tag) {
                 if (this.active.tags.indexOf(tag) === -1) {
                     this.active.tags.push(tag);
                     this.tagQuery = '';
-                    this.save()
+                    this.saveValidate()
                 }
             },
             removeTag(idx) {
                 this.active.tags.splice(idx, 1);
-                this.save()
+                this.saveValidate()
+            },
+            saveValidate() {
+            	if (this.active.name !== 'Untitled card' && this.active.name !== null) {
+            		this.save()
+            	}
             }
         }
     }
@@ -381,6 +389,10 @@
         right: 0;
         bottom: 0;
     }
+
+	.card-save-button {
+		margin-left: 10px;
+	}
 
     .cards-editor-actions {
         position: absolute;

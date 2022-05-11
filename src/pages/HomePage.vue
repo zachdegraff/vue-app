@@ -148,7 +148,7 @@
                 join: 'members/joinMemberToTeam',
                 changeQuery: 'search/changeQuery',
                 openAskHelp: 'modals/openAskHelp',
-                showCard: 'modals/openCardsEditor',
+                showCard: 'modals/opensaveCardsEditor',
                 invite: 'modals/openInviteMember',
             }),
 
