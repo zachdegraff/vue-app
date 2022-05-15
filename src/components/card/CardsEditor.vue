@@ -106,10 +106,10 @@
                             <q-icon :name="questionIconName"/>
                         </div>
                        <div class="float-left q-mt-xs empty-questions-text" v-else >Have a question for the team?</div>
-                       	<div class="float-right">
-                       		<q-btn class="float-right card-save-button" no-caps dense label="Save" icon="add" @click="saveValidate" />
-                       		<q-btn icon="help" no-caps label="Request information" dense @click="openAskHelp" class="float-right" :disabled="!isValidSubscription"/>
-						</div>
+                        <div class="float-right">
+                            <q-btn class="float-right card-save-button" no-caps dense label="Save & Close" icon="add" @click="saveClose" />
+                            <q-btn icon="help" no-caps label="Request information" dense @click="openAskHelp" class="float-right" :disabled="!isValidSubscription"/>
+                        </div>
                         <div style="clear:both"></div>
                     </div>
                     <div class="q-mt-md" v-show="isQuestionsVisible">
@@ -151,7 +151,7 @@
                 team: 'teams/current',
                 tags: 'tags/allNonEmpty',
                 isSaved: 'users/isFavorite',
-				isManager: 'teams/isManager',
+                isManager: 'teams/isManager',
                 isCreating: 'cards/isCreating',
                 isUpdating: 'cards/isUpdating',
                 active: 'editor/getActiveCard',
@@ -374,9 +374,13 @@
                 this.saveValidate()
             },
             saveValidate() {
-            	if (this.active.name !== 'Untitled card' && this.active.name !== null) {
-            		this.save()
-            	}
+                if (this.active.name !== 'Untitled card' && this.active.name !== null) {
+                    this.save()
+                }
+            },
+            saveClose() {
+                this.saveValidate()
+                this.close()
             }
         }
     }
@@ -390,9 +394,9 @@
         bottom: 0;
     }
 
-	.card-save-button {
-		margin-left: 10px;
-	}
+    .card-save-button {
+        margin-left: 10px;
+    }
 
     .cards-editor-actions {
         position: absolute;
@@ -413,13 +417,13 @@
                 display: block;
             }
         }
-		.cards-editor-actions-close {
-			background: #fe6058;
-		}
+        .cards-editor-actions-close {
+            background: #fe6058;
+        }
 
-		.cards-editor-actions-fullscreen {
-			background: #29ca42;
-		}
+        .cards-editor-actions-fullscreen {
+            background: #29ca42;
+        }
 
         & > button {
             border: none;
