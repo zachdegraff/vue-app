@@ -1,13 +1,13 @@
 <template>
     <div class="row gutter-md full-width">
-        <div class="col-xs-12 col-sm-10">
+        <div class="col-xs-12 col-sm-9">
             <img src="statics/integrations/chrome-icon.png" class="float-left" width="50"/>
             <div style="margin-left: 70px">
                 <div class="q-headline">Google Chrome Extension</div>
                 <div class="q-mt-sm">Search your team glossary from anywhere on the web by highlighting text on the page</div>
             </div>
         </div>
-        <div class="col-xs-12 col-sm-2">
+        <div class="col-xs-12 col-sm-3">
             <q-btn label="add to chrome" color="primary" class="full-width q-mt-md" @click="openExtensionPage"/>
         </div>
     </div>

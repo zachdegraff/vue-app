@@ -1,6 +1,6 @@
 <template>
     <div class="row gutter-md full-width">
-        <div class="col-xs-12 col-sm-10">
+        <div class="col-xs-12 col-sm-9">
             <img src="statics/integrations/slack-icon.png" class="float-left" width="50"/>
             <div style="margin-left: 70px">
                 <div class="q-headline">Slack</div>
@@ -8,7 +8,7 @@
                 <div class="q-mt-sm" v-if="slackTeamName">Connected to: <strong>{{slackTeamName}}</strong></div>
             </div>
         </div>
-        <div class="col-xs-12 col-sm-2 text-right">
+        <div class="col-xs-12 col-sm-3 text-right">
             <q-btn label="connect" color="primary" class="full-width q-mt-md" @click="enable" v-if="canEnableSlack"/>
             <q-btn label="remove" color="faded" class="full-width q-mt-md" @click="disable" v-if="canDisableSlack"/>
         </div>
