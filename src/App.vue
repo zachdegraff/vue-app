@@ -10,9 +10,9 @@
 
     export default {
         name: 'App',
-		data() {
-			return { darkmode: false }
-		},
+        data() {
+            return { darkmode: false }
+        },
 
         computed: {
             ...mapGetters({
@@ -35,14 +35,14 @@
                 	this.darkmode = val.darkMode;
 
                 }).catch(err => {
-                    this.logout().then(() => this.$router.push({name: 'login_user'}))
+                    this.$router.push({name: 'login_user'})
                 });
             }
         },
         watch: {
             user: function (val) {
                 if (val !== null) {
-					this.darkmode = val.darkMode;
+                    this.darkmode = val.darkMode;
 
 					if (val.darkMode) {
 						document.body.classList.add('darkmode');
