@@ -81,6 +81,20 @@ export const remove = ({commit, dispatch}, id) => {
     })
 };
 
+export const importCard = ({commit, dispatch}, {data, config}) => {
+
+    return new Promise((resolve, reject) => {
+        commit('removeStatusRequest');
+        api.cards.importCard(data, config).then(res =>  {
+            commit('removeStatusSuccess', res);
+            resolve(res.data)
+        }).catch(err => {
+            commit('removeStatusFailure', err);
+            reject(err)
+        })
+    })
+}
+
 export const flush = ({commit}) => {
     commit('flushCardsState')
 };

@@ -31,6 +31,7 @@
             </div>
             <div class="col-lg-3 q-px-xl gt-md">
                 <q-btn no-caps color="primary" :label="createCardLabel" @click="createCard" class="full-width q-mb-md" :disabled="!isValidSubscription" v-if="isManager"/>
+                <cards-import></cards-import>
                 <q-select
                         class="margin-15 q-mr-md q-mb-md"
                         filter
@@ -51,6 +52,7 @@
     import CardsList from '../../components/card/CardsList'
     import {mapActions, mapGetters} from 'vuex'
     import {prop, route} from "../../helpers"
+    import CardsImport from '../../components/card/CardsImport.vue'
 
     export default {
         data: () => {
@@ -112,7 +114,7 @@
                 return this.items.length === 0;
             }
         },
-        components: {CardsList, SiteNavigation, SlackIntegration},
+        components: { CardsList, SiteNavigation, SlackIntegration, CardsImport },
         watch: {
             team: function (val, old) {
                 if (val === old) return;

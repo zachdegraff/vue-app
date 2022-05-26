@@ -109,7 +109,8 @@ module.exports = function (ctx) {
                 'QTabPane',
                 'QInfiniteScroll',
                 'QProgress',
-                'QColor'
+                'QColor',
+                'QUploader'
             ],
             directives: [
                 'Ripple', 'CloseOverlay'
