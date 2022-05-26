@@ -1,43 +1,38 @@
 <template>
-<div class="content-container">
-        <div class="row gutter-x-lg">
-           <site-navigation class="col-lg-2 gt-md"/>
-           <div class="col-lg-8 col-lg-7">
-                <div class="row flex-center">
-                    <div class="col-xs-12 col-sm-8">
-                        <h5>My Profile</h5>
-                        <q-field :error="$v.form.email.$error" :error-label="firstErrorFor($v.form.email)" class="q-py-sm">
-                            <q-input @blur="$v.form.email.$touch" float-label="Email" type="text" v-model="form.email"/>
-                        </q-field>
-                        <q-field :error="$v.form.firstName.$error" :error-label="firstErrorFor($v.form.firstName)" class="q-py-sm">
-                            <q-input @blur="$v.form.firstName.$touch" float-label="First Name" type="text" v-model="form.firstName"/>
-                        </q-field>
-                        <q-field class="q-py-sm">
-                            <q-input float-label="Last Name" type="text" v-model="form.lastName"/>
-                        </q-field>
-                        <q-field :error="$v.form.password.$error" :error-label="firstErrorFor($v.form.password)" class="q-py-sm">
-                            <q-input @blur="$v.form.password.$touch" float-label="Password" type="password" v-model="form.password"/>
-                        </q-field>
-                        <q-field :error="$v.form.password_confirmation.$error" :error-label="firstErrorFor($v.form.password_confirmation)" class="q-py-sm">
-                            <q-input @blur="$v.form.password_confirmation.$touch" float-label="Repeat Password" type="password" v-model="form.password_confirmation"/>
-                        </q-field>
-                        <q-field class="q-py-sm" label="Profile Picture" label-width="12" v-if="user">
-                            <image-chooser :path="user.photo" @change="changeFile"></image-chooser>
-                        </q-field>
-                        <q-field class="q-py-sm">
-                            <q-checkbox label="Receive email notifications for requests" v-model="form.sendNotifications"/>
-                        </q-field>
-                        <q-field class="q-py-sm">
-                            <q-checkbox label="Turn on Dark Mode?" v-model="form.darkMode"/>
-                        </q-field>
-                        <div class="q-pt-lg">
-                            <q-btn :disabled="isProcessing" @click="submit" color="primary" label="save"/>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="content-container">
+		<div class="row flex-center">
+			<div class="col-xs-12 col-sm-8">
+				<h5>My Profile</h5>
+				<q-field :error="$v.form.email.$error" :error-label="firstErrorFor($v.form.email)" class="q-py-sm">
+					<q-input @blur="$v.form.email.$touch" float-label="Email" type="text" v-model="form.email"/>
+				</q-field>
+				<q-field :error="$v.form.firstName.$error" :error-label="firstErrorFor($v.form.firstName)" class="q-py-sm">
+					<q-input @blur="$v.form.firstName.$touch" float-label="First Name" type="text" v-model="form.firstName"/>
+				</q-field>
+				<q-field class="q-py-sm">
+					<q-input float-label="Last Name" type="text" v-model="form.lastName"/>
+				</q-field>
+				<q-field :error="$v.form.password.$error" :error-label="firstErrorFor($v.form.password)" class="q-py-sm">
+					<q-input @blur="$v.form.password.$touch" float-label="Password" type="password" v-model="form.password"/>
+				</q-field>
+				<q-field :error="$v.form.password_confirmation.$error" :error-label="firstErrorFor($v.form.password_confirmation)" class="q-py-sm">
+					<q-input @blur="$v.form.password_confirmation.$touch" float-label="Repeat Password" type="password" v-model="form.password_confirmation"/>
+				</q-field>
+				<q-field class="q-py-sm" label="Profile Picture" label-width="12" v-if="user">
+					<image-chooser :path="user.photo" @change="changeFile"></image-chooser>
+				</q-field>
+				<q-field class="q-py-sm">
+					<q-checkbox label="Receive email notifications for requests" v-model="form.sendNotifications"/>
+				</q-field>
+				<q-field class="q-py-sm">
+					<q-checkbox label="Enable Dark Mode" v-model="form.darkMode"/>
+				</q-field>
+				<div class="q-pt-lg">
+					<q-btn :disabled="isProcessing" @click="submit" color="primary" label="save"/>
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
 <script>
     import {required, email, sameAs, minLength} from 'vuelidate/lib/validators'

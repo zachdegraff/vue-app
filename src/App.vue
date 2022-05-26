@@ -44,11 +44,12 @@
                 if (val !== null) {
                     this.darkmode = val.darkMode;
 
-					if (val.darkMode) {
-						document.body.classList.add('darkmode');
-					} else {
-						document.body.className = document.body.className.replace(/\bdarkmode\b/,'');
-					}
+                    if (val.darkMode) {
+                      document.body.style.backgroundColor = "rgb(17,18,21)";
+                      document.body.classList.add('darkmode');
+                    } else {
+                      document.body.className = document.body.className.replace(/\bdarkmode\b/,'');
+                    }
 
                     this.logCanny(val);
                     this.logFullStory(val)
