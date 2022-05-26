@@ -32,7 +32,7 @@
                             }
                         });
                     }
-                this.darkmode = val.darkMode;
+                	this.darkmode = val.darkMode;
 
                 }).catch(err => {
                     this.$router.push({name: 'login_user'})
@@ -43,6 +43,12 @@
             user: function (val) {
                 if (val !== null) {
                     this.darkmode = val.darkMode;
+
+					if (val.darkMode) {
+						document.body.classList.add('darkmode');
+					} else {
+						document.body.className = document.body.className.replace(/\bdarkmode\b/,'');
+					}
 
                     this.logCanny(val);
                     this.logFullStory(val)
