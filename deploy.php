@@ -11,7 +11,7 @@ add('shared_dirs', []);
 add('writable_dirs', []);// Hosts
 set('default_stage', 'dev');
 host('dev')
-    ->forwardAgent()
+	  ->forwardAgent()
     ->hostname('ec2-18-221-113-129.us-east-2.compute.amazonaws.com')
     ->identityFile('~/.ssh/Wonderus_deployment_key_pair.pem')
     ->user('ubuntu')
