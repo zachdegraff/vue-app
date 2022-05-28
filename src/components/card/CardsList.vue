@@ -13,6 +13,7 @@
             <span v-if="card.shorthand[0]">(<span
               v-for="(shorthand, ind) in card.shorthand">{{shorthand}}<span
               v-if="ind !== card.shorthand.length - 1">, </span> </span>)</span></a>
+              <Badge variant="success" v-for="tag in card.tags" :key="tag.id"> {{ tag.name }} </Badge>
         </div>
       </div>
     </div>
@@ -21,112 +22,111 @@
 <script>
     import {mapActions, mapGetters} from 'vuex'
     import {route} from '../../helpers'
+    import Badge from '../Badge.vue';
 
     export default {
-        props: {
-            items: {
-                required: true,
-                type: Array
-            },
-            filterTagsIdList: {
-                type: Array,
-                default: () => []
-            }
+    props: {
+        items: {
+            required: true,
+            type: Array
         },
-        computed: {
-            tags() {
-                const result = {};
-                this.items.forEach(item => {
-                    if (!item.tags || item.tags.length === 0) {
-                        return
-                    }
-                    item.tags.forEach(tag => result[tag.id] = tag)
-                });
-                return Object.values(result)
-            },
-            chars() {
-                let a = [], i = 'a'.charCodeAt(0), j = 'z'.charCodeAt(0);
-                for (; i <= j; ++i) {
-                    a.push(String.fromCharCode(i));
-                }
-                a.push("#");
-                return a;
-            },
-            cards() {
-                const result = {}, other = [], items = this.items.sort((a, b) => {
-                    return ('' + a.name.toLowerCase()).localeCompare(b.name.toLowerCase())
-                });
-
-                items.forEach(item => {
-                    if (this.filterTagsIdList.length > 0) {
-                        if (!this.isCardTag(item)) {
-                            return
-                        }
-                    }
-                    let letter = item.name.charAt(0).toLocaleLowerCase();
-                    if (!letter.match(/[a-z]/)) {
-                        return other.push(item);
-                    }
-                    if (result[letter] === undefined) {
-                        result[letter] = []
-                    }
-                    result[letter].push(item)
-                });
-                if (other.length > 0) {
-                    result['#'] = other
-                }
-                return result
-            },
-            options() {
-                const options = this.tags.sort((a, b) => {
-                    return ('' + a.name.toLowerCase()).localeCompare(b.name.toLowerCase())
-                });
-                return options.map(item => {
-                        return {'label': item.name, 'value': item.id}
-                    }
-                );
-            },
-            selectTagsLabel() {
-                if (this.filterTagsIdList.length === 0) {
-                    return 'No tags selected'
-                }
-                if (this.filterTagsIdList.length === 1) {
-                    return '1 tag selected'
-                }
-                return `${this.filterTagsIdList.length} tags selected`
-            }
-        },
-        mounted() {
-            const el = document.getElementById('charsList'),
-                sticky = el.offsetTop;
-            window.onscroll = _ => {
-                if (window.pageYOffset > sticky) {
-                    return el.classList.add('js-sticky');
-                }
-                el.classList.remove('js-sticky');
-            };
-        },
-        methods: {
-            ...mapActions({
-                showCard: 'modals/openCardsEditor'
-            }),
-            shorthand(list) {
-                if (list.length === 0) {
-                    return '';
-                }
-                return list.map(i => `<em>${i}</em>`).join(', ')
-            },
-            createViewUrl(card) {
-                return route('view_card', {id: card.id})
-            },
-            isCardTag(card) {
-                if (!card.tags || card.tags.length === 0) {
-                    return false;
-                }
-                return card.tags.findIndex(item => this.filterTagsIdList.includes(item.id)) !== -1
-            }
+        filterTagsIdList: {
+            type: Array,
+            default: () => []
         }
-    }
+    },
+    computed: {
+        tags() {
+            const result = {};
+            this.items.forEach(item => {
+                if (!item.tags || item.tags.length === 0) {
+                    return;
+                }
+                item.tags.forEach(tag => result[tag.id] = tag);
+            });
+            return Object.values(result);
+        },
+        chars() {
+            let a = [], i = "a".charCodeAt(0), j = "z".charCodeAt(0);
+            for (; i <= j; ++i) {
+                a.push(String.fromCharCode(i));
+            }
+            a.push("#");
+            return a;
+        },
+        cards() {
+            const result = {}, other = [], items = this.items.sort((a, b) => {
+                return ("" + a.name.toLowerCase()).localeCompare(b.name.toLowerCase());
+            });
+            items.forEach(item => {
+                if (this.filterTagsIdList.length > 0) {
+                    if (!this.isCardTag(item)) {
+                        return;
+                    }
+                }
+                let letter = item.name.charAt(0).toLocaleLowerCase();
+                if (!letter.match(/[a-z]/)) {
+                    return other.push(item);
+                }
+                if (result[letter] === undefined) {
+                    result[letter] = [];
+                }
+                result[letter].push(item);
+            });
+            if (other.length > 0) {
+                result["#"] = other;
+            }
+            return result;
+        },
+        options() {
+            const options = this.tags.sort((a, b) => {
+                return ("" + a.name.toLowerCase()).localeCompare(b.name.toLowerCase());
+            });
+            return options.map(item => {
+                return { "label": item.name, "value": item.id };
+            });
+        },
+        selectTagsLabel() {
+            if (this.filterTagsIdList.length === 0) {
+                return "No tags selected";
+            }
+            if (this.filterTagsIdList.length === 1) {
+                return "1 tag selected";
+            }
+            return `${this.filterTagsIdList.length} tags selected`;
+        }
+    },
+    mounted() {
+        const el = document.getElementById("charsList"), sticky = el.offsetTop;
+        window.onscroll = _ => {
+            if (window.pageYOffset > sticky) {
+                return el.classList.add("js-sticky");
+            }
+            el.classList.remove("js-sticky");
+        };
+    },
+    methods: {
+        ...mapActions({
+            showCard: "modals/openCardsEditor"
+        }),
+        shorthand(list) {
+            if (list.length === 0) {
+                return "";
+            }
+            return list.map(i => `<em>${i}</em>`).join(", ");
+        },
+        createViewUrl(card) {
+            return route("view_card", { id: card.id });
+        },
+        isCardTag(card) {
+            if (!card.tags || card.tags.length === 0) {
+                return false;
+            }
+            return card.tags.findIndex(item => this.filterTagsIdList.includes(item.id)) !== -1;
+        }
+    },
+    components: { Badge }
+}
 </script>
 <style lang="scss">
   .cards-list-item-title {
