@@ -30,7 +30,7 @@ export default {
     .badge.badge-success {
         background-color: #bbf7d0;
         opacity: 1;
-        color: #16a34a;
+        color: #0c0c0c;
     }
     .badge.badge-danger {
         background-color: #fecaca;

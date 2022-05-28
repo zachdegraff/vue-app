@@ -107,7 +107,7 @@
                         </div>
                        <div class="float-left q-mt-xs empty-questions-text" v-else >Have a question for the team?</div>
                         <div class="float-right">
-                            <q-btn class="float-right card-save-button" no-caps dense label="Save & Close" icon="add" @click="saveClose" />
+                            <q-btn class="float-right card-save-button bg-primary " no-caps dense label="Save & Close" icon="add" @click="saveClose" />
                             <q-btn icon="help" no-caps label="Request information" dense @click="openAskHelp" class="float-right" :disabled="!isValidSubscription"/>
                         </div>
                         <div style="clear:both"></div>
@@ -394,8 +394,10 @@
         bottom: 0;
     }
 
-    .card-save-button {
+    .darkmode .cards-editor-questions-label .card-save-button,
+    .cards-editor-questions-label .card-save-button {
         margin-left: 10px;
+        color: #fff;
     }
 
     .cards-editor-actions {

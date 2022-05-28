@@ -80,4 +80,5 @@ min/
 /vendor
 wonderus-app.iml
 .quasar/**
+.quasar/*
 .quasar/
