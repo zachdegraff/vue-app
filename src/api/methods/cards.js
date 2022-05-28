@@ -54,7 +54,6 @@ export const recently = (id) => {
 };
 
 export const importCard = (params, config) => {
-
     return request.post('/cards/import', params, config)
 };
 
