@@ -49,6 +49,7 @@
                       document.body.classList.add('darkmode');
                     } else {
                       document.body.className = document.body.className.replace(/\bdarkmode\b/,'');
+                      document.body.style.backgroundColor = "";
                     }
 
                     this.logCanny(val);

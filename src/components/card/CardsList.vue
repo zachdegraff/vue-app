@@ -129,6 +129,15 @@
 }
 </script>
 <style lang="scss">
+
+.darkmode {
+    .cards div a {
+       color: #fff;
+    }
+    .cards div a:hover {
+        color: #2fab65;
+    }
+}
   .cards-list-item-title {
     color: #0c0c0c;
     position: absolute;
@@ -170,7 +179,7 @@
 
     a {
       text-decoration: none;
-      color: #95989D;
+      color: #0c0c0c;
       font-size: 17px;
       display: block;
     }
@@ -221,7 +230,7 @@
   .bold {
     font-weight: bold;
     cursor: pointer !important;
-    color: #95989D !important;
+    color: #2fab65 !important;
   }
 
   .jump-to {
