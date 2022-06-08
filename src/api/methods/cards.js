@@ -1,4 +1,5 @@
 import request from '../request'
+import request2 from '../request_withoutInterceptor'
 
 export const get = (id) => {
     return request.get(`/cards/${id}`)
@@ -13,7 +14,7 @@ export const teams = () => {
 };
 
 export const create = (attr) => {
-    return request.post('/cards', attr);
+    return request2.post('/cards', attr);
 };
 
 export const update = (id, attr) => {
@@ -51,3 +52,8 @@ export const cardsHints = (params) => {
 export const recently = (id) => {
     return request.get(`/cards/${id}/recently`)
 };
+
+export const importCard = (params, config) => {
+    return request.post('/cards/import', params, config)
+};
+

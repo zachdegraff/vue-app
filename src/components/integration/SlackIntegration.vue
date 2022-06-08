@@ -40,7 +40,7 @@
                 if (!this.integration) {
                     return null
                 }
-                return this.integration.teamName
+                return this.integration.teamName.name
             },
             canEnableSlack() {
                 if (!this.isOwner) {

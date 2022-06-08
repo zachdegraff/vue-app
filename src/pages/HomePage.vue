@@ -4,7 +4,7 @@
             <site-navigation class="col-lg-2 gt-md"/>
             <div class="col-md-12 col-lg-7">
                 <div class="row lt-lg">
-                    <q-btn no-caps color="primary" label="Create a card" class="q-mr-md q-mb-md" @click="createCard"/>
+                    <q-btn no-caps color="primary" label="Create a card here" class="q-mr-md q-mb-md" @click="createCard"/>
                     <q-btn outline no-caps color="primary" label="Submit request" class="q-mb-md" @click="openAskHelp"/>
                 </div>
                 <div class="q-card full-width empty_card" v-show="isEmptyTeam && isManager">
@@ -43,7 +43,7 @@
             </div>
             <div class="col-lg-3 q-px-xl gt-md">
                 <q-btn no-caps color="primary" label="Create a card" class="full-width q-mb-md" @click="createCard" :disabled="!isValidSubscription" v-if="isManager"/>
-
+                <cards-import class="q-mb-md" />
                 <q-btn outline no-caps color="primary" label="Submit request" class="full-width q-mb-lg" @click="openAskHelp" :disabled="!isValidSubscription"/>
                 <slack-integration v-if="isOwner" class="full-width"/>
 
@@ -58,6 +58,7 @@
     import SiteNavigation from '../components/context/SiteNavigation.vue'
     import FeedQuestionItem from '../components/feed/FeedQuestionItem.vue'
     import FeedCardItem from '../components/feed/FeedCardItem.vue'
+    import CardsImport from '../components/card/CardsImport.vue'
     import {mapActions, mapGetters} from 'vuex'
 
     export default {
@@ -138,7 +139,8 @@
             }
         },
         components: {
-            FeedCardItem, SiteNavigation, SlackIntegration, FeedQuestionItem
+            FeedCardItem, SiteNavigation, SlackIntegration, FeedQuestionItem,
+            CardsImport
         },
         methods: {
             ...mapActions({

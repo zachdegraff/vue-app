@@ -77,3 +77,8 @@ min/
 #
 ################################################
 .vagrant
+/vendor
+wonderus-app.iml
+.quasar/**
+.quasar/*
+.quasar/

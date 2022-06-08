@@ -30,12 +30,12 @@ module.exports = function (ctx) {
                 ? {
                     API_HOST: JSON.stringify('http://wonderus:8000'),
                     APP_HOST: JSON.stringify('http://localhost:8080'),
-                    SLACK_CLIENT_ID: JSON.stringify('371875442850.371336699377'),
+                    SLACK_CLIENT_ID: JSON.stringify('3462380885846.3543846594615'),
                     STRIPE_KEY: JSON.stringify('pk_test_YGJ171tRQutvSN9s8JYwij6n')
                 } : (process.env.APP_STAGE === 'test' ? {
                     API_HOST: JSON.stringify('https://devapi.wonderus.app'),
                     APP_HOST: JSON.stringify('https://dev.wonderus.app'),
-                    SLACK_CLIENT_ID: JSON.stringify('405045441623.403459552065'),
+                    SLACK_CLIENT_ID: JSON.stringify('3462380885846.3551741642934'),
                     STRIPE_KEY: JSON.stringify('pk_test_YGJ171tRQutvSN9s8JYwij6n')
                 } : {
                     API_HOST: JSON.stringify('https://api.wonderus.app'),
@@ -109,7 +109,8 @@ module.exports = function (ctx) {
                 'QTabPane',
                 'QInfiniteScroll',
                 'QProgress',
-                'QColor'
+                'QColor',
+                'QUploader'
             ],
             directives: [
                 'Ripple', 'CloseOverlay'
