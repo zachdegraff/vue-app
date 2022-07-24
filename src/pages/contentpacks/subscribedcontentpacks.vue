@@ -60,7 +60,6 @@
 
                 this.flushQuestions();
                 this.loadQuestions()
-
             }
         },
         components: {

@@ -79,7 +79,7 @@ export const loadUserQuestionsStatusSuccess = (state, res) => {
     state.userQuestionsPage += 1;
     state.userQuestionsLastPage = res.data.meta.last_page
 };
-export const loadUserQuestionsStatusFailure = state => state.actionLoadUserQuestionsStatus = 'Failure';
+export const loadCPsStatusFailure = state => state.actionLoadCPsStatusFailure = 'Failure';
 
 export const loadCardQuestionsStatusRequest = state => {
     state.actionLoadCardQuestionsStatus = 'Request';
@@ -89,14 +89,16 @@ export const loadCardQuestionsStatusSuccess = (state, res) => {
     state.actionLoadCardQuestionsStatus = 'Success';
     state.cardQuestions = res.data.data
 };
+
+export const subscribe = (state, res) => {
+  
+
+}
 export const loadCardQuestionsStatusFailure = state => state.actionLoadCardQuestionsStatus = 'Failure';
 
-export const loadAnsweredQuestionsStatusRequest = state => state.actionLoadAnsweredQuestionsStatus = 'Request';
-export const loadAnsweredQuestionsStatusSuccess = (state, res) => {
+export const loadSubscribedCPsStatusRequest = state => state.actionLoadAnsweredQuestionsStatus = 'Request';
+export const loadCPsStatusSuccess = (state, res) => {
     state.actionLoadAnsweredQuestionsStatus = 'Success';
-    state.answeredQuestions.push(...res.data.data);
-    state.answeredQuestionsPage += 1;
-    state.answeredQuestionsLastPage = res.data.meta.last_page
+    state.contentpacks = res;
 };
-
 export const loadAnsweredQuestionsStatusFailure = state => state.actionLoadAnsweredQuestionsStatus = 'Failure';

@@ -168,6 +168,14 @@ export default [
         ]
     },
     {
+        path: '/contentpacks/',
+        component: () => import('layouts/DefaultLayout.vue'),
+        beforeEnter: ifAuthenticated,
+        children: [
+            {path: '', name: 'contentpacks', component: () => import('pages/contentpacks/list.vue')},
+        ]
+    },
+    {
         path: '/integrations/',
         component: () => import('layouts/DefaultLayout.vue'),
         beforeEnter: ifAuthenticated,

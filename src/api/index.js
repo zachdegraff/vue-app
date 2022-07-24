@@ -6,6 +6,7 @@ import * as users from './methods/users'
 import * as files from './methods/files'
 import * as members from './methods/members'
 import * as questions from './methods/questions'
+import * as contentpacks from './methods/contentpacks'
 import * as comments from './methods/comments'
 import * as tags from './methods/tags'
 import * as plans from './methods/plans'
@@ -25,6 +26,7 @@ const api = {
     files,
     members,
     questions,
+    contentpacks,
     comments,
     coupons,
     subscription,

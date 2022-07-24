@@ -4,23 +4,22 @@
             <site-navigation class="col-lg-2 gt-md"/>
             <div class="col-md-12 col-lg-7">
                 <div class="row lt-lg">
-                    <q-btn no-caps color="primary" label="Submit request" @click="openAskHelp" class="q-mb-md" :disabled="!isValidSubscription"/>
+                    <q-btn no-caps color="primary" label="Submit request" class="q-mb-md" :disabled="!isValidSubscription"/>
                 </div>
                 <div class="row q-mb-lg">
-                    <div class="col q-headline">Requests</div>
+                    <div class="col q-headline">Content Packs</div>
                 </div>
                 <div class="row q-my-lg questions-container">
                     <q-tabs no-pane-border color="#f7f7f7" class="col">
                         <!-- Tabs - notice slot="title" -->
-                        <q-route-tab label="Open" to="/requests" slot="title" name="open"/>
-                        <q-route-tab label="Answered" to="/requests/answered" slot="title" name="answered"/>
-                        <q-route-tab label="My requests" to="/requests/my" slot="title" name="user"/>
+                        <q-route-tab label="All Content Packs" to="/contentpacks" slot="title" name="all"/>
+                        <q-route-tab label="Subscribed Content Packs" to="/contentpacks/subscribedcontentpacks" slot="title" name="subscribed"/>
+                        <q-route-tab label="Available Content Packs" to="/contentpacks/availablecontentpacks" slot="title" name="available"/>
 
                         <!-- Targets -->
-                        <q-tab-pane name="open">
-                            <q-infinite-scroll :handler="loadMoreQuestions">
-                                <div class="q-mt-md" v-show="ifEmpty">There are no requests for knowledge from your team. Submit one!</div>
-                                <questions-list :items="questions"></questions-list>
+                        <q-tab-pane name="all">
+                            <q-infinite-scroll :handler="loadCPs">
+                                <content-packs :items="contentpacks" :subscriptions="cpsubscriptions"></content-packs>
                                 <q-spinner slot="message" :size="40" color="red"/>
                             </q-infinite-scroll>
                         </q-tab-pane>
@@ -28,55 +27,49 @@
                 </div>
             </div>
             <div class="col-lg-3 q-px-xl gt-md">
-                <q-btn no-caps color="primary" label="Submit request" @click="openAskHelp" class="full-width q-mb-lg" :disabled="!isValidSubscription"/>
+                <q-btn no-caps color="primary" label="Submit request" class="full-width q-mb-lg" @click="openAskHelp" :disabled="!isValidSubscription"/>
             </div>
         </div>
     </div>
 </template>
 <script>
     import SiteNavigation from '../../components/context/SiteNavigation.vue'
-    import QuestionsList from '../../components/question/QuestionsList.vue'
-    import SearchForm from '../../components/SearchForm.vue'
+    import ContentPacks from '../../components/contentpacks/contentpacks.vue'
     import {mapActions, mapGetters} from 'vuex'
 
     export default {
         computed: {
             ...mapGetters({
                 team: 'teams/current',
-                questions: 'questions/getOpenQuestions',
-                isLoadQuestions: 'questions/isLoadOpenQuestions',
-                isValidSubscription: 'subscription/isValid'
-            }),
-            ifEmpty() {
-                if (this.isLoadQuestions) {
-                    return false
-                }
-                return this.questions.length === 0
-            }
+                contentpacks: 'contentpacks/getContentPacks',
+                cpsubscriptions: 'contentpacks/getContentPackSubscriptions',
+            })
         },
         watch: {
             team: function (val) {
                 if (val === null) return;
-
-                this.flushQuestions();
-                this.loadQuestions()
-
+                this.loadContentPacks()
             }
         },
         components: {
-            SearchForm, QuestionsList, SiteNavigation
+             ContentPacks, SiteNavigation
         },
+
         methods: {
             ...mapActions({
                 openAskHelp: 'modals/openAskHelp',
-                flushQuestions: 'questions/flushToDefaults',
-                loadQuestions: 'questions/loadOpenQuestions'
+                flushQuestions: 'contentpacks/flushToDefaults',
+                loadContentPacks: 'contentpacks/loadContentPacks',
+                loadSubscribedContentPacks: 'contentpacks/loadSubscribedContentPacks'
             }),
-            loadMoreQuestions(idx, done) {
-                this.loadQuestions().then((data) => {
-                    data.length === 0 ? done(true) : done()
+            loadCPs(idx, done) {
+                this.loadContentPacks().then((data) => {
+                    done(true);
                 })
-            }
+                this.loadSubscribedContentPacks().then((data) => {
+                    done(true);
+                })
+            },
         }
     }
 </script>
