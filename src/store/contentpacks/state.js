@@ -6,7 +6,7 @@ export default {
     cardQuestions: [],
     subscribedCPs: {},
     contentpacks: {},
-    contentPackSubscriptions: [],
+    contentPackSubscriptions: {},
 
     openQuestionsPage: 0,
     openQuestionsLastPage: null,

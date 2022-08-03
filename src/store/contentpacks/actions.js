@@ -18,14 +18,24 @@ export const all = ({commit, rootGetters}, params) => {
 };
 
 export const subscribe = ({commit, dispatch}, id) => {
-    console.log("SUBSCRIBE", id);
     return new Promise((resolve, reject) => {
-        console.log("SUBSCRIBE", id);
         api.contentpacks.subscribe(id).then(res => {
             commit('subscribe', res);
             resolve(res.data)
         }).catch(err => {
             commit('subscibefailure');
+            reject(err)
+        })
+    })
+};
+
+export const unsubscribe = ({commit, dispatch}, id) => {
+    return new Promise((resolve, reject) => {
+        api.contentpacks.unsubscribe(id).then(res => {
+            commit('unsubscribe', res);
+            resolve(res.data)
+        }).catch(err => {
+            commit('unsubscibefailure');
             reject(err)
         })
     })
@@ -137,8 +147,14 @@ export const loadSubscribedContentPacks = ({commit, state, rootGetters}) => {
         const page = state.usercontentpacksPage + 1;
         commit('loadUsercontentpacksStatusRequest');
           api.contentpacks.subscriptions({teamId: team.id}).then(res => {
-            commit('loadUsercontentpacksStatusSuccess', res);
-            resolve(res)
+            var result = res.data.reduce(function (r, a) {
+              r[a.contentpack_id] = r[a.contentpack_id] || [];
+              r[a.contentpack_id].push(a);
+              return r;
+              }, Object.create(null));
+
+            commit('loadUsercontentpacksStatusSuccess', result);
+            resolve(result)
         }).catch(err => {
             commit('loadUsercontentpacksStatusFailure', err);
             reject(err)
@@ -147,15 +163,10 @@ export const loadSubscribedContentPacks = ({commit, state, rootGetters}) => {
 };
 
 export const loadContentPacks = ({commit, state, rootGetters}) => {
-    if (state.subscribedCPs === state.subscribedCPsLastPage) {
-        return []
-    }
     const team = rootGetters['teams/current'];
     if (team === null) {
         return []
     }
-
-console.log("MADE IT");
     return new Promise((resolve, reject) => {
         const page = state.subscribedCPs + 1;
         commit('loadSubscribedCPsStatusRequest');

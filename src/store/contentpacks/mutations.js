@@ -85,15 +85,16 @@ export const loadCardQuestionsStatusRequest = state => {
     state.actionLoadCardQuestionsStatus = 'Request';
     state.cardQuestions = []
 };
-export const loadCardQuestionsStatusSuccess = (state, res) => {
-    state.actionLoadCardQuestionsStatus = 'Success';
-    state.cardQuestions = res.data.data
+export const loadUsercontentpacksStatusSuccess = (state, res) => {
+    state.contentPackSubscriptions = res;
 };
 
-export const subscribe = (state, res) => {
-  
+export const subscribe = (state, res) => {}
+export const subscribefailure = (state, res) => {}
 
-}
+export const unsubscribe = (state, res) => {}
+export const unsubscribefailure = (state, res) => {}
+
 export const loadCardQuestionsStatusFailure = state => state.actionLoadCardQuestionsStatus = 'Failure';
 
 export const loadSubscribedCPsStatusRequest = state => state.actionLoadAnsweredQuestionsStatus = 'Request';

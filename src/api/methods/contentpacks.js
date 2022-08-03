@@ -12,10 +12,10 @@ export const subscriptions = (params = {}) => {
     return request.get(`/contentpack/subscriptions`, {'params': params})
 };
 
-export const unsubscribe = (team, attr) => {
-    return request.post(`/contentpack/removecontentpack`, attr)
+export const unsubscribe = (data) => {
+    return request.post(`/contentpack/removecontentpack`, data)
 };
 
-export const subscribe = (team, attr) => {
-    return request.post(`/contentpack/addcontentpack`, attr)
+export const subscribe = (data) => {
+    return request.post(`/contentpack/addcontentpack`,  data)
 };

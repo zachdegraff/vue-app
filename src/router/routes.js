@@ -173,6 +173,7 @@ export default [
         beforeEnter: ifAuthenticated,
         children: [
             {path: '', name: 'contentpacks', component: () => import('pages/contentpacks/list.vue')},
+            {path: 'subscribedcontentpacks', name: 'subscribedcontentpacks', component: () => import('pages/contentpacks/list.vue')}
         ]
     },
     {
