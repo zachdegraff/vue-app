@@ -28,7 +28,7 @@ module.exports = function (ctx) {
             publicPath: '/',
             env: ctx.dev
                 ? {
-                    API_HOST: JSON.stringify('http://wonderus:8000'),
+                    API_HOST: JSON.stringify('http://localhost:8000'),
                     APP_HOST: JSON.stringify('http://localhost:8080'),
                     SLACK_CLIENT_ID: JSON.stringify('3462380885846.3543846594615'),
                     STRIPE_KEY: JSON.stringify('pk_test_YGJ171tRQutvSN9s8JYwij6n')
@@ -51,9 +51,9 @@ module.exports = function (ctx) {
             }
         },
         devServer: {
-            // https: true,
-            // port: 8080,
-            open: true // opens browser window automatically
+          https: false,
+          port: 8080,
+          open: true
         },
         // framework: 'all' --- includes everything; for dev only!
         framework: {
