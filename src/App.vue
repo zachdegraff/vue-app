@@ -53,7 +53,6 @@
                     }
 
                     this.logCanny(val);
-                    this.logFullStory(val)
                 }
             }
         },
@@ -76,14 +75,6 @@
                         avatarURL: user.photo
                     }
                 })
-            },
-            logFullStory(user) {
-                if (localStorage.getItem('access-token')) {
-                    FS.identify(user.id, {
-                        displayName: user.firstName,
-                        email: user.email,
-                    });
-                }
             }
         },
     }

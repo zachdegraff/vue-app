@@ -140,7 +140,6 @@
                 }
                 this.range = sel.getRangeAt(0);
                 this.start = this.getStartPos(e.keyCode);
-                console.log(this.start);
                 this.isReferenceTools = this.start !== -1;
 
                 if (this.start !== -1) {

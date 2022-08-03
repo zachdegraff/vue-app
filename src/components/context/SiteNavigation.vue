@@ -14,6 +14,10 @@
                 <q-icon name="help" size="1.4rem" class="q-mr-sm"/>
                 Requests
             </q-item>
+            <q-item to="/contentpacks" :class="{active:isActive('contentpacks'), cps: true}">
+                <q-icon name="folder" size="1.4rem" class="q-mr-sm"/>
+                Content Packs
+            </q-item>
         </q-list>
         <div v-if="team && team.isOwner">
             <div class="q-caption uppercase text-weight-bold q-pl-xl q-my-md">share</div>
@@ -41,7 +45,8 @@
                     glossary: ['/glossary', '/glossary/table', '/glossary/favorites', '/glossary/tags'],
                     requests: ['/requests', '/requests/answered', '/requests/my'],
                     integrations: ['/integrations'],
-                    publicSites: ['/public-sites']
+                    publicSites: ['/public-sites'],
+                    contentPacks: ['/contentpacks']
                 }
             }
         },
@@ -76,6 +81,9 @@
                 border-left-color: #2fab65;
                 color: #2fab65
             }
+        }
+        .cps {
+          display: none;
         }
     }
 </style>

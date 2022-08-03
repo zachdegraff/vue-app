@@ -14,6 +14,7 @@ import modals from './modals'
 import search from './search'
 import members from './members'
 import questions from './questions'
+import contentpacks from './contentpacks'
 import comments from './comments'
 import subscription from './subscription'
 import publicSites from './public-sites'
@@ -35,6 +36,7 @@ const store = new Vuex.Store({
         search,
         members,
         questions,
+        contentpacks,
         comments,
         publicSites,
         subscription
