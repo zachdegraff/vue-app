@@ -181,6 +181,7 @@ export const handleServerException = (result) => {
         }
         if (status === 401) {
             if (window.location.href.indexOf('/auth/login') === -1) {
+                localStorage.removeItem('access-token')
                 window.location.href = '/auth/login'
             }
         }
