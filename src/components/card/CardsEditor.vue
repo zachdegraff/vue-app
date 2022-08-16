@@ -394,15 +394,10 @@
         bottom: 0;
     }
 
-<<<<<<< HEAD
     .darkmode .cards-editor-questions-label .card-save-button,
     .cards-editor-questions-label .card-save-button {
         margin-left: 10px;
         color: #fff;
-=======
-    .card-save-button {
-        margin-left: 10px;
->>>>>>> 844bb06 (dev to master (#4))
     }
 
     .cards-editor-actions {
