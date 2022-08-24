@@ -12,11 +12,11 @@ add('writable_dirs', []);// Hosts
 set('default_stage', 'dev');
 host('dev')
 	  ->forwardAgent()
-    ->hostname('ec2-18-221-113-129.us-east-2.compute.amazonaws.com')
+    ->hostname('ec2-18-223-107-20.us-east-2.compute.amazonaws.com')
     ->identityFile('~/.ssh/Wonderus_deployment_key_pair.pem')
     ->user('ubuntu')
     ->set('branch', 'dev')
-    ->set('deploy_path', '/var/www/development/{{application}}')
+    ->set('deploy_path', '/var/www/wonderus/{{application}}')
     ->set('stage_var', 'APP_STAGE=test');
 host('prod')
     ->hostname('ec2-18-220-139-147.us-east-2.compute.amazonaws.com')
