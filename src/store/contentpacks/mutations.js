@@ -15,12 +15,6 @@ export const flushState = state => {
     state.answeredQuestionsLastPage = null;
 };
 
-export const removeQuestionComment = (state, comment) => {
-    ['openQuestions', 'userQuestions', 'answeredQuestions'].forEach(stack => {
-        state[stack].forEach(q => q.comments = remove(q.comments, comment))
-    })
-};
-
 export const getStatusRequest = state => state.actionGetStatus = 'Request';
 export const getStatusSuccess = state => state.actionGetStatus = 'Success';
 export const getStatusFailure = state => state.actionGetStatus = 'Failure';
@@ -28,28 +22,13 @@ export const getStatusFailure = state => state.actionGetStatus = 'Failure';
 export const allStatusRequest = state => state.actionAllStatus = 'Request';
 export const allStatusSuccess = state => state.actionAllStatus = 'Success';
 export const allStatusFailure = state => state.actionAllStatus = 'Failure';
-
-export const storeStatusRequest = state => state.actionStoreStatus = 'Request';
-export const storeStatusSuccess = (state, res) => {
-    state.actionStoreStatus = 'Success';
-
-    const question = res.data.question;
-    state.openQuestions.unshift(question);
-    if (question.card) {
-        state.cardQuestions.push(question)
-    }
-};
 export const storeStatusFailure = state => state.actionStoreStatus = 'Failure';
-
-
 export const updateStatusRequest = state => state.actionUpdateStatus = 'Request';
 export const updateStatusSuccess = (state, res) => {
     state.actionUpdateStatus = 'Success';
     state.editing = null
 };
 export const updateStatusFailure = state => state.actionUpdateStatus = 'Failure';
-
-export const changeEditingQuestion = (state, question) => state.editing = question;
 
 export const removeStatusRequest = state => state.actionRemoveStatus = 'Request';
 export const removeStatusSuccess = (state, res) => {
@@ -63,43 +42,37 @@ export const removeStatusSuccess = (state, res) => {
 };
 export const removeStatusFailure = state => state.actionRemoveStatus = 'Failure';
 
-export const loadOpenQuestionsStatusRequest = state => state.actionLoadOpenQuestionsStatus = 'Request';
-export const loadOpenQuestionsStatusSuccess = (state, res) => {
-    state.actionLoadOpenQuestionsStatus = 'Success';
-    state.openQuestions.push(...res.data.data);
-    state.openQuestionsPage += 1;
-    state.openQuestionsLastPage = res.data.meta.last_page
-};
-export const loadOpenQuestionsStatusFailure = state => state.actionLoadOpenQuestionsStatus = 'Failure';
-
-export const loadUserQuestionsStatusRequest = state => state.actionLoadUserQuestionsStatus = 'Request';
-export const loadUserQuestionsStatusSuccess = (state, res) => {
-    state.actionLoadUserQuestionsStatus = 'Success';
-    state.userQuestions.push(...res.data.data);
-    state.userQuestionsPage += 1;
-    state.userQuestionsLastPage = res.data.meta.last_page
-};
 export const loadCPsStatusFailure = state => state.actionLoadCPsStatusFailure = 'Failure';
 
-export const loadCardQuestionsStatusRequest = state => {
-    state.actionLoadCardQuestionsStatus = 'Request';
-    state.cardQuestions = []
-};
-export const loadUsercontentpacksStatusSuccess = (state, res) => {
-    state.contentPackSubscriptions = res;
+export const loadUserContentPacksStatusSuccess = (state, contentPacks) => {
+    state.contentPackSubscriptions.push(...contentPacks);
 };
 
-export const subscribe = (state, res) => {}
-export const subscribefailure = (state, res) => {}
+export const loadContentPackItemsSuccess = (state, res) => {
+    state.itemsPage += 1;
+    state.actionLoadItemsStatus = 'Success';
+    state.contentPackItems.push(...res.data.data);
+    state.itemsPageLastPage = res.data.meta.last_page;
+};
 
-export const unsubscribe = (state, res) => {}
-export const unsubscribefailure = (state, res) => {}
+export const setActiveContentPack = (state, contentPack) => {
+    state.activeContentPack = contentPack
+};
 
-export const loadCardQuestionsStatusFailure = state => state.actionLoadCardQuestionsStatus = 'Failure';
+export const subscribeToContentPackSuccess = (state, contentPack) => {
+    state.contentPackSubscriptions.push(contentPack);
+}
+
+export const unsubscribeToContentPackSuccess = (state, id) => {
+    state.contentPackSubscriptions = state.contentPackSubscriptions.filter(function(item) {
+        return item.id !== id
+    });
+}
 
 export const loadSubscribedCPsStatusRequest = state => state.actionLoadAnsweredQuestionsStatus = 'Request';
 export const loadCPsStatusSuccess = (state, res) => {
+    state.contentPacksPage += 1;
+    state.contentPacksLastPage = res.data.meta.last_page;
     state.actionLoadAnsweredQuestionsStatus = 'Success';
-    state.contentpacks = res;
+    state.contentpacks.push(...res.data.data);
 };
-export const loadAnsweredQuestionsStatusFailure = state => state.actionLoadAnsweredQuestionsStatus = 'Failure';

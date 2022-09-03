@@ -1,29 +1,22 @@
 export default {
     editing: null,
 
-    openQuestions: [],
-    userQuestions: [],
-    cardQuestions: [],
-    subscribedCPs: {},
-    contentpacks: {},
-    contentPackSubscriptions: {},
+    subscribedCPs: [],
+    contentpacks: [],
+    contentPackSubscriptions: [],
+    contentPackItems: [],
+    contentPacksPage: 0,
+    contentPacksLastPage: null,
 
-    openQuestionsPage: 0,
-    openQuestionsLastPage: null,
+    activeContentPack: null,
 
-    userQuestionsPage: 0,
-    userQuestionsLastPage: null,
+    itemsPage: 0,
+    itemsPageLastPage: null,
 
-    subscribedCPsPage: 0,
-    subscribedCPsLastPage: null,
-
+    actionLoadItemsStatus: '',
     actionAllStatus: '',
     actionGetStatus: '',
     actionStoreStatus: '',
     actionUpdateStatus: '',
     actionRemoveStatus: '',
-    actionLoadOpenQuestionsStatus: '',
-    actionLoadUserQuestionsStatus: '',
-    actionLoadCardQuestionsStatus: '',
-    actionLoadAnsweredQuestionsStatus: ''
 }
