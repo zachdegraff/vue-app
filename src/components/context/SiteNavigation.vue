@@ -18,6 +18,10 @@
                 <q-icon name="help" size="1.4rem" class="q-mr-sm"/>
                 Requests
             </q-item>
+            <q-item to="/contentpacks" :class="{active:isActive('contentpacks'), cps: true}">
+                <q-icon name="folder" size="1.4rem" class="q-mr-sm"/>
+                Content Packs
+            </q-item>
         </q-list>
         <div v-if="team && team.isOwner">
             <div class="q-caption uppercase text-weight-bold q-pl-xl q-my-md">share</div>
