@@ -68,6 +68,13 @@ export default [
         ]
     },
     {
+        path: '/openid/',
+        component: () => import('layouts/ClearLayout.vue'),
+        children: [
+            {path: 'redirect', name: 'openid_redirect', component: () => import('pages/openid/RedirectPage.vue')}
+        ]
+    },
+    {
         path: '/slack/',
         component: () => import('layouts/ClearLayout.vue'),
         beforeEnter: ifAuthenticated,

@@ -28,6 +28,21 @@ export const login = ({commit, dispatch}, user) => {
     })
 };
 
+export const openIdAuthorize = ({commit, dispatch}, params) => {
+    return new Promise((resolve, reject) => {
+        console.log(params);
+        commit('loginStatusRequest');
+        api.auth.openidAuthorize(params).then(res => {
+            commit('loginStatusSuccess', res);
+            setAuthorizeToken(res.data.token, dispatch);
+            resolve(res.data)
+        }).catch(err => {
+            commit('loginStatusFailure');
+            reject(err)
+        })
+    })
+};
+
 export const register = ({commit, dispatch}, user) => {
     return new Promise((resolve, reject) => {
         commit('registerStatusRequest');
