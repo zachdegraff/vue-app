@@ -4,6 +4,7 @@ const routes = {
     'create_card_tag': () => `/glossary/tag/create`,
     'edit_card_tag': ({slug}) => `/glossary/tag/${slug}/edit`,
     'view_card': ({id}) => `/glossary/${id}`,
+    'view_items': ({id}) => `/contentpacks/${id}/items`,
     'edit_card': ({id}) => `/glossary/${id}/edit`,
     'create_team': () => `/teams/create`,
     'invite_member': ({id}) => `/teams/${id}/invite`,

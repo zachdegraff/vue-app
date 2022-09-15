@@ -168,12 +168,13 @@ export default [
         ]
     },
     {
-        path: '/contentpacks/',
+        path: '/content-packs/',
         component: () => import('layouts/DefaultLayout.vue'),
         beforeEnter: ifAuthenticated,
         children: [
-            {path: '', name: 'contentpacks', component: () => import('pages/contentpacks/list.vue')},
-            {path: 'subscribedcontentpacks', name: 'subscribedcontentpacks', component: () => import('pages/contentpacks/list.vue')}
+            {path: '', name: 'content-packs', component: () => import('pages/contentpacks/ContentPackListPage.vue')},
+            {path: 'subscribed', name: 'subscribed', component: () => import('pages/contentpacks/ContentPackListPage.vue')},
+            {path: ':id/items', name: 'content_pack_items', component: () => import('pages/contentpacks/ContentPackItemsListPage.vue'), props: true},
         ]
     },
     {

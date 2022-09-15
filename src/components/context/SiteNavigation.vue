@@ -10,6 +10,10 @@
                 <q-icon name="library_books" size="1.4rem" class="q-mr-sm"/>
                 Glossary
             </q-item>
+            <q-item to="/content-packs" :class="{active:isActive('content-packs')}">
+                <q-icon name="library_books" size="1.4rem" class="q-mr-sm"/>
+                Content Packs
+            </q-item>
             <q-item to="/requests" :class="{active:isActive('requests')}">
                 <q-icon name="help" size="1.4rem" class="q-mr-sm"/>
                 Requests
