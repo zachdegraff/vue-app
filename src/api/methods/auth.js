@@ -23,3 +23,7 @@ export const forgot = (email) => {
 export const reset = (data) => {
     return request.post('/auth/reset', data)
 };
+
+export const openidAuthorize = (data) => {
+    return request.post('/openid/authorize', data)
+}
